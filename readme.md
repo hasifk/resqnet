@@ -3,7 +3,7 @@
 
 Resqnet
  
-A resque life saving mobile application
+A resque and life saving mobile application
 
 ### Wiki
 
