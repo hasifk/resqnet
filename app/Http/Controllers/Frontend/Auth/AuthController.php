@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Frontend\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Frontend\Auth\RegisterRequest;
+use App\Repositories\Frontend\Access\User\EloquentUserRepository;
 use App\Services\Access\Traits\ConfirmUsers;
 use App\Services\Access\Traits\UseSocialite;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -16,27 +18,26 @@ use App\Repositories\Frontend\Access\User\UserRepositoryContract;
 class AuthController extends Controller
 {
 
-    use AuthenticatesAndRegistersUsers, ConfirmUsers, ThrottlesLogins, UseSocialite;
+    protected $users;
 
+    public function __construct( EloquentUserRepository $users)
+    {
+        $this->users = $users;
+    }
     /**
      * Where to redirect users after login / registration.
      *
      * @var string
      */
-    protected $redirectTo = '/dashboard';
+    /*protected $redirectTo = '/dashboard';*/
 
-    /**
-     * Where to redirect users after they logout
-     *
-     * @var string
-     */
-    protected $redirectAfterLogout = '/';
-
-    /**
-     * @param UserRepositoryContract $user
-     */
-    public function __construct(UserRepositoryContract $user)
+    public function register(RegisterRequest $request)
     {
-        $this->user = $user;
+        $user = $this->users->create($request->all());
+        $token = \JWTAuth::fromUser($user);
+        return response()->json(['token' => $token, 'user' => $user->toArray()]);
     }
+
+
+
 }
