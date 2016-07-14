@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Activity;
 
-class NewsfeedController extends Controller {
+class AdminNewsfeedController extends Controller {
 
     /**
      * @var EloquentCompanyRepository
