@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Backend\Newsfeed;
 use App\Http\Controllers\Controller;
 use App\Models\Newsfeed\Newsfeed;
