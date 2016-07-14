@@ -51,7 +51,7 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
     });
 
     $api->group(['middleware' => ['jwt.auth']], function ($api) {
-        $api->get('/newsfeeds', 'App\Http\Controllers\Backend\NewsFeed\AdminNewsfeedController@showNewsfeeds');
+        $api->get('/newsfeeds', 'App\Http\Controllers\Backend\NewsFeed\NewsfeedController@showNewsfeeds');
         /*$api->post('/me', 'App\Http\Controllers\AuthController@getMe');
         $api->get('/task', 'App\Http\Controllers\TaskController@index');
         $api->post('/task', 'App\Http\Controllers\TaskController@store');
