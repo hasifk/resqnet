@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Backend\Newsfeed;
 use App\Http\Controllers\Controller;
 use App\Models\Newsfeed\Newsfeed;
@@ -15,7 +14,7 @@ class AdminNewsfeedController extends Controller {
      * AdminCompanyController constructor.
      * @param EloquentCompanyRepository $companyRepository
      */
-   
+
 
     /**
      * Display a listing of the resource.
