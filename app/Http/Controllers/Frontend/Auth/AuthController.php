@@ -1,43 +1,37 @@
 <?php
-
 namespace App\Http\Controllers\Frontend\Auth;
-
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Frontend\Auth\RegisterRequest;
-use App\Repositories\Frontend\Access\User\EloquentUserRepository;
 use App\Services\Access\Traits\ConfirmUsers;
 use App\Services\Access\Traits\UseSocialite;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use App\Services\Access\Traits\AuthenticatesAndRegistersUsers;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
-
 /**
  * Class AuthController
  * @package App\Http\Controllers\Frontend\Auth
  */
 class AuthController extends Controller
 {
-
-    protected $users;
-
-    public function __construct( EloquentUserRepository $users)
+    use AuthenticatesAndRegistersUsers, ConfirmUsers, ThrottlesLogins, UseSocialite;
+    /**
+     * @param UserRepositoryContract $user
+     */
+    public function __construct(UserRepositoryContract $user)
     {
-        $this->users = $users;
+        //Where to redirect after logging out
+        $this->redirectAfterLogout = route('frontend.index');
+        $this->user = $user;
     }
     /**
      * Where to redirect users after login / registration.
-     *
-     * @var string
+     * @return string
      */
-    /*protected $redirectTo = '/dashboard';*/
-
-    public function register(RegisterRequest $request)
+    public function redirectPath()
     {
-        $user = $this->users->create($request->all());
-        $token = \JWTAuth::fromUser($user);
-        return response()->json(['token' => $token, 'user' => $user->toArray()]);
+        if (access()->allow('view-backend')) {
+            return route('admin.dashboard');
+        }
+
+        return route('frontend.user.dashboard');
     }
-
-
-
 }
