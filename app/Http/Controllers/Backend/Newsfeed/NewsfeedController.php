@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Newsfeed\Newsfeed;
 use App\Http\Requests\Newsfeed\CreateNewsfeedRequest;
 
-class AdminNewsfeedController extends Controller {
+class NewsfeedController extends Controller {
     /**
      * @var EloquentCompanyRepository
      */
