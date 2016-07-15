@@ -43,7 +43,8 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1', ['middleware' => 'cors'], function ($api) {
 
     $api->post('/login', [ 'uses' => 'App\Http\Controllers\AuthController@postLogin' ]);
-    $api->post('/register', [ 'uses' => 'App\Http\Controllers\AuthController@postRegister' ]);
+    $api->post('/register', 'App\Http\Controllers\Frontend\Auth\AuthController@register');
+   /* $api->post('/register', [ 'uses' => 'App\Http\Controllers\AuthController@postRegister' ]);*/
   /*  $api->post('/password1', [ 'uses' => 'App\Http\Controllers\Auth\PasswordController@postEmail' ]);
     $api->post('/password/reset1', [ 'uses' => 'App\Http\Controllers\Auth\PasswordController@postReset' ]);*/
 

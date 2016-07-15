@@ -32,7 +32,7 @@ Route::group(['namespace' => 'Auth'], function () {
         // Registration Routes
         Route::get('register', 'AuthController@showRegistrationForm')
             ->name('auth.register');
-        Route::post('register', 'AuthController@register');
+        /*Route::post('register', 'AuthController@register');*/
 
         // Confirm Account Routes
         Route::get('account/confirm/{token}', 'AuthController@confirmAccount')

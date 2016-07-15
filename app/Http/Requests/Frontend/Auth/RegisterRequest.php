@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Http\Requests\Frontend\Auth;
+use Dingo\Api\Http\FormRequest;
 
-use App\Http\Requests\Request;
 
 /**
  * Class RegisterRequest
  * @package App\Http\Requests\Frontend\Access
  */
-class RegisterRequest extends Request
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,7 +28,7 @@ class RegisterRequest extends Request
     public function rules()
     {
         return [
-            'name' => 'required|max:255',
+            'firstname' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
         ];
