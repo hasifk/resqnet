@@ -19,9 +19,9 @@
         <form action="#" method="get" class="sidebar-form">
             <div class="input-group">
                 <input type="text" name="q" class="form-control" placeholder="{{ trans('strings.backend.general.search_placeholder') }}"/>
-                  <span class="input-group-btn">
+                <span class="input-group-btn">
                     <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
-                  </span>
+                </span>
             </div>
         </form>
         <!-- /.search form -->
@@ -36,10 +36,13 @@
             </li>
 
             @permission('view-access-management')
-                <li class="{{ Active::pattern('admin/access/*') }}">
-                    <a href="{!!url('admin/access/users')!!}"><span>{{ trans('menus.backend.access.title') }}</span></a>
-                </li>
+            <li class="{{ Active::pattern('admin/access/*') }}">
+                <a href="{!!url('admin/access/users')!!}"><span>{{ trans('menus.backend.access.title') }}</span></a>
+            </li>
             @endauth
+            <li class="{{ Active::pattern('admin/access/*') }}">
+                <a href="{!!url('admin/newsfeeds')!!}"><span>News Feeds</span></a>
+            </li>
 
             <li class="{{ Active::pattern('admin/log-viewer*') }} treeview">
                 <a href="#">

@@ -33,6 +33,7 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'middleware' => 'ad
      */
     require (__DIR__ . '/Routes/Backend/Dashboard.php');
     require (__DIR__ . '/Routes/Backend/Access.php');
+    require (__DIR__ . '/Routes/Backend/Newsfeed.php');
     require (__DIR__ . '/Routes/Backend/LogViewer.php');
 });
 
@@ -51,7 +52,11 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
     });
 
     $api->group(['middleware' => ['jwt.auth']], function ($api) {
-        $api->get('/newsfeeds', 'App\Http\Controllers\Backend\Newsfeed\AdminNewsfeedController@showNewsfeeds');
+        $api->get('/newsfeeds', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@showNewsfeeds');
+        $api->get('/save_newsfeed', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@createNewsfeed');
+        $api->get('/edit_newsfeed/{id}', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@editNewsfeed');
+        $api->get('/delete_newsfeed/{id}', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@deleteNewsfeed');
+        
         /*$api->post('/me', 'App\Http\Controllers\AuthController@getMe');
         $api->get('/task', 'App\Http\Controllers\TaskController@index');
         $api->post('/task', 'App\Http\Controllers\TaskController@store');
