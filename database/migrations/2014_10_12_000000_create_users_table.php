@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('lastname');
             $table->date('dob');
             $table->integer('country_id')->unsigned();
+            $table->string('rescuer_type');
             $table->integer('area_id')->unsigned();
             $table->string('displayname');
             $table->string('jurisdiction');
