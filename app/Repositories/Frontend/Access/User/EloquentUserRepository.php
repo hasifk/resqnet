@@ -78,14 +78,15 @@ class EloquentUserRepository implements UserRepositoryContract
                 'lastname' => (!empty($data['lastname'])) ? $data['lastname'] : '',
                 'dob' => (!empty($data['dob'])) ? $data['dob'] : '',
                 'country_id' => (!empty($data['country_id'])) ? $data['country_id'] : '',
-                'area_id' => (!empty($data['area_id'])) ? $data['country_id'] : '',
+                'area_id' => (!empty($data['area_id'])) ? $data['area_id'] : '',
+                'rescuer_type' => (!empty($data['rescuer_type'])) ? $data['rescuer_type'] : '',
                 'jurisdiction' => (!empty($data['jurisdiction'])) ? $data['jurisdiction'] : '',
                 'displayname' => (!empty($data['display_name'])) ? $data['display_name'] : '',
                 'dept_id' => (!empty($data['dept_id'])) ? $data['dept_id'] : '',
                 'email' => $data['email'],
                 'password' =>null,
                 'status' =>0,
-                'medical_conditions' => (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '',
+                'current_medical_conditions' => (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '',
                 'prior_medical_conditions' => (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '',
                 'allergies' => (!empty($data['allegries'])) ? $data['allegries'] : '',
                 'doctor_id' => (!empty($data['doctor_id'])) ? $data['doctor_id'] : '',
@@ -105,14 +106,15 @@ class EloquentUserRepository implements UserRepositoryContract
                 'lastname' => (!empty($data['lastname'])) ? $data['lastname'] : '',
                 'dob' => (!empty($data['dob'])) ? $data['dob'] : '',
                 'country_id' =>(!empty($data['country_id'])) ? $data['country_id'] : '',
-                'area_id' => (!empty($data['area_id'])) ? $data['country_id'] : '',
+                'area_id' => (!empty($data['area_id'])) ? $data['area_id'] : '',
+                'rescuer_type' => (!empty($data['rescuer_type'])) ? $data['rescuer_type'] : '',
                 'jurisdiction' => (!empty($data['jurisdiction'])) ? $data['jurisdiction'] : '',
                 'displayname' =>(!empty($data['display_name'])) ? $data['display_name'] : '',
                 'dept_id' => (!empty($data['dept_id'])) ? $data['dept_id'] : '',
                 'email' => $data['email'],
                 'password' => bcrypt($data['password']),
                 'status' =>0,
-                'medical_conditions' => (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '',
+                'current_medical_conditions' => (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '',
                 'prior_medical_conditions' => (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '',
                 'allergies' => (!empty($data['allegries'])) ? $data['allegries'] : '',
                 'doctor_id' => (!empty($data['doctor_id'])) ? $data['doctor_id'] : '',
@@ -131,7 +133,13 @@ class EloquentUserRepository implements UserRepositoryContract
         /**
          * Add the default site role to the new user
          */
+        if(empty($data['rescuer_type'])):
         $user->attachRole($this->role->getDefaultUserRole());
+            else:
+                $role_id = \DB::table('roles')->where('name', $data['rescuer_type'])->value('id');
+                $user->attachRoles(array($role_id));
+                endif;
+
 
         /**
          * If users have to confirm their email and this is not a social account,

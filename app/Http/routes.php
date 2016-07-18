@@ -44,9 +44,8 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
 
     $api->post('/login', [ 'uses' => 'App\Http\Controllers\AuthController@postLogin' ]);
     $api->post('/register', 'App\Http\Controllers\Frontend\Auth\AuthController@register');
-   /* $api->post('/register', [ 'uses' => 'App\Http\Controllers\AuthController@postRegister' ]);*/
-  /*  $api->post('/password1', [ 'uses' => 'App\Http\Controllers\Auth\PasswordController@postEmail' ]);
-    $api->post('/password/reset1', [ 'uses' => 'App\Http\Controllers\Auth\PasswordController@postReset' ]);*/
+    $api->post('/resquerregister', 'App\Http\Controllers\Frontend\Auth\AuthController@resquerregister');
+
 
     $api->group(['middleware' => 'jwt.refresh'], function ($api) {
         $api->post('/refresh-token', [ 'uses' => 'App\Http\Controllers\AuthController@refreshToken' ]);
@@ -57,12 +56,5 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
         $api->get('/save_newsfeed', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@createNewsfeed');
         $api->get('/edit_newsfeed/{id}', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@editNewsfeed');
         $api->get('/delete_newsfeed/{id}', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@deleteNewsfeed');
-        
-        /*$api->post('/me', 'App\Http\Controllers\AuthController@getMe');
-        $api->get('/task', 'App\Http\Controllers\TaskController@index');
-        $api->post('/task', 'App\Http\Controllers\TaskController@store');
-        $api->post('/task/delete/{id}', 'App\Http\Controllers\TaskController@destroy');
-        $api->post('/task/edit/{id}', 'App\Http\Controllers\TaskController@edit');
-        $api->post('/task/update/{id}', 'App\Http\Controllers\TaskController@update');*/
     });
 });

@@ -36,7 +36,7 @@ class RoleTableSeeder extends Seeder
         $admin->updated_at = Carbon::now();
         $admin->save();
 
-        //Resquer roles
+        //Rescuer roles
         //Police
 
         $role_model = config('access.role');

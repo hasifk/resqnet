@@ -4,6 +4,7 @@ namespace App\Services\Access\Traits;
 
 use App\Events\Frontend\Auth\UserRegistered;
 use App\Http\Requests\Frontend\Auth\RegisterRequest;
+use App\Http\Requests\Frontend\Auth\RegrescuerRequest;
 
 /**
  * Class RegistersUsers
@@ -33,6 +34,23 @@ trait RegistersUsers
             return response()->json(['token' => $token, 'user' => $user->toArray()]);
           /*  event(new UserRegistered($user));
             return redirect()->route('frontend.index')->withFlashSuccess(trans('exceptions.frontend.auth.confirmation.created_confirm'));*/
+        } else {
+            auth()->login($this->user->create($request->all()));
+            event(new UserRegistered(access()->user()));
+            return redirect($this->redirectPath());
+        }
+    }
+
+
+    /***************************************************************************************************************/
+    public function resquerregister(RegrescuerRequest $request)
+    {
+
+        if (config('access.users.confirm_email')) {
+            $user = $this->user->create($request->all());
+            $token = \JWTAuth::fromUser($user);
+            return response()->json(['token' => $token, 'user' => $user->toArray()]);
+
         } else {
             auth()->login($this->user->create($request->all()));
             event(new UserRegistered(access()->user()));
