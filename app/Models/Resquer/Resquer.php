@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Newsfeed;
+namespace App\Models\Resquer;
 
 use App\Models\Access\User\Traits\UserAccess;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +13,7 @@ use App\Models\Access\User\Traits\Relationship\UserRelationship;
  * Class User
  * @package App\Models\Access\User
  */
-class Newsfeed extends Model
+class Resquer extends Model
 {
 
 
@@ -25,7 +25,7 @@ class Newsfeed extends Model
      */
    // use NewsfeedAttribute;
     
-    protected $table = 'newsfeeds';
+    protected $table = 'resquertypes';
 
     protected $guarded = ['id'];
 }
