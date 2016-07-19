@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon as Carbon;
 class RescuerTypeSeeder extends Seeder
 {
     /**
@@ -11,27 +12,28 @@ class RescuerTypeSeeder extends Seeder
      */
     public function run()
     {
-        if (env('DB_CONNECTION') == 'mysql') {
-            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        }
+
 
         $information = [
             [
                 'type'          => 'Police',
+                'created_at'        => Carbon::now(),
+                'updated_at'        => Carbon::now(),
             ],
             [
                 'type'          => 'Paramedic',
+                'created_at'        => Carbon::now(),
+                'updated_at'        => Carbon::now(),
             ],
             [
                 'type'          => 'Fireman',
+                'created_at'        => Carbon::now(),
+                'updated_at'        => Carbon::now(),
             ],
         ];
 
         DB::table('rescuertypes')->insert($information);
 
 
-        if (env('DB_CONNECTION') == 'mysql') {
-            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-        }
       }
 }
