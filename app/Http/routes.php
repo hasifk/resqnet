@@ -45,7 +45,7 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
 
     $api->post('/login', [ 'uses' => 'App\Http\Controllers\AuthController@postLogin' ]);
     $api->post('/register', 'App\Http\Controllers\Frontend\Auth\AuthController@register');
-    $api->post('/resquerregister', 'App\Http\Controllers\Frontend\Auth\AuthController@resquerregister');
+    $api->post('/rescuerregister', 'App\Http\Controllers\Frontend\Auth\AuthController@rescuerregister');
 
 
     $api->group(['middleware' => 'jwt.refresh'], function ($api) {

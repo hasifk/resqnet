@@ -18,7 +18,8 @@ trait ConfirmUsers
     public function confirmAccount($token)
     {
         $this->user->confirmAccount($token);
-        return redirect()->route('auth.login')->withFlashSuccess(trans('exceptions.frontend.auth.confirmation.success'));
+       /* return redirect()->route('auth.login')->withFlashSuccess(trans('exceptions.frontend.auth.confirmation.success'));*/
+        return redirect("https://play.google.com/store?hl=en");
     }
 
     /**
@@ -28,6 +29,7 @@ trait ConfirmUsers
     public function resendConfirmationEmail($user_id)
     {
         $this->user->resendConfirmationEmail($user_id);
-        return redirect()->route('auth.login')->withFlashSuccess(trans('exceptions.frontend.auth.confirmation.resent'));
+       /* return redirect()->route('auth.login')->withFlashSuccess(trans('exceptions.frontend.auth.confirmation.resent'));*/
+        return redirect("https://play.google.com/store?hl=en");
     }
 }

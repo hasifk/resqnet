@@ -43,7 +43,7 @@ trait RegistersUsers
 
 
     /***************************************************************************************************************/
-    public function resquerregister(RegrescuerRequest $request)
+    public function rescuerregister(RegrescuerRequest $request)
     {
 
         if (config('access.users.confirm_email')) {
