@@ -29,7 +29,7 @@
             <td>{{ $department->resquerType->type }}</td>
             <td>{{ $department->department }}</td>
 
-            <td>{!! $department->getActionButtonsAttribute() !!}</td>
+            <td>{!! $department->actionbuttons !!}</td>
         </tr>
         @endforeach
     </tbody>
@@ -46,7 +46,7 @@
 @section('after-scripts-end')
 <script>
     $(document).ready(function () {
-        $('.cms_delete').on('click', function () {
+        $('.department_delete').on('click', function () {
             if (confirm("Are you sure want to delete")) {
                 return true;
             }

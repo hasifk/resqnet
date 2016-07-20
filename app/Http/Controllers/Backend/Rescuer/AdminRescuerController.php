@@ -46,6 +46,14 @@ class AdminRescuerController extends Controller {
         ];
         return view('backend.department.index', $view);
     }
+    public function editRescuerDept($id) {
+        
+        $view = [
+            'departments' => $this->rescuerRepository->findDepartment($id),
+            'types' => $this->rescuerRepository->rescuerType(),
+        ];
+        return view('backend.department.edit', $view);
+    }
 
     public function createRescuerDept() {
         $view = [
@@ -58,6 +66,10 @@ class AdminRescuerController extends Controller {
 
         $this->rescuerRepository->save($request);
 
+        return redirect()->route('backend.admin.rescure_departments');
+    }
+    public function deleteRescuerDept($id) {
+        $this->rescuerRepository->delete($id);
         return redirect()->route('backend.admin.rescure_departments');
     }
 

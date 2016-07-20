@@ -16,7 +16,7 @@ class EloquentRescuerRepository {
     public function save($request) {
 
         if ($request->has('id'))
-            $obj = $this->find($request->id);
+            $obj = $this->findDepartment($request->id);
         else {
             $obj = new Rescuer\Department;
         }

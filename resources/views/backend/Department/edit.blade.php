@@ -1,16 +1,16 @@
 @extends ('backend.layouts.master')
 
-@section ('title', 'Admin Create News Feeds')
+@section ('title', 'ResQuer Department')
 
 @section('page-header')
 <h1>
-    Create Company Profile
+    Create Department
 </h1>
 @endsection
 
 @section('content')
 
-@include('backend.admin.includes.partials.newsfeeds.header-buttons')
+@include('backend.includes.partials.department.header-buttons')
 
 <section class="content">
     <div class="row" id='notification_add'>
@@ -22,18 +22,37 @@
                                         <h3 class="box-title">Add Push Notifications</h3>
                                     </div> /.box-header -->
                     <!-- form start -->
-                    <form method="POST" action="{{ route('backend.admin.newsfeedsave') }}" accept-charset="UTF-8" role="form" >
-                         {{ csrf_field() }}
+                    <form method="POST" action="{{ route('backend.admin.department_save') }}" accept-charset="UTF-8" role="form" >
+                        {{ csrf_field() }}
                         <div class="box-body">
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">News Feeds</label>
-                                <textarea class="form-control textarea" name="newsfeed" cols="30" rows="5">{{ $newsfeed->news }}</textarea>
+                            <div class="form-group col-xs-12">
+                                <label for="rescuer_type" class="col-md-4 control-label">Rescuer Type</label>
+                                <div class="col-md-6">
+                                    <select name="type_id" id="country_id" class="form-control">
+                                        <option value="">Please select</option>
+                                        @foreach($types as $type)
+                                        <option
+                                            value="{{ $type->id }}" <?php if($departments->rescuertype_id==$type->id) ?> selected="selected" <?php ?>>
+                                            {{ $type->type }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-12">
+                                <label for="department" class="col-md-4 control-label">Department</label>
+                                <div class="col-md-6">
+                                    {!! Form::input('name', 'department',$departments->department,['class' => 'form-control','placeholder'=>'ResQuer Department']) !!}
+                                    {!! Form::input('hidden', 'id',$departments->id) !!}
+                                </div>
                             </div>
                         </div><!-- /.box-body -->
 
                         <div class="box-footer">
-                            <input type="hidden" name="id" value="{{ $newsfeed->id }}">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <label for="submit" class="col-md-4 control-label"></label> 
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
                         </div>
                     </form>
                 </div><!-- /.box -->
