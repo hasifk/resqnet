@@ -29,7 +29,7 @@
             <td>{{ $department->resquerType->type }}</td>
             <td>{{ $department->department }}</td>
 
-            <td>{!! $department->action_buttons !!}</td>
+            <td>{!! $department->getActionButtonsAttribute() !!}</td>
         </tr>
         @endforeach
     </tbody>

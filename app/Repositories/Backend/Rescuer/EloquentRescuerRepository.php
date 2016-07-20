@@ -10,7 +10,7 @@ use Storage;
 class EloquentRescuerRepository {
 
     public function getDepartmentPaginated() {
-        return Rescuer\Department::paginate(10);
+        return Rescuer\Department::orderBy('id', 'DESC')->paginate(10);
     }
 
     public function save($request) {
@@ -38,7 +38,7 @@ class EloquentRescuerRepository {
 
     public function departmentFiltering($id) {
        
-        return Rescuer\Department::where('rescuertype_id', $id)->paginate(10);
+        return Rescuer\Department::where('rescuertype_id', $id)->orderBy('id', 'DESC')->paginate(10);
     }
 
 }

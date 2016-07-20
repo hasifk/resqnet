@@ -7,5 +7,6 @@ Route::group([
         Route::get('/departments/{id}', 'AdminRescuerController@showRescuerDept')->name('backend.admin.rescure_department');
         Route::get('/department_create', 'AdminRescuerController@createRescuerDept')->name('backend.admin.department_create');
         Route::post('/department_save', 'AdminRescuerController@saveRescuerDept')->name('backend.admin.department_save');
+        Route::post('/department_edit', 'AdminRescuerController@saveRescuerDept')->name('backend.admin.department_edit');
 
 });

@@ -77,6 +77,39 @@ class Access
         return false;
     }
 
+    
+    /**
+	 * Check if the current user has a permission by its name or id
+	 *
+	 * @param string $permission Permission name or id.
+	 *
+	 * @return bool
+	 */
+	public function can($permission)
+	{
+		if ($user = $this->user())
+			return $user->can($permission);
+
+		return false;
+	}
+
+	/**
+	 * Check an array of permissions and whether or not all are required to continue
+	 * @param $permissions
+	 * @param $needsAll
+	 * @return bool
+	 */
+	public function canMultiple($permissions, $needsAll = false) {
+		if ($user = $this->user()) {
+			//If not an array, make a one item array
+			if (!is_array($permissions))
+				$permissions = array($permissions);
+
+			return $user->canMultiple($permissions, $needsAll);
+		}
+
+		return false;
+	}
     /**
      * Check if the current user has a permission by its name or id
      *

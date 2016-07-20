@@ -4,6 +4,8 @@ namespace App\Models\Rescuer;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Rescuer\Traits\Relationship\RescureTypeRelationship;
+use App\Models\Rescuer\Traits\Attribute\DepartmentAttribute;
+
 
 /**
  * Class User
@@ -11,7 +13,7 @@ use App\Models\Rescuer\Traits\Relationship\RescureTypeRelationship;
  */
 class Department extends Model {
 
-    use RescureTypeRelationship;
+    use RescureTypeRelationship,DepartmentAttribute;
 
     /**
      * The attributes that are not mass assignable.
