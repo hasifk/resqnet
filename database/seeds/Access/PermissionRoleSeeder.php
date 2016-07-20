@@ -17,7 +17,8 @@ class PermissionRoleSeeder extends Seeder
     }
 
     public function insertPoliceRolePermission(){
-        $permissions = ['view-backend', 'view-access-management'];
+        $permissions = ['view-backend', 'view-access-management','create-newsfeed','edit-newsfeed','show-newsfeed',
+            'delete-newsfeed'];
 
         $resquer_role_id = DB::table('roles')->where('name', 'Police')->value('id');
 
@@ -33,7 +34,8 @@ class PermissionRoleSeeder extends Seeder
     }
 
     public function insertFireRolePermission(){
-        $permissions = ['view-backend', 'view-access-management'];
+        $permissions = ['view-backend', 'view-access-management','create-newsfeed','edit-newsfeed','show-newsfeed',
+            'delete-newsfeed'];
 
         $resquer_role_id = DB::table('roles')->where('name', 'Fire')->value('id');
 
@@ -49,7 +51,8 @@ class PermissionRoleSeeder extends Seeder
     }
 
     public function insertAmbulanceRolePermission(){
-        $permissions = ['view-backend', 'view-access-management'];
+        $permissions = ['view-backend', 'view-access-management','create-newsfeed','edit-newsfeed','show-newsfeed',
+            'delete-newsfeed'];
 
         $resquer_role_id = DB::table('roles')->where('name', 'Ambulance')->value('id');
 
