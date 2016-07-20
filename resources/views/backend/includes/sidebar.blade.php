@@ -40,10 +40,10 @@
                 <a href="{!!url('admin/access/users')!!}"><span>{{ trans('menus.backend.access.title') }}</span></a>
             </li>
             @endauth
-            <li class="{{ Active::pattern('admin/access/*') }}">
+            <li class="{{ Active::pattern('admin/newsfeed/*') }}">
                 <a href="{!!url('admin/newsfeeds')!!}"><span>News Feeds</span></a>
             </li>
-             <li class="{{ Active::pattern('admin/access/*') }}">
+             <li class="{{ Active::pattern('admin/department/*') }}">
                  <a href="{{route('backend.admin.rescure_departments')}}"><span>Department</span></a>
             </li>
             <li class="{{ Active::pattern('admin/log-viewer*') }} treeview">
