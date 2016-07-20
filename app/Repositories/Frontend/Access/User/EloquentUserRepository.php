@@ -141,7 +141,7 @@ class EloquentUserRepository implements UserRepositoryContract
                 endif;
 
         $user->update([
-            'membership_no' => $user->id.str_random(9)]);
+            'membership_no' => $user->id.str_random(5)]);
         /**
          * If users have to confirm their email and this is not a social account,
          * send the confirmation email

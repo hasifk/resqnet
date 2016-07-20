@@ -15,7 +15,6 @@ class CreateNewsfeedsTable extends Migration
         Schema::create('newsfeeds', function (Blueprint $table) {
         $table->increments('id')->unsigned();
         $table->integer('user_id')->unsigned();
-            $table->integer('resquer_roleid')->unsigned();
             $table->integer('resquer_countryid')->unsigned();
             $table->integer('resquer_areaid')->unsigned();
             $table->integer('user_countryid')->unsigned();

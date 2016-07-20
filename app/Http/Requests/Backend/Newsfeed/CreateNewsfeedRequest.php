@@ -1,10 +1,9 @@
 <?php
-
-namespace App\Http\Requests;
+namespace App\Http\Requests\Backend\Newsfeed;
 
 use Dingo\Api\Http\FormRequest;
 
-class CreateTaskRequest extends FormRequest
+class CreateNewsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

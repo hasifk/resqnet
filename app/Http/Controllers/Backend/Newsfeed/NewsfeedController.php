@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Backend\Newsfeed;
 
 use App\Http\Controllers\Controller;
 use App\Models\Newsfeed\Newsfeed;
-use App\Http\Requests\Newsfeed\CreateNewsfeedRequest;
+use App\Http\Requests\Backend\Newsfeed\CreateNewsfeedRequest;
 
 class NewsfeedController extends Controller {
     /**
@@ -30,9 +30,9 @@ class NewsfeedController extends Controller {
     }
 
     public function createNewsfeed(CreateNewsfeedRequest $request) {
-        return Newsfeed::create(['user_id' =>'','resquer_roleid'=>$request->resquer_roleid,
+        return Newsfeed::create(['user_id' =>Auth::user()->id ,
             'resquer_countryid'=>$request->resquer_countryid,
-            'resquer_areaid'=>$request->resquer_countryid,
+            'resquer_areaid'=>$request->resquer_areaid,
             'user_countryid'=>$request->user_countryid,
             'user_areaid'=>$request->user_areaid,
             'news'=>$request->news,

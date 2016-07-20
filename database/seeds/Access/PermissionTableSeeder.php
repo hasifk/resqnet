@@ -285,6 +285,105 @@ class PermissionTableSeeder extends Seeder
         $deletePermissions->updated_at   = Carbon::now();
         $deletePermissions->save();
 
+
+        /**
+         * NewsFeeds
+         */
+
+        $permission_model                = config('access.permission');
+        $createNewsFeeds               = new $permission_model;
+        $createNewsFeeds->name         = 'create-newsfeed';
+        $createNewsFeeds->display_name = 'Create Newsfeed';
+        $createNewsFeeds->system       = true;
+        $createNewsFeeds->group_id     = 4;
+        $createNewsFeeds->sort         = 8;
+        $createNewsFeeds->created_at   = Carbon::now();
+        $createNewsFeeds->updated_at   = Carbon::now();
+        $createNewsFeeds->save();
+
+        $permission_model              = config('access.permission');
+        $editNewsFeeds               = new $permission_model;
+        $editNewsFeeds->name         = 'edit-newsfeed';
+        $editNewsFeeds->display_name = 'Edit NewsFeed';
+        $editNewsFeeds->system       = true;
+        $editNewsFeeds->group_id     = 4;
+        $editNewsFeeds->sort         = 9;
+        $editNewsFeeds->created_at   = Carbon::now();
+        $editNewsFeeds->updated_at   = Carbon::now();
+        $editNewsFeeds->save();
+
+        $permission_model                = config('access.permission');
+        $deleteNewsFeeds               = new $permission_model;
+        $deleteNewsFeeds->name         = 'delete-newsfeed';
+        $deleteNewsFeeds->display_name = 'Delete Newsfeed';
+        $deleteNewsFeeds->system       = true;
+        $deleteNewsFeeds->group_id     = 4;
+        $deleteNewsFeeds->sort         = 10;
+        $deleteNewsFeeds->created_at   = Carbon::now();
+        $deleteNewsFeeds->updated_at   = Carbon::now();
+        $deleteNewsFeeds->save();
+
+        $permission_model                = config('access.permission');
+        $showNewsFeeds               = new $permission_model;
+        $showNewsFeeds->name         = 'show-newsfeed';
+        $showNewsFeeds->display_name = 'Show Newsfeed';
+        $showNewsFeeds->system       = true;
+        $showNewsFeeds->group_id     = 4;
+        $showNewsFeeds->sort         = 11;
+        $showNewsFeeds->created_at   = Carbon::now();
+        $showNewsFeeds->updated_at   = Carbon::now();
+        $showNewsFeeds->save();
+
+
+        /**
+         * Departments
+         */
+
+        $permission_model                = config('access.permission');
+        $createDepartment               = new $permission_model;
+        $createDepartment->name         = 'create-department';
+        $createDepartment->display_name = 'Create Department';
+        $createDepartment->system       = true;
+        $createDepartment->group_id     = 4;
+        $createDepartment->sort         = 12;
+        $createDepartment->created_at   = Carbon::now();
+        $createDepartment->updated_at   = Carbon::now();
+        $createDepartment->save();
+
+        $permission_model              = config('access.permission');
+        $editDepartment               = new $permission_model;
+        $editDepartment->name         = 'edit-department';
+        $editDepartment->display_name = 'Edit Department';
+        $editDepartment->system       = true;
+        $editDepartment->group_id     = 4;
+        $editDepartment->sort         = 13;
+        $editDepartment->created_at   = Carbon::now();
+        $editDepartment->updated_at   = Carbon::now();
+        $editDepartment->save();
+
+        $permission_model                = config('access.permission');
+        $deleteDepartment               = new $permission_model;
+        $deleteDepartment->name         = 'delete-department';
+        $deleteDepartment->display_name = 'Delete Department';
+        $deleteDepartment->system       = true;
+        $deleteDepartment->group_id     = 4;
+        $deleteDepartment->sort         = 14;
+        $deleteDepartment->created_at   = Carbon::now();
+        $deleteDepartment->updated_at   = Carbon::now();
+        $deleteDepartment->save();
+
+        $permission_model                = config('access.permission');
+        $showDepartment               = new $permission_model;
+        $showDepartment->name         = 'show-department';
+        $showDepartment->display_name = 'Show Department';
+        $showDepartment->system       = true;
+        $showDepartment->group_id     = 4;
+        $showDepartment->sort         = 15;
+        $showDepartment->created_at   = Carbon::now();
+        $showDepartment->updated_at   = Carbon::now();
+        $showDepartment->save();
+
+
         if (env('DB_CONNECTION') == 'mysql') {
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         }
