@@ -73,6 +73,7 @@ return [
 
     'frontend' => [
         'email' => [
+            'membership_no' => 'Your membership No:',
             'confirm_account' => 'Click here to confirm your account:',
         ],
 

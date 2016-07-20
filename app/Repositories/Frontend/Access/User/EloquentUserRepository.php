@@ -140,7 +140,8 @@ class EloquentUserRepository implements UserRepositoryContract
                 $user->attachRoles(array($role_id));
                 endif;
 
-
+        $user->update([
+            'membership_no' => $user->id.str_random(9)]);
         /**
          * If users have to confirm their email and this is not a social account,
          * send the confirmation email
@@ -242,7 +243,7 @@ class EloquentUserRepository implements UserRepositoryContract
             $user = $this->find($user);
         }
 
-        return Mail::send('frontend.auth.emails.confirm', ['token' => $user->confirmation_code], function ($message) use ($user) {
+        return Mail::send('frontend.auth.emails.confirm', ['token' => $user->confirmation_code,'membership_no' => $user->membership_no], function ($message) use ($user) {
             $message->to($user->email, $user->name)->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
         });
     }
