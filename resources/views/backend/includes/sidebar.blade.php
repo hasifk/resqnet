@@ -43,23 +43,9 @@
             <li class="{{ Active::pattern('admin/access/*') }}">
                 <a href="{!!url('admin/newsfeeds')!!}"><span>News Feeds</span></a>
             </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-files-o"></i>
-                    <span>ResQuer Settings</span>
-                    <span class="label label-primary pull-right">2</span>
-                </a>
-                <ul class="treeview-menu">
-                    <li class="{{ Active::pattern('admin/access/*') }}">
-                        <a href="{!!url('admin/resquer')!!}"><span>Resquer Type</span></a>
-                    </li>
-                    <li class="{{ Active::pattern('admin/access/*') }}">
-                        <a href="{!!url('admin/department')!!}"><span>Department</span></a>
-                    </li>
-                </ul>
+             <li class="{{ Active::pattern('admin/access/*') }}">
+                 <a href="{{route('backend.admin.rescure_departments')}}"><span>Department</span></a>
             </li>
-
-
             <li class="{{ Active::pattern('admin/log-viewer*') }} treeview">
                 <a href="#">
                     <span>{{ trans('menus.backend.log-viewer.main') }}</span>
