@@ -342,7 +342,7 @@ class PermissionTableSeeder extends Seeder
         $permission_model                = config('access.permission');
         $createDepartment               = new $permission_model;
         $createDepartment->name         = 'create-department';
-        $createDepartment->display_name = 'Create Department';
+        $createDepartment->display_name = 'Create department';
         $createDepartment->system       = true;
         $createDepartment->group_id     = 4;
         $createDepartment->sort         = 12;
@@ -353,7 +353,7 @@ class PermissionTableSeeder extends Seeder
         $permission_model              = config('access.permission');
         $editDepartment               = new $permission_model;
         $editDepartment->name         = 'edit-department';
-        $editDepartment->display_name = 'Edit Department';
+        $editDepartment->display_name = 'Edit department';
         $editDepartment->system       = true;
         $editDepartment->group_id     = 4;
         $editDepartment->sort         = 13;
@@ -364,7 +364,7 @@ class PermissionTableSeeder extends Seeder
         $permission_model                = config('access.permission');
         $deleteDepartment               = new $permission_model;
         $deleteDepartment->name         = 'delete-department';
-        $deleteDepartment->display_name = 'Delete Department';
+        $deleteDepartment->display_name = 'Delete department';
         $deleteDepartment->system       = true;
         $deleteDepartment->group_id     = 4;
         $deleteDepartment->sort         = 14;
@@ -375,7 +375,7 @@ class PermissionTableSeeder extends Seeder
         $permission_model                = config('access.permission');
         $showDepartment               = new $permission_model;
         $showDepartment->name         = 'show-department';
-        $showDepartment->display_name = 'Show Department';
+        $showDepartment->display_name = 'Show department';
         $showDepartment->system       = true;
         $showDepartment->group_id     = 4;
         $showDepartment->sort         = 15;

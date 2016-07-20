@@ -1,6 +1,6 @@
 @extends ('backend.layouts.master')
 
-@section ('title', 'ResQuer Department')
+@section ('title', 'department')
 
 @section('page-header')
 <h1>
@@ -42,7 +42,7 @@
                             <div class="form-group col-xs-12">
                                 <label for="department" class="col-md-4 control-label">Department</label>
                                 <div class="col-md-6">
-                                    {!! Form::input('name', 'department',$departments->department,['class' => 'form-control','placeholder'=>'ResQuer Department']) !!}
+                                    {!! Form::input('name', 'department',$departments->department,['class' => 'form-control','placeholder'=>'department']) !!}
                                     {!! Form::input('hidden', 'id',$departments->id) !!}
                                 </div>
                             </div>
