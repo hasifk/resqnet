@@ -29,9 +29,6 @@ class CreateUsersTable extends Migration
             $table->longText('current_medical_conditions');
             $table->longText('prior_medical_conditions');
             $table->longText('allergies');
-            $table->integer('doctor_id')->unsigned();
-            $table->integer('emergency_id')->unsigned();
-            $table->integer('health_insurance_id')->unsigned();
             $table->integer('phone');
             $table->string('subscription_id');
             $table->string('subscription_info');
