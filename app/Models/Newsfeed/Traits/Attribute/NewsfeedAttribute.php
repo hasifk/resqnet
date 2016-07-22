@@ -60,34 +60,34 @@ trait NewsfeedAttribute {
      * @return string
      */
     
-    public function getEditButtonAttribute() {
+    /*public function getEditButtonAttribute() {
         if (access()->allow('edit-newsfeed'))
             return '<a href="'.route('backend.admin.newsfeed.edit', $this->id).'" class="btn btn-xs btn-primary"><i class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="' . trans('crud.edit_button') . '"></i></a> ';
         return '';
-    }
+    }*/
     
     /**
      * @return string
      */
-    public function getDeleteButtonAttribute() {
+  /*  public function getDeleteButtonAttribute() {
         if (access()->allow('delete-newsfeed'))
             return '<a href="'.route('backend.admin.newsfeed.destroy', $this->id).'" class="newsfeed_delete btn btn-xs btn-danger"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="' . trans('crud.delete_button') . '"></i></a>';
         return '';
-    }
+    }*/
 
-     public function getShowButtonAttribute(){
+     /*public function getShowButtonAttribute(){
         if (access()->allow('show-newsfeed'))
             return '<a href="'.route('backend.admin.newsfeedshow', $this->id).'" class="btn btn-xs btn-success"><i class="fa fa-arrow-circle-right" data-toggle="tooltip" data-placement="top" title="View More"></i></a> ';
         return '';
-    }
+    }*/
 
     /**
      * @return string
      */
     
-    public function getActionButtonsAttribute() {
+    /*public function getActionButtonsAttribute() {
         return $this->getShowButtonAttribute().
         $this->getEditButtonAttribute().
         $this->getDeleteButtonAttribute();
-    }
+    }*/
 }
