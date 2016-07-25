@@ -85,4 +85,9 @@ interface UserRepositoryContract
      * @return mixed
      */
     public function updatePassword($id, $input);
+    
+    public function doctorslists($id);
+    public function emergencyContacts($id);
+    public function healthinsurance($id);
+
 }

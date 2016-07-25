@@ -3,6 +3,9 @@
 namespace App\Repositories\Backend\Access\User;
 
 use App\Models\Access\User\User;
+use App\Models\Access\Doctors\Doctors;
+use App\Models\Access\HealthInsurance\HealthInsurance;
+use App\Models\Access\EmergencyContacts\EmergencyContacts;
 use App\Exceptions\GeneralException;
 use App\Exceptions\Backend\Access\User\UserNeedsRolesException;
 use App\Repositories\Backend\Access\Role\RoleRepositoryContract;
@@ -345,5 +348,17 @@ class EloquentUserRepository implements UserRepositoryContract
         $user->confirmation_code = md5(uniqid(mt_rand(), true));
         $user->confirmed         = isset($input['confirmed']) ? 1 : 0;
         return $user;
-    }
+   }
+   public function doctorslists($id)
+   {
+       return Doctors::where('user_id',$id)->get();
+   }
+   public function emergencyContacts($id)
+   {
+       return EmergencyContacts::where('user_id',$id)->first();
+   }
+    public function healthinsurance($id)
+   {
+       return HealthInsurance::where('user_id',$id)->first();
+   }
 }

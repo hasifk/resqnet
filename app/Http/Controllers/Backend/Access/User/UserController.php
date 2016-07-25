@@ -75,6 +75,24 @@ class UserController extends Controller
             ->withPermissions($this->permissions->getAllPermissions());
     }
 
+    
+    /**
+     * @param  ShowUserRequest $request
+     * @return mixed
+     */
+    public function show($id)
+    {
+        $user=$this->users->findOrThrowException($id, true);
+        $view = [
+            'user' => $user,
+            'doctor'=> $this->users->doctorslists($user->id),
+            'emergency' => $this->users->emergencyContacts($user->id),
+            'insurance' => $this->users->healthinsurance($user->id),
+            
+        ];
+        return view('backend.access.show', $view);
+    }
+    
     /**
      * @param  StoreUserRequest $request
      * @return mixed

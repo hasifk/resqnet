@@ -24,7 +24,10 @@ Route::group([
             Route::get('mark/{status}', 'UserController@mark')->name('admin.access.user.mark')->where(['status' => '[0,1]']);
             Route::get('password/change', 'UserController@changePassword')->name('admin.access.user.change-password');
             Route::post('password/change', 'UserController@updatePassword')->name('admin.access.user.change-password');
+            Route::get('show', 'UserController@show')->name('admin.access.user.shows');
         });
+        
+        
     });
 
     /**
