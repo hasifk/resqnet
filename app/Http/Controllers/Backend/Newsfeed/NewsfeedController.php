@@ -5,13 +5,17 @@ namespace App\Http\Controllers\Backend\Newsfeed;
 use App\Http\Controllers\Controller;
 use App\Models\Newsfeed\Newsfeed;
 use App\Http\Requests\Backend\Newsfeed\CreateNewsfeedRequest;
+use App\Repositories\Backend\Newsfeed\EloquentNewsfeedRepository;
 
 class NewsfeedController extends Controller {
     /**
      * @var EloquentCompanyRepository
      */
-    //private $newsfeedRepository;
+    private $newsfeedRepository;
+    public function __construct(EloquentNewsfeedRepository $newsfeedRepository) {
 
+        $this->newsfeedRepository = $newsfeedRepository;
+    }
     /**
      * AdminCompanyController constructor.
      * @param EloquentCompanyRepository $companyRepository
@@ -23,29 +27,26 @@ class NewsfeedController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function showNewsfeeds() {
-        $view = [
-            'newsfeeds' => Newsfeed::all(),
-        ];
-        return view('backend.newsfeed.index', $view);
+
+        $newsfeeds= Newsfeed::all();
+        return $newsfeeds->toArray();
     }
 
     public function createNewsfeed(CreateNewsfeedRequest $request) {
-        return Newsfeed::create(['user_id' =>Auth::user()->id ,
-            'resquer_countryid'=>$request->resquer_countryid,
-            'resquer_areaid'=>$request->resquer_areaid,
-            'user_countryid'=>$request->user_countryid,
-            'user_areaid'=>$request->user_areaid,
-            'news'=>$request->news,
-            'image_filename'=>$request->image_filename,
-            'image_extension'=>$request->image_extension,
-            'image_path'=>$request->image_path
-            ])->toArray();
+
+        return $this->newsfeedRepository->save($request)->toArray();
     }
     public function editNewsfeed($id) {
-        return Newsfeed::find($id)->toArray();
+        return $this->newsfeedRepository->find($id)->toArray();
     }
+
+
      public function deleteNewsfeed($id) {
-        return Newsfeed::where('id',$id)->delete();
+         if($this->newsfeedRepository->delete($id)):
+             return response()->json(['status' => "Selected Newsfeed has been deleted successfully"]);
+         else:
+             return response()->json(['status' => "Failed"]);
+             endif;
     }
 
 }
