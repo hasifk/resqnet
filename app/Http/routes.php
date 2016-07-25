@@ -58,5 +58,7 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
         $api->post('/savenewsfeed', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@createNewsfeed')->name('user.savenewsfeed.index');
         $api->get('/editnewsfeed/{id}', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@editNewsfeed')->name('user.editnewsfeed.index');
         $api->get('/deletenewsfeed/{id}', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@deleteNewsfeed')->name('user.deletenewsfeed.index');
+        //$api->post('/userreg', 'App\Http\Controllers\Backend\User\UserController@saveUsers')->name('user.user.index');
     });
+    
 });

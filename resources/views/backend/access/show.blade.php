@@ -1,18 +1,15 @@
 @extends ('backend.layouts.master')
 
-@section ('title', "Company Management")
+@section ('title', "User Details")
 
 @section('page-header')
 <h1>
-    Company Details {{ $user->title }}
+    User Details {{ $user->title }}
 </h1>
 @endsection
 
 @section('content')
 
-
-
-<h3>Company Profile</h3>
 
 <div class="tab-content">
 
