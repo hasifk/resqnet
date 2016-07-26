@@ -76,7 +76,6 @@
         @endif
         <table class="table table-striped table-hover table-bordered dashboard-table">
             <tr>
-
                 <th>Emergency Contacts</th>
                 <td>
                     <?php if (!empty($emergency)) { ?>
