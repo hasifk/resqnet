@@ -133,6 +133,16 @@ trait UserAttribute
 
         return '';
     }
+    
+    /**
+     * @return string
+     */
+    
+    public function getShowButtonAttribute() {
+       // if (access()->can('show-users'))
+            return '<a href="'.route('admin.access.user.shows', $this->id).'" class="btn btn-xs btn-success"><i class="fa fa-arrow-circle-right" data-toggle="tooltip" data-placement="top" title="View More"></i></a> ';
+        return '';
+    }
 
     /**
      * @return string
@@ -170,7 +180,8 @@ trait UserAttribute
      */
     public function getActionButtonsAttribute()
     {
-        return $this->getEditButtonAttribute() .
+        return $this->getShowButtonAttribute().
+        $this->getEditButtonAttribute() .
         $this->getChangePasswordButtonAttribute() . ' ' .
         $this->getStatusButtonAttribute() .
         $this->getConfirmedButtonAttribute() .
