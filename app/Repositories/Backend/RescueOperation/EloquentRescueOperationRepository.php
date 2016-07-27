@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Repositories\Backend\Panic;
+namespace App\Repositories\Backend\RescueOperation;
 
-use App\Models\Panic\Location;
+use App\Models\RescueOperation\Location;
 use App\Models\Access\User;
 use Illuminate\Http\Request;
 use Auth;
 use Storage;
 
-class EloquentPanicRepository {
+class EloquentRescueOperationRepository {
     
     
         public function findResquers($request) {  //find resquers within 5 KM
