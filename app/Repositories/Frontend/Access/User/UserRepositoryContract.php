@@ -64,4 +64,6 @@ interface UserRepositoryContract
      * @return mixed
      */
     public function changePassword($input);
+
+    public function profileImageUpload($request);
 }

@@ -90,4 +90,5 @@ interface UserRepositoryContract
     public function emergencyContacts($id);
     public function healthinsurance($id);
 
+
 }

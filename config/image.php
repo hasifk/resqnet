@@ -29,6 +29,13 @@ return array(
         ],
 
     ],
+         'profile_avatar' => [
+             [
+                 'height' => 90,
+                 'width'  => 90,
+             ],
+
+         ],
 
 
 ]
