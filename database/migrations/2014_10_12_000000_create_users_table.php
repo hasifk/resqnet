@@ -25,6 +25,9 @@ class CreateUsersTable extends Migration
             $table->integer('dept_id')->unsigned();
             $table->string('email')->unique();
             $table->string('password')->nullable();
+            $table->string('avatar_filename');
+            $table->string('avatar_extension');
+            $table->string('avatar_path');
             $table->longText('current_medical_conditions');
             $table->longText('prior_medical_conditions');
             $table->longText('allergies');

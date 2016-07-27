@@ -14,12 +14,12 @@ class CreateOperationsTable extends Migration
     {
         Schema::create('operations', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->integer('user_id')->unsigned();
+            $table->integer('rescuee_id')->unsigned();
             $table->integer('rescuer_id')->unsigned();
             $table->integer('active_rescuers_id')->unsigned();
             $table->dateTime('finished_at')->nullable()->default(null);
             $table->timestamps();
-            $table->foreign('user_id')
+            $table->foreign('rescuee_id')
                 ->references('id')
                 ->on('users')
                 ->onUpdate('cascade')
@@ -40,7 +40,7 @@ class CreateOperationsTable extends Migration
     public function down()
     {
         Schema::table('operations', function (Blueprint $table) {
-            $table->dropForeign('operations_user_id_foreign');
+            $table->dropForeign('operations_rescuee_id_foreign');
             $table->dropForeign('operations_active_rescuers_id_foreign');
         });
         Schema::drop('operations');
