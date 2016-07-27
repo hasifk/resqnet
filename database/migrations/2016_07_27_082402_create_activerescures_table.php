@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Schema\Blueprint;
@@ -38,3 +39,4 @@ class CreateActiverescuresTable extends Migration
         Schema::drop('activerescuers');
     }
 }
+

@@ -16,11 +16,17 @@ class CreateOperationsTable extends Migration
             $table->increments('id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->integer('rescuer_id')->unsigned();
+            $table->integer('active_rescuers_id')->unsigned();
             $table->dateTime('finished_at')->nullable()->default(null);
             $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreign('active_rescuers_id')
+                ->references('id')
+                ->on('activerescuers')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });
@@ -35,6 +41,7 @@ class CreateOperationsTable extends Migration
     {
         Schema::table('operations', function (Blueprint $table) {
             $table->dropForeign('operations_user_id_foreign');
+            $table->dropForeign('operations_active_rescuers_id_foreign');
         });
         Schema::drop('operations');
     }
