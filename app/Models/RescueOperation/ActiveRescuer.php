@@ -1,10 +1,10 @@
 <?php
-namespace App\Models\Location;
+namespace App\Models\RescueOperation;
 
 use Illuminate\Database\Eloquent\Model;
 
 
-class Location extends Model
+class ActiveRescuer extends Model
 {
 
 
@@ -16,7 +16,7 @@ class Location extends Model
      */
    // use NewsfeedAttribute;
     
-    protected $table = 'locations';
+    protected $table = 'activerescuers';
 
     protected $guarded = ['id'];
 }
