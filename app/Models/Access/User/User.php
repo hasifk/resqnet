@@ -2,7 +2,9 @@
 
 namespace App\Models\Access\User;
 
+use App\Models\Access\User\Traits\Attribute\AvatarAttribute;
 use App\Models\Access\User\Traits\UserAccess;
+
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Access\User\Traits\Attribute\UserAttribute;
@@ -15,7 +17,7 @@ use App\Models\Access\User\Traits\Relationship\UserRelationship;
 class User extends Authenticatable
 {
 
-    use SoftDeletes, UserAccess, UserAttribute, UserRelationship;
+    use SoftDeletes, UserAccess, UserAttribute, UserRelationship,AvatarAttribute;
 
     /**
      * The attributes that are not mass assignable.

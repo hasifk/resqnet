@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Frontend\Access\ProfileImagesUploadRequest;
 use App\Http\Requests\Frontend\User\UpdateProfileRequest;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
 
@@ -30,5 +31,17 @@ class ProfileController extends Controller
     {
         $user->updateProfile(access()->id(), $request->all());
         return redirect()->route('frontend.user.dashboard')->withFlashSuccess(trans('strings.frontend.user.profile_updated'));
+    }
+
+    public function saveProfileImage(UserRepositoryContract $user,ProfileImagesUploadRequest $request) {
+
+        if($user->profileImageUpload($request)):
+
+            return response()->json(['status' => "Profile Image has been uploaded successfully"]);
+        else:
+            return response()->json(['status' => "Failed"]);
+        endif;
+
+
     }
 }

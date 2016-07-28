@@ -3,11 +3,13 @@
 namespace App\Repositories\Frontend\Access\User;
 
 use App\Models\Access\User\User;
+use App\Models\Rescuer\RescuerType;
 use Illuminate\Support\Facades\Mail;
 use App\Exceptions\GeneralException;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Access\User\SocialLogin;
 use App\Repositories\Backend\Access\Role\RoleRepositoryContract;
+use Auth;
 
 /**
  * Class EloquentUserRepository
@@ -81,6 +83,7 @@ class EloquentUserRepository implements UserRepositoryContract
                 'area_id' => (!empty($data['area_id'])) ? $data['area_id'] : '',
                 'jurisdiction' => (!empty($data['jurisdiction'])) ? $data['jurisdiction'] : '',
                 'displayname' => (!empty($data['display_name'])) ? $data['display_name'] : '',
+                'rescuer_type_id' => (!empty($data['rescuer_type_id'])) ? $data['rescuer_type_id'] : '',
                 'dept_id' => (!empty($data['dept_id'])) ? $data['dept_id'] : '',
                 'email' => $data['email'],
                 'password' =>null,
@@ -105,6 +108,7 @@ class EloquentUserRepository implements UserRepositoryContract
                 'area_id' => (!empty($data['area_id'])) ? $data['area_id'] : '',
                 'jurisdiction' => (!empty($data['jurisdiction'])) ? $data['jurisdiction'] : '',
                 'displayname' =>(!empty($data['display_name'])) ? $data['display_name'] : '',
+                'rescuer_type_id' => (!empty($data['rescuer_type_id'])) ? $data['rescuer_type_id'] : '',
                 'dept_id' => (!empty($data['dept_id'])) ? $data['dept_id'] : '',
                 'email' => $data['email'],
                 'password' => bcrypt($data['password']),
@@ -125,10 +129,11 @@ class EloquentUserRepository implements UserRepositoryContract
         /**
          * Add the default site role to the new user
          */
-        if(empty($data['rescuer_type'])):
+        if(empty($data['rescuer_type_id'])):
         $user->attachRole($this->role->getDefaultUserRole());
             else:
-                $role_id = \DB::table('roles')->where('name', $data['rescuer_type'])->value('id');
+                $type=RescuerType::where('id',$data['rescuer_type_id'])->value('type');
+                $role_id = \DB::table('roles')->where('name', $type)->value('id');
                 $user->attachRoles(array($role_id));
                 endif;
 
@@ -150,6 +155,12 @@ class EloquentUserRepository implements UserRepositoryContract
         return $user;
     }
 
+     public function profileImageUpload($request)
+     {
+         $obj = $this->find(Auth::user()->id);
+         $obj->attachProfileImage($request->avatar);
+         return true;
+     }
     /**
      * @param $data
      * @param $provider

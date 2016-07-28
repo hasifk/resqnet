@@ -32,7 +32,7 @@ class RegrescuerRequest extends FormRequest
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
             'jurisdiction' => 'required|max:255',
-            'rescuer_type' => 'required|max:255',
+            'rescuer_type_id' => 'required',
             'dept_id' => 'required|max:255',
         ];
     }
