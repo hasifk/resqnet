@@ -45,6 +45,38 @@
                                 {!! Form::submit(trans('labels.frontend.auth.register_button'), ['class' => 'btn btn-primary']) !!}
                             </div><!--col-md-6-->
                         </div><!--form-group-->
+                        <div class="form-group">
+            <label for="office_life" class="col-md-4 control-label">Country</label>
+            <div class="col-md-6">
+                <select name="country_id" id="country_id" class="form-control">
+                    <option value="">Please select</option>
+                    @foreach($countries as $country)
+                        <option
+                                value="{{ $country->id }}"
+                                {{ old('country_id') && $country->id == old('country_id') ? 'selected="selected"' : '' }}
+                        >
+                            {{ $country->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+                        <div class="form-group">
+            <label for="office_life" class="col-md-4 control-label">State</label>
+            <div class="col-md-6">
+                <select name="state_id" id="state_id" class="form-control">
+                    <option value="">Please select</option>
+                    @foreach($states as $state)
+                        <option
+                                value="{{ $state->id }}"
+                                {{ old('state_id') && $state->id == old('state_id') ? 'selected="selected"' : '' }}
+                        >
+                            {{ $state->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
 
                     {!! Form::close() !!}
 

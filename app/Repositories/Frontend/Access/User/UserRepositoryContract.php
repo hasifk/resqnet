@@ -66,4 +66,6 @@ interface UserRepositoryContract
     public function changePassword($input);
 
     public function profileImageUpload($request);
+    public function countriesState();
+    public function deptDetails();
 }
