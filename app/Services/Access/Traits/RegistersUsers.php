@@ -19,6 +19,11 @@ trait RegistersUsers
      */
     public function showRegistrationForm()
     {
+         $view = [
+            'countries' => $this->user->countriesState(),
+            'department'=> $this->users->deptDetails(),
+            
+        ];
         return view('frontend.auth.register');
     }
 

@@ -30,9 +30,13 @@ class RescueOperationController extends Controller {
      * @return \Illuminate\Http\Response
      */
     
-    public function rescueOperationActions($request)  
+    public function rescueeOperationActions($request)  
     {
-        $this->rescueOperationRepository->findResquers($request);  //find resquers within 5 KM
+        $this->rescueOperationRepository->findActiveRescuers($request);  //find resquers within 5 KM
+    }
+    public function RescuerOperationResponce($request)  
+    {
+        $this->rescueOperationRepository->rescuersResponce($request);  //save the resquer details once they accepted rescuee requests
     }
 
 }
