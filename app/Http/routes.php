@@ -59,6 +59,8 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
         $api->get('/editnewsfeed/{id}', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@editNewsfeed')->name('user.editnewsfeed.index');
         $api->get('/deletenewsfeed/{id}', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@deleteNewsfeed')->name('user.deletenewsfeed.index');
         $api->post('/rescueoperations', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@RescueOperationActions')->name('rescue.operation.index');
+        $api->post('/updateprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@register');
+        $api->post('/updaterescuerprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@rescuerregister');
     });
     
 });
