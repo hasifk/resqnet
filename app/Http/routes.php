@@ -46,13 +46,15 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
     $api->post('/login', [ 'uses' => 'App\Http\Controllers\AuthController@postLogin' ]);
     $api->post('/register', 'App\Http\Controllers\Frontend\Auth\AuthController@register');
     $api->post('/rescuerregister', 'App\Http\Controllers\Frontend\Auth\AuthController@rescuerregister');
-
+    $api->get('/registrationform', 'App\Http\Controllers\Frontend\AuthController@showRegistrationForm');
 
     $api->group(['middleware' => 'jwt.refresh'], function ($api) {
         $api->post('/refresh-token', [ 'uses' => 'App\Http\Controllers\AuthController@refreshToken' ]);
     });
 
     $api->group(['middleware' => ['jwt.auth']], function ($api) {
+       
+        //Newsfeeds
         $api->get('/newsfeed', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@showNewsfeeds')->name('user.newsfeed.index');
         $api->post('/saveprofileimage', 'App\Http\Controllers\Frontend\User\ProfileController@saveProfileImage')->name('user.saveprofileimage.index');
         $api->post('/savenewsfeed', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@createNewsfeed')->name('user.savenewsfeed.index');
@@ -61,6 +63,10 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
         $api->post('/rescueoperations', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@RescueOperationActions')->name('rescue.operation.index');
         $api->post('/updateprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@register');
         $api->post('/updaterescuerprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@rescuerregister');
+        //Rescue Operations
+        $api->post('/rescuee_operations', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@RescueeOperationActions')->name('rescuee.operation.index');
+        $api->post('/rescuer_operation', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@RescuerOperationResponce')->name('rescuer.operation.index');
+
     });
     
 });
