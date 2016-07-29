@@ -32,7 +32,8 @@ class RescueOperationController extends Controller {
     
     public function rescueeOperationActions($request)  
     {
-        $this->rescueOperationRepository->findActiveRescuers($request);  //find resquers within 5 KM
+       $userdetails=$this->rescueOperationRepository->findActiveRescuers($request);  //find resquers within 5 KM
+       response()->json(['rescuee' => $userdetails['rescuee']->toArray(), 'rescuer' => $userdetails['rescuer'],'active_rescuers_id' =>$userdetails['active_rescuers_id']]);       
     }
     public function RescuerOperationResponce($request)  
     {
