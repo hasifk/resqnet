@@ -2,8 +2,10 @@
 
 namespace App\Repositories\Backend\RescueOperation;
 
-
 use App\Models\Access\User;
+use App\Models\RescueOperation\ActiveRescuer;
+use App\Models\RescueOperation\Location;
+use App\Models\RescueOperation\Operation;
 use Illuminate\Http\Request;
 use Auth;
 use Storage;
@@ -25,7 +27,7 @@ class EloquentRescueOperationRepository {
             }
         }
         sort($rescuers);
-        $obj = new RescueOperation\ActiveRescuer;
+        $obj = new ActiveRescuer;
         $obj->rescuee_id = $userid;
         $obj->rescuers_id = json_encode($rescuers);
         $obj->save();
@@ -34,15 +36,15 @@ class EloquentRescueOperationRepository {
     //for getting all active users
 
     public function activeUsers() {
-        return RescueOperation\Location::where('active', 1)->get();
+        return Location::where('status', 1)->get();
     }
 
     public function showLocation($userid) {
-        return RescueOperation\Location::where('user_id', $userid)->first();
+        return Location::where('user_id', $userid)->first();
     }
 
     public function rescuersResponce($request) {
-        $obj = new RescueOperation\Operations;
+        $obj = new Operation;
         $result = json_decode(file_get_contents('php://input'));
         $obj->active_rescuers_id = $result->active_rescuers_id;
         $obj->rescuee_id = $result->rescuee_id;

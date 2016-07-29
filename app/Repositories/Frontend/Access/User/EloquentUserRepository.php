@@ -75,6 +75,7 @@ class EloquentUserRepository implements UserRepositoryContract
     public function create(array $data, $provider = false)
     {
         if ($provider) {
+
             $user = User::create([
                 'firstname' => $data['firstname'],
                 'lastname' => (!empty($data['lastname'])) ? $data['lastname'] : '',
@@ -99,6 +100,7 @@ class EloquentUserRepository implements UserRepositoryContract
                 'confirmation_code' => md5(uniqid(mt_rand(), true)),
                 'confirmed' => 1,
             ]);
+
         } else {
             $user = User::create([
                 'firstname' => $data['firstname'],
@@ -152,6 +154,22 @@ class EloquentUserRepository implements UserRepositoryContract
         /**
          * Return the user object
          */
+        return $user;
+    }
+
+    public function updateUserStub($data)
+    {
+        $user=User::find($data['id']);
+        $user->firstname= $data['firstname'];
+        $user->lastname=(!empty($data['lastname'])) ? $data['lastname'] : '';
+        $user->dob= (!empty($data['dob'])) ? $data['dob'] : '';
+        $user->country_id= (!empty($data['country_id'])) ? $data['country_id'] : '';
+        $user->area_id= (!empty($data['area_id'])) ? $data['area_id'] : '';
+        $user->jurisdiction=(!empty($data['jurisdiction'])) ? $data['jurisdiction'] : '';
+        $user->current_medical_conditions= (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '';
+        $user->prior_medical_conditions=(!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '';
+        $user->phone= (!empty($data['phone'])) ? $data['phone'] : '';
+        $user->save();
         return $user;
     }
 
@@ -286,34 +304,16 @@ class EloquentUserRepository implements UserRepositoryContract
         return $user->save();
     }
 
+
     public function countries() {   
         
         $countries = \DB::table('countries')->select(['id', 'name'])->get();
-
-//        if ( $request->old('country_id') ) {
-//
-//            $states = \DB::table('states')
-//                ->where('country_id', $request->old('country_id'))
-//                ->select(['id', 'name'])
-//                ->get();
-//
-//        } else {
 
             $states = \DB::table('states')
                 ->where('country_id', 222)
                 ->select(['id', 'name'])
                 ->get();
-
-      //  }
-//        if ( $request->old('state_id') ) {
-//            
-//            $cities = \DB::table('cities')
-//                ->where('state_id', $request->old('state_id'))
-//                ->select(['id', 'name'])
-//                ->get();
-//        }
-//        else {
-
+            
             $cities = \DB::table('cities')
                 ->where('state_id', 0)
                 ->select(['id', 'name'])
@@ -331,15 +331,6 @@ class EloquentUserRepository implements UserRepositoryContract
     public function deptDetails()
     {
          $rescuertypes = \DB::table('rescuertypes')->select(['id', 'type'])->get();
-
-//        if ( $request->old('rescuertype_id') ) {
-//
-//            $depts = \DB::table('departments')
-//                ->where('rescuertype_id', $request->old('rescuertype_id'))
-//                ->select(['id', 'department'])
-//                ->get();
-//
-//        } else {
 
             $depts = \DB::table('departments')
                 ->where('rescuertype_id',0)
