@@ -187,4 +187,11 @@ trait UserAttribute
         $this->getConfirmedButtonAttribute() .
         $this->getDeleteButtonAttribute();
     }
+
+    public function getRoleIdAttribute(){
+        if ( is_null($this->id) ) {
+            return null;
+        }
+        return \DB::table('assigned_roles')->where('user_id', $this->id)->value('role_id');
+    }
 }

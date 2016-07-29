@@ -30,16 +30,19 @@ class RescueOperationController extends Controller {
      * @return \Illuminate\Http\Response
      */
     
-    public function rescueeOperationActions($request)  
+    public function rescueeOperationActions(Request $request)
     {
        $userdetails=$this->rescueOperationRepository->findActiveRescuers($request);  //find resquers within 5 KM
-       response()->json(['rescuee' => $userdetails['rescuee']->toArray(), 'rescuer' => $userdetails['rescuer'],'active_rescuers_id' =>$userdetails['active_rescuers_id']]);       
+       return response()->json(['rescuee' => $userdetails['rescuee']->toArray(), 'rescuer' => $userdetails['rescuer'],'active_rescuers_id' =>$userdetails['active_rescuers_id']]);
     }
-    public function RescuerOperationResponce($request)  
+    public function rescuerOperationResponse(Request $request)
     {
-        $this->rescueOperationRepository->rescuersResponce($request);  //save the resquer details once they accepted rescuee requests
+        //save the resquer details once they accepted rescuee requests
+        return response()->json(['rescue_operation' =>$this->rescueOperationRepository->rescuersResponse($request)->toArray()]);
+
+
     }
-    public function RescueeForm()
+    public function rescueeForm()
     {
        return $this->rescueOperationRepository->rescueeForm();  //save the resquer details once they accepted rescuee requests
     }
