@@ -304,50 +304,74 @@ class EloquentUserRepository implements UserRepositoryContract
         return $user->save();
     }
 
-    public function countriesState($request) {
+
+
+    public function countriesState() {
+
         
         $countries = \DB::table('countries')->select(['id', 'name'])->get();
 
-        if ( $request->old('country_id') ) {
-
-            $states = \DB::table('states')
-                ->where('country_id', $request->old('country_id'))
-                ->select(['id', 'name'])
-                ->get();
-
-        } else {
+//        if ( $request->old('country_id') ) {
+//
+//            $states = \DB::table('states')
+//                ->where('country_id', $request->old('country_id'))
+//                ->select(['id', 'name'])
+//                ->get();
+//
+//        } else {
 
             $states = \DB::table('states')
                 ->where('country_id', 222)
                 ->select(['id', 'name'])
                 ->get();
 
-        }
-        if ( $request->old('state_id') ) {
-            
-            $cities = \DB::table('cities')
-                ->where('state_id', $request->old('state_id'))
-                ->select(['id', 'name'])
-                ->get();
-        }
-        else {
+      //  }
+//        if ( $request->old('state_id') ) {
+//            
+//            $cities = \DB::table('cities')
+//                ->where('state_id', $request->old('state_id'))
+//                ->select(['id', 'name'])
+//                ->get();
+//        }
+//        else {
 
             $cities = \DB::table('cities')
-                ->where('state_id', 222)
+                ->where('state_id', 0)
                 ->select(['id', 'name'])
                 ->get();
 
-        }
+       // }
         $view = [
             'countries' => $countries,
             'states'    => $states,
             'cities'    => $cities
         ];
+        return $view;
         
     }
     public function deptDetails()
     {
-        
+         $rescuertypes = \DB::table('rescuertypes')->select(['id', 'type'])->get();
+
+//        if ( $request->old('rescuertype_id') ) {
+//
+//            $depts = \DB::table('departments')
+//                ->where('rescuertype_id', $request->old('rescuertype_id'))
+//                ->select(['id', 'department'])
+//                ->get();
+//
+//        } else {
+
+            $depts = \DB::table('departments')
+                ->where('rescuertype_id',0)
+                ->select(['id', 'department'])
+                ->get();
+
+        //}
+        $view = [
+            'rescuertypes' => $rescuertypes,
+            'depts'    => $depts,
+        ];
     }
 
     /**
