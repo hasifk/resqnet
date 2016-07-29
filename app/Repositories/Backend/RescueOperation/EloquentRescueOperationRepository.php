@@ -24,14 +24,19 @@ class EloquentRescueOperationRepository {
             if (User::find($user)->roles()->id == $role) {
                 if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 5) {
                     $rescuers[] = $user;
+                    
                 }
             }
         }
         sort($rescuers);
         $obj = new ActiveRescuer;
         $obj->rescuee_id = $userid;
-        $obj->rescuers_id = json_encode($rescuers);
+        $obj->rescuers_ids = json_encode($rescuers);
         $obj->save();
+        $userdetails['rescuee']=User::find($userid);
+        $userdetails['rescuer']=$rescuers;
+        $userdetails['return_id']=$obj->id;
+        return $userdetails;
     }
 
     //for getting all active users
@@ -39,7 +44,9 @@ class EloquentRescueOperationRepository {
     public function activeUsers() {
         return Location::where('status', 1)->get();
     }
-
+    public function ActiveRescuer($id) {
+        return ActiveRescuer::find($id);
+    }
     public function showLocation($userid) {
         return Location::where('user_id', $userid)->first();
     }
