@@ -5,6 +5,8 @@ namespace App\Services\Access\Traits;
 use App\Events\Frontend\Auth\UserRegistered;
 use App\Http\Requests\Frontend\Auth\RegisterRequest;
 use App\Http\Requests\Frontend\Auth\RegrescuerRequest;
+use App\Http\Requests\Frontend\Auth\UpdateRequest;
+use App\Http\Requests\Frontend\Auth\UpdaterescuerRequest;
 
 /**
  * Class RegistersUsers
@@ -61,5 +63,23 @@ trait RegistersUsers
             event(new UserRegistered(access()->user()));
             return redirect($this->redirectPath());
         }
+    }
+    /***************************************************************************************************************/
+    public function editProfile($id)
+    {
+        //$user = $this->user->find($id);
+        return response()->json(['user' => $this->user->find($id)->toArray()]);
+    }
+    /***************************************************************************************************************/
+    public function updateProfile(UpdateRequest $request)
+    {
+        $user = $this->user->updateUserStub($request->all());
+            return response()->json(['user' => $user->toArray()]);
+
+    }
+    /***************************************************************************************************************/
+    public function updaterescuerProfile(UpdaterescuerRequest $request)
+    {
+        return response()->json(['user' => $this->user->updateUserStub      ($request->all())->toArray()]);
     }
 }

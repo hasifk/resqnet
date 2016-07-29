@@ -61,8 +61,9 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
         $api->get('/editnewsfeed/{id}', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@editNewsfeed')->name('user.editnewsfeed.index');
         $api->get('/deletenewsfeed/{id}', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@deleteNewsfeed')->name('user.deletenewsfeed.index');
         $api->post('/rescueoperations', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@RescueOperationActions')->name('rescue.operation.index');
-        $api->post('/updateprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@register');
-        $api->post('/updaterescuerprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@rescuerregister');
+        $api->post('/updateprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@updateProfile');
+        $api->post('/updaterescuerprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@updaterescuerProfile');
+        $api->get('/editprofile/{id}', 'App\Http\Controllers\Frontend\Auth\AuthController@editProfile');
         //Rescue Operations
         $api->post('/rescuee_operations', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@RescueeOperationActions')->name('rescuee.operation.index');
         $api->post('/rescuer_operation', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@RescuerOperationResponce')->name('rescuer.operation.index');
