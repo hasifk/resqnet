@@ -30,7 +30,7 @@ class EloquentRescueOperationRepository {
         sort($rescuers);
         $obj = new ActiveRescuer;
         $obj->rescuee_id = $userid;
-        $obj->rescuers_id = json_encode($rescuers);
+        $obj->rescuers_ids = json_encode($rescuers);
         $obj->save();
     }
 

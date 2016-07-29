@@ -16,7 +16,7 @@ class CreateActiverescuresTable extends Migration
         Schema::create('activerescuers', function (Blueprint $table) {
             $table->increments('id')->unsigned();
             $table->integer('rescuee_id')->unsigned();
-            $table->longText('rescuers_id');
+            $table->longText('rescuers_ids');
             $table->timestamps();
             $table->foreign('rescuee_id')
                 ->references('id')
