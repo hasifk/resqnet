@@ -35,7 +35,7 @@ class EloquentRescueOperationRepository {
         $obj->save();
         $userdetails['rescuee']=User::find($userid);
         $userdetails['rescuer']=$rescuers;
-        $userdetails['return_id']=$obj->id;
+        $userdetails['active_rescuers_id']=$obj->id;
         return $userdetails;
     }
 
