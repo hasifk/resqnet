@@ -6,6 +6,7 @@ use App\Models\Access\User;
 use App\Models\RescueOperation\ActiveRescuer;
 use App\Models\RescueOperation\Location;
 use App\Models\RescueOperation\Operation;
+use App\Models\Rescuer\RescuerType;
 use Illuminate\Http\Request;
 use Auth;
 use Storage;
@@ -61,7 +62,10 @@ class EloquentRescueOperationRepository {
 
         return round($distance, $decimals);
     }
-    
+    public function rescueeForm()
+    {
+       return RescuerType::select(['id', 'type'])->get();
+    }
     
 
 }

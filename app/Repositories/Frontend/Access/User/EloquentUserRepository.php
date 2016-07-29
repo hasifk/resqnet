@@ -4,6 +4,9 @@ namespace App\Repositories\Frontend\Access\User;
 
 use App\Models\Access\User\User;
 use App\Models\Rescuer\RescuerType;
+use App\Models\Countries\Countries;
+use App\Models\Countries\States;
+use App\Models\Countries\Cities;
 use Illuminate\Support\Facades\Mail;
 use App\Exceptions\GeneralException;
 use Illuminate\Support\Facades\Hash;
@@ -307,15 +310,13 @@ class EloquentUserRepository implements UserRepositoryContract
 
     public function countries() {   
         
-        $countries = \DB::table('countries')->select(['id', 'name'])->get();
+        $countries = Countries::select(['id', 'name'])->get();
 
-            $states = \DB::table('states')
-                ->where('country_id', 222)
+            $states = States::where('country_id', 222)
                 ->select(['id', 'name'])
                 ->get();
             
-            $cities = \DB::table('cities')
-                ->where('state_id', 0)
+            $cities = Cities::where('state_id', 0)
                 ->select(['id', 'name'])
                 ->get();
 
@@ -330,7 +331,7 @@ class EloquentUserRepository implements UserRepositoryContract
     }
     public function deptDetails()
     {
-         $rescuertypes = \DB::table('rescuertypes')->select(['id', 'type'])->get();
+         $rescuertypes = RescuerType::select(['id', 'type'])->get();
 
             $depts = \DB::table('departments')
                 ->where('rescuertype_id',0)
