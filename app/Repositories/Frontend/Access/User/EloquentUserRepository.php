@@ -286,7 +286,7 @@ class EloquentUserRepository implements UserRepositoryContract
         return $user->save();
     }
 
-    public function countriesState() {
+    public function countries() {   
         
         $countries = \DB::table('countries')->select(['id', 'name'])->get();
 

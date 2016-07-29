@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Backend\RescueOperation;
 
-use App\Models\RescueOperation;
+
 use App\Models\Access\User;
 use Illuminate\Http\Request;
 use Auth;
@@ -59,5 +59,7 @@ class EloquentRescueOperationRepository {
 
         return round($distance, $decimals);
     }
+    
+    
 
 }

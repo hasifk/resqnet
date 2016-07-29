@@ -16,6 +16,7 @@ Route::group(['middleware' => 'web'], function() {
         require (__DIR__ . '/Routes/Frontend/Frontend.php');
         require (__DIR__ . '/Routes/Frontend/Access.php');
     });
+    
 });
 
 /**
@@ -47,6 +48,10 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
     $api->post('/register', 'App\Http\Controllers\Frontend\Auth\AuthController@register');
     $api->post('/rescuerregister', 'App\Http\Controllers\Frontend\Auth\AuthController@rescuerregister');
     $api->get('/registrationform', 'App\Http\Controllers\Frontend\AuthController@showRegistrationForm');
+    $api->get('get-states/{id}', function($id){
+	$states = \DB::table('countries')->where('id', $id)->select(['id', 'name'])->get();
+	return response()->json($states);
+});
 
     $api->group(['middleware' => 'jwt.refresh'], function ($api) {
         $api->post('/refresh-token', [ 'uses' => 'App\Http\Controllers\AuthController@refreshToken' ]);
@@ -64,6 +69,7 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
         $api->post('/updateprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@register');
         $api->post('/updaterescuerprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@rescuerregister');
         //Rescue Operations
+        $api->get('/rescuee_form', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@RescueeForm')->name('rescuee.operation.form');
         $api->post('/rescuee_operations', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@RescueeOperationActions')->name('rescuee.operation.index');
         $api->post('/rescuer_operation', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@RescuerOperationResponce')->name('rescuer.operation.index');
 

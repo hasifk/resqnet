@@ -38,5 +38,6 @@ class RescueOperationController extends Controller {
     {
         $this->rescueOperationRepository->rescuersResponce($request);  //save the resquer details once they accepted rescuee requests
     }
+   
 
 }
