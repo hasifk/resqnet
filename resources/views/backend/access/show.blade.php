@@ -16,6 +16,9 @@
     <div role="tabpanel" class="tab-pane active" id="profile">
         <table class="table table-striped table-hover table-bordered dashboard-table">
             <tr>
+                <th colspan="2"><img src="{{$user->avatar_path.'/'.$user->avatar_filename.'.'.$user->avatar_extension}}"></th>
+            </tr>
+            <tr>
                 <th>Name</th>
                 <td>{{ $user->firstname.' '.$user->lastname }}</td>
             </tr>
@@ -35,16 +38,34 @@
                     {{ $user->rescuer_type }}
                 </td>
             </tr>
+             <tr>
+                <th>Email</th>
+                <td>
+                    {{ $user->email }}
+                </td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>
+                    {{ $user->phone }}
+                </td>
+            </tr>
+            <tr>
+                <th>Jurisdiction</th>
+                <td>
+                    {{ $user->jurisdiction }}
+                </td>
+            </tr>
             <tr>
                 <th>Country</th>
                 <td>
-                    {{ $user->country_id }}
+                    {{ $country->name }}
                 </td>
             </tr>
             <tr>
                 <th>Area</th>
                 <td>
-                    {{ $user->area_id }}
+                    {{ $area->name.' - '.$state->name }}
                 </td>
             </tr>
         </table>
@@ -118,12 +139,7 @@
                     <?php } else echo "---" ?>
                 </td>
             </tr>
-            <tr>
-                <th>Email</th>
-                <td>
-                    {{ $user->email }}
-                </td>
-            </tr>
+           
             <tr>
                 <th>Current Medical Conditions</th>
                 <td>
@@ -147,6 +163,16 @@
 
 
     </div>
+    <div class="box box-success">
+            <div class="box-body">
+                <div class="pull-left">
+                    <a href="{!!url('admin/access/users')!!}" class="btn btn-danger btn-xs">Back</a>
+                </div>
+
+                
+                <div class="clearfix"></div>
+            </div><!-- /.box-body -->
+        </div><!--box-->
 
 </div>
 @stop

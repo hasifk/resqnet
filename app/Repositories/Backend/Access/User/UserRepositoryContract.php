@@ -89,6 +89,9 @@ interface UserRepositoryContract
     public function doctorslists($id);
     public function emergencyContacts($id);
     public function healthinsurance($id);
+    public function country($id);
+    public function state($id);
+    public function area($id);
 
 
 }

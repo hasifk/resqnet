@@ -83,11 +83,16 @@ class UserController extends Controller
     public function show($id)
     {
         $user=$this->users->findOrThrowException($id, true);
+        $area=$this->users->area($user->area_id);
         $view = [
             'user' => $user,
             'doctor'=> $this->users->doctorslists($user->id),
             'emergency' => $this->users->emergencyContacts($user->id),
             'insurance' => $this->users->healthinsurance($user->id),
+            'country' => $this->users->country($user->country_id),
+            'area' => $area,
+            'state' => $this->users->state($area->state_id),
+            
             
         ];
         return view('backend.access.show', $view);
@@ -234,4 +239,5 @@ class UserController extends Controller
         $user->sendConfirmationEmail($user_id);
         return redirect()->back()->withFlashSuccess(trans('alerts.backend.users.confirmation_email'));
     }
+    
 }
