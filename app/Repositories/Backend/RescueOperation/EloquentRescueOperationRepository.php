@@ -2,7 +2,8 @@
 
 namespace App\Repositories\Backend\RescueOperation;
 
-use App\Models\Access\User;
+use App\Models\Access\Role\Role;
+use App\Models\Access\User\User;
 use App\Models\RescueOperation\ActiveRescuer;
 use App\Models\RescueOperation\Location;
 use App\Models\RescueOperation\Operation;
@@ -14,20 +15,23 @@ use Storage;
 class EloquentRescueOperationRepository {
 
     public function findActiveRescuers($request) {  //find resquers within 5 KM
-        $result = json_decode(file_get_contents('php://input'));
-        $role = $result->role;
+        /*$result = json_decode(file_get_contents('php://input'));*/
+        $result=$request;
+        $type=RescuerType::where('id',$result->type)->value('type');
+        $role = Role::where('name', $type)->value('id');
         $userid = $result->userid;
         $userloc = $this->showLocation($userid); //app user id
         $actives = $this->activeUsers(); //getting all active users
         foreach ($actives as $active) {
-            $user = $active->user_id;
-            if (User::find($user)->roles()->id == $role) {
-                if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 5) {
-                    $rescuers[] = $user;
+            $user = User::find($active->user_id);
+            if ( $user->role_id == $role) {
+               if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 5) {
+                    $rescuers[] = $active->user_id;
                     
                 }
             }
         }
+
         sort($rescuers);
         $obj = new ActiveRescuer;
         $obj->rescuee_id = $userid;
@@ -48,16 +52,18 @@ class EloquentRescueOperationRepository {
         return ActiveRescuer::find($id);
     }
     public function showLocation($userid) {
-        return Location::where('user_id', $userid)->first();
+        return Location::where('user_id', $userid)->where('status', 1)->first();
     }
 
-    public function rescuersResponce($request) {
+    public function rescuersResponse($request) {
         $obj = new Operation;
-        $result = json_decode(file_get_contents('php://input'));
+        /*$result = json_decode(file_get_contents('php://input'));*/
+        $result=$request;
         $obj->active_rescuers_id = $result->active_rescuers_id;
         $obj->rescuee_id = $result->rescuee_id;
         $obj->rescuer_id = $result->rescuer_id;
         $obj->save();
+        return $obj;
     }
 
     public function distanceCalculation($point1_lat, $point1_long, $point2_lat, $point2_long, $unit = 'km', $decimals = 2) {

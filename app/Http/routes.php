@@ -65,14 +65,14 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
         $api->post('/savenewsfeed', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@createNewsfeed')->name('user.savenewsfeed.index');
         $api->get('/editnewsfeed/{id}', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@editNewsfeed')->name('user.editnewsfeed.index');
         $api->get('/deletenewsfeed/{id}', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@deleteNewsfeed')->name('user.deletenewsfeed.index');
-        $api->post('/rescueoperations', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@RescueOperationActions')->name('rescue.operation.index');
+        /*$api->post('/rescueoperations', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@RescueOperationActions')->name('rescue.operation.index');*/
         $api->post('/updateprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@updateProfile');
         $api->post('/updaterescuerprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@updaterescuerProfile');
         $api->get('/editprofile/{id}', 'App\Http\Controllers\Frontend\Auth\AuthController@editProfile');
         //Rescue Operations
-        $api->get('/rescuee_form', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@RescueeForm')->name('rescuee.operation.form');
-        $api->post('/rescuee_operations', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@RescueeOperationActions')->name('rescuee.operation.index');
-        $api->post('/rescuer_operation', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@RescuerOperationResponce')->name('rescuer.operation.index');
+        $api->get('/rescueeform', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@rescueeForm')->name('rescuee.operation.form');
+        $api->post('/rescueeoperations', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@rescueeOperationActions')->name('rescuee.operation.index');
+        $api->post('/rescueroperation', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@rescuerOperationResponse')->name('rescuer.operation.index');
 
     });
     

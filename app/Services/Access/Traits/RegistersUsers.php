@@ -21,10 +21,10 @@ trait RegistersUsers
      */
     public function showRegistrationForm()
     {
-         $view =$this->user->countries();
+         $view['countries'] =$this->user->countries();
            $view['department']=$this->user->deptDetails();
-            
-        return view('frontend.auth.register',$view);
+      return response()->json(['countries and departments' => $view]);
+       /* return view('frontend.auth.register',$view);*/
     }
 
     /**
