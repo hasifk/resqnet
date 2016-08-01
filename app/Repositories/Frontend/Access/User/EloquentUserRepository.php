@@ -310,25 +310,20 @@ class EloquentUserRepository implements UserRepositoryContract
 
     public function countries() {   
         
-        $countries = Countries::select(['id', 'name'])->get();
+        return Countries::select(['id', 'name'])->get();
 
-            $states = States::where('country_id', 222)
+    }
+    public function state($id) {   
+            return States::where('country_id', 222)
                 ->select(['id', 'name'])
                 ->get();
-            
-            $cities = Cities::where('state_id', 0)
-                ->select(['id', 'name'])
-                ->get();
-
-       // }
-        $view = [
-            'countries' => $countries,
-            'states'    => $states,
-            'cities'    => $cities
-        ];
-        return $view;
         
     }
+    public function cities($id) {   
+            return Cities::where('state_id',$id)
+                ->select(['id', 'name'])
+                ->get();
+    } 
     public function deptDetails()
     {
          $rescuertypes = RescuerType::select(['id', 'type'])->get();
