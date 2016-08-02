@@ -27,6 +27,7 @@
         <!-- /.search form -->
 
         <!-- Sidebar Menu -->
+        @role('Administrator')
         <ul class="sidebar-menu">
             <li class="header">{{ trans('menus.backend.sidebar.general') }}</li>
 
@@ -43,8 +44,11 @@
             <li class="{{ Active::pattern('admin/newsfeed/*') }}">
                 <a href="{!!url('admin/newsfeeds')!!}"><span>News Feeds</span></a>
             </li>
-            <li class="{{ Active::pattern('admin/department/*') }}">
+            <li class="{{ Active::pattern('admin/rescure_departments/*') }}">
                  <a href="{{route('backend.admin.rescure_departments')}}"><span>Department</span></a>
+            </li>
+            <li class="{{ Active::pattern('admin/department/*') }}">
+                <a href="{{route('backend.admin.rescue_operations')}}"><span>Operations</span></a>
             </li>
             <li class="{{ Active::pattern('admin/log-viewer*') }} treeview">
                 <a href="#">
@@ -62,6 +66,7 @@
             </li>
 
         </ul><!-- /.sidebar-menu -->
+        @endauth
     </section>
     <!-- /.sidebar -->
 </aside>

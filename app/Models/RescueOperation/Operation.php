@@ -1,11 +1,13 @@
 <?php
 namespace App\Models\RescueOperation;
 
+use App\Models\RescueOperation\Traits\Attribute\OperationAttribute;
 use Illuminate\Database\Eloquent\Model;
 
 
 class Operation extends Model
 {
+    use OperationAttribute;
 
 
 
