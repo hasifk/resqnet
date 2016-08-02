@@ -34,6 +34,8 @@ class RegrescuerRequest extends FormRequest
             'jurisdiction' => 'required|max:255',
             'rescuer_type_id' => 'required',
             'dept_id' => 'required|max:255',
+            'country_id' => 'required|numeric',
+            'area_id' => 'required|numeric',
         ];
     }
 }
