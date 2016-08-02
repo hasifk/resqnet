@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Backend\RescueOperation;
 use App\Http\Controllers\Controller;
 use App\Repositories\Backend\RescueOperation\EloquentRescueOperationRepository;
 use Illuminate\Http\Request;
+use App\Http\Requests\Backend\RescueeOperation\RescueeOperation;
+use App\Http\Requests\Backend\RescuerOperation\RescuerOperation;
 
 class RescueOperationController extends Controller {
 
@@ -30,16 +32,15 @@ class RescueOperationController extends Controller {
      * @return \Illuminate\Http\Response
      */
     
-    public function rescueeOperationActions(Request $request)
+    public function rescueeOperationActions(RescueeOperation $request)
     {
        $userdetails=$this->rescueOperationRepository->findActiveRescuers($request);  //find resquers within 5 KM
        return response()->json(['rescuee' => $userdetails['rescuee']->toArray(), 'rescuer' => $userdetails['rescuer'],'active_rescuers_id' =>$userdetails['active_rescuers_id']]);
     }
-    public function rescuerOperationResponse(Request $request)
+    public function rescuerOperationResponse(RescuerOperation $request)
     {
         //save the resquer details once they accepted rescuee requests
         return response()->json(['rescue_operation' =>$this->rescueOperationRepository->rescuersResponse($request)->toArray()]);
-
 
     }
     public function rescueeForm()
