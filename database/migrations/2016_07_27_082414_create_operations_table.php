@@ -24,6 +24,11 @@ class CreateOperationsTable extends Migration
                 ->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->foreign('rescuer_id')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->foreign('active_rescuers_id')
                 ->references('id')
                 ->on('activerescuers')
@@ -41,6 +46,7 @@ class CreateOperationsTable extends Migration
     {
         Schema::table('operations', function (Blueprint $table) {
             $table->dropForeign('operations_rescuee_id_foreign');
+            $table->dropForeign('operations_rescuer_id_foreign');
             $table->dropForeign('operations_active_rescuers_id_foreign');
         });
         Schema::drop('operations');

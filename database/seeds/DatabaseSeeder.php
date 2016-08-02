@@ -19,9 +19,10 @@ class DatabaseSeeder extends Seeder
         if (env('DB_CONNECTION') == 'mysql') {
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
             $this->call('CountriesTableSeeder');
-        $this->call('StatesTableSeeder');
-        $this->call('CitiesTableSeeder');
+            $this->call('StatesTableSeeder');
+            $this->call('CitiesTableSeeder');
             $this->call('RescuerTypeSeeder');
+            $this->call('NotifcategoriesTableSeeder');
     }
 
         $this->call(AccessTableSeeder::class);
