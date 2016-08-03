@@ -50,6 +50,41 @@
             <li class="{{ Active::pattern('admin/department/*') }}">
                 <a href="{{route('backend.admin.rescue_operations')}}"><span>Operations</span></a>
             </li>
+
+            <li class="{{ Active::pattern('admin/statistics/*') }} treeview">
+                <a href="#"><span>{{ trans('menus.backend.statistics.main') }}</span>
+                    <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu {{ Active::pattern('admin/statistics*', 'menu-open') }}" style="display: none; {{ Active::pattern('admin/log-viewer*', 'display: block;') }}">
+                    <li class="{{ Active::pattern('admin/usersamount') }}">
+                        <a href="#">Amount of Users</a>
+                    </li>
+                    <li class="{{ Active::pattern('admin/rescuersamount') }}">
+                        <a href="#">Amount of Rescuers</a>
+                    </li>
+                    <li class="{{ Active::pattern('admin/panicsignalamount') }}">
+                        <a href="#">Amount of Panic Signals</a>
+                    </li>
+                    <li class="{{ Active::pattern('admin/panicrescuers') }}">
+                        <a href="#">List of rescuers within 5km</a>
+                    </li>
+                    <li class="{{ Active::pattern('admin/taggedrescuer') }}">
+                        <a href="#">Panic Signal tagged Rescuer</a>
+                    </li>
+                    <li class="{{ Active::pattern('admin/newsfeedsamount') }}">
+                        <a href="#">Amount of Newsfeeds</a>
+                    </li>
+                    <li class="{{ Active::pattern('admin/responsetimepanic') }}">
+                        <a href="#">Response time per panic signal</a>
+                    </li>
+                    <li class="{{ Active::pattern('admin/responsetimerescuer') }}">
+                        <a href="#">Response time per Rescuer</a>
+                    </li>
+                    <li class="{{ Active::pattern('admin/usersaccess') }}">
+                        <a href="#">App accessing users</a>
+                    </li>
+
+                </ul>
+            </li>
             <li class="{{ Active::pattern('admin/log-viewer*') }} treeview">
                 <a href="#">
                     <span>{{ trans('menus.backend.log-viewer.main') }}</span>
