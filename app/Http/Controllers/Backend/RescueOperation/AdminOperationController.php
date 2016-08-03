@@ -10,7 +10,6 @@ class AdminOperationController extends Controller
 
         $this->operation = $operation;
     }
-
     public function operations()
     {
         $view = [

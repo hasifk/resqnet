@@ -35,7 +35,6 @@
             <li class="{{ Active::pattern('admin/dashboard') }}">
                 <a href="{!! route('admin.dashboard') !!}"><span>{{ trans('menus.backend.sidebar.dashboard') }}</span></a>
             </li>
-
             @permission('view-access-management')
             <li class="{{ Active::pattern('admin/access/*') }}">
                 <a href="{!!url('admin/access/users')!!}"><span>{{ trans('menus.backend.access.title') }}</span></a>
@@ -45,12 +44,13 @@
                 <a href="{!!url('admin/newsfeeds')!!}"><span>News Feeds</span></a>
             </li>
             <li class="{{ Active::pattern('admin/rescure_departments/*') }}">
-                 <a href="{{route('backend.admin.rescure_departments')}}"><span>Department</span></a>
+                <a href="{{route('backend.admin.rescure_departments')}}"><span>Department</span></a>
             </li>
             <li class="{{ Active::pattern('admin/department/*') }}">
                 <a href="{{route('backend.admin.rescue_operations')}}"><span>Operations</span></a>
             </li>
-
+            <li class="{{ Active::pattern('admin/notifications/*') }}">
+                <a href="{{route('backend.admin.notifications')}}"><span>Notifications</span></a>
             <li class="{{ Active::pattern('admin/statistics/*') }} treeview">
                 <a href="#"><span>{{ trans('menus.backend.statistics.main') }}</span>
                     <i class="fa fa-angle-left pull-right"></i></a>
@@ -99,7 +99,6 @@
                     </li>
                 </ul>
             </li>
-
         </ul><!-- /.sidebar-menu -->
         @endauth
     </section>

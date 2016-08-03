@@ -257,5 +257,6 @@ return [
         'Socialite'   => Laravel\Socialite\Facades\Socialite::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'Str'      => 'Illuminate\Support\Str',
     ],
 ];

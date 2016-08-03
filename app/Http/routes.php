@@ -36,7 +36,8 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'middleware' => 'ad
     require (__DIR__ . '/Routes/Backend/Access.php');
     require (__DIR__ . '/Routes/Backend/Newsfeed.php');
     require (__DIR__ . '/Routes/Backend/Rescuer.php');
-    require (__DIR__ . '/Routes/Backend/RescueOperation.php');
+     require (__DIR__ . '/Routes/Backend/RescueOperation.php');
+    require (__DIR__ . '/Routes/Backend/Notifications.php');
     require (__DIR__ . '/Routes/Backend/LogViewer.php');
 });
 
@@ -66,7 +67,7 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
         $api->post('/savenewsfeed', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@createNewsfeed')->name('user.savenewsfeed.index');
         $api->get('/editnewsfeed/{id}', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@editNewsfeed')->name('user.editnewsfeed.index');
         $api->get('/deletenewsfeed/{id}', 'App\Http\Controllers\Backend\Newsfeed\NewsfeedController@deleteNewsfeed')->name('user.deletenewsfeed.index');
-        /*$api->post('/rescueoperations', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@RescueOperationActions')->name('rescue.operation.index');*/
+        
         $api->post('/updateprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@updateProfile');
         $api->post('/updaterescuerprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@updaterescuerProfile');
         $api->get('/editprofile/{id}', 'App\Http\Controllers\Frontend\Auth\AuthController@editProfile');
