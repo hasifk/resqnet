@@ -16,6 +16,8 @@ class CreateNotificationsTable extends Migration
             $table->increments('id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->integer('notif_cat')->unsigned();
+            $table->integer('country_id')->nullable()->default(null);
+            $table->integer('area_id')->nullable()->default(null);
             $table->longText('notification');
 
             $table->timestamps();
