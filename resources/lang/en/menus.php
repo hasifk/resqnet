@@ -56,6 +56,10 @@ return [
             'logs' => 'Logs',
         ],
 
+        'statistics' => [
+            'main' => 'Statistics',
+        ],
+
         'sidebar' => [
             'dashboard' => 'Dashboard',
             'general' => 'General',
