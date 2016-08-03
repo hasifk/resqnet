@@ -104,6 +104,11 @@ class AccessServiceProvider extends ServiceProvider
             \App\Repositories\Backend\RescueOperation\EloquentAdminRescueOperationRepository::class
         );
 
+        $this->app->bind(
+            \App\Repositories\Backend\Statistics\StatisticsRepositoryContract::class,
+            \App\Repositories\Backend\Statistics\EloquentStatisticsRepository::class
+        );
+
     }
 
     /**
