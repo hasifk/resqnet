@@ -50,6 +50,9 @@
             <li class="{{ Active::pattern('admin/department/*') }}">
                 <a href="{{route('backend.admin.rescue_operations')}}"><span>Operations</span></a>
             </li>
+            <li class="{{ Active::pattern('admin/notifications/*') }}">
+                <a href="{{route('backend.admin.notifications')}}"><span>Notifications</span></a>
+            </li>
             <li class="{{ Active::pattern('admin/log-viewer*') }} treeview">
                 <a href="#">
                     <span>{{ trans('menus.backend.log-viewer.main') }}</span>
