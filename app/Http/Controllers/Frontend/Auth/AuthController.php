@@ -16,6 +16,7 @@ class AuthController extends Controller
     /**
      * @param UserRepositoryContract $user
      */
+    private $user;
     public function __construct(UserRepositoryContract $user)
     {
         //Where to redirect after logging out
