@@ -42,7 +42,7 @@
                             <div class="form-group" id="country" style="display: none;">
                                 <label for="office_life">Countries</label>
 
-                                <select name="notif_cat" id="notif_cat" class="form-control">
+                                <select name="country_id" id="country_id" class="form-control">
                                     <option value="">Please select</option>
                                     @foreach($countries as $country)
                                     <option
@@ -56,13 +56,13 @@
                             <div class="form-group" id="area" style="display: none;">
                                 <label for="office_life">Areas</label>
 
-                                <select name="notif_cat" id="notif_cat" class="form-control">
+                                <select name="area_id" id="area_id" class="form-control">
                                     <option value="">Please select</option>
-                                    @foreach($countries as $country)
+                                    @foreach($areas as $area)
                                     <option
-                                        value="{{ $country->id }}"
+                                        value="{{ $area->id }}"
                                         >
-                                        {{ $country->name }}
+                                        {{ $area->name }}
                                     </option>
                                     @endforeach
                                 </select>
@@ -102,6 +102,8 @@
            $('#country').hide();
            $('#area').show();
        }
+       $("#country").prop('selectedIndex',0);
+       
     });
     });
 </script>

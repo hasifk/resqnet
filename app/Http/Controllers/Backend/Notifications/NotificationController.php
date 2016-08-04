@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Repositories\Backend\Notifications\NotificationRepositoryContract;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
+use App\Http\Requests\Backend\Notifications;
 
 class NotificationController extends Controller {
     
@@ -30,11 +31,12 @@ class NotificationController extends Controller {
         $view = [
             'notification' => $this->notification->create(),
             'countries' =>$this->user->countries(),
+            'areas' => $this->user->areas(),
         ];
         return view('backend.notifications.create', $view);
     }
 
-    public function notificationSave(Request $request) {
+    public function notificationSave(Notifications $request) {
         
         $this->notification->save($request);
                 
