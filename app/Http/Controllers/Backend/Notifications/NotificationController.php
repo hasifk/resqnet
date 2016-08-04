@@ -8,13 +8,15 @@ use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Validator;
 use App\Repositories\Backend\Notifications\NotificationRepositoryContract;
+use App\Repositories\Frontend\Access\User\UserRepositoryContract;
 
 class NotificationController extends Controller {
     
     private $notification;
-    public function __construct(NotificationRepositoryContract $notification) {
+    public function __construct(NotificationRepositoryContract $notification,UserRepositoryContract $user) {
 
         $this->notification = $notification;
+        $this->user = $user;
     }
     public function notifications() {
         
@@ -27,6 +29,7 @@ class NotificationController extends Controller {
     {
         $view = [
             'notification' => $this->notification->create(),
+            'countries' =>$this->user->countries(),
         ];
         return view('backend.notifications.create', $view);
     }
