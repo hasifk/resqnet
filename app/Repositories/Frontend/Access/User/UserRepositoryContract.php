@@ -67,6 +67,7 @@ interface UserRepositoryContract
 
     public function profileImageUpload($request);
     public function countries();
+    public function areas();
     public function states($id);
     public function cities($id);
     public function deptDetails();

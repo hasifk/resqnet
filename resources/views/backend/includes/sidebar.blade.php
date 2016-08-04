@@ -56,7 +56,7 @@
                     <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu {{ Active::pattern('admin/statistics*', 'menu-open') }}" style="display: none; {{ Active::pattern('admin/log-viewer*', 'display: block;') }}">
                     <li class="{{ Active::pattern('admin/usersamount') }}">
-                        <a href="#">Amount of Users</a>
+                        <a href="{{route('backend.admin.amountofusers')}}">Amount of Users</a>
                     </li>
                     <li class="{{ Active::pattern('admin/rescuersamount') }}">
                         <a href="#">Amount of Rescuers</a>
