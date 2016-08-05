@@ -15,5 +15,7 @@ interface StatisticsRepositoryContract
     public function find($id);
 
 
-    public function getOperations();
+    public function getUsersbyCountry($request);
+    public function getUsersbyArea($request);
+
 }

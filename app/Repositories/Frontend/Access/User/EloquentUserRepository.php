@@ -3,10 +3,10 @@
 namespace App\Repositories\Frontend\Access\User;
 
 use App\Models\Access\User\User;
+use App\Models\Countries\City;
+use App\Models\Countries\Country;
+use App\Models\Countries\State;
 use App\Models\Rescuer\RescuerType;
-use App\Models\Countries\Countries;
-use App\Models\Countries\States;
-use App\Models\Countries\Cities;
 use Illuminate\Support\Facades\Mail;
 use App\Exceptions\GeneralException;
 use Illuminate\Support\Facades\Hash;
@@ -310,25 +310,25 @@ class EloquentUserRepository implements UserRepositoryContract
 
     public function countries() {   
         
-        return Countries::select(['id', 'name'])->get();
+        return Country::select(['id', 'name'])->get();
 
     }
 
 
     public function areas() {
 
-        return Cities::select(['id', 'name'])->get();
+        return City::select(['id', 'name'])->get();
 
     }
 
     public function states($id) {   
-            return States::where('country_id', 222)
+            return State::where('country_id', 222)
                 ->select(['id', 'name'])
                 ->get();
         
     }
     public function cities($id) {   
-            return Cities::where('state_id',$id)
+            return City::where('state_id',$id)
                 ->select(['id', 'name'])
                 ->get();
     } 

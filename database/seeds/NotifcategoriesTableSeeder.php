@@ -19,11 +19,6 @@ class NotifcategoriesTableSeeder extends Seeder
                 'updated_at'        => Carbon::now(),
             ],
             [
-                'category'          => 'Per Area',
-                'created_at'        => Carbon::now(),
-                'updated_at'        => Carbon::now(),
-            ],
-            [
                 'category'          => 'All Users',
                 'created_at'        => Carbon::now(),
                 'updated_at'        => Carbon::now(),

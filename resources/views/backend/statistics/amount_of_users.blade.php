@@ -12,65 +12,55 @@
 @section('content')
 
 
-    <h3>Check Amount of Users within a Country</h3>
+    <h3>Amount of Users within a Country/Area</h3>
 
-
+   @if(!empty($countries))
     <table class="table">
 
         <tr>
-            {{--{!! Form::open(array('url' =>  route('admin.employer.settings.savecmppaid'),'class' => 'form-horizontal' )) !!}
+            {!! Form::open(array('url' =>  route('admin.statistics.checkcountry'),'class' => 'form-horizontal' )) !!}
             {{ csrf_field() }}
-            <td>{{$company_info->title}}</td>
-            @if($company_info->paid_expiry > \Carbon\Carbon::now())
-                <td>Expires at: {{$company_info->paid_expiry}}</td>
-                <td>{!! Form::label('', 'Paid Company') !!}
-                    {!!  Form::checkbox('select_company','1','true', ['class' => 'select2']) !!}</td>
-
-            @else
-            <td>{!! Form::label('', 'Select Company') !!}
-                {!!  Form::checkbox('select_company','0','', ['class' => 'select2']) !!}</td>
+            <td>Select a country</td>
             <td>
-
-                {!! Form::submit('Make Paid', array('class' => 'btn btn-success btn-xs')) !!}
-
+            <select name="country_id">
+                @foreach($countries as $key=> $value)
+                <option value="{!! $value->id!!}">{{$value->name}}</option>
+                @endforeach
+            </select>
             </td>
-            @endif
-            {!! Form::close() !!}--}}
+
+
+            <td>
+                {!! Form::submit('Go', array('class' => 'btn btn-success btn-xs')) !!}
+            </td>
+            {!! Form::close() !!}
         </tr>
     </table>
+    @endif
     <div class="clearfix"></div>
     <hr>
-@if(!empty($job_list))
-    <h5>Job List</h5>
-    <table class="table">
-        @foreach($job_list as $key=> $value)
-        <tr>
+    @if(!empty($areas))
+        <table class="table">
 
-            {!! Form::open(array('url' =>  route('admin.employer.settings.savejobpaid'),'class' => 'form-horizontal' )) !!}
-            {{ csrf_field() }}
-            <td>
-                {{ $value->title}} :
+            <tr>
+                {!! Form::open(array('url' =>  route('admin.statistics.checkarea'),'class' => 'form-horizontal' )) !!}
+                {{ csrf_field() }}
+                <td>Select an area</td>
+                <td>
+                    <select name="area_id">
+                        @foreach($areas as $key=> $value)
+                            <option value="{!! $value->id!!}">{{$value->name}}</option>
+                        @endforeach
+                    </select>
+                </td>
 
-            </td>
-            @if($value->paid_expiry > \Carbon\Carbon::now())
-                <td>Expires at: {{$value->paid_expiry}}</td>
-                <td>{!! Form::label('', 'Paid Job') !!}
-                    {!!  Form::checkbox('select_job','1','true', ['class' => 'select2']) !!}</td>
 
-                @else
-            <td>{!! Form::label('', 'Select Job') !!}
-                {!!  Form::checkbox('select_job','0','', ['class' => 'select2']) !!}</td>
-            <td>
-                {!! Form::submit('Make Paid', array('class' => 'btn btn-success btn-xs')) !!}
-
-            </td>
-            @endif
-            {!! Form::hidden('job_id', $value->id) !!}
+                <td>
+                    {!! Form::submit('Go', array('class' => 'btn btn-success btn-xs')) !!}
+                </td>
                 {!! Form::close() !!}
-
-        </tr>
-        @endforeach
-    </table>
+            </tr>
+        </table>
     @endif
 
     <div class="clearfix"></div>
