@@ -10,13 +10,18 @@ use Illuminate\Http\Request;
 
 class NotificationRepositoryContract {
 
-    public function show() {
+    public function shows() {
         $userid = Auth::user()->id;
         return Notifications::where('user_id', $userid)->orderBy('id', 'desc')
                         ->paginate(10);
     }
-
-    public function create() {
+    public function show($id) {
+        
+        $userid = Auth::user()->id;
+        return Notifications::where('user_id', $userid)->orderBy('id', 'desc')
+                        ->paginate(10);
+    }
+    public function category() {
         return NotificationCategory::get();
     }
 

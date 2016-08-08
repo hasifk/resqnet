@@ -10,8 +10,6 @@
 
 @section('content')
 
-
-
 <section class="content">
     <div class="row" id='notification_add'>
         <div class="row">
@@ -30,7 +28,7 @@
 
                                 <select name="notif_cat" id="notif_cat" class="form-control">
                                     <option value="">Please select</option>
-                                    @foreach($notification as $value)
+                                    @foreach($category as $value)
                                     <option
                                         value="{{ $value->id }}"
                                         id="{{ $value->category }}">
@@ -87,24 +85,22 @@
 @endsection
 @section('after-scripts-end')
 <script>
-    $(document).ready(function(){
-    $("#notif_cat").change(function() {
-        var id=$(this).children(":selected").attr("id");
-        $('#country').hide();
-           $('#area').hide();
-       if(id=="Per Country")
-       {
-           $('#country').show();
-           $('#area').hide();
-       }
-       else if(id=="Per Area")
-       {
-           $('#country').hide();
-           $('#area').show();
-       }
-       $("#country").prop('selectedIndex',0);
-       
-    });
+    $(document).ready(function () {
+        $("#notif_cat").change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $('#country').hide();
+            $('#area').hide();
+            if (id == "Per Country")
+            {
+                $('#country').show();
+                $('#area').hide();
+            } else if (id == "Per Area")
+            {
+                $('#country').hide();
+                $('#area').show();
+            }
+        });
+
     });
 </script>
 @endsection

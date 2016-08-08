@@ -1,8 +1,10 @@
 @extends ('backend.layouts.master')
 @section('content')
-<h3><b><center>Manage Notification</center></b></h3>
 
+<h3><b><center>Manage Notification</center></b></h3>
+@include('backend.includes.partials.notifications.header-buttons')
 <section class="content">
+    <div class="row">
     <div class="row">
         <div class="col-md-12">
             <!-- TO DO List -->
@@ -60,6 +62,37 @@
             </div><!-- /.box -->
         </div>
     </div>
-
+    </div>
+    
 </section>
+@endsection
+@section('after-scripts-end')
+    <script>
+        $(document).ready(function(){
+            $('#country_id').on('change', function(){
+                $.getJSON('/admin/getstates/'+$(this).val(), function(json){
+                    var listitems = '<option value="">Please select</option>';
+                    $.each(json,function(key, value)
+                    {
+                        listitems += '<option value=' + value.id + '>' + value.name + '</option>';
+                    });
+                    $('#state_id').html(listitems);
+                    $('#area_id').html(listitems);
+                });
+            });
+            
+            $('#state_id').on('change', function(){
+                $.getJSON('/admin/getareas/'+$(this).val(), function(json){
+                    var listitems = '<option value="">Please select</option>';
+                    $.each(json,function(key, value)
+                    {
+                        listitems += '<option value=' + value.id + '>' + value.name + '</option>';
+                    });
+                    $('#area_id').html(listitems);
+                });
+            });
+        });
+    
+        
+    </script>
 @endsection

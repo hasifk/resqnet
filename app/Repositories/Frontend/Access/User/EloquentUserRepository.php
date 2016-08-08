@@ -322,7 +322,7 @@ class EloquentUserRepository implements UserRepositoryContract
     }
 
     public function states($id) {   
-            return States::where('country_id', 222)
+            return States::where('country_id', $id)
                 ->select(['id', 'name'])
                 ->get();
         
