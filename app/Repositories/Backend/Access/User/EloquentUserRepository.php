@@ -3,9 +3,9 @@
 namespace App\Repositories\Backend\Access\User;
 
 use App\Models\Access\User\User;
-use App\Models\Countries\Countries;
-use App\Models\Countries\States;
-use App\Models\Countries\Cities;
+use App\Models\Countries\City;
+use App\Models\Countries\Country;
+use App\Models\Countries\State;
 use App\Models\Access\Doctors\Doctors;
 use App\Models\Access\HealthInsurance\HealthInsurance;
 use App\Models\Access\EmergencyContacts\EmergencyContacts;
@@ -366,12 +366,12 @@ class EloquentUserRepository implements UserRepositoryContract
    }
     public function country($id) {   
         
-        return Countries::find($id);
+        return Country::find($id);
     }
      public function state($id) {   
-            return States::find($id);
+            return State::find($id);
     }
      public function area($id) {   
-         return Cities::find($id);
+         return City::find($id);
     }
 }

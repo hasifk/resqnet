@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class User
  * @package App\Models\Access\User
  */
-class Cities extends Model
+class City extends Model
 {
 
 
