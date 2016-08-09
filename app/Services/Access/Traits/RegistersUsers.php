@@ -23,7 +23,7 @@ trait RegistersUsers
     {
          $view['countries'] =$this->user->countries();
            $view['department']=$this->user->deptDetails();
-      return response()->json(['countries and departments' => $view]);
+      return response()->json(['countries_and_departments' => $view]);
        /* return view('frontend.auth.register',$view);*/
     }
 
