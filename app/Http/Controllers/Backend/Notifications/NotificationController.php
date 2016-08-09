@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Notifications;
 
+use App\Models\Notifications\Notification;
 use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\View\View;
@@ -188,7 +189,7 @@ class NotificationController extends Controller {
     public function NotificationDelete(Request $request) {
         $ids = explode(",", $request->id);
         foreach ($ids as $value):
-            Model\Notifications::where('id', $value)->delete();
+           Notification::where('id', $value)->delete();
         endforeach;
     }
 

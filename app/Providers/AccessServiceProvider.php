@@ -108,6 +108,10 @@ class AccessServiceProvider extends ServiceProvider
             \App\Repositories\Backend\Statistics\StatisticsRepositoryContract::class,
             \App\Repositories\Backend\Statistics\EloquentStatisticsRepository::class
         );
+        $this->app->bind(
+            \App\Repositories\Backend\Notifications\NotificationRepositoryContract::class,
+            \App\Repositories\Backend\Notifications\EloquentNotificationRepository::class
+        );
 
     }
 

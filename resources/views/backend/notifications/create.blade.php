@@ -92,6 +92,7 @@
         $("#notif_cat").change(function () {
             var id = $(this).children(":selected").attr("id");
             $('#country').hide();
+            $('#state').hide();
             $('#area').hide();
             if (id == "Per Country")
             {
