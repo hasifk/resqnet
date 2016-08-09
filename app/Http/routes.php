@@ -45,7 +45,7 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'middleware' => 'ad
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', ['middleware' => 'cors'], function ($api) {
-
+   $api->get('register', 'App\Http\Controllers\Frontend\Auth\AuthController@showRegistrationForm')->name('auth.register');
     $api->post('/login', [ 'uses' => 'App\Http\Controllers\AuthController@postLogin']);
     $api->post('/register', 'App\Http\Controllers\Frontend\Auth\AuthController@register');
     $api->post('/rescuerregister', 'App\Http\Controllers\Frontend\Auth\AuthController@rescuerregister');
