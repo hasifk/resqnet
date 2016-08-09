@@ -43,7 +43,7 @@ class NotificationController extends Controller {
         $view = [
             'category' => $this->notification->category(),
             'countries' => $this->user->countries(),
-            'areas' => $this->user->cities(),
+            'areas' => $this->user->areas(),
         ];
         return view('backend.notifications.create', $view);
     }
@@ -199,6 +199,14 @@ class NotificationController extends Controller {
      public function areas($id) {
         $areas = $this->user->cities($id);
         return response()->json($areas);
+    }
+    public function search(Request $request) {
+         $view = [
+            'notification' => $this->notification->filter($request),
+             'category' => $this->notification->category(),
+            'countries' => $this->user->countries(),
+        ];
+       return view('backend.notifications.index_new', $view);
     }
 
 }

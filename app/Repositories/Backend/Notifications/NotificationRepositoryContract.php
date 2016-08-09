@@ -15,12 +15,14 @@ class NotificationRepositoryContract {
         return Notifications::where('user_id', $userid)->orderBy('id', 'desc')
                         ->paginate(10);
     }
+
     public function show($id) {
-        
+
         $userid = Auth::user()->id;
         return Notifications::where('user_id', $userid)->orderBy('id', 'desc')
                         ->paginate(10);
     }
+
     public function category() {
         return NotificationCategory::get();
     }
@@ -38,7 +40,7 @@ class NotificationRepositoryContract {
     }
 
     public function find($id) {
-        return Newsfeed::find($id);
+        return Notifications::find($id);
     }
 
     public function delete($id) {
@@ -46,8 +48,19 @@ class NotificationRepositoryContract {
         if ($obj):
             $obj->detachNewsfeedImage();
         endif;
-        Newsfeed::where('id', $id)->delete();
+        Notifications::where('id', $id)->delete();
         return true;
+    }
+
+    public function filter($request) {
+        $userid = Auth::user()->id;
+        if (!empty($request->state_id) && !empty($request->area_id)) {
+            return Notifications::where('user_id', $userid)->where('area_id', $request->area_id)->orderBy('id', 'desc')
+                            ->paginate(10);
+        } else {
+            return Notifications::where('user_id', $userid)->where('country_id', $request->country_id)->orderBy('id', 'desc')
+                            ->paginate(10);
+        }
     }
 
 }

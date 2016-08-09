@@ -37,7 +37,8 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group" id="country" style="display: none;">
+                            <div class="row">
+                            <div class="form-group col-md-4" id="country" style="display: none;">
                                 <label for="office_life">Countries</label>
 
                                 <select name="country_id" id="country_id" class="form-control">
@@ -51,19 +52,21 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group" id="area" style="display: none;">
+                            <div class="form-group col-md-4" id="state" style="display: none;">
+                                <label for="office_life">State</label>
+
+                                <select name="state_id" id="state_id" class="form-control">
+                                    <option value="">Please select</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4" id="area" style="display: none;">
                                 <label for="office_life">Areas</label>
 
                                 <select name="area_id" id="area_id" class="form-control">
                                     <option value="">Please select</option>
-                                    @foreach($areas as $area)
-                                    <option
-                                        value="{{ $area->id }}"
-                                        >
-                                        {{ $area->name }}
-                                    </option>
-                                    @endforeach
+
                                 </select>
+                            </div>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Message</label>
@@ -93,12 +96,32 @@
             if (id == "Per Country")
             {
                 $('#country').show();
-                $('#area').hide();
-            } else if (id == "Per Area")
-            {
-                $('#country').hide();
+                $('#state').show();
                 $('#area').show();
             }
+        });
+        $('#country_id').on('change', function () {
+            $('#state_id').html('<option value="">Please Select</option>');
+            $('#area_id').html('<option value="">Please Select</option>');
+            $.getJSON('/admin/getstates/' + $(this).val(), function (json) {
+                var listitems = '<option value="">Please Select</option>';
+                $.each(json, function (key, value)
+                {
+                    listitems += '<option value=' + value.id + '>' + value.name + '</option>';
+                });
+                $('#state_id').html(listitems);
+            });
+        });
+        $('#state_id').on('change', function () {
+            $('#area_id').html('<option value="">Please Select</option>');
+            $.getJSON('/admin/getareas/' + $(this).val(), function (json) {
+                var listitems = '<option value="">Please Select</option>';
+                $.each(json, function (key, value)
+                {
+                    listitems += '<option value=' + value.id + '>' + value.name + '</option>';
+                });
+                $('#area_id').html(listitems);
+            });
         });
 
     });

@@ -9,4 +9,5 @@ Route::group([
         Route::post('/notification_save', 'NotificationController@notificationSave')->name('backend.admin.notificationsave');
         Route::get('getstates/{id}','NotificationController@states')->name('backend.admin.notificationstate');
         Route::get('getareas/{id}','NotificationController@areas')->name('backend.admin.notificationsarea');
+        Route::get('search','NotificationController@search')->name('backend.admin.notificationsearch');
 });

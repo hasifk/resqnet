@@ -270,7 +270,7 @@ class EloquentUserRepository implements UserRepositoryContract
         return Mail::send('frontend.auth.emails.confirm', ['token' => $user->confirmation_code,'membership_no' => $user->membership_no], function ($message) use ($user) {
             $message->to($user->email, $user->name)->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
         });
-    }
+    } 
 
     /**
      * @param $user_id

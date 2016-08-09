@@ -5,7 +5,7 @@
             Departments <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
-            <li><a href="{{route('backend.admin.department_create')}}" id="cms_create">Create New</a></li>
+            <li><a href="{{route('backend.admin.notificationcreate')}}" id="cms_create">Create New</a></li>
 
             <li class="divider"></li>
 
@@ -52,7 +52,7 @@
     <div class="btn-group">
         <label for="office_life" class="col-md-4 control-label"></label>
                    
-       <button class="mnotification_delete btn btn-primary" >Search</button>
+       <button class="mnotification_delete btn btn-primary" id="search">Search</button>
                    
                     
     </div>
