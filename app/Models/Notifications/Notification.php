@@ -11,7 +11,7 @@ use App\Models\Notifications\Traits\Attribute\NotificationsAttribute;
  * Class User
  * @package App\Models\Access\User
  */
-class Notifications extends Model {
+class Notification extends Model {
 
     use NotificationsRelationship,NotificationsAttribute;
 
