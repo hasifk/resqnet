@@ -29,7 +29,7 @@ class AuthController extends Controller
             $token = \JWTAuth::fromUser($user);
             return response()->json(['token' => $token]);
         } else {
-            return response()->json(['status' => 'Login Failed.invalid password or username'], 400);
+            return response()->json(['status' => 'Login Failed.invalid password or username']);
         }
     }
 
