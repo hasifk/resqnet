@@ -49,7 +49,6 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
     $api->post('/login', [ 'uses' => 'App\Http\Controllers\AuthController@postLogin']);
     $api->post('/register', 'App\Http\Controllers\Frontend\Auth\AuthController@register');
     $api->post('/rescuerregister', 'App\Http\Controllers\Frontend\Auth\AuthController@rescuerregister');
-    $api->get('/registrationform', 'App\Http\Controllers\Frontend\Auth\AuthController@showRegistrationForm');
     $api->get('getstates/{id}', function($id) {
         $states = DB::table('states')->where('country_id', $id)->select(['id', 'name'])->get();
         return response()->json($states);
