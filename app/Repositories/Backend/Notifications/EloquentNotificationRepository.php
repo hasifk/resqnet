@@ -12,7 +12,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract
     public function shows() {
         $userid = Auth::user()->id;
         return Notification::where('user_id', $userid)->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(1);
     }
 
     public function show($id) {
@@ -41,25 +41,23 @@ class EloquentNotificationRepository implements NotificationRepositoryContract
     public function find($id) {
         return Notification::find($id);
     }
-
-    public function delete($id) {
-        $obj = $this->find($id);
-        if ($obj):
-            $obj->detachNewsfeedImage();
-        endif;
-        Notification::where('id', $id)->delete();
-        return true;
-    }
-
     public function filter($request) {
         $userid = Auth::user()->id;
-        if (!empty($request->state_id) && !empty($request->area_id)) {
+        if(empty($request->country_id))
+        return $this->shows();
+        else if (!empty($request->state_id) && !empty($request->area_id)) {
             return Notification::where('user_id', $userid)->where('area_id', $request->area_id)->orderBy('id', 'desc')
                 ->paginate(10);
-        } else {
+        } else{
             return Notification::where('user_id', $userid)->where('country_id', $request->country_id)->orderBy('id', 'desc')
                 ->paginate(10);
         }
+    }
+    public function NotificationDelete($request) {
+        $ids = explode(",", $request->id);
+        foreach ($ids as $value):
+            Notification::where('id', $value)->delete();
+        endforeach;
     }
 
 }

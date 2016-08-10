@@ -187,10 +187,7 @@ class NotificationController extends Controller {
     }
 
     public function NotificationDelete(Request $request) {
-        $ids = explode(",", $request->id);
-        foreach ($ids as $value):
-           Notification::where('id', $value)->delete();
-        endforeach;
+        $states = $this->notification->NotificationDelete($request);
     }
 
     public function states($id) {
@@ -209,5 +206,6 @@ class NotificationController extends Controller {
         ];
        return view('backend.notifications.index_new', $view);
     }
+   
 
 }

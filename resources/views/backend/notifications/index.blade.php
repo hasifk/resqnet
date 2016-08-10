@@ -11,7 +11,7 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title"><input type="checkbox" id="selectall"/> Notifications</h3>
-                        <div class="box-tools pull-right">
+                        <div class="pull-right">
                             <?php echo $notification->links(); ?>
                         </div>
                         <a href="{{route('backend.admin.notificationcreate')}}"> <button class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button></a>
@@ -116,6 +116,69 @@
         });
     });
 
+$(document).on("click", '.notification_delete,.mnotification_delete', function () {
+        var cursel = this;
+        var value = new Array();
+        var j = 0;
+        if (cursel.className.split(' ')[0] == 'notification_delete')
+        {
+            var ids = cursel.id;
+            $(".checkbox").each(function () {
+                if ($(this).is(":checked"))
+                {
+                    $(this).removeAttr("checked");
 
+                }
+            });
+            $("#selectall").removeAttr("checked");
+            $("#" + ids).prop("checked", true);
+        }
+
+        if ($(".checkbox:checked").length > 0)
+        {
+            $(".checkbox:checked").each(function () {
+                value[j++] = $(this).val();
+            });
+            if (confirm("Are sure want to delete"))
+            {
+                $.ajax({
+                    type: "GET",
+                    url:'/admin/notificationdelete',
+                    data: "id=" + value,
+                    cache: false,
+                    success: function (data) {
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        alert(error);
+                    }
+                });
+            }
+        } else
+            alert("Please select atleast one")
+    });
+    $(document).on("click", '#selectall', function () {
+        if (this.checked) { // check select status
+            $('.checkbox').each(function () { //loop through each checkbox
+                this.checked = true;  //select all checkboxes with class "checkbox1"               
+            });
+        } else {
+            $('.checkbox').each(function () { //loop through each checkbox
+                this.checked = false; //deselect all checkboxes with class "checkbox1"                       
+            });
+        }
+    });
+    $(document).on("change", '#selectall', function () {
+        $(".checkbox").prop('checked', $(this).prop("checked"));
+    });
+
+    $(document).on("click", '.checkbox', function () {
+        // alert($(".checkbox").length + "----" + $(".checkbox:checked").length);
+        if ($(".checkbox").length == $(".checkbox:checked").length) {
+            $("#selectall").prop("checked", true);
+        } else {
+            $("#selectall").removeAttr("checked");
+        }
+    });
 </script>
 @endsection

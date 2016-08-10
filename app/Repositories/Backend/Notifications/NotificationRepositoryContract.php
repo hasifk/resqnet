@@ -17,8 +17,7 @@ interface NotificationRepositoryContract {
 
     public function find($id) ;
 
-    public function delete($id);
-
     public function filter($request);
+    public function NotificationDelete($request);
 
 }

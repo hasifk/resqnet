@@ -328,7 +328,7 @@ class EloquentUserRepository implements UserRepositoryContract
             return City::where('state_id',$id)
                 ->select(['id', 'name'])
                 ->get();
-    } 
+    }
     public function deptDetails()
     {
          $rescuertypes = RescuerType::select(['id', 'type'])->get();
