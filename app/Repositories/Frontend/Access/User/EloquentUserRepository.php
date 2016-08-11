@@ -331,11 +331,8 @@ class EloquentUserRepository implements UserRepositoryContract
     }
     public function rescuerTypeDetails()
     {
-         $rescuertypes = RescuerType::select(['id', 'type'])->get();
-        $view = [
-            'rescuertypes' => $rescuertypes,
-        ];
-        return $view;
+        return  RescuerType::select(['id', 'type'])->get();
+
     }
 
     /**

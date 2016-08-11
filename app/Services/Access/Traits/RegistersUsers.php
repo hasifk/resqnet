@@ -22,7 +22,7 @@ trait RegistersUsers
     public function showRegistrationForm()
     {
          $view['countries'] =$this->user->countries();
-           $view['department']=$this->user->rescuerTypeDetails();
+           $view['rescuerTypes']=$this->user->rescuerTypeDetails();
       return response()->json(['countries_and_departments' => $view]);
        /* return view('frontend.auth.register',$view);*/
     }
