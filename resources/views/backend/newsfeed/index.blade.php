@@ -15,7 +15,7 @@
     <tr>
         <td>ID</td>
         <td>News</td>
- <td>Action</td>
+        <td>Action</td>
     </tr>
     @foreach($newsfeeds as $newsfeed)
     <tr>

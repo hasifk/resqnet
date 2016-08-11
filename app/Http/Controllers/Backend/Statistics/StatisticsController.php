@@ -24,29 +24,38 @@ class StatisticsController extends Controller {
         $view = [
             'countries' => $this->user->countries(),
             'areas' => $this->user->areas(),
+            'amount'=> $this->statistics->getAmountOfUsers(),
         ];
         return view('backend.statistics.amount_of_users', $view);
     }
 
     /********************************************************************************************************/
-    public function checkCountry(Request $request) {
-        $result=$this->statistics->getUsersbyCountry($request);
+    public function userAmount(Request $request) {
+        $result=$this->statistics->getUserAmount($request);
         $view = [
             'place' => $result['country'],
             'amount' =>$result['amount']
 
         ];
-        return view('backend.statistics.amount_of_users_result', $view);
+        return $view;
     }
     /********************************************************************************************************/
-    public function checkArea(Request $request) {
-        $result=$this->statistics->getUsersbyArea($request);
+    public function amountOfRescuers() {
         $view = [
-            'place' => $result['area'],
+            'countries' => $this->user->countries(),
+            'areas' => $this->user->areas(),
+            'amount'=> $this->statistics->getAmountOfRescuers(),
+        ];
+        return view('backend.statistics.amount_of_rescuers', $view);
+    }
+/********************************************************************************************************/
+    public function rescuerAmount(Request $request) {
+        $result=$this->statistics->getRescuerAmount($request);
+        $view = [
+            'place' => $result['country'],
             'amount' =>$result['amount']
 
         ];
-        return view('backend.statistics.amount_of_users_result', $view);
+        return $view;
     }
-
 }

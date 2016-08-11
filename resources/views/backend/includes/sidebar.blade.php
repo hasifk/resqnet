@@ -59,7 +59,7 @@
                         <a href="{{route('backend.admin.amountofusers')}}">Amount of Users</a>
                     </li>
                     <li class="{{ Active::pattern('admin/rescuersamount') }}">
-                        <a href="#">Amount of Rescuers</a>
+                        <a href="{{route('admin.statistics.amountofrescuers')}}">Amount of Rescuers</a>
                     </li>
                     <li class="{{ Active::pattern('admin/panicsignalamount') }}">
                         <a href="#">Amount of Panic Signals</a>

@@ -59,7 +59,7 @@
           
             <div class="col-md-12 m-t-25">
                 <table class="table table-striped table-bordered table-hover">
-                    <tr><th>Total Amount Of Users is : {{$amount}}</th></tr>
+                    <tr><th>Total Amount Of Rescuers is : {{$amount}}</th></tr>
                     <tr id="useramount"></tr>
                 </table>
                 <div >
@@ -109,10 +109,10 @@
                 state_id: $('#state_id').val(),
                 area_id: $('#area_id').val(),
             }
-            $.getJSON('/admin/useramount/',formData,function result(data) {
+            $.getJSON('/admin/rescueramount/',formData,function result(data) {
                 //console.log(data);
 
-                var listitems = '<th>The Amount Of Users In ' + data.place + ' is : ' + data.amount+ '</th>';
+                var listitems = '<th>The Amount Of Rescuers In ' + data.place + ' is : ' + data.amount+ '</th>';
                  $('#useramount').html(listitems);
 
             });
