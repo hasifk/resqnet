@@ -34,9 +34,13 @@ trait RegistersUsers
     public function register(RegisterRequest $request)
     {
         if (config('access.users.confirm_email')) {
-            $user = $this->user->create($request->all());
-            $token = \JWTAuth::fromUser($user);
-            return response()->json(['token' => $token, 'user' => $user->toArray()]);
+            if($this->user->create($request->all())):
+                return response()->json(['success_info' => '00']);
+            else:
+                return response()->json(['success_info' => '01']);
+                endif;
+          /*  $token = \JWTAuth::fromUser($user);
+            return response()->json(['token' => $token, 'user' => $user->toArray()]);*/
           /*  event(new UserRegistered($user));
             return redirect()->route('frontend.index')->withFlashSuccess(trans('exceptions.frontend.auth.confirmation.created_confirm'));*/
         } else {
@@ -52,9 +56,14 @@ trait RegistersUsers
     {
 
         if (config('access.users.confirm_email')) {
-            $user = $this->user->create($request->all());
+            if($this->user->create($request->all())):
+                return response()->json(['success_info' => '00']);
+            else:
+                return response()->json(['success_info' => '01']);
+            endif;
+           /* $user = $this->user->create($request->all());
             $token = \JWTAuth::fromUser($user);
-            return response()->json(['token' => $token, 'user' => $user->toArray()]);
+            return response()->json(['token' => $token, 'user' => $user->toArray()]);*/
 
         } else {
             auth()->login($this->user->create($request->all()));

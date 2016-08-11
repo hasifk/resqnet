@@ -27,9 +27,9 @@ class AuthController extends Controller
         if ( \Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')]) ) {
             $user = \Auth::user();
             $token = \JWTAuth::fromUser($user);
-            return response()->json(['token' => $token]);
+            return response()->json(['token' => $token,'user_id'=>$user->id]);
         } else {
-            return response()->json([], 400);
+            return response()->json(['status' => 'Login Failed.invalid password or username']);
         }
     }
 
