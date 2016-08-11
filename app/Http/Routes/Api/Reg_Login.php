@@ -7,6 +7,12 @@ $api->get('getstates/{id}', function($id) {
     $states = DB::table('states')->where('country_id', $id)->select(['id', 'name'])->get();
     return response()->json($states);
 });
+$api->get('getdepartments/{id}', function($id) {
+    $depts = \DB::table('departments')->where('rescuertype_id',$id)->select(['id', 'department'])->get();
+    return response()->json($depts);
+});
+
+
 $api->get('getareas/{id}', function($id){
     $areas = DB::table('cities')->where('state_id', $id)->select(['id', 'name'])->get();
     return response()->json($areas);

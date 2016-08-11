@@ -70,6 +70,6 @@ interface UserRepositoryContract
     public function areas();
     public function states($id);
     public function cities($id);
-    public function deptDetails();
+    public function rescuerTypeDetails();
     
 }
