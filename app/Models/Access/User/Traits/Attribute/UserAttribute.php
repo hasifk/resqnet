@@ -194,4 +194,11 @@ trait UserAttribute
         }
         return \DB::table('assigned_roles')->where('user_id', $this->id)->value('role_id');
     }
+
+    public function getRoleNameAttribute(){
+        if ( is_null($this->id) ) {
+            return null;
+        }
+        return \DB::table('roles')->where('id', $this->getRoleIdAttribute())->value('name');
+    }
 }
