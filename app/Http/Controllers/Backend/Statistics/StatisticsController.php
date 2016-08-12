@@ -23,7 +23,6 @@ class StatisticsController extends Controller {
     public function amountOfUsers() {
         $view = [
             'countries' => $this->user->countries(),
-            'areas' => $this->user->areas(),
             'amount'=> $this->statistics->getAmountOfUsers(),
         ];
         return view('backend.statistics.amount_of_users', $view);
@@ -43,7 +42,7 @@ class StatisticsController extends Controller {
     public function amountOfRescuers() {
         $view = [
             'countries' => $this->user->countries(),
-            'areas' => $this->user->areas(),
+            'rescuertype' => $this->user->rescuerTypeDetails(),
             'amount'=> $this->statistics->getAmountOfRescuers(),
         ];
         return view('backend.statistics.amount_of_rescuers', $view);
