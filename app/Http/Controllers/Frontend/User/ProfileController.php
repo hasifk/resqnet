@@ -35,13 +35,13 @@ class ProfileController extends Controller
 
     public function saveProfileImage(UserRepositoryContract $user,ProfileImagesUploadRequest $request) {
 
-      /*  if($user->profileImageUpload($request)):
+        if($user->profileImageUpload($request)):
 
             return response()->json(['status' => "Profile Image has been uploaded successfully"]);
         else:
             return response()->json(['status' => "Failed"]);
-        endif;*/
-        return response()->json(['status' => $request->value3]);
+        endif;
+
 
     }
 }
