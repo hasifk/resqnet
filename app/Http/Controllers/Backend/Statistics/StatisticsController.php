@@ -57,4 +57,23 @@ class StatisticsController extends Controller {
         ];
         return $view;
     }
+     /********************************************************************************************************/
+    public function amountOfNewsfeeds() {
+        $view = [
+            'countries' => $this->user->countries(),
+            'rescuertype' => $this->user->rescuerTypeDetails(),
+            'amount'=> $this->statistics->getAmountOfRescuers(),
+        ];
+        return view('backend.statistics.amount_of_rescuers', $view);
+    }
+/********************************************************************************************************/
+    public function newsfeedAmount(Request $request) {
+        $result=$this->statistics->getRescuerAmount($request);
+        $view = [
+            'place' => $result['country'],
+            'amount' =>$result['amount']
+
+        ];
+        return $view;
+    }
 }
