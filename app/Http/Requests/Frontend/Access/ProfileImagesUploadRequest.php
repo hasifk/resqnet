@@ -23,7 +23,7 @@ class ProfileImagesUploadRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [];
+        /*$rules = [];
 
         $image = $this->file('avatar');
 
@@ -42,6 +42,9 @@ class ProfileImagesUploadRequest extends FormRequest
             $rules['avatar'] = 'image|max:5000|mimes:jpeg,jpg,png';
         }
 
-        return $rules;
+        return $rules;*/
+        return [
+            'avatar' => 'required|image|max:5000|mimes:jpeg,jpg,png',
+        ];
     }
 }
