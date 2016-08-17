@@ -25,6 +25,6 @@ trait ChangePasswords
      */
     public function changePassword(ChangePasswordRequest $request) {
         $this->user->changePassword($request->all());
-        return redirect()->route('frontend.user.dashboard')->withFlashSuccess(trans('strings.frontend.user.password_updated'));
+        return response()->json(['success' => trans('strings.frontend.user.password_updated')]);
     }
 }
