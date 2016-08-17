@@ -13,7 +13,7 @@ Route::group(['namespace' => 'Auth'], function () {
 
         // Change Password Routes
         Route::get('password/change', 'PasswordController@showChangePasswordForm')->name('auth.password.change');
-        Route::post('password/change', 'PasswordController@changePassword')->name('auth.password.update');
+        /*Route::post('password/change', 'PasswordController@changePassword')->name('auth.password.update');*/
     });
 
     /**

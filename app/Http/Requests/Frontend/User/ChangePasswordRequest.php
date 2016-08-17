@@ -2,13 +2,14 @@
 
 namespace App\Http\Requests\Frontend\User;
 
-use App\Http\Requests\Request;
+
+use Dingo\Api\Http\FormRequest;
 
 /**
  * Class ChangePasswordRequest
  * @package App\Http\Requests\Frontend\Access
  */
-class ChangePasswordRequest extends Request
+class ChangePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

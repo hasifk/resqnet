@@ -50,6 +50,7 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
 
     $api->group(['middleware' => ['jwt.auth']], function ($api) {
 
+        require (__DIR__ . '/Routes/Api/Access.php');
         require (__DIR__ . '/Routes/Api/Profile.php');
         require (__DIR__ . '/Routes/Api/Newsfeed.php');
         require (__DIR__ . '/Routes/Api/RescueOperations.php');
