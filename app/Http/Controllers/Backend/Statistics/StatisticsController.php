@@ -52,7 +52,8 @@ class StatisticsController extends Controller {
         $result=$this->statistics->getRescuerAmount($request);
         $view = [
             'place' => $result['country'],
-            'amount' =>$result['amount']
+            'amount' =>$result['amount'],
+            'type' => $result['type'],
 
         ];
         return $view;
@@ -62,13 +63,13 @@ class StatisticsController extends Controller {
         $view = [
             'countries' => $this->user->countries(),
             'rescuertype' => $this->user->rescuerTypeDetails(),
-            'amount'=> $this->statistics->getAmountOfRescuers(),
+            'amount'=> $this->statistics->getAmountOfNewsfeeds(),
         ];
-        return view('backend.statistics.amount_of_rescuers', $view);
+        return view('backend.statistics.amount_of_newsfeeds', $view);
     }
 /********************************************************************************************************/
     public function newsfeedAmount(Request $request) {
-        $result=$this->statistics->getRescuerAmount($request);
+        $result=$this->statistics->getNewsfeedAmount($request);
         $view = [
             'place' => $result['country'],
             'amount' =>$result['amount']

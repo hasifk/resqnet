@@ -1,16 +1,11 @@
 @extends ('backend.layouts.master')
-
-
-
 @section('page-header')
 <h1>
     Statistics
 </h1>
 @endsection
 
-
 @section('content')
-
 
 <h3>Amount of Rescuers</h3>
 
@@ -22,7 +17,7 @@
                 <div class="box box-primary">
                     <div class="m-t-20">
                         <div class="col-xs-12 col-sm-6 col-md-2 btn-group">
-                            <label for="office_life" class="control-label">Country</label>
+                            <label for="office_life" class="control-label">Country <i><font color="red" size="3">*</font></i></label></label>
                             <select name="country_id" id="country_id" class="form-control">
                                 <option value="">Please Select</option>
                                 @foreach($countries as $country)
@@ -35,30 +30,25 @@
                             </select>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-2 btn-group">
-                            <label for="office_life" class="control-label">State</label>
+                            <label for="office_life" class="control-label">State <i>(optional)</i></label>
                             <select name="state_id" id="state_id" class="form-control">
                                 <option value="">Please Select</option>
 
                             </select>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-2 btn-group">
-                            <label for="office_life" class="control-label">City</label>
+                            <label for="office_life" class="control-label">City <i>(optional)</i></label>
                             <select name="area_id" id="area_id" class="form-control">
                                 <option value="">Please Select</option>
 
                             </select>
                         </div>
                         <div class="col-xs-12 col-sm-3 col-md-3 btn-group">
-                            <label for="office_life" class="control-label">Rescuer Type</label>
-                             <select name="rescuertype" id="rescuertype" class="form-control">
+                            <label for="office_life" class="control-label">User Type <i><font color="red" size="3">*</font></i></label>
+                            <select name="rescur" id="rescur" class="form-control">
                                 <option value="All">All</option>
-                                @foreach($rescuertype as $type)
-                                <option
-                                    value="{{ $type->id }}"
-                                    >
-                                    {{ $type->type }}
-                                </option>
-                                @endforeach
+                                <option value="Rescuer">Rescuer</option>
+                                <option value="Rescuee">Rescuee</option>
                             </select>
                         </div>
                         <div class="col-xs-12 col-sm-3 col-md-3 btn-group m-t-25">
@@ -71,8 +61,8 @@
 
             <div class="col-md-12 m-t-25">
                 <table class="table table-striped table-bordered table-hover">
-                    <tr><th>Total Amount Of Rescuers is : {{$amount}}</th></tr>
-                    <tr id="useramount"></tr>
+                    <tr><th>Total Amount Of News Feeds is : {{$amount}}</th></tr>
+                    <tr id="newsamount"></tr>
                 </table>
                 <div >
 
@@ -126,23 +116,22 @@
                 $('#area_id').focus();
             } else
             {
-            var formData = {
-                country_id: $('#country_id').val(),
-                state_id: $('#state_id').val(),
-                area_id: $('#area_id').val(),
-                rescuertype:$('#rescuertype').val(),
-            }
-            $.getJSON('/admin/rescueramount/', formData, function result(data) {
-                //console.log(data);
-                var type='';
-                if(data.type!='')
-                    type='('+data.type+')';
-                var listitems = '<th>The Amount Of Rescuers '+ type +' In ' + data.place + ' is : ' + data.amount + '</th>';
-                $('#useramount').html(listitems);
+                var type = $('#rescur').val();
+                var formData = {
+                    country_id: $('#country_id').val(),
+                    state_id: $('#state_id').val(),
+                    area_id: $('#area_id').val(),
+                    rescur: type,
+                }
+                $.getJSON('/admin/newsfeedamount/', formData, function result(data) {
+                    //console.log(data);
+                    if (data.type != 'All')
+                        types = type;
+                    var listitems = '<th>The Amount Of News Feeds Sent To  ' + types + ' In ' + data.place + ' is : ' + data.amount + '</th>';
+                    $('#newsamount').html(listitems);
 
-            });
+                });
             }
-
         });
     });
 
