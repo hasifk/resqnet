@@ -7,4 +7,6 @@ Route::group([
         Route::get('useramount', 'StatisticsController@userAmount')->name('admin.statistics.useramount');
         Route::get('amountofrescuers', 'StatisticsController@amountOfRescuers')->name('admin.statistics.amountofrescuers');
         Route::get('rescueramount', 'StatisticsController@rescuerAmount')->name('admin.statistics.rescueramount');
+        Route::get('amountofnewsfeeds', 'StatisticsController@amountOfNewsfeeds')->name('admin.statistics.amountofnewsfeeds');
+        Route::get('newsfeedamount', 'StatisticsController@newsfeedAmount')->name('admin.statistics.newsfeedamount');
 });
