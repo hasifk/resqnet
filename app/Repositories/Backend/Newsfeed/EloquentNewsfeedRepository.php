@@ -9,8 +9,7 @@ use Event;
 class EloquentNewsfeedRepository {
 
     public function getNewsfeedPaginated() {
-        $userid = Auth::user()->id;
-        return Newsfeed::where('user_id', $userid)->orderBy('newsfeeds.id', 'desc')
+        return Newsfeed::orderBy('newsfeeds.id', 'desc')
                         ->paginate(10);
     }
 
@@ -49,29 +48,28 @@ class EloquentNewsfeedRepository {
     }
 
     public function newsFeedSearch($request) {
-        $userid = Auth::user()->id;
         if (!empty($request->country_id) && $request->rescur != "All") {
             if (!empty($request->state_id) && !empty($request->area_id)) {
                 if ($request->rescur == "Rescuer")
-                    $newsfeed = Newsfeed::where('user_id', $userid)->where('resquer_areaid', $request->area_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+                    $newsfeed = Newsfeed::where('resquer_areaid', $request->area_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
                 else if ($request->rescur == "Rescuee")
-                    $newsfeed = Newsfeed::where('user_id', $userid)->where('user_areaid', $request->area_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+                    $newsfeed = Newsfeed::where('user_areaid', $request->area_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
                 else {
-                    $rnewsfeed = Newsfeed::where('user_id', $userid)->where('resquer_areaid', $request->area_id);
-                    $newsfeed = Newsfeed::where('user_id', $userid)->where('user_areaid', $request->area_id)->union($rnewsfeed)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+                    $rnewsfeed = Newsfeed::where('resquer_areaid', $request->area_id);
+                    $newsfeed = Newsfeed::where('user_areaid', $request->area_id)->union($rnewsfeed)->orderBy('newsfeeds.id', 'desc')->paginate(10);
                 }
             } else if (!empty($request->country_id)) {
                 if ($request->rescur == "Rescuer")
-                    $newsfeed = Newsfeed::where('user_id', $userid)->where('resquer_countryid', $request->country_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+                    $newsfeed = Newsfeed::where('resquer_countryid', $request->country_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
                 else if ($request->rescur == "Rescuee")
-                    $newsfeed = Newsfeed::where('user_id', $userid)->where('user_countryid', $request->country_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+                    $newsfeed = Newsfeed::where('user_countryid', $request->country_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
                 else {
-                    $rnewsfeed = Newsfeed::where('user_id', $userid)->where('resquer_countryid', $request->country_id);
-                    $newsfeed = Newsfeed::where('user_id', $userid)->where('user_countryid', $request->country_id)->union($rnewsfeed)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+                    $rnewsfeed = Newsfeed::where('resquer_countryid', $request->country_id);
+                    $newsfeed = Newsfeed::where('user_countryid', $request->country_id)->union($rnewsfeed)->orderBy('newsfeeds.id', 'desc')->paginate(10);
                 }
             }
         } else
-            $newsfeed = Newsfeed::where('user_id', $userid)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+            $newsfeed = $this->getNewsfeedPaginated();
         return $newsfeed;
     }
 

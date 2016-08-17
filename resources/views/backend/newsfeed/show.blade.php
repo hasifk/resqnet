@@ -4,28 +4,38 @@
 
 @section('page-header')
 <h1>
-    Company Management
+    News Feeds
 </h1>
 @endsection
 
 @section('content')
 
-@include('backend.admin.includes.partials.newsfeeds.header-buttons')
 
 <table class="table table-striped table-bordered table-hover">
 
     <tbody>
-
+        <tr>
+            <th>To</th>
+            <td>@if($newsfeed->resquer_countryid!=0 ||$newsfeed->resquer_areaid!=0  ) Rescuers @endif</td>
+        </tr>
+        @if(!empty($newsfeed->image_path))
+        <tr>
+            <th></th>
+            <td><img src="{{$newsfeed->image_path.'/'.$newsfeed->image_filename.'.'.$newsfeed->image_extension}}"</td>
+        </tr>
+        @endif
         <tr>
             <th>News</th>
             <td>{!! $newsfeed->news !!}</td>
-
         </tr>
-        <tr><th></th><th>
-                <a href="{{route('backend.admin.newsfeed.edit',$newsfeed->id)}}" class="btn btn-primary btn-xs">
+        <tr>
+            <th></th>
+            <th>
+                <a href="{{route('admin.newsfeed.newsfeedshow',$newsfeed->id)}}" class="btn btn-primary btn-xs">
                     Edit News
                 </a>
-            </th></tr>
+            </th>
+        </tr>
 
     </tbody>
 </table>

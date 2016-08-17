@@ -11,7 +11,15 @@ and open the template in the editor.
 .pagination{
     margin:0px 5px !important;
 }
+.m-t-20
+{
+    margin-top:20px;
+}
 .m-t-25
 {
     margin-top:25px;
+}
+label.control-label i {
+    color: gray;
+    font-weight: normal;
 }

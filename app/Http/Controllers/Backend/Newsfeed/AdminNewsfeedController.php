@@ -38,4 +38,11 @@ class AdminNewsfeedController extends Controller {
         ];
         return view('backend.newsfeed.index_new', $view);
     }
+     public function newsFeedShow($id) {
+      
+         $view = [
+            'newsfeed' => $this->newsfeedRepository->find($id),
+        ];
+        return view('backend.newsfeed.show', $view);
+    }
 }
