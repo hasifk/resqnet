@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Frontend\Access\User;
 
+use App\Models\Access\Doctor\Doctor;
 use App\Models\Access\User\User;
 use App\Models\Countries\City;
 use App\Models\Countries\Country;
@@ -68,6 +69,11 @@ class EloquentUserRepository implements UserRepositoryContract
             throw new GeneralException(trans('exceptions.frontend.auth.confirmation.not_found'));
 
         return $user;
+    }
+
+    public function findDoctor($id)
+    {
+        return Doctor::where('user_id',$id)->select(['id','name'])->get();
     }
 
     /**
@@ -171,6 +177,30 @@ class EloquentUserRepository implements UserRepositoryContract
         $user->save();
         return $user;
     }
+
+    public function saveDoctors($data)
+    {
+            $doctor=new Doctor;
+            $doctor->user_id=Auth::user()->id;
+            $doctor->name= (!empty($data['name'])) ? $data['name'] : '';
+            $doctor->surname=(!empty($data['surname'])) ? $data['surname'] : '';
+            $doctor->phone= (!empty($data['phone'])) ? $data['phone'] : '';
+            $doctor->save();
+            return $doctor;
+
+    }
+
+    public function updateDoctors($data)
+    {
+        $doctor=Doctor::find($data['id']);
+            $doctor->name= (!empty($data['name'])) ? $data['name'] : '';
+            $doctor->surname=(!empty($data['surname'])) ? $data['surname'] : '';
+            $doctor->phone= (!empty($data['phone'])) ? $data['phone'] : '';
+            $doctor->save();
+            return $doctor;
+
+    }
+
     public function updateMedicalCondition($data)
     {
         $user=User::find($data['id']);

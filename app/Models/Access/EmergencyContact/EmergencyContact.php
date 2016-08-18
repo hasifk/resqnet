@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Access\Doctors;
+namespace App\Models\Access\EmergencyContact;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class User
  * @package App\Models\Access\User
  */
-class Doctors extends Model {
+class EmergencyContact extends Model {
 
     //use RescureTypeRelationship,DepartmentAttribute;
 
@@ -18,7 +18,7 @@ class Doctors extends Model {
      * @var array
      */
     
-    protected $table = 'doctors';
+    protected $table = 'emergencycontacts';
     protected $guarded = ['id'];
 
 }

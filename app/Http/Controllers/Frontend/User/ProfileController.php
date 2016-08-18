@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontend\Access\ProfileImagesUploadRequest;
+use App\Http\Requests\Frontend\User\SaveDoctorsRequest;
 use App\Http\Requests\Frontend\User\UpdateMedicalConditionRequest;
 use App\Http\Requests\Frontend\User\UpdateProfileRequest;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
@@ -45,6 +46,43 @@ class ProfileController extends Controller
         if($this->user->profileImageUpload($request)):
 
             return response()->json(['status' => "Profile Image has been uploaded successfully"]);
+        else:
+            return response()->json(['status' => "Failed"]);
+        endif;
+
+
+    }
+
+    public function saveDoctors(SaveDoctorsRequest $request) {
+
+        if($this->user->saveDoctors($request->all())):
+
+            return response()->json(['status' => "Doctors info Updated successfully"]);
+        else:
+            return response()->json(['status' => "Failed"]);
+        endif;
+
+
+    }
+
+
+    public function editDoctors($id) {
+
+        if($doctors=$this->user->find($id)):
+
+            return response()->json(['doctors_info' => $doctors->toArray()]);
+        else:
+            return response()->json(['status' => "Failed"]);
+        endif;
+
+
+    }
+
+    public function updateDoctors(SaveDoctorsRequest $request) {
+
+        if($this->user->updateDoctors($request->all())):
+
+            return response()->json(['status' => "Doctors info Updated successfully"]);
         else:
             return response()->json(['status' => "Failed"]);
         endif;

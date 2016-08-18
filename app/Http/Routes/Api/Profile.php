@@ -3,4 +3,7 @@ $api->post('/saveprofileimage', 'App\Http\Controllers\Frontend\User\ProfileContr
 $api->post('/updateprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@updateProfile');
 $api->post('/updaterescuerprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@updaterescuerProfile');
 $api->get('/editprofile/{id}', 'App\Http\Controllers\Frontend\Auth\AuthController@editProfile');
+$api->post('/savedoctors', 'App\Http\Controllers\Frontend\User\ProfileController@saveDoctors');
+$api->get('/editdoctors/{id}', 'App\Http\Controllers\Frontend\User\ProfileController@editDoctors');
+$api->post('/updatedoctors', 'App\Http\Controllers\Frontend\User\ProfileController@updateDoctors');
 $api->post('/updatemedicalcondition', 'App\Http\Controllers\Frontend\User\ProfileController@updateMedicalCondition');
