@@ -18,7 +18,7 @@ class NewsfeedController extends Controller {
     /**
      * AdminCompanyController constructor.
      * @param EloquentCompanyRepository $companyRepository
-     */
+     */ 
 
     /**
      * Display a listing of the resource.
