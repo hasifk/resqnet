@@ -161,8 +161,8 @@ class EloquentUserRepository implements UserRepositoryContract
     }
 
     public function updateUserStub($data)
-    {
-        $user=User::find($data['id']);
+    { $user_id = $this->find(access()->id());
+        $user=User::find($user_id);
         $user->firstname= $data['firstname'];
         $user->lastname=(!empty($data['lastname'])) ? $data['lastname'] : '';
         $user->dob= (!empty($data['dob'])) ? $data['dob'] : '';
@@ -172,6 +172,15 @@ class EloquentUserRepository implements UserRepositoryContract
         $user->current_medical_conditions= (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '';
         $user->prior_medical_conditions=(!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '';
         $user->phone= (!empty($data['phone'])) ? $data['phone'] : '';
+        $user->save();
+        return $user;
+    }
+    public function updateMedicalCondition($data)
+    {
+        $user=User::find($data['user_id']);
+        $user->current_medical_conditions= (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '';
+        $user->prior_medical_conditions=(!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '';
+        $user->allergies= (!empty($data['allergies'])) ? $data['allergies'] : '';
         $user->save();
         return $user;
     }

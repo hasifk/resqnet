@@ -32,7 +32,7 @@ class CreateUsersTable extends Migration
             $table->longText('current_medical_conditions');
             $table->longText('prior_medical_conditions');
             $table->longText('allergies');
-            $table->integer('phone');
+            $table->string('phone');
             $table->string('subscription_id');
             $table->string('subscription_info');
             $table->string('subscription_plan');

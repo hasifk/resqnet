@@ -71,5 +71,6 @@ interface UserRepositoryContract
     public function states($id);
     public function cities($id);
     public function rescuerTypeDetails();
+    public function updateMedicalCondition($request);
     
 }

@@ -7,6 +7,8 @@ use App\Http\Requests\Frontend\Auth\RegisterRequest;
 use App\Http\Requests\Frontend\Auth\RegrescuerRequest;
 use App\Http\Requests\Frontend\Auth\UpdateRequest;
 use App\Http\Requests\Frontend\Auth\UpdaterescuerRequest;
+use Illuminate\Support\Facades\File;
+use Storage;
 
 /**
  * Class RegistersUsers
@@ -74,8 +76,16 @@ trait RegistersUsers
     /***************************************************************************************************************/
     public function editProfile($id)
     {
-        //$user = $this->user->find($id);
-        return response()->json(['user' => $this->user->find($id)->toArray()]);
+        $user = $this->user->find($id);
+        $url='';
+        if ($user->avatar_filename && $user->avatar_extension && $user->avatar_path) {
+            $url = Storage::disk('public')->url($user->avatar_path.$user->avatar_filename.$user->avatar_extension);
+           // $url =storage_path() . '/' . $user->avatar_path.$user->avatar_filename.$user->avatar_extension;
+           // $url = storage_path();
+            //Storage::disk('s3')->url($filename)
+           // $url = Storage::url($file);
+        }
+        return response()->json(['user' => $this->user->find($id)->toArray(),'url'=>$url]);
     }
     /***************************************************************************************************************/
     public function updateProfile(UpdateRequest $request)
