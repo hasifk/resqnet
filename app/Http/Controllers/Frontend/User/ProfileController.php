@@ -56,7 +56,7 @@ class ProfileController extends Controller
 
         if($this->user->updateMedicalCondition($request->all())):
 
-            return response()->json(['status' => "Profile Image has been uploaded successfully"]);
+            return response()->json(['status' => "Medical Condition Updated successfully"]);
         else:
             return response()->json(['status' => "Failed"]);
         endif;
