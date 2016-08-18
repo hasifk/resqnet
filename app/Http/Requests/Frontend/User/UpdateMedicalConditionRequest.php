@@ -28,7 +28,7 @@ class UpdateMedicalConditionRequest extends Request
     public function rules()
     {
         return [
-            'id'  => 'required',
+            'user_id'  => 'required',
         ];
     }
 }
