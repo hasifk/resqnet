@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontend\Access\ProfileImagesUploadRequest;
+use App\Http\Requests\Frontend\User\UpdateMedicalConditionRequest;
 use App\Http\Requests\Frontend\User\UpdateProfileRequest;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
 
@@ -16,6 +17,12 @@ class ProfileController extends Controller
     /**
      * @return mixed
      */
+
+    private $user;
+    public function __construct(UserRepositoryContract $user)
+    {
+        $this->user = $user;
+    }
     public function edit()
     {
         return view('frontend.user.profile.edit')
@@ -27,15 +34,27 @@ class ProfileController extends Controller
      * @param  UpdateProfileRequest $request
      * @return mixed
      */
-    public function update(UserRepositoryContract $user, UpdateProfileRequest $request)
+    public function update(UpdateProfileRequest $request)
     {
-        $user->updateProfile(access()->id(), $request->all());
+        $this->user->updateProfile(access()->id(), $request->all());
         return redirect()->route('frontend.user.dashboard')->withFlashSuccess(trans('strings.frontend.user.profile_updated'));
     }
 
-    public function saveProfileImage(UserRepositoryContract $user,ProfileImagesUploadRequest $request) {
+    public function saveProfileImage(ProfileImagesUploadRequest $request) {
 
-        if($user->profileImageUpload($request)):
+        if($this->user->profileImageUpload($request)):
+
+            return response()->json(['status' => "Profile Image has been uploaded successfully"]);
+        else:
+            return response()->json(['status' => "Failed"]);
+        endif;
+
+
+    }
+
+    public function updateMedicalCondition(UpdateMedicalConditionRequest $request) {
+
+        if($this->user->updateMedicalCondition($request->all())):
 
             return response()->json(['status' => "Profile Image has been uploaded successfully"]);
         else:

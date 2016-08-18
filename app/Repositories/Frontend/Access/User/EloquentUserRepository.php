@@ -175,6 +175,15 @@ class EloquentUserRepository implements UserRepositoryContract
         $user->save();
         return $user;
     }
+    public function updateMedicalCondition($data)
+    {
+        $user=User::find($data['id']);
+        $user->current_medical_conditions= (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '';
+        $user->prior_medical_conditions=(!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '';
+        $user->allergies= (!empty($data['allergies'])) ? $data['allergies'] : '';
+        $user->save();
+        return $user;
+    }
 
      public function profileImageUpload($request)
      {
