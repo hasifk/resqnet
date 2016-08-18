@@ -125,9 +125,11 @@
                 }
                 $.getJSON('/admin/newsfeedamount/', formData, function result(data) {
                     //console.log(data);
-                    if (data.type != 'All')
-                        types = type;
-                    var listitems = '<th>The Amount Of News Feeds Sent To  ' + types + ' In ' + data.place + ' is : ' + data.amount + '</th>';
+                    if (type != 'All')
+                        type = type;
+                    else
+                        type= "All Users";
+                    var listitems = '<th>The Amount Of News Feeds Sent To  ' + type + ' In ' + data.place + ' is : ' + data.amount + '</th>';
                     $('#newsamount').html(listitems);
 
                 });
