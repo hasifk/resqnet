@@ -16,7 +16,7 @@
     <tbody>
         <tr>
             <th>To</th>
-            <td>@if($newsfeed->resquer_countryid!=0 ||$newsfeed->resquer_areaid!=0  ) Rescuers @endif</td>
+            <td>@if($newsfeed->resquer_countryid!=0 ||$newsfeed->resquer_areaid!=0  ) Rescuers @else Users @endif</td>
         </tr>
         @if(!empty($newsfeed->image_path))
         <tr>
@@ -36,7 +36,6 @@
                 </a>
             </th>
         </tr>
-
     </tbody>
 </table>
 <div class="clearfix"></div>

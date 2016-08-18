@@ -17,8 +17,12 @@ interface StatisticsRepositoryContract {
     public function getUserAmount($request);
 
     public function getAmountOfUsers();
-    
+
     public function getAmountOfRescuers();
-    
+
     public function getRescuerAmount($request);
+
+    public function getAmountOfNewsfeeds();
+
+    public function getNewsfeedAmount($request);
 }

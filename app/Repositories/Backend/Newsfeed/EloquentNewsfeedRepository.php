@@ -14,13 +14,11 @@ class EloquentNewsfeedRepository {
     }
 
     public function save($request) {
-        $userid = Auth::user()->id;
-
         if ($request->has('id'))
             $obj = $this->find($request->id);
         else {
             $obj = new Newsfeed;
-            $obj->user_id = $userid;
+            $obj->user_id = $request->user_id;
             $obj->resquer_countryid = (!empty($request->resquer_countryid)) ? $request->resquer_countryid : '';
             $obj->resquer_areaid = (!empty($request->resquer_areaid)) ? $request->resquer_areaid : '';
             $obj->user_countryid = (!empty($request->user_countryid)) ? $request->user_countryid : '';
@@ -48,26 +46,21 @@ class EloquentNewsfeedRepository {
     }
 
     public function newsFeedSearch($request) {
-        if (!empty($request->country_id) && $request->rescur != "All") {
-            if (!empty($request->state_id) && !empty($request->area_id)) {
-                if ($request->rescur == "Rescuer")
-                    $newsfeed = Newsfeed::where('resquer_areaid', $request->area_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
-                else if ($request->rescur == "Rescuee")
-                    $newsfeed = Newsfeed::where('user_areaid', $request->area_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
-                else {
-                    $rnewsfeed = Newsfeed::where('resquer_areaid', $request->area_id);
-                    $newsfeed = Newsfeed::where('user_areaid', $request->area_id)->union($rnewsfeed)->orderBy('newsfeeds.id', 'desc')->paginate(10);
-                }
-            } else if (!empty($request->country_id)) {
-                if ($request->rescur == "Rescuer")
-                    $newsfeed = Newsfeed::where('resquer_countryid', $request->country_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
-                else if ($request->rescur == "Rescuee")
-                    $newsfeed = Newsfeed::where('user_countryid', $request->country_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
-                else {
-                    $rnewsfeed = Newsfeed::where('resquer_countryid', $request->country_id);
-                    $newsfeed = Newsfeed::where('user_countryid', $request->country_id)->union($rnewsfeed)->orderBy('newsfeeds.id', 'desc')->paginate(10);
-                }
-            }
+
+        if (!empty($request->state_id) && !empty($request->area_id)) {
+            if ($request->rescur == "Rescuer")
+                $newsfeed = Newsfeed::where('resquer_areaid', $request->area_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+            else if ($request->rescur == "Rescuee")
+                $newsfeed = Newsfeed::where('user_areaid', $request->area_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+            else
+                $newsfeed = Newsfeed::where('resquer_areaid', $request->area_id)->orWhere('user_areaid', $request->area_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+        } else if (!empty($request->country_id)) {
+            if ($request->rescur == "Rescuer")
+                $newsfeed = Newsfeed::where('resquer_countryid', $request->country_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+            else if ($request->rescur == "Rescuee")
+                $newsfeed = Newsfeed::where('user_countryid', $request->country_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+            else
+                $newsfeed = Newsfeed::where('resquer_countryid', $request->country_id)->orWhere('user_countryid', $request->country_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
         } else
             $newsfeed = $this->getNewsfeedPaginated();
         return $newsfeed;

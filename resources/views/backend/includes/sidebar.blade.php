@@ -71,7 +71,7 @@
                         <a href="#">Panic Signal tagged Rescuer</a>
                     </li>
                     <li class="{{ Active::pattern('admin/newsfeedsamount') }}">
-                        <a href="#">Amount of Newsfeeds</a>
+                        <a href="{{route('admin.statistics.amountofnewsfeeds')}}">Amount of Newsfeeds</a>
                     </li>
                     <li class="{{ Active::pattern('admin/responsetimepanic') }}">
                         <a href="#">Response time per panic signal</a>

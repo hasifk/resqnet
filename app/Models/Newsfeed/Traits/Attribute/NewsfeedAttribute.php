@@ -69,7 +69,7 @@ trait NewsfeedAttribute {
      */
     public function getDeleteButtonAttribute() {
         if (access()->allow('delete-newsfeed'))
-            return '<a href="'.route('admin.access.user.shows', $this->id).'" class="newsfeed_delete btn btn-xs btn-danger"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i></a>';
+            return '<a href="'.route('admin.newsfeed.newsfeedshow', $this->id).'" class="newsfeed_delete btn btn-xs btn-danger"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i></a>';
         return '';
     }
 
