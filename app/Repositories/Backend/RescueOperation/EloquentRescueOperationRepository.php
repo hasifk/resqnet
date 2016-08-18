@@ -79,6 +79,9 @@ class EloquentRescueOperationRepository {
     {
        return RescuerType::select(['id', 'type'])->get();
     }
+    public function rescuerLocationUpdates($param) {
+        
+    }
     
 
 }

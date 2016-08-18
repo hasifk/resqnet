@@ -29,7 +29,6 @@ class AdminNewsfeedController extends Controller {
         ];
         return view('backend.newsfeed.index', $view);
     }
-    
     public function newsFeedSearch(Request $request) {
       
          $view = [
