@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontend\Access\ProfileImagesUploadRequest;
 use App\Http\Requests\Frontend\User\SaveDoctorsRequest;
+use App\Http\Requests\Frontend\User\UpdateDoctorsRequest;
 use App\Http\Requests\Frontend\User\UpdateMedicalConditionRequest;
 use App\Http\Requests\Frontend\User\UpdateProfileRequest;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
@@ -78,7 +79,7 @@ class ProfileController extends Controller
 
     }
 
-    public function updateDoctors(SaveDoctorsRequest $request) {
+    public function updateDoctors(UpdateDoctorsRequest $request) {
 
         if($this->user->updateDoctors($request->all())):
 

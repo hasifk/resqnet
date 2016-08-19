@@ -8,7 +8,7 @@ use Dingo\Api\Http\FormRequest;
  * Class UpdateProfileRequest
  * @package App\Http\Requests\Frontend\User
  */
-class SaveDoctorsRequest extends FormRequest
+class UpdateDoctorsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,9 +28,9 @@ class SaveDoctorsRequest extends FormRequest
     public function rules()
     {
         return [
+            'id'  => 'required',
             'name'  => 'required',
             'phone'  => 'required',
-            'user_id'=>'required|unique:doctors'
         ];
     }
 }
