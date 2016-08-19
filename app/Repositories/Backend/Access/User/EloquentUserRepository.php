@@ -6,9 +6,9 @@ use App\Models\Access\User\User;
 use App\Models\Countries\City;
 use App\Models\Countries\Country;
 use App\Models\Countries\State;
-use App\Models\Access\Doctors\Doctors;
+use App\Models\Access\Doctor\Doctor;
 use App\Models\Access\HealthInsurance\HealthInsurance;
-use App\Models\Access\EmergencyContacts\EmergencyContacts;
+use App\Models\Access\EmergencyContact\EmergencyContact;
 use App\Exceptions\GeneralException;
 use App\Exceptions\Backend\Access\User\UserNeedsRolesException;
 use App\Repositories\Backend\Access\Role\RoleRepositoryContract;
@@ -354,11 +354,11 @@ class EloquentUserRepository implements UserRepositoryContract
    }
    public function doctorslists($id)
    {
-       return Doctors::where('user_id',$id)->get();
+       return Doctor::where('user_id',$id)->get();
    }
    public function emergencyContacts($id)
    {
-       return EmergencyContacts::where('user_id',$id)->first();
+       return EmergencyContact::where('user_id',$id)->first();
    }
     public function healthinsurance($id)
    {

@@ -15,19 +15,18 @@ use Storage;
 class EloquentRescueOperationRepository {
 
     public function findActiveRescuers($request) {  //find resquers within 5 KM
-        /*$result = json_decode(file_get_contents('php://input'));*/
-        $result=$request;
-        $type=RescuerType::where('id',$result->type)->value('type');
+        /* $result = json_decode(file_get_contents('php://input')); */
+        $result = $request;
+        $type = RescuerType::where('id', $result->type)->value('type');
         $role = Role::where('name', $type)->value('id');
         $userid = $result->userid;
         $userloc = $this->showLocation($userid); //app user id
         $actives = $this->activeUsers(); //getting all active users
         foreach ($actives as $active) {
             $user = User::find($active->user_id);
-            if ( $user->role_id == $role) {
-               if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 5) {
+            if ($user->role_id == $role) {
+                if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 5) {
                     $rescuers[] = $active->user_id;
-                    
                 }
             }
         }
@@ -37,9 +36,9 @@ class EloquentRescueOperationRepository {
         $obj->rescuee_id = $userid;
         $obj->rescuers_ids = json_encode($rescuers);
         $obj->save();
-        $userdetails['rescuee']=User::find($userid);
-        $userdetails['rescuer']=$rescuers;
-        $userdetails['active_rescuers_id']=$obj->id;
+        $userdetails['rescuee'] = User::find($userid);
+        $userdetails['rescuer'] = $rescuers;
+        $userdetails['active_rescuers_id'] = $obj->id;
         return $userdetails;
     }
 
@@ -48,17 +47,19 @@ class EloquentRescueOperationRepository {
     public function activeUsers() {
         return Location::where('status', 1)->get();
     }
+
     public function ActiveRescuer($id) {
         return ActiveRescuer::find($id);
     }
+
     public function showLocation($userid) {
         return Location::where('user_id', $userid)->where('status', 1)->first();
     }
 
     public function rescuersResponse($request) {
         $obj = new Operation;
-        /*$result = json_decode(file_get_contents('php://input'));*/
-        $result=$request;
+        /* $result = json_decode(file_get_contents('php://input')); */
+        $result = $request;
         $obj->active_rescuers_id = $result->active_rescuers_id;
         $obj->rescuee_id = $result->rescuee_id;
         $obj->rescuer_id = $result->rescuer_id;
@@ -75,13 +76,25 @@ class EloquentRescueOperationRepository {
 
         return round($distance, $decimals);
     }
-    public function rescueeForm()
-    {
-       return RescuerType::select(['id', 'type'])->get();
+
+    public function rescueeForm() {
+        return RescuerType::select(['id', 'type'])->get();
     }
-    public function rescuerLocationUpdates($param) {
-        
+
+    public function findUser($userid) {
+        return Location::where('user_id', $userid)->first();
     }
-    
+
+    public function rescuerLocationUpdates($request) {
+        $user = $this->findUser($request->user_id);
+        if (!empty($user))
+            $obj = $user;
+        else
+        $obj = new Location;
+        $obj->user_id = $request->user_id;
+        $obj->lat = $request->lat;
+        $obj->long = $request->long;
+        $obj->save();
+    }
 
 }
