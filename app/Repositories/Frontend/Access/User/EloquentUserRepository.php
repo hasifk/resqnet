@@ -73,7 +73,7 @@ class EloquentUserRepository implements UserRepositoryContract
 
     public function findDoctor($id)
     {
-        return Doctor::where('user_id',$id)->select(['id','name'])->get();
+        return Doctor::where('user_id',$id)->select(['id','name','surname','phone'])->get();
     }
 
     /**
