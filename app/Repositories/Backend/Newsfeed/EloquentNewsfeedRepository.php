@@ -42,7 +42,7 @@ class EloquentNewsfeedRepository {
             $obj->delete();
             return true;
         endif;
-        
+
     }
 
     public function newsFeedSearch($request) {

@@ -51,7 +51,7 @@ trait NewsfeedAttribute {
             }
             Storage::delete($this->image_path.$this->image_filename.'.'.$this->image_extension);
         }
-       Storage::disk('local')->deleteDirectory($this->image_path);
+      
     }
     
      /**

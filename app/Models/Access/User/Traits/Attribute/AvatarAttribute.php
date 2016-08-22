@@ -54,7 +54,7 @@ trait AvatarAttribute {
             }
             Storage::delete($this->avatar_path.$this->avatar_filename.'.'.$this->avatar_extension);
         }
-        Storage::disk('local')->deleteDirectory($this->avatar_path);
+
     }
 
 
