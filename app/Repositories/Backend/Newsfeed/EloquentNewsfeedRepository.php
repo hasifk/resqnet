@@ -42,8 +42,7 @@ class EloquentNewsfeedRepository {
             $obj->delete();
             return true;
         endif;
-        //Newsfeed::where('id', $id)->delete();
-        //return true;
+        
     }
 
     public function newsFeedSearch($request) {
