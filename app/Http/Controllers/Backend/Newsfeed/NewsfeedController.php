@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Newsfeed;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\Newsfeed\CreateNewsfeedRequest;
+use App\Models\Newsfeed\Newsfeed;
 use App\Repositories\Backend\Newsfeed\EloquentNewsfeedRepository;
 
 class NewsfeedController extends Controller {
@@ -28,7 +29,11 @@ class NewsfeedController extends Controller {
     public function showNewsfeeds() {
 
         $newsfeeds= Newsfeed::all();
-        return $newsfeeds->toArray();
+        if($newsfeeds):
+        return response()->json(['newsfeeds' => $newsfeeds->toArray()]);
+            else:
+                return response()->json(['newsfeeds' => 'No newfeed found']);
+                endif;
     }
 
     public function createNewsfeed(CreateNewsfeedRequest $request) {
