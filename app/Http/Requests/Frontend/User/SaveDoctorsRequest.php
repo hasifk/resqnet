@@ -29,7 +29,7 @@ class SaveDoctorsRequest extends FormRequest
     {
         return [
             'name'  => 'required',
-            'phone'  => 'required',
+            'phone'  => 'required|min:6|max:10|numeric',
             'user_id'=>'required|unique:doctors'
         ];
     }

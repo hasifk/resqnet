@@ -23,7 +23,9 @@ class CreateNewsfeedRequest extends FormRequest
     public function rules()
     {
         return [
-            'news' =>'required'
+            'news' =>'required',
+            'countryid' =>'required',
+            'areaid' =>'required'
         ];
     }
 }

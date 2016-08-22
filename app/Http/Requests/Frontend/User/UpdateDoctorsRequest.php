@@ -30,7 +30,7 @@ class UpdateDoctorsRequest extends FormRequest
         return [
             'id'  => 'required',
             'name'  => 'required',
-            'phone'  => 'required',
+            'phone'  => 'required|min:6|max:10|numeric',
         ];
     }
 }

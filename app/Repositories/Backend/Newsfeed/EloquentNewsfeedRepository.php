@@ -20,8 +20,8 @@ class EloquentNewsfeedRepository {
             $obj = new Newsfeed;
             $obj->user_id =access()->id();
             $obj->newsfeed_type = (!empty($request->newsfeed_type)) ? $request->newsfeed_type : '';
-            $obj->countryid = (!empty($request->resquer_countryid)) ? $request->resquer_countryid : '';
-            $obj->areaid = (!empty($request->resquer_areaid)) ? $request->resquer_areaid : '';
+            $obj->countryid = (!empty($request->countryid)) ? $request->countryid : '';
+            $obj->areaid = (!empty($request->areaid)) ? $request->areaid : '';
         }
 
         $obj->news = $request->news;
