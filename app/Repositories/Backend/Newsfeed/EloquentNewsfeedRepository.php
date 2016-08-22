@@ -23,7 +23,7 @@ class EloquentNewsfeedRepository {
             $obj->countryid = (!empty($request->countryid)) ? $request->countryid : '';
             $obj->areaid = (!empty($request->areaid)) ? $request->areaid : '';
         }
-
+        $obj->news_title = $request->news_title;
         $obj->news = $request->news;
 
         $obj->save();

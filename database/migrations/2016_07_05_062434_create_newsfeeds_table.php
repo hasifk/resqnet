@@ -18,6 +18,7 @@ class CreateNewsfeedsTable extends Migration
         $table->integer('user_id')->unsigned();
             $table->integer('countryid')->unsigned();
             $table->integer('areaid')->unsigned();
+            $table->string('news_title');
         $table->longText('news');
             $table->string('image_filename');
             $table->string('image_extension');
