@@ -39,9 +39,11 @@ class EloquentNewsfeedRepository {
         $obj = $this->find($id);
         if ($obj):
             $obj->detachNewsfeedImage();
+            $obj->delete();
+            return true;
         endif;
-        Newsfeed::where('id', $id)->delete();
-        return true;
+        //Newsfeed::where('id', $id)->delete();
+        //return true;
     }
 
     public function newsFeedSearch($request) {
