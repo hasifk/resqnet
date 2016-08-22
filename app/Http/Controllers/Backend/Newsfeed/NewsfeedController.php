@@ -41,7 +41,7 @@ class NewsfeedController extends Controller {
         return $this->newsfeedRepository->save($request)->toArray();
     }
     public function editNewsfeed($id) {
-        return $this->newsfeedRepository->find($id)->toArray();
+        return response()->json(['newsfeed' => $this->newsfeedRepository->find($id)->toArray()]);
     }
 
 
