@@ -14,11 +14,10 @@ class CreateNewsfeedsTable extends Migration
     {
         Schema::create('newsfeeds', function (Blueprint $table) {
         $table->increments('id')->unsigned();
+            $table->string('newsfeed_type');
         $table->integer('user_id')->unsigned();
-            $table->integer('resquer_countryid')->unsigned();
-            $table->integer('resquer_areaid')->unsigned();
-            $table->integer('user_countryid')->unsigned();
-            $table->integer('user_areaid')->unsigned();
+            $table->integer('countryid')->unsigned();
+            $table->integer('areaid')->unsigned();
         $table->longText('news');
             $table->string('image_filename');
             $table->string('image_extension');
