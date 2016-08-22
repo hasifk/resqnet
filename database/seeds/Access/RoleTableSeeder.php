@@ -61,7 +61,7 @@ class RoleTableSeeder extends Seeder
         //Paramedicals
         $role_model = config('access.role');
         $admin = new $role_model;
-        $admin->name = 'Ambulance';
+        $admin->name = 'Paramedic';
         $admin->all = false;
         $admin->sort = 4;
         $admin->created_at = Carbon::now();

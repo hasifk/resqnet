@@ -13,7 +13,7 @@ class PermissionRoleSeeder extends Seeder
     {
         $this->insertPoliceRolePermission();
         $this->insertFireRolePermission();
-        $this->insertAmbulanceRolePermission();
+        $this->insertParamedicRolePermission();
     }
 
     public function insertPoliceRolePermission(){
@@ -50,11 +50,11 @@ class PermissionRoleSeeder extends Seeder
         }
     }
 
-    public function insertAmbulanceRolePermission(){
+    public function insertParamedicRolePermission(){
         $permissions = ['view-backend', 'view-access-management','create-newsfeed','edit-newsfeed','show-newsfeed',
             'delete-newsfeed'];
 
-        $resquer_role_id = DB::table('roles')->where('name', 'Ambulance')->value('id');
+        $resquer_role_id = DB::table('roles')->where('name', 'Paramedic')->value('id');
 
         foreach ($permissions as $item) {
 

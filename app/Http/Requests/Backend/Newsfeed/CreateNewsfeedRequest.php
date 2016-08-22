@@ -25,7 +25,7 @@ class CreateNewsfeedRequest extends FormRequest
         return [
             'news' =>'required',
             'countryid' =>'required',
-            'areaid' =>'required'
+            'newsfeed_type' =>'required'
         ];
     }
 }

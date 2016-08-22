@@ -34,23 +34,36 @@ class NewsfeedController extends Controller {
             else:
                 return response()->json(['newsfeeds' => 'No newfeed found']);
                 endif;
+
     }
 
     public function createNewsfeed(CreateNewsfeedRequest $request) {
-
+  if(access()->hasRoles(['Police','Fire','Paramedic'])):
         return response()->json(['newsfeed' => $this->newsfeedRepository->save($request)->toArray()]);
+   else:
+       return response()->json(['status' => "You do not have access to do that"]);
+         endif;
     }
     public function editNewsfeed($id) {
+
+        if(access()->hasRoles(['Police','Fire','Paramedic'])):
         return response()->json(['newsfeed' => $this->newsfeedRepository->find($id)->toArray()]);
+        else:
+            return response()->json(['status' => "You do not have access to do that"]);
+        endif;
     }
 
 
      public function deleteNewsfeed($id) {
+         if(access()->hasRoles(['Police','Fire','Paramedic'])):
          if($this->newsfeedRepository->delete($id)):
              return response()->json(['status' => "Selected Newsfeed has been deleted successfully"]);
          else:
              return response()->json(['status' => "Failed"]);
              endif;
+         else:
+             return response()->json(['status' => "You do not have access to do that"]);
+         endif;
     }
 
 }
