@@ -47,19 +47,15 @@ class EloquentNewsfeedRepository {
     public function newsFeedSearch($request) {
 
         if (!empty($request->state_id) && !empty($request->area_id)) {
-            if ($request->rescur == "Rescuer")
-                $newsfeed = Newsfeed::where('resquer_areaid', $request->area_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
-            else if ($request->rescur == "Rescuee")
-                $newsfeed = Newsfeed::where('user_areaid', $request->area_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+            if ($request->newsfeed_type != "All")
+                $newsfeed = Newsfeed::where('areaid', $request->area_id)->where('newsfeed_type',$request->newsfeed_type)->orderBy('newsfeeds.id', 'desc')->paginate(10);
             else
-                $newsfeed = Newsfeed::where('resquer_areaid', $request->area_id)->orWhere('user_areaid', $request->area_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+                $newsfeed = Newsfeed::where('areaid', $request->area_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
         } else if (!empty($request->country_id)) {
-            if ($request->rescur == "Rescuer")
-                $newsfeed = Newsfeed::where('resquer_countryid', $request->country_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
-            else if ($request->rescur == "Rescuee")
-                $newsfeed = Newsfeed::where('user_countryid', $request->country_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+          if ($request->newsfeed_type != "All")
+                $newsfeed = Newsfeed::where('countryid', $request->country_id)->where('newsfeed_type',$request->newsfeed_type)->orderBy('newsfeeds.id', 'desc')->paginate(10); 
             else
-                $newsfeed = Newsfeed::where('resquer_countryid', $request->country_id)->orWhere('user_countryid', $request->country_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+                $newsfeed = Newsfeed::where('countryid', $request->country_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
         } else
             $newsfeed = $this->getNewsfeedPaginated();
         return $newsfeed;
