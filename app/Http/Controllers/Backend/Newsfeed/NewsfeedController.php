@@ -29,7 +29,7 @@ class NewsfeedController extends Controller {
     public function showNewsfeeds() {
 
         $newsfeeds= Newsfeed::all();
-        if($newsfeeds):
+        if(!empty($newsfeeds)):
         return response()->json(['newsfeeds' => $newsfeeds->toArray()]);
             else:
                 return response()->json(['newsfeeds' => 'No newfeed found']);
@@ -37,7 +37,7 @@ class NewsfeedController extends Controller {
     }
 
     public function createNewsfeed(CreateNewsfeedRequest $request) {
-        
+
         return response()->json(['newsfeed' => $this->newsfeedRepository->save($request)->toArray()]);
     }
     public function editNewsfeed($id) {
