@@ -18,11 +18,10 @@ class EloquentNewsfeedRepository {
             $obj = $this->find($request->id);
         else {
             $obj = new Newsfeed;
-            $obj->user_id = $request->user_id;
-            $obj->resquer_countryid = (!empty($request->resquer_countryid)) ? $request->resquer_countryid : '';
-            $obj->resquer_areaid = (!empty($request->resquer_areaid)) ? $request->resquer_areaid : '';
-            $obj->user_countryid = (!empty($request->user_countryid)) ? $request->user_countryid : '';
-            $obj->user_areaid = (!empty($request->user_areaid)) ? $request->user_areaid : '';
+            $obj->user_id =access()->id();
+            $obj->newsfeed_type = (!empty($request->newsfeed_type)) ? $request->newsfeed_type : '';
+            $obj->countryid = (!empty($request->resquer_countryid)) ? $request->resquer_countryid : '';
+            $obj->areaid = (!empty($request->resquer_areaid)) ? $request->resquer_areaid : '';
         }
 
         $obj->news = $request->news;
