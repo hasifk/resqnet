@@ -100,8 +100,8 @@ class AccessServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \App\Repositories\Backend\NewsFeed\NewsFeedRepositoryContract::class,
-            \App\Repositories\Backend\NewsFeed\EloquentNewsFeedRepository::class
+            \App\Repositories\Backend\Newsfeed\NewsFeedRepositoryContract::class,
+            \App\Repositories\Backend\Newsfeed\EloquentNewsfeedRepository::class
         );
 
         $this->app->bind(

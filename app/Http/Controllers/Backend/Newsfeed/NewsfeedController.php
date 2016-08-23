@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Backend\Newsfeed;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\Newsfeed\CreateNewsfeedRequest;
 use App\Models\Newsfeed\Newsfeed;
-use App\Repositories\Backend\Newsfeed\EloquentNewsfeedRepository;
 use App\Repositories\Backend\Newsfeed\NewsFeedRepositoryContract;
+
 
 class NewsfeedController extends Controller {
 

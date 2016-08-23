@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Backend\Newsfeed;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Backend\Newsfeed\EloquentNewsfeedRepository;
+
+use App\Repositories\Backend\Newsfeed\NewsFeedRepositoryContract;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class AdminNewsfeedController extends Controller {
     //private $newsfeedRepository;
      private $user;
      private $newsfeedRepository;
-    public function __construct(EloquentNewsfeedRepository $newsfeedRepository,UserRepositoryContract $user) {
+    public function __construct(NewsFeedRepositoryContract $newsfeedRepository,UserRepositoryContract $user) {
 
         $this->newsfeedRepository = $newsfeedRepository;
         $this->user = $user;
