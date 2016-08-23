@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\Newsfeed\CreateNewsfeedRequest;
 use App\Models\Newsfeed\Newsfeed;
 use App\Repositories\Backend\Newsfeed\EloquentNewsfeedRepository;
+use App\Repositories\Backend\Newsfeed\NewsFeedRepositoryContract;
 
 class NewsfeedController extends Controller {
 
@@ -14,7 +15,7 @@ class NewsfeedController extends Controller {
      */
     private $newsfeedRepository;
 
-    public function __construct(EloquentNewsfeedRepository $newsfeedRepository) {
+    public function __construct(NewsFeedRepositoryContract $newsfeedRepository) {
 
         $this->newsfeedRepository = $newsfeedRepository;
     }
@@ -36,6 +37,20 @@ class NewsfeedController extends Controller {
             return response()->json(['newsfeeds' => $newsfeeds->toArray()]);
         else:
             return response()->json(['newsfeeds' => 'No newfeed found']);
+        endif;
+    }
+
+    public function showMyNewsfeeds() {
+
+        if (access()->hasRoles(['Police', 'Fire', 'Paramedic'])):
+            $newsfeeds=$this->newsfeedRepository->getMyNewsFeeds();
+        if (!empty($newsfeeds)):
+            return response()->json(['newsfeeds' => $newsfeeds->toArray()]);
+        else:
+            return response()->json(['newsfeeds' => 'No newfeed found']);
+        endif;
+        else:
+            return response()->json(['status' => "You do not have access to do that"]);
         endif;
     }
 

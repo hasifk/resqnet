@@ -80,7 +80,8 @@ trait RegistersUsers
         $url='';
         if ($user->avatar_filename && $user->avatar_extension && $user->avatar_path) {
             //$url = Storage::disk('public')->url($user->avatar_path.$user->avatar_filename.'.'.$user->avatar_extension);
-            $url = \Image::make(storage_path().'/app/'. $user->avatar_path.$user->avatar_filename.'.'.$user->avatar_extension)->encode('data-url');
+            $url = \Image::make(storage_path().'/app/'. $user->avatar_path.$user->avatar_filename.'.'.$user->avatar_extension);
+            $url=base64_encode($url);
             //$url =storage_path() . '/app/' . $user->avatar_path.$user->avatar_filename.'.'.$user->avatar_extension;
            // $url = storage_path();
             //Storage::disk('s3')->url($filename)

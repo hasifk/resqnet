@@ -6,11 +6,16 @@ use App\Models\Newsfeed\Newsfeed;
 use Auth;
 use Event;
 
-class EloquentNewsfeedRepository {
+class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
 
     public function getNewsfeedPaginated() {
         return Newsfeed::orderBy('newsfeeds.id', 'desc')
                         ->paginate(10);
+    }
+
+    public function getMyNewsFeeds() {
+        return Newsfeed::where('user_id',access()->id())->orderBy('id', 'desc')
+            ->paginate(10);
     }
 
     public function save($request) {
