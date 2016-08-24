@@ -23,7 +23,6 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                                 $join->on('newsfeeds.countryid', '=', 'users.country_id')->orOn('newsfeeds.areaid', '=', 'users.area_id');
                                 
                             })
-                            ->where('newsfeeds.newsfeed_type','Rescuer')
                             ->orderBy('id', 'desc')->get();
         }
     }
