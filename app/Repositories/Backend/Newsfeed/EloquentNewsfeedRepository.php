@@ -19,10 +19,8 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
 
     public function getNewsFeeds() {
         if (access()->hasRoles(['Police', 'Fire', 'Paramedic'])) {
-            return Newsfeed::join('users', function ($join) {
-                                $join->on('newsfeeds.countryid', '=', 'users.country_id')->orOn('newsfeeds.areaid', '=', 'users.area_id');
-                                
-                            })
+            return Newsfeed::join('users','newsfeeds.countryid', '=', 'users.country_id')
+                            ->where('newsfeeds.newsfeed_type','Rescuer')
                             ->orderBy('id', 'desc')->get();
         }
     }
