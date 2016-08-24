@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Newsfeed;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\Newsfeed\CreateNewsfeedRequest;
+use App\Http\Requests\Backend\Newsfeed\UpdateNewsfeedRequest;
 use App\Models\Newsfeed\Newsfeed;
 use App\Repositories\Backend\Newsfeed\NewsFeedRepositoryContract;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
@@ -70,6 +71,15 @@ class NewsfeedController extends Controller {
 
         if (access()->hasRoles(['Police', 'Fire', 'Paramedic'])):
             return response()->json(['newsfeed' => $this->newsfeedRepository->find($id)->toArray()]);
+        else:
+            return response()->json(['status' => "You do not have access to do that"]);
+        endif;
+    }
+
+
+    public function updateNewsfeed(UpdateNewsfeedRequest $request) {
+        if (access()->hasRoles(['Police', 'Fire', 'Paramedic'])):
+            return response()->json(['newsfeed' => $this->newsfeedRepository->save($request)->toArray()]);
         else:
             return response()->json(['status' => "You do not have access to do that"]);
         endif;

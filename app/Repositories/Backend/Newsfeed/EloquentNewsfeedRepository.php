@@ -18,14 +18,14 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
     }
 
     public function getNewsFeeds() {
-        if ($request->newsfeed_type == "Rescuer") {
+        if (access()->hasRoles(['Police', 'Fire', 'Paramedic'])){
             return Newsfeed::join('users', function ($join) {
                                 $join->on('newsfeeds.countryid', '=', 'users.country_id')->orOn('newsfeeds.areaid', '=', 'users.area_id')
                                 ->join('assigned_roles', 'assigned_roles.user_id', '=', 'users.id')
-                                ->whereIn('assigned_roles.role_id', [2, 3, 4]);
+                                ->whereIn('assigned_roles.role_id', [1]);
                             })
                             ->orderBy('id', 'desc');
-        } else if ($request->newsfeed_type == "User") {
+        } else if (access()->hasRoles(['User'])){
             return Newsfeed::join('users', function ($join) {
                                 $join->on('newsfeeds.countryid', '=', 'users.country_id')->orOn('newsfeeds.areaid', '=', 'users.area_id')
                                 ->join('assigned_roles', 'assigned_roles.user_id', '=', 'users.id')
@@ -33,7 +33,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                             })
                             ->orderBy('id', 'desc');
         } else
-            Newsfeed::all();
+           return Newsfeed::all ();
     }
 
     public function save($request) {

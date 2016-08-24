@@ -1,14 +1,9 @@
 <?php
-
-namespace App\Http\Requests\Frontend\User;
+namespace App\Http\Requests\Backend\Newsfeed;
 
 use Dingo\Api\Http\FormRequest;
 
-/**
- * Class UpdateProfileRequest
- * @package App\Http\Requests\Frontend\User
- */
-class UpdateDoctorsRequest extends FormRequest
+class UpdateNewsfeedRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,9 +23,9 @@ class UpdateDoctorsRequest extends FormRequest
     public function rules()
     {
         return [
-            'id'  => 'required',
-            'name'  => 'required',
-            'phone'  => 'required',
+            'news' =>'required',
+            'news_title' =>'required',
+            'id'=>'required'
         ];
     }
 }

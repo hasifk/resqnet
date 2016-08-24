@@ -26,7 +26,8 @@ class CreateNewsfeedRequest extends FormRequest
             'news' =>'required',
             'news_title' =>'required',
             'countryid' =>'required',
-            'newsfeed_type' =>'required'
+            'newsfeed_type' =>'required',
+            'img'   =>'required|mimes:jpeg,bmp,png'
         ];
     }
 }
