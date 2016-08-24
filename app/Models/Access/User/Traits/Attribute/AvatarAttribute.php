@@ -17,7 +17,8 @@ trait AvatarAttribute {
             return;
         }
         $filePath = "public/profile/avatar/". $this->id."/";
-        $this->avatar_filename= pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);
+        /*$this->avatar_filename= pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);*/
+        $this->avatar_filename= $this->id;
         $this->avatar_extension=$avatarFile->getClientOriginalExtension();
         $this->avatar_path=$filePath;
         $this->save();
@@ -25,21 +26,21 @@ trait AvatarAttribute {
 
         Storage::deleteDirectory($filePath);
 
-        Storage::put($filePath . $avatarFile->getClientOriginalName(), file_get_contents($avatarFile));
-        Storage::setVisibility($filePath . $avatarFile->getClientOriginalName(), 'public');
+        Storage::put($filePath . $this->id, file_get_contents($avatarFile));
+        Storage::setVisibility($filePath . $this->id, 'public');
 
 
 // Resizing the newsfeed images
         $avatar = $avatarFile;
 
 
-        Storage::disk('local')->put($filePath . $avatar->getClientOriginalName(), file_get_contents($avatar));
+        Storage::disk('local')->put($filePath . $this->id, file_get_contents($avatar));
 
         foreach (config('image.customized.profile_avatar') as $image) {
             $avatar_image= \Image::make($avatar);
-            $avatar_image->resize($image['width'], $image['height'])->save(storage_path('app/' . $filePath . pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME) . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension()));
-            Storage::put($filePath . pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME) . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension(), file_get_contents(storage_path('app/' . $filePath . pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME) . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension())));
-            Storage::setVisibility($filePath . pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME) . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension(), 'public');
+            $avatar_image->resize($image['width'], $image['height'])->save(storage_path('app/' . $filePath . $this->id . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension()));
+            Storage::put($filePath . $this->id . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension(), file_get_contents(storage_path('app/' . $filePath . $this->id . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension())));
+            Storage::setVisibility($filePath . $this->id. $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension(), 'public');
         }
 
 
