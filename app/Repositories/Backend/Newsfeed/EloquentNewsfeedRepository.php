@@ -21,7 +21,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
         if (access()->hasRoles(['Police', 'Fire', 'Paramedic'])) {
             return Newsfeed::join('users','newsfeeds.countryid', '=', 'users.country_id')
                             ->where('newsfeeds.newsfeed_type','Rescuer')
-                            ->orderBy('id', 'desc')->get();
+                            ->get();
         }
     }
 
