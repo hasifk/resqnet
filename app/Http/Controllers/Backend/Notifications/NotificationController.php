@@ -36,6 +36,7 @@ class NotificationController extends Controller {
         $view = [
             'notification' => $this->notification->show($id),
             'category' => $this->notification->category(),
+            'countries' => $this->user->countries(),
         ];
         return view('backend.notifications.index', $view);
     }
