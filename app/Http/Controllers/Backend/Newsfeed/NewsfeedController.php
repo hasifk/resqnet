@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\Newsfeed\CreateNewsfeedRequest;
 use App\Models\Newsfeed\Newsfeed;
 use App\Repositories\Backend\Newsfeed\NewsFeedRepositoryContract;
+use App\Repositories\Frontend\Access\User\UserRepositoryContract;
 
 
 class NewsfeedController extends Controller {
@@ -15,9 +16,10 @@ class NewsfeedController extends Controller {
      */
     private $newsfeedRepository;
 
-    public function __construct(NewsFeedRepositoryContract $newsfeedRepository) {
+    public function __construct(NewsFeedRepositoryContract $newsfeedRepository,UserRepositoryContract $user) {
 
         $this->newsfeedRepository = $newsfeedRepository;
+        $this->user = $user;
     }
 
     /**
@@ -32,7 +34,9 @@ class NewsfeedController extends Controller {
      */
     public function showNewsfeeds() {
 
-        $newsfeeds = Newsfeed::all();
+        
+        
+        $newsfeeds = $this->newsfeedRepository->getNewsFeeds();
         if (!empty($newsfeeds)):
             return response()->json(['newsfeeds' => $newsfeeds->toArray()]);
         else:
