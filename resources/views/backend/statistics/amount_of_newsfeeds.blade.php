@@ -7,7 +7,7 @@
 
 @section('content')
 
-<h3>Amount of Rescuers</h3>
+<h3>Amount of NewsFeeds</h3>
 
 <section class="content">
     <div class="row">

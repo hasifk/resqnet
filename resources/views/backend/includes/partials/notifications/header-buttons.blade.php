@@ -17,7 +17,8 @@
                 if (in_array($value->id, ['3', '4', '5'])) {
                     ?>
                     <li>
-                        <a href="{{route('backend.admin.notifications').'/'.$value->id}}">{{ $value->category }}</a>
+                       {{-- <a href="{{route('backend.admin.notifications').'/'.$value->id}}">{{ $value->category }}</a>--}}
+                        <a href="#">{{ $value->category }}</a>
                     </li>
                     <li class="divider"></li>
                 <?php } ?>
