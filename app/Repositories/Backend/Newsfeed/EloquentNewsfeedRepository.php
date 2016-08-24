@@ -18,8 +18,9 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
     }
 
     public function getNewsFeeds() {
-        
-           return Newsfeed::all();
+        if (access()->hasRoles(['Police', 'Fire', 'Paramedic'])){
+            return Newsfeed::all();
+        } 
     }
 
     public function save($request) {
