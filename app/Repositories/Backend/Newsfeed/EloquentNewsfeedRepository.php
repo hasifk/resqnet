@@ -33,7 +33,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                             })
                             ->orderBy('id', 'desc');
         } else
-           return Newsfeed::all ();
+           return Newsfeed::all();
     }
 
     public function save($request) {
