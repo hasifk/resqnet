@@ -23,8 +23,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                                 $join->on('newsfeeds.countryid', '=', 'users.country_id')->orOn('newsfeeds.areaid', '=', 'users.area_id');
                             })->join('assigned_roles', 'assigned_roles.user_id', '=', 'users.id')
                             ->whereIn('assigned_roles.role_id', [2, 3, 4])
-                            ->where('newsfeeds.newsfeed_type', 'Rescuer')
-                                    ->orWhere('newsfeeds.newsfeed_type', 'All')
+                            ->whereIn('newsfeeds.newsfeed_type', ['Rescuer','All'])
                             ->get();
         }
         else if(access()->hasRoles(['User'])){
@@ -32,8 +31,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                                 $join->on('newsfeeds.countryid', '=', 'users.country_id')->orOn('newsfeeds.areaid', '=', 'users.area_id');
                             })->join('assigned_roles', 'assigned_roles.user_id', '=', 'users.id')
                             ->where('assigned_roles.role_id', 5)
-                            ->where('newsfeeds.newsfeed_type', 'User')
-                                    ->orWhere('newsfeeds.newsfeed_type', 'All')
+                            ->whereIn('newsfeeds.newsfeed_type', ['User','All'])
                             ->get();
         }
     }
@@ -44,8 +42,8 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
         else {
             $obj = new Newsfeed;
             $obj->user_id = access()->id();
-            $obj->newsfeed_type = (!empty($request->newsfeed_type)) ? $request->newsfeed_type : '';
-            $obj->countryid = (!empty($request->countryid)) ? $request->countryid : '';
+            $obj->newsfeed_type = $request->newsfeed_type;
+            $obj->countryid = $request->countryid;
             $obj->areaid = (!empty($request->areaid)) ? $request->areaid : '';
         }
         $obj->newsfeed_type = (!empty($request->newsfeed_type)) ? $request->newsfeed_type : '';
