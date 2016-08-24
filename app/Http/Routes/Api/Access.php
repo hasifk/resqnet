@@ -1,2 +1,5 @@
 <?php
-$api->post('password/change', 'App\Http\Controllers\Frontend\Auth\PasswordController@changePassword')->name('auth.password.update');
+$api->get('password/reset/{token?}', 'App\Http\Controllers\Frontend\Auth\PasswordController@showResetForm')
+    ->name('auth.password.reset');
+$api->post('password/email', 'App\Http\Controllers\Frontend\Auth\PasswordController@sendResetLinkEmail');
+$api->post('password/reset', 'App\Http\Controllers\Frontend\Auth\PasswordController@reset');
