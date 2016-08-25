@@ -32,7 +32,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                             })->join('assigned_roles', 'assigned_roles.user_id', '=', 'users.id')
                             ->where('assigned_roles.role_id', 5)
                             ->whereIn('newsfeeds.newsfeed_type', ['User','All'])
-                            ->select('newsfeeds.id')->get();
+                            ->select('newsfeeds.id','newsfeeds.news_title')->get();
         }
     }
 
