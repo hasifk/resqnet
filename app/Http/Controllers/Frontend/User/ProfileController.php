@@ -43,14 +43,16 @@ class ProfileController extends Controller
     }
 
     public function saveProfileImage(ProfileImagesUploadRequest $request) {
-
+        if (access()->hasRoles(['Police', 'Fire', 'Paramedic'])):
         if($this->user->profileImageUpload($request)):
 
             return response()->json(['status' => "Profile Image has been uploaded successfully"]);
         else:
             return response()->json(['status' => "Failed"]);
         endif;
-
+        else:
+            return response()->json(['status' => "You do not have access to do that"]);
+        endif;
 
     }
 
