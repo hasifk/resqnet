@@ -1,0 +1,21 @@
+{
+  "name": "bower.json",
+  "description": "resqnet",
+  "main": "index.js",
+  "authors": [
+    "ajayjvayalil"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/leejop/resqnet",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-datepicker": "^1.6.4"
+  }
+}

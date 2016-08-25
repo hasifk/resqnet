@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Backend\RescuerOperation;
+namespace App\Http\Requests\Backend\Location;
 
 use Dingo\Api\Http\FormRequest;
 
-class RescuerOperation extends FormRequest
+class UpdateLocationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,9 @@ class RescuerOperation extends FormRequest
     public function rules()
     {   
         return [
-            'active_rescuers_id' =>'required',
-            'rescuee_id' =>'required',
-            'type' =>'rescuer_id'
+            'user_id' =>'required',
+            'lat' =>'required',
+            'long' =>'required'
         ];
     }
 }
