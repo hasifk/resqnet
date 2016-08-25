@@ -77,4 +77,13 @@ class StatisticsController extends Controller {
         ];
         return $view;
     }
+    /********************************************************************************************************/
+    public function amountOfPanicSignals() {
+        $view = [
+            'countries' => $this->user->countries(),
+            'rescuertype' => $this->user->rescuerTypeDetails(),
+            'amount'=> $this->statistics->getAmountOfNewsfeeds(),
+        ];
+        return view('backend.statistics.amount_of_panicsignals', $view);
+    }
 }
