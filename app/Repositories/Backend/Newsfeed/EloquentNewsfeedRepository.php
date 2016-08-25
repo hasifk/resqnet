@@ -24,7 +24,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                             })->join('assigned_roles', 'assigned_roles.user_id', '=', 'users.id')
                             ->whereIn('assigned_roles.role_id', [2, 3, 4])
                             ->whereIn('newsfeeds.newsfeed_type', ['Rescuer','All'])
-                            ->select('newsfeeds.*')->get();
+                            ->select('newsfeeds.id')->get();
         }
         else if(access()->hasRoles(['User'])){
             return Newsfeed::join('users', function ($join) {
@@ -32,7 +32,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                             })->join('assigned_roles', 'assigned_roles.user_id', '=', 'users.id')
                             ->where('assigned_roles.role_id', 5)
                             ->whereIn('newsfeeds.newsfeed_type', ['User','All'])
-                            ->select('newsfeeds.*')->get();
+                            ->select('newsfeeds.id')->get();
         }
     }
 
