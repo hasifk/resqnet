@@ -55,6 +55,13 @@ class NewsfeedController extends Controller {
             return response()->json(['status' => "You do not have access to do that"]);
         endif;
     }
+    public function showNewsfeed($id) {
+        if (access()->hasRoles(['Police', 'Fire', 'Paramedic','User'])):
+            return response()->json(['newsfeed' => $this->newsfeedRepository->find($id)->toArray()]);
+        else:
+            return response()->json(['status' => "You do not have access to do that"]);
+        endif;
+    }
 
     public function createNewsfeed(CreateNewsfeedRequest $request) {
         if (access()->hasRoles(['Police', 'Fire', 'Paramedic'])):
