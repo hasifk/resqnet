@@ -54,6 +54,17 @@ class ProfileController extends Controller
 
     }
 
+    /***************************************************************************************************************/
+    public function getAvatar($image)
+    {
+        $id=access()->id();
+
+        return \Image::make(storage_path() . '/app/public/profile/avatar/'.$id.'/' . $image)->response('jpg');
+
+
+    }
+
+
     public function saveDoctors(SaveDoctorsRequest $request) {
 
         if($this->user->saveDoctors($request->all())):

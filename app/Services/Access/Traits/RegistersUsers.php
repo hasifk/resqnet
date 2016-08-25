@@ -76,29 +76,13 @@ trait RegistersUsers
     /***************************************************************************************************************/
     public function editProfile($id)
     {
-        $user = $this->user->find($id);
+        //$user = $this->user->find($id);
+        $user=access()->user();
         $url='';
         if ($user->avatar_filename && $user->avatar_extension && $user->avatar_path) {
-            //$url = Storage::disk('public')->url($user->avatar_path.$user->avatar_filename.'.'.$user->avatar_extension);
-            //$url = \Image::make(storage_path().'/app/'. $user->avatar_path.$user->avatar_filename.'.'.$user->avatar_extension)->encode('data-url');
-            //$url=base64_encode($url);
-            $url =storage_path() . '/app/' . $user->avatar_path.$user->avatar_filename.'.'.$user->avatar_extension;
-           // $url = storage_path();
-            //Storage::disk('s3')->url($filename)
-           //$url = Storage::url('/app/' . $user->avatar_path.$user->avatar_filename.'.'.$user->avatar_extension);
-           /* $path = storage_path() . '/app/' . $user->avatar_path.$user->avatar_filename.'.'.$user->avatar_extension;
 
-            if(!File::exists($path)) abort(404);
+        $url=url('api/avatar/'.$user->avatar_filename.'.'.$user->avatar_extension);
 
-            $file = File::get($path);
-            $type = File::mimeType($path);
-
-            $response = \Illuminate\Support\Facades\Response::make($file, 200);
-            $response->header("Content-Type", $type);
-            $url=$response;*/
-            //$url=utf8_encode($url);
-         // return $url;
-          // $url= file_get_contents(storage_path().'/app/'. $user->avatar_path.$user->avatar_filename.'.'.$user->avatar_extension);
         }
       return response()->json(['user' => $this->user->find($id)->toArray(),'profile_image_src'=>$url]);
     }
@@ -114,4 +98,6 @@ trait RegistersUsers
     {
         return response()->json(['user' => $this->user->updateUserStub      ($request->all())->toArray()]);
     }
+
+    /***************************************************************************************************************/
 }
