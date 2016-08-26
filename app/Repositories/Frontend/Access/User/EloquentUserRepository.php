@@ -359,7 +359,7 @@ class EloquentUserRepository implements UserRepositoryContract
     public function states($id) {   
             return State::where('country_id', $id)->get();
     }
-    public function cities($id) {   
+    public function cities($id) {
             return City::where('state_id',$id)
                 ->select(['id', 'name'])
                 ->get();

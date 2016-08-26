@@ -65,7 +65,7 @@
                         <a href="{{route('admin.statistics.amountofpanicsignals')}}">Amount of Panic Signals</a>
                     </li>
                     <li class="{{ Active::pattern('admin/panicrescuers') }}">
-                        <a href="#">List of rescuers within 5km</a>
+                        <a href="{{route('admin.statistics.listsofrescuers')}}">List of rescuers within 5km</a>
                     </li>
                     <li class="{{ Active::pattern('admin/taggedrescuer') }}">
                         <a href="#">Panic Signal tagged Rescuer</a>
