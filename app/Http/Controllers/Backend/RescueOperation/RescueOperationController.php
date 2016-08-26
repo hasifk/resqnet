@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\RescueOperation;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Backend\Location\UpdateLocationRequest;
 use App\Repositories\Backend\RescueOperation\EloquentRescueOperationRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests\Backend\RescueeOperation\RescueeOperation;
@@ -47,8 +48,8 @@ class RescueOperationController extends Controller {
     {
        return $this->rescueOperationRepository->rescueeForm();  //save the resquer details once they accepted rescuee requests
     }
-    public function rescuerLocationUpdates($request) {
-        return $this->rescueOperationRepository->rescuerLocationUpdates();
+    public function rescuerLocationUpdates(UpdateLocationRequest $request) {
+        return $this->rescueOperationRepository->rescuerLocationUpdates($request);
     }
 
 }

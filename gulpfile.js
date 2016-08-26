@@ -71,7 +71,8 @@ elixir(function(mix) {
          'plugins.js',
          'backend/app.js',
          'backend/plugin/toastr/toastr.min.js',
-         'backend/custom.js'
+         'backend/custom.js',
+         'bootstrap-datepicker/js/bootstrap-datepicker.js'
      ], 'public/js/backend.js')
 
     /**

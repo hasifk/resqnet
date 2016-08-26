@@ -76,15 +76,13 @@ trait RegistersUsers
     /***************************************************************************************************************/
     public function editProfile($id)
     {
-        //$user = $this->user->find($id);
-        $user=access()->user();
-        $url='';
-        if ($user->avatar_filename && $user->avatar_extension && $user->avatar_path) {
+        $user1 = $this->user->find($id);
+        $user= $user1->toArray();
+        if ($user1->avatar_filename && $user1->avatar_extension && $user1->avatar_path) {
 
-        $url=url('api/avatar/'.$user->avatar_filename.'.'.$user->avatar_extension);
-
+            $user['profile_image_src']=url('api/avatar/'.$user1->id.'/'.$user1->avatar_filename.'.'.$user1->avatar_extension);
         }
-      return response()->json(['user' => $this->user->find($id)->toArray(),'profile_image_src'=>$url]);
+      return response()->json(['user' => $user]);
     }
     /***************************************************************************************************************/
     public function updateProfile(UpdateRequest $request)

@@ -25,45 +25,42 @@ class ProfileController extends Controller
     {
         $this->user = $user;
     }
+    /***************************************************************************************************************/
     public function edit()
     {
         return view('frontend.user.profile.edit')
             ->withUser(access()->user());
     }
 
-    /**
-     * @param  UserRepositoryContract         $user
-     * @param  UpdateProfileRequest $request
-     * @return mixed
-     */
+    /***************************************************************************************************************/
     public function update(UpdateProfileRequest $request)
     {
         $this->user->updateProfile(access()->id(), $request->all());
         return redirect()->route('frontend.user.dashboard')->withFlashSuccess(trans('strings.frontend.user.profile_updated'));
     }
-
+    /***************************************************************************************************************/
     public function saveProfileImage(ProfileImagesUploadRequest $request) {
-
+        if (access()->hasRoles(['Police', 'Fire', 'Paramedic'])):
         if($this->user->profileImageUpload($request)):
 
             return response()->json(['status' => "Profile Image has been uploaded successfully"]);
         else:
             return response()->json(['status' => "Failed"]);
         endif;
-
+        else:
+            return response()->json(['status' => "You do not have access to do that"]);
+        endif;
 
     }
 
     /***************************************************************************************************************/
-    public function getAvatar($image)
+    public function getAvatar($id,$image)
     {
-        $id=access()->id();
 
         return \Image::make(storage_path() . '/app/public/profile/avatar/'.$id.'/' . $image)->response('jpg');
 
-
     }
-
+    /***************************************************************************************************************/
 
     public function saveDoctors(SaveDoctorsRequest $request) {
 
@@ -77,7 +74,7 @@ class ProfileController extends Controller
 
     }
 
-
+    /***************************************************************************************************************/
     public function editDoctors($id) {
 
         if($doctors=$this->user->findDoctor($id)):
@@ -89,7 +86,7 @@ class ProfileController extends Controller
 
 
     }
-
+    /***************************************************************************************************************/
     public function updateDoctors(UpdateDoctorsRequest $request) {
 
         if($this->user->updateDoctors($request->all())):
@@ -101,7 +98,7 @@ class ProfileController extends Controller
 
 
     }
-
+    /***************************************************************************************************************/
     public function updateMedicalCondition(UpdateMedicalConditionRequest $request) {
 
         if($this->user->updateMedicalCondition($request->all())):

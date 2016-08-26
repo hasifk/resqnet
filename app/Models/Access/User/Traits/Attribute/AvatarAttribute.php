@@ -32,7 +32,7 @@ trait AvatarAttribute {
 
 // Resizing the newsfeed images
         $avatar = $avatarFile;
-        
+
 
         foreach (config('image.customized.profile_avatar') as $image) {
             $avatar_image= \Image::make($avatar);
