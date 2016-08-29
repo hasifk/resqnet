@@ -17,17 +17,15 @@ trait AvatarAttribute {
             return;
         }
         $filePath = "public/profile/avatar/". $this->id."/";
-        /*$this->avatar_filename= pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);*/
-        $this->avatar_filename= time();
-        $this->avatar_extension=$avatarFile->getClientOriginalExtension();
-        $this->avatar_path=$filePath;
-        $this->save();
 
 
-        Storage::deleteDirectory($filePath);
+       if(Storage::deleteDirectory($filePath)):
 
-        Storage::put($filePath . time().'.'.$avatarFile->getClientOriginalExtension(), file_get_contents($avatarFile));
-        Storage::setVisibility($filePath . time().'.'.$avatarFile->getClientOriginalExtension(), 'public');
+        if(Storage::put($filePath . time().'.'.$avatarFile->getClientOriginalExtension(), file_get_contents($avatarFile))):
+       if(Storage::setVisibility($filePath . time().'.'.$avatarFile->getClientOriginalExtension(), 'public')):
+
+
+
 
 
 // Resizing the newsfeed images
@@ -41,6 +39,13 @@ trait AvatarAttribute {
             Storage::setVisibility($filePath . time(). $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension(), 'public');
         }
 
+                $this->avatar_filename= time();
+                $this->avatar_extension=$avatarFile->getClientOriginalExtension();
+                $this->avatar_path=$filePath;
+                $this->save();
+                endif;
+            endif;
+           endif;
 
     }
 
