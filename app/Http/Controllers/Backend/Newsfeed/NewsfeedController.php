@@ -57,7 +57,13 @@ class NewsfeedController extends Controller {
     }
     public function showNewsfeed($id) {
         if (access()->hasRoles(['Police', 'Fire', 'Paramedic','User'])):
-            return response()->json(['newsfeed' => $this->newsfeedRepository->find($id)->toArray()]);
+            $newsfeed1 = $this->newsfeedRepository->find($id);
+            $newsfeed= $newsfeed1->toArray();
+            if ($newsfeed1->image_filename && $newsfeed1->image_extension && $newsfeed1->image_path) {
+
+                $newsfeed['newsfeed_image_src']=url('/image/'.$newsfeed1->id.'/'.$newsfeed1->image_filename.'.'.$newsfeed1->image_extension);
+            }
+            return response()->json(['newsfeed' => $newsfeed]);
         else:
             return response()->json(['status' => "You do not have access to do that"]);
         endif;
