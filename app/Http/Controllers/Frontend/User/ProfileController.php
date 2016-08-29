@@ -59,7 +59,7 @@ class ProfileController extends Controller
     {
         try
         {
-            $img = \Image::make(storage_path() . '/app/public/profile/avatar/'.$id.'/' . $image)->response('jpg');
+            $img = \Image::make(storage_path() . '/app/public/profile/avatar/'.$id.'/' . $image)->response();
         }
         catch(\Exception $e)
         {
