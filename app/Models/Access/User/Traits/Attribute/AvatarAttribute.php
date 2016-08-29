@@ -19,7 +19,7 @@ trait AvatarAttribute {
         $filePath = "public/profile/avatar/". $this->id."/";
 
        $file_name=time();
-       if(Storage::deleteDirectory($filePath)):
+        Storage::deleteDirectory($filePath);
 
         if(Storage::put($filePath . $file_name.'.'.$avatarFile->getClientOriginalExtension(), file_get_contents($avatarFile))):
        if(Storage::setVisibility($filePath . $file_name.'.'.$avatarFile->getClientOriginalExtension(), 'public')):
@@ -45,7 +45,7 @@ trait AvatarAttribute {
                 $this->save();
                 endif;
             endif;
-           endif;
+
 
     }
 

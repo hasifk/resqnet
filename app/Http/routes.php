@@ -15,8 +15,10 @@ Route::group(['middleware' => 'web'], function() {
     Route::group(['namespace' => 'Frontend'], function () {
         require (__DIR__ . '/Routes/Frontend/Frontend.php');
         require (__DIR__ . '/Routes/Frontend/Access.php');
-        require (__DIR__ . '/Routes/Frontend/Profile.php');
+
     });
+
+    require (__DIR__ . '/Routes/Images/Images.php');
 });
 
 /**

@@ -16,30 +16,37 @@ trait NewsfeedAttribute {
             return;
         }
         $filePath = "public/newsfeed/image/". $this->id."/";
-        $this->image_filename= pathinfo($newsfeedFile->getClientOriginalName(), PATHINFO_FILENAME);
-        $this->image_extension=$newsfeedFile->getClientOriginalExtension();
-        $this->image_path=$filePath;
-        $this->save();
+        $file_name=time();
+
 
 
         Storage::deleteDirectory($filePath);
 
-        Storage::put($filePath . $newsfeedFile->getClientOriginalName(), file_get_contents($newsfeedFile));
-        Storage::setVisibility($filePath . $newsfeedFile->getClientOriginalName(), 'public');
+        if(Storage::put($filePath . $file_name.'.'.$newsfeedFile->getClientOriginalExtension(), file_get_contents($newsfeedFile))):
+        if(Storage::setVisibility($filePath . $file_name.'.'.$newsfeedFile->getClientOriginalExtension(), 'public')):
 
 
 // Resizing the newsfeed images
         $avatar = $newsfeedFile;
 
 
-        Storage::disk('local')->put($filePath . $avatar->getClientOriginalName(), file_get_contents($avatar));
 
         foreach (config('image.customized.newsfeed_image') as $image) {
             $newsfeed_image= \Image::make($avatar);
-            $newsfeed_image->resize($image['width'], $image['height'])->save(storage_path('app/' . $filePath . pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME) . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension()));
-            Storage::put($filePath . pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME) . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension(), file_get_contents(storage_path('app/' . $filePath . pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME) . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension())));
-            Storage::setVisibility($filePath . pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME) . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension(), 'public');
+            $newsfeed_image->resize($image['width'], $image['height'])->save(storage_path('app/' . $filePath . $file_name . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension()));
+            Storage::put($filePath . $file_name . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension(), file_get_contents(storage_path('app/' . $filePath . $file_name . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension())));
+            Storage::setVisibility($filePath . $file_name .  $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension(), 'public');
         }
+                $this->image_filename= $file_name;
+                $this->image_extension=$newsfeedFile->getClientOriginalExtension();
+                $this->image_path=$filePath;
+                $this->save();
+        endif;
+            endif;
+
+
+
+
     }
 
 

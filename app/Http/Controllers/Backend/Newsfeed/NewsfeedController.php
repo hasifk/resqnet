@@ -74,7 +74,13 @@ class NewsfeedController extends Controller {
     public function editNewsfeed($id) {
 
         if (access()->hasRoles(['Police', 'Fire', 'Paramedic'])):
-            return response()->json(['newsfeed' => $this->newsfeedRepository->find($id)->toArray()]);
+            $newsfeed1 = $this->newsfeedRepository->find($id);
+            $newsfeed= $newsfeed1->toArray();
+            if ($newsfeed1->image_filename && $newsfeed1->image_extension && $newsfeed1->image_path) {
+
+                $newsfeed['newsfeed_image_src']=url('/image/'.$newsfeed1->id.'/'.$newsfeed1->image_filename.'.'.$newsfeed1->image_extension);
+            }
+            return response()->json(['newsfeed' => $newsfeed]);
         else:
             return response()->json(['status' => "You do not have access to do that"]);
         endif;
@@ -99,6 +105,20 @@ class NewsfeedController extends Controller {
         else:
             return response()->json(['status' => "You do not have access to do that"]);
         endif;
+    }
+
+    public function getImage($id,$image)
+    {
+        try
+        {
+            $img = \Image::make(storage_path() . '/app/public/newsfeed/image/'.$id.'/' . $image)->response();
+        }
+        catch(\Exception $e)
+        {
+            return response()->json(['status' => "Image not found"]);
+        }
+        return $img;
+
     }
 
 }
