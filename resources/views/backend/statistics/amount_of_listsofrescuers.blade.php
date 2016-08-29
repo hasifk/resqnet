@@ -7,7 +7,7 @@
 
 @section('content')
 
-<h3>Amount of Panic Signals</h3>
+<h3>Panic Signals And Tagged ResQuers</h3>
 
 <section class="content">
     <div class="row">
@@ -16,7 +16,6 @@
                 <!-- TO DO List -->
                 <div class="box box-primary">
                     <div class="col-xs-12 m-t-20">
-
                         <div class="col-xs-12 col-sm-6 col-md-3 btn-group">
                             <label for="office_life" class="control-label">Country <i><font color="red" size="3">*</font></i></label></label>
                             <select name="country_id" id="country_id" class="form-control">
@@ -46,8 +45,6 @@
                         </div>
                     </div>
                     <div class="col-xs-12 m-t-20">
-                        
-                        
                         <div class="col-xs-12 col-sm-3 col-md-3 btn-group m-t-25">
                             <input type='text' class="form-control" />
                         </div>
@@ -59,8 +56,23 @@
                 </div>
                 <div class="col-md-12 m-t-25">
                     <table class="table table-striped table-bordered table-hover">
-                        <tr><th>Total Amount Of Panic Signals is : {{$amount}}</th></tr>
-                        <tr id="panicamount"></tr>
+                        <tr><th>No</th><th>Users</th><th>Tagged resQuer</th><th>Date</th></tr>
+                        <?php
+                        $f = 1;
+                        foreach ($lists as $list):
+                            ?>
+                            <tr><td>{{$f++}}</th><td>
+
+                                    <a href="{{route('admin.access.user.shows',$list->rescuee_id)}}"> {{ $users[$list->rescuee_id] }} </a>
+
+                                </td>
+                                <td><table> <?php $resccuer_id = json_decode($list->rescuers_ids) ?>
+                                        @foreach($resccuer_id as $resid)<tr><td><a href="{{route('admin.access.user.shows',$resid)}}">{{ $users[$resid] }}</a></td><tr> @endforeach</table></td>
+                                <td>{{ $list->created_at}} </td>
+                            </tr>
+                            <?php
+                        endforeach;
+                        ?>
                     </table>
                 </div>
             </div>
@@ -124,7 +136,7 @@
                     else
                         type = "All Users";
                     var listitems = '<th>The Amount Of News Feeds Sent To  ' + type + ' In ' + data.place + ' is : ' + data.amount + '</th>';
-                    $('#panicamount').html(listitems);
+                    $('#newsamount').html(listitems);
 
                 });
             }

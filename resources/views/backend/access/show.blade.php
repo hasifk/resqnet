@@ -166,7 +166,7 @@
     <div class="box box-success">
             <div class="box-body">
                 <div class="pull-left">
-                    <a href="{!!url('admin/access/users')!!}" class="btn btn-danger btn-xs">Back</a>
+                    <a href="{{URL::previous()}}" class="btn btn-danger btn-xs">Back</a>
                 </div>
 
                 

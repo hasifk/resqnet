@@ -1,5 +1,6 @@
 <?php
 namespace App\Models\RescueOperation\Traits\Attribute;
+use App\Models\Access\User\User;
 
 /**
  * Class UserAttribute
@@ -11,14 +12,14 @@ trait OperationAttribute
         if ( is_null($this->rescuee_id) ) {
             return null;
         }
-        return \DB::table('users')->where('id', $this->rescuee_id)->value('firstname');
+        return User::where('id', $this->rescuee_id)->value('firstname');
     }
 
     public function getRescuerNameAttribute(){
         if ( is_null($this->rescuer_id) ) {
             return null;
         }
-        return \DB::table('users')->where('id', $this->rescuer_id)->value('firstname');
+        return User::where('id', $this->rescuer_id)->value('firstname');
     }
 
     public function getOperationStatusAttribute(){

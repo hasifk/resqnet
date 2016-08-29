@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Repositories\Backend\RescueOperation;
-
-
 use App\Models\RescueOperation\Operation;
 
 use Auth;
@@ -16,9 +14,6 @@ class EloquentAdminRescueOperationRepository implements AdminOperationRepository
     {
        return Operation::paginate(10);
     }
-
-
-
     public function find($id)
     {
         return Operation::find($id);

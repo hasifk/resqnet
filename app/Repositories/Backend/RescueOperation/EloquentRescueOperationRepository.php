@@ -52,6 +52,10 @@ class EloquentRescueOperationRepository {
         return ActiveRescuer::find($id);
     }
 
+    public function ActiveRescuerAll() {
+        return ActiveRescuer::orderBy('id','desc')->get();
+    }
+
     public function showLocation($userid) {
         return Location::where('user_id', $userid)->where('status', 1)->first();
     }
@@ -90,11 +94,34 @@ class EloquentRescueOperationRepository {
         if (!empty($user))
             $obj = $user;
         else
-        $obj = new Location;
+            $obj = new Location;
         $obj->user_id = $request->user_id;
         $obj->lat = $request->lat;
         $obj->long = $request->long;
         $obj->save();
+    }
+
+    public function listsOfRescuers() {
+//        $obj = new ActiveRescuer;
+//        $obj->rescuee_id = 3;
+//        $rescuers=array(1,2);
+//        $obj->rescuers_ids = json_encode($rescuers);
+//        $obj->save();
+        
+        $rescuers = $this->ActiveRescuerAll();
+        $users=array();
+        if(!empty($rescuers))
+        {
+            foreach ($rescuers as $active)
+            {
+                $users[$active->rescuee_id]=User::find($active->rescuee_id)->firstname;
+                $resccuer_id=json_decode($active->rescuers_ids);
+                foreach($resccuer_id as $resid)
+                $users[$resid] = User::find($resid)->firstname;
+            }
+        }
+        
+        return $users;
     }
 
 }
