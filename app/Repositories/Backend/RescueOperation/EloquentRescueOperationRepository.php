@@ -28,16 +28,21 @@ class EloquentRescueOperationRepository {
                 }
             }
         }
-
+        $userdetails='';
+        if(!empty($rescuers)):
         sort($rescuers);
         $obj = new ActiveRescuer;
         $obj->rescuee_id = $userid;
         $obj->rescuers_ids = json_encode($rescuers);
         $obj->emergency_type = $result->emergency_type;
         $obj->save();
-        $userdetails['rescuee'] = User::find($userid);
+        $rescuee=User::find($userid);
+        $userdetails['rescuee'] = $rescuee->toArray();
         $userdetails['rescuer'] = $rescuers;
         $userdetails['active_rescuers_id'] = $obj->id;
+            else:
+                $userdetails['status'] = "No Rescuers available";
+                endif;
         return $userdetails;
     }
 
