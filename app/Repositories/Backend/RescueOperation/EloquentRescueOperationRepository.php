@@ -14,9 +14,7 @@ use Storage;
 
 class EloquentRescueOperationRepository {
 
-    public function findActiveRescuers($request) {  //find resquers within 5 KM
-        /* $result = json_decode(file_get_contents('php://input')); */
-        $result = $request;
+    public function findActiveRescuers($result) {
         $type = RescuerType::where('id', $result->type)->value('type');
         $role = Role::where('name', $type)->value('id');
         $userid = $result->userid;
@@ -35,6 +33,7 @@ class EloquentRescueOperationRepository {
         $obj = new ActiveRescuer;
         $obj->rescuee_id = $userid;
         $obj->rescuers_ids = json_encode($rescuers);
+        $obj->emergency_type = $result->emergency_type;
         $obj->save();
         $userdetails['rescuee'] = User::find($userid);
         $userdetails['rescuer'] = $rescuers;

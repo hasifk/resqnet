@@ -17,6 +17,7 @@ class CreateActiverescuresTable extends Migration
             $table->increments('id')->unsigned();
             $table->integer('rescuee_id')->unsigned();
             $table->longText('rescuers_ids');
+            $table->string('emergency_type');
             $table->timestamps();
             $table->foreign('rescuee_id')
                 ->references('id')

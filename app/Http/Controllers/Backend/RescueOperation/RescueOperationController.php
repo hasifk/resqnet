@@ -46,7 +46,7 @@ class RescueOperationController extends Controller {
     }
     public function rescueeForm()
     {
-       return $this->rescueOperationRepository->rescueeForm();  //save the resquer details once they accepted rescuee requests
+       return $this->rescueOperationRepository->rescueeForm();
     }
     public function rescuerLocationUpdates(UpdateLocationRequest $request) {
         if($this->rescueOperationRepository->rescuerLocationUpdates($request)):
