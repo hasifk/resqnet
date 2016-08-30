@@ -49,7 +49,11 @@ class RescueOperationController extends Controller {
        return $this->rescueOperationRepository->rescueeForm();  //save the resquer details once they accepted rescuee requests
     }
     public function rescuerLocationUpdates(UpdateLocationRequest $request) {
-        return $this->rescueOperationRepository->rescuerLocationUpdates($request);
+        if($this->rescueOperationRepository->rescuerLocationUpdates($request)):
+            return response()->json(['status' =>'location updated successfully']);
+            else:
+                return response()->json(['status' =>'location update failed please try again']);
+        endif;
     }
 
 }
