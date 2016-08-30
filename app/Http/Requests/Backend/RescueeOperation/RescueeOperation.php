@@ -25,7 +25,8 @@ class RescueeOperation extends FormRequest
     {   
         return [
             'userid' =>'required',
-            'type' =>'required'
+            'type' =>'required',
+            'emergency_type'=>'required',
         ];
     }
 }

@@ -14,9 +14,7 @@ use Storage;
 
 class EloquentRescueOperationRepository {
 
-    public function findActiveRescuers($request) {  //find resquers within 5 KM
-        /* $result = json_decode(file_get_contents('php://input')); */
-        $result = $request;
+    public function findActiveRescuers($result) {
         $type = RescuerType::where('id', $result->type)->value('type');
         $role = Role::where('name', $type)->value('id');
         $userid = $result->userid;
@@ -25,20 +23,28 @@ class EloquentRescueOperationRepository {
         foreach ($actives as $active) {
             $user = User::find($active->user_id);
             if ($user->role_id == $role) {
-                if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 5) {
+               /* if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 5)*/
+                if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long))
+                {
                     $rescuers[] = $active->user_id;
                 }
             }
         }
-
+        $userdetails='';
+        if(!empty($rescuers)):
         sort($rescuers);
         $obj = new ActiveRescuer;
         $obj->rescuee_id = $userid;
         $obj->rescuers_ids = json_encode($rescuers);
+        $obj->emergency_type = $result->emergency_type;
         $obj->save();
-        $userdetails['rescuee'] = User::find($userid);
+        $rescuee=User::find($userid);
+        $userdetails['rescuee'] = $rescuee->toArray();
         $userdetails['rescuer'] = $rescuers;
         $userdetails['active_rescuers_id'] = $obj->id;
+            else:
+                $userdetails['status'] = "No Rescuers available";
+                endif;
         return $userdetails;
     }
 

@@ -26,6 +26,8 @@ class AuthController extends Controller
     public function postLogin(Request $request){
         if ( \Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')]) ) {
             $user = \Auth::user();
+            $user->app_id=$request->app_id;
+            $user->save();
             $token = \JWTAuth::fromUser($user);
             return response()->json(['token' => $token,'user_id'=>$user->id,'user_role'=>$user->role_name]);
         } else {
