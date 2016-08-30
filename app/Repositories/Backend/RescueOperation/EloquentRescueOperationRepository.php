@@ -113,30 +113,27 @@ class EloquentRescueOperationRepository {
         $users = array();
         if (!empty($rescuers)) {
             foreach ($rescuers as $active) {
-               
+
                 $users[0][$active->rescuee_id] = User::find($active->rescuee_id);
-                 if(!empty($resccuer_id)):
-                $resccuer_id = json_decode($active->rescuers_ids);
-                foreach ($resccuer_id as $resid)
-                 $users[0][$resid] = User::find($resid);
+                if (!empty($active->rescuers_ids)):
+                    $resccuer_id = json_decode($active->rescuers_ids);
+                    foreach ($resccuer_id as $resid)
+                        $users[0][$resid] = User::find($resid);
                 endif;
-                 $operation=Operation::where('active_rescuers_id',$active->id)->first();
+                $operation = Operation::where('active_rescuers_id', $active->id)->first();
                 if (!empty($operation)) {
-                    $users[1][$active->id]=User::find($operation->rescuer_id);
+                    $users[1][$active->id] = User::find($operation->rescuer_id);
                 }
             }
-            
         }
-       
         return $users;
     }
 
     public function taggedRescuer() {
-        return Operation::join('activerescuers','activerescuers.id','=','operations.active_rescuers_id')
-                ->join('user','user.id','=','operations.rescuer_id')
-                ->select('operations.*','user.firstname','user.lastname')
-                ->get();
-        
+        return Operation::join('activerescuers', 'activerescuers.id', '=', 'operations.active_rescuers_id')
+                        ->join('user', 'user.id', '=', 'operations.rescuer_id')
+                        ->select('operations.*', 'user.firstname', 'user.lastname')
+                        ->get();
     }
 
 }

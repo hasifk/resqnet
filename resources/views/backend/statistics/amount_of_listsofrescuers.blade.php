@@ -61,35 +61,40 @@
                         $f = 1;
                         foreach ($lists as $list):
                             ?>
-                            <tr><td>{{$f++}}</th><td>
+                            <tr><td>{{$f++}}</td><td>
 
                                     <a href="{{route('admin.access.user.shows',$list->rescuee_id)}}"> {{ $users[$list->rescuee_id]->firstname.' '.$users[$list->rescuee_id]->lastname }} </a>
 
                                 </td>
-                                <td><table> <?php if(!empty($resccuer_id)): 
-                                    $resccuer_id = json_decode($list->rescuers_ids) 
-                                         ?>
-                                        @foreach($resccuer_id as $resid)
-                                        <tr>
-                                            <td>
-                                                <a href="{{route('admin.access.user.shows',$resid)}}">{{ $users[$resid]->firstname.' '.$users[$resid]->lastname }}</a>
-                                            </td>
-                                        <tr> 
+                                <td>
+                                    <table> <?php
+                                        if (!empty($list->rescuers_ids)):
+                                            $resccuer_id = json_decode($list->rescuers_ids)
+                                            ?>
+                                            @foreach($resccuer_id as $resid)
+                                            <tr>
+                                                <td>
+                                                    <a href="{{route('admin.access.user.shows',$resid)}}">{{ $users[$resid]->firstname.' '.$users[$resid]->lastname }}</a>
+                                                </td>
+                                            </tr>
                                             @endforeach
-                                            <?php else:
-                                                echo "No Rescuers Found";
-                                                endif; ?>
+                                            <?php
+                                        else:
+                                            echo "No Rescuers Found";
+                                        endif;
+                                        ?>
                                     </table>
                                 </td>
-                                        <td>
-                                            <?php if(!empty($tagged[$list->id])):?>
-                                            <a href="{{route('admin.access.user.shows',$tagged[$list->id]->id)}}">
-                                                {{ $tagged[$list->id]->firstname.' '.$tagged[$list->id]->lastname }}</a>
-                                                    <?php 
-                                                    else:
-                                                        echo "No Rescuer Tagged";
-                                                    endif;?> </td>
-                                        <td>{{ $list->created_at}} </td>
+                                <td>
+                                    <?php if (!empty($tagged[$list->id])): ?>
+                                        <a href="{{route('admin.access.user.shows',$tagged[$list->id]->id)}}">
+                                            {{ $tagged[$list->id]->firstname.' '.$tagged[$list->id]->lastname }}</a>
+                                        <?php
+                                    else:
+                                        echo "No Rescuer Tagged";
+                                    endif;
+                                    ?> </td>
+                                <td>{{ $list->created_at}} </td>
                             </tr>
                             <?php
                         endforeach;
