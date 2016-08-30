@@ -23,7 +23,9 @@ class EloquentRescueOperationRepository {
         foreach ($actives as $active) {
             $user = User::find($active->user_id);
             if ($user->role_id == $role) {
-                if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 5) {
+               /* if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 5)*/
+                if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long))
+                {
                     $rescuers[] = $active->user_id;
                 }
             }
