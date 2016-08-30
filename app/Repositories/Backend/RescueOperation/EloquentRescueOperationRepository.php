@@ -52,7 +52,7 @@ class EloquentRescueOperationRepository {
     }
 
     public function ActiveRescuerAll() {
-        return ActiveRescuer::orderBy('id','desc')->get();
+        return ActiveRescuer::orderBy('id', 'desc')->get();
     }
 
     public function showLocation($userid) {
@@ -104,24 +104,38 @@ class EloquentRescueOperationRepository {
     public function listsOfRescuers() {
 //        $obj = new ActiveRescuer;
 //        $obj->rescuee_id = 3;
-//        $rescuers=array(1,2);
+//        $rescuers=array(2,1);
 //        $obj->rescuers_ids = json_encode($rescuers);
 //        $obj->save();
-        
+
         $rescuers = $this->ActiveRescuerAll();
-        $users=array();
-        if(!empty($rescuers))
-        {
-            foreach ($rescuers as $active)
-            {
-                $users[$active->rescuee_id]=User::find($active->rescuee_id)->firstname;
-                $resccuer_id=json_decode($active->rescuers_ids);
-                foreach($resccuer_id as $resid)
-                $users[$resid] = User::find($resid)->firstname;
+        $users = array();
+        if (!empty($rescuers)) {
+            foreach ($rescuers as $active) {
+               
+                $users[0][$active->rescuee_id] = User::find($active->rescuee_id);
+                 if(!empty($resccuer_id)):
+                $resccuer_id = json_decode($active->rescuers_ids);
+                foreach ($resccuer_id as $resid)
+                 $users[0][$resid] = User::find($resid);
+                endif;
+                 $operation=Operation::where('active_rescuers_id',$active->id)->first();
+                if (!empty($operation)) {
+                    $users[1][$active->id]=User::find($operation->rescuer_id);
+                }
             }
+            
         }
-        
+       
         return $users;
+    }
+
+    public function taggedRescuer() {
+        return Operation::join('activerescuers','activerescuers.id','=','operations.active_rescuers_id')
+                ->join('user','user.id','=','operations.rescuer_id')
+                ->select('operations.*','user.firstname','user.lastname')
+                ->get();
+        
     }
 
 }

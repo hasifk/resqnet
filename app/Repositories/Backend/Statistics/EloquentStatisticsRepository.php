@@ -120,5 +120,6 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
             'amount' => $amount
         ];
     }
+    
 
 }

@@ -115,11 +115,13 @@ class StatisticsController extends Controller {
     /*     * ***************************************************************************************************** */
 
     public function listsOfRescuers() {
+        $users=$this->rescueOperationRepository->listsOfRescuers();
         $view = [
             'countries' => $this->user->countries(),
             'rescuertype' => $this->user->rescuerTypeDetails(),
             'lists' => $this->rescueOperationRepository->ActiveRescuerAll(),
-            'users' => $this->rescueOperationRepository->listsOfRescuers(),
+            'users' => !empty($users[0])?$users[0]:'',
+            'tagged' => !empty($users[1])?$users[1]:'',
         ];
         return view('backend.statistics.amount_of_listsofrescuers', $view);
     }
