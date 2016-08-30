@@ -10,6 +10,7 @@ use App\Http\Requests\Frontend\User\UpdateMedicalConditionRequest;
 use App\Http\Requests\Frontend\User\UpdateProfileRequest;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
 
+
 /**
  * Class ProfileController
  * @package App\Http\Controllers\Frontend
@@ -56,8 +57,15 @@ class ProfileController extends Controller
     /***************************************************************************************************************/
     public function getAvatar($id,$image)
     {
-
-        return \Image::make(storage_path() . '/app/public/profile/avatar/'.$id.'/' . $image)->response('jpg');
+        try
+        {
+            $img = \Image::make(storage_path() . '/app/public/profile/avatar/'.$id.'/' . $image)->response();
+        }
+        catch(\Exception $e)
+        {
+            return response()->json(['status' => "Image not found"]);
+        }
+        return $img;
 
     }
     /***************************************************************************************************************/

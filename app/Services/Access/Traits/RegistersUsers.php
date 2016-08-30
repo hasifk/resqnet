@@ -80,7 +80,7 @@ trait RegistersUsers
         $user= $user1->toArray();
         if ($user1->avatar_filename && $user1->avatar_extension && $user1->avatar_path) {
 
-            $user['profile_image_src']=url('api/avatar/'.$user1->id.'/'.$user1->avatar_filename.'.'.$user1->avatar_extension);
+            $user['profile_image_src']=url('/avatar/'.$user1->id.'/'.$user1->avatar_filename.'.'.$user1->avatar_extension);
         }
       return response()->json(['user' => $user]);
     }

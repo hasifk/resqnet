@@ -99,6 +99,7 @@ class EloquentRescueOperationRepository {
         $obj->lat = $request->lat;
         $obj->long = $request->long;
         $obj->save();
+        return $obj;
     }
 
     public function listsOfRescuers() {
