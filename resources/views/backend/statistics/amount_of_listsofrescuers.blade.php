@@ -56,19 +56,40 @@
                 </div>
                 <div class="col-md-12 m-t-25">
                     <table class="table table-striped table-bordered table-hover">
-                        <tr><th>No</th><th>Users</th><th>Tagged resQuer</th><th>Date</th></tr>
+                        <tr><th>No</th><th>Users</th><th>Lists Of ResQuer</th><th>Tagged ResQuer</th><th>Date</th></tr>
                         <?php
                         $f = 1;
                         foreach ($lists as $list):
                             ?>
                             <tr><td>{{$f++}}</th><td>
 
-                                    <a href="{{route('admin.access.user.shows',$list->rescuee_id)}}"> {{ $users[$list->rescuee_id] }} </a>
+                                    <a href="{{route('admin.access.user.shows',$list->rescuee_id)}}"> {{ $users[$list->rescuee_id]->firstname.' '.$users[$list->rescuee_id]->lastname }} </a>
 
                                 </td>
-                                <td><table> <?php $resccuer_id = json_decode($list->rescuers_ids) ?>
-                                        @foreach($resccuer_id as $resid)<tr><td><a href="{{route('admin.access.user.shows',$resid)}}">{{ $users[$resid] }}</a></td><tr> @endforeach</table></td>
-                                <td>{{ $list->created_at}} </td>
+                                <td><table> <?php if(!empty($resccuer_id)): 
+                                    $resccuer_id = json_decode($list->rescuers_ids) 
+                                         ?>
+                                        @foreach($resccuer_id as $resid)
+                                        <tr>
+                                            <td>
+                                                <a href="{{route('admin.access.user.shows',$resid)}}">{{ $users[$resid]->firstname.' '.$users[$resid]->lastname }}</a>
+                                            </td>
+                                        <tr> 
+                                            @endforeach
+                                            <?php else:
+                                                echo "No Rescuers Found";
+                                                endif; ?>
+                                    </table>
+                                </td>
+                                        <td>
+                                            <?php if(!empty($tagged[$list->id])):?>
+                                            <a href="{{route('admin.access.user.shows',$tagged[$list->id]->id)}}">
+                                                {{ $tagged[$list->id]->firstname.' '.$tagged[$list->id]->lastname }}</a>
+                                                    <?php 
+                                                    else:
+                                                        echo "No Rescuer Tagged";
+                                                    endif;?> </td>
+                                        <td>{{ $list->created_at}} </td>
                             </tr>
                             <?php
                         endforeach;
