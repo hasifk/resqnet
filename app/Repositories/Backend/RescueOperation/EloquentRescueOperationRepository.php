@@ -27,6 +27,11 @@ class EloquentRescueOperationRepository {
                 if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long))
                 {
                     $rescuers[] = $active->user_id;
+                     if ($user->device_type == 'Android') {
+                        $app_id[] = $user->app_id;
+                    } else {
+                        $app_id[] = $user->app_id;
+                    }
                 }
             }
         }
@@ -39,6 +44,7 @@ class EloquentRescueOperationRepository {
         $obj->emergency_type = $result->emergency_type;
         $obj->save();
         $rescuee=User::find($userid);
+        $this->notification($app_id);
         $userdetails['rescuee'] = $rescuee->toArray();
         $userdetails['rescuer'] = $rescuers;
         $userdetails['active_rescuers_id'] = $obj->id;
@@ -46,6 +52,50 @@ class EloquentRescueOperationRepository {
                 $userdetails['status'] = "No Rescuers available";
                 endif;
         return $userdetails;
+        
+    }
+    public function notification($rescuers) {
+        if (!empty($app_id) && count($app_id)>0) {
+
+// API access key from Google API's Console
+                    define('API_ACCESS_KEY', 'AIzaSyDPQxOac0sXH7VZEa79R45hCuJjXTn0X8g');
+
+// prep the bundle
+
+                    $msg = array
+                        (
+                        'message' => $request->notification,
+                        'title' => "Notification",
+                        'subtitle' => 'This is a subtitle. subtitle',
+                        'tickerText' => 'Ticker text here...Ticker text here...Ticker text here',
+                        'vibrate' => 1,
+                        'sound' => 1,
+                        'largeIcon' => 'large_icon',
+                        'smallIcon' => 'small_icon'
+                    );
+                    $fields = array
+                        (
+                        'registration_ids' => $app_id,
+                        'data' => 'Gogul Moonchiii'
+                    );
+
+                    $headers = array
+                        (
+                        'Authorization: key=' . API_ACCESS_KEY,
+                        'Content-Type: application/json'
+                    );
+
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, 'https://android.googleapis.com/gcm/send');
+                    curl_setopt($ch, CURLOPT_POST, true);
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+                    $result = curl_exec($ch);
+// Close connection
+                    curl_close($ch);
+                }
     }
 
     //for getting all active users
