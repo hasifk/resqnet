@@ -16,6 +16,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('membership_no');
             $table->string('app_id');
+            $table->string('device_type');
             $table->string('firstname');
             $table->string('lastname');
             $table->date('dob');
