@@ -29,8 +29,6 @@ class EloquentRescueOperationRepository {
                     $rescuers[] = $active->user_id;
                      if ($user->device_type == 'Android')
                         $app_id[] = $user->app_id;
-                     else 
-                        $app_id[] = $user->app_id;
                 }
             }
         }
@@ -43,7 +41,7 @@ class EloquentRescueOperationRepository {
         $obj->emergency_type = $result->emergency_type;
         $obj->save();
         $rescuee=User::find($userid);
-        $this->notification($app_id);
+       // $this->notification($app_id);
         $userdetails['rescuee'] = $rescuee->toArray();
         $userdetails['rescuer'] = $rescuers;
         $userdetails['active_rescuers_id'] = $obj->id;
