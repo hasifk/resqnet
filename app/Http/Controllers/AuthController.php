@@ -27,6 +27,7 @@ class AuthController extends Controller
         if ( \Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')]) ) {
             $user = \Auth::user();
             $user->app_id=$request->app_id;
+            $user->device_type=$request->device_type;
             $user->save();
             $token = \JWTAuth::fromUser($user);
             return response()->json(['token' => $token,'user_id'=>$user->id,'user_role'=>$user->role_name]);
