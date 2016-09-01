@@ -63,7 +63,7 @@ class EloquentRescueOperationRepository {
 
                     $msg = array
                         (
-                        'message' => $request->notification,
+                        'message' => 'Gogul Moonchiii',
                         'title' => "Notification",
                         'subtitle' => 'This is a subtitle. subtitle',
                         'tickerText' => 'Ticker text here...Ticker text here...Ticker text here',
@@ -75,7 +75,7 @@ class EloquentRescueOperationRepository {
                     $fields = array
                         (
                         'registration_ids' => $app_id,
-                        'data' => 'Gogul Moonchiii'
+                        'data' => $msg
                     );
 
                     $headers = array
