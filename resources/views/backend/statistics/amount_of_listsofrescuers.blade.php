@@ -61,7 +61,8 @@
                         $f = 1;
                         foreach ($lists as $list):
                             ?>
-                            <tr><td>{{$f++}}</td><td>
+                            <tr><td>{{$f++}}</td>
+                                <td>
 
                                     <a href="{{route('admin.access.user.shows',$list->rescuee_id)}}"> {{ $users[$list->rescuee_id]->firstname.' '.$users[$list->rescuee_id]->lastname }} </a>
 
@@ -93,7 +94,8 @@
                                     else:
                                         echo "No Rescuer Tagged";
                                     endif;
-                                    ?> </td>
+                                    ?> 
+                                </td>
                                 <td>{{ $list->created_at}} </td>
                             </tr>
                             <?php

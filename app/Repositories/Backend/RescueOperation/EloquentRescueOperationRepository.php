@@ -54,7 +54,7 @@ class EloquentRescueOperationRepository {
         return $userdetails;
         
     }
-    public function notification($rescuers) {
+    public function notification($app_id) {
         if (!empty($app_id) && count($app_id)>0) {
 
 // API access key from Google API's Console
@@ -93,6 +93,7 @@ class EloquentRescueOperationRepository {
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
                     $result = curl_exec($ch);
+                    echo $result;
 // Close connection
                     curl_close($ch);
                 }
