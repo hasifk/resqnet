@@ -27,11 +27,10 @@ class EloquentRescueOperationRepository {
                 if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long))
                 {
                     $rescuers[] = $active->user_id;
-                     if ($user->device_type == 'Android') {
+                     if ($user->device_type == 'Android')
                         $app_id[] = $user->app_id;
-                    } else {
+                     else 
                         $app_id[] = $user->app_id;
-                    }
                 }
             }
         }
@@ -161,11 +160,11 @@ class EloquentRescueOperationRepository {
     }
 
     public function listsOfRescuers() {
-//        $obj = new ActiveRescuer;
-//        $obj->rescuee_id = 3;
-//        $rescuers=array(2,1);
-//        $obj->rescuers_ids = json_encode($rescuers);
-//        $obj->save();
+        $obj = new ActiveRescuer;
+        $obj->rescuee_id = 3;
+        $rescuers=array(1,2);
+        $obj->rescuers_ids = json_encode($rescuers);
+        $obj->save();
 
         $rescuers = $this->ActiveRescuerAll();
         $users = array();
