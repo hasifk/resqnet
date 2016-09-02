@@ -119,9 +119,11 @@ class StatisticsController extends Controller {
         $view = [
             'countries' => $this->user->countries(),
             'rescuertype' => $this->user->rescuerTypeDetails(),
-            'lists' => $this->rescueOperationRepository->ActiveRescuerAll(),
-            'users' => !empty($users[0])?$users[0]:'',
-            'tagged' => !empty($users[1])?$users[1]:'',
+            'lists' => $this->rescueOperationRepository->ActiveRescuerPaginate(),
+            'users' => !empty($users['active'])?$users['active']:'',
+            'tagged' => !empty($users['tagged'])?$users['tagged']:'',
+            'panicrespnse'=>!empty($users['panicresponse'])?$users['panicresponse']:'',
+            'rescuerresponse'=>!empty($users['rescuerresponse'])?$users['rescuerresponse']:'',
         ];
         return view('backend.statistics.amount_of_listsofrescuers', $view);
     }
