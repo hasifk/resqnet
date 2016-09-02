@@ -52,11 +52,18 @@
                             <label for="office_life" class="control-label"></label>
                             <button class="mnotification_delete btn btn-primary" id="search">Search</button>
                         </div>
+                        <div class="col-xs-12 col-sm-3 col-md-3 btn-group m-t-25">
+                            <label for="office_life" class="control-label"></label>
+                            <div class="pull-left">
+                                <?php echo $lists->links(); ?>
+                            </div>
+                        </div>
                     </div><!-- /.box -->
+
                 </div>
                 <div class="col-md-12 m-t-25">
                     <table class="table table-striped table-bordered table-hover">
-                        <tr><th>No</th><th>Users</th><th>Lists Of ResQuer</th><th>Tagged ResQuer</th><th>Date</th></tr>
+                        <tr><th>No</th><th>Users</th><th>Lists Of ResQuer</th><th>Tagged ResQuer</th><th>Panic Response</th><th>ResQuer Response</th><th>Date</th></tr>
                         <?php
                         $f = 1;
                         foreach ($lists as $list):
@@ -96,7 +103,9 @@
                                     endif;
                                     ?> 
                                 </td>
-                                <td>{{ $list->created_at}} </td>
+                                <td> @if(!empty($panicrespnse[$list->id])){{ $panicrespnse[$list->id]}} @else No Rescuer Tagged @endif </td>
+                                <td> @if(!empty($rescuerresponse[$list->id])){{ $rescuerresponse[$list->id]}} @else No Rescuer Tagged @endif </td>
+                                <td>{{$list->created_at}}</td>
                             </tr>
                             <?php
                         endforeach;
