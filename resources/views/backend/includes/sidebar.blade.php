@@ -65,19 +65,10 @@
                         <a href="{{route('admin.statistics.amountofpanicsignals')}}">Amount of Panic Signals</a>
                     </li>
                     <li class="{{ Active::pattern('admin/panicrescuers') }}">
-                        <a href="{{route('admin.statistics.listsofrescuers')}}">List of rescuers within 5km</a>
-                    </li>
-                    <li class="{{ Active::pattern('admin/taggedrescuer') }}">
-                        <a href="#">Panic Signal tagged Rescuer</a>
+                        <a href="{{route('admin.statistics.listsofrescuers')}}">Panic Signal Statistics</a>
                     </li>
                     <li class="{{ Active::pattern('admin/newsfeedsamount') }}">
                         <a href="{{route('admin.statistics.amountofnewsfeeds')}}">Amount of Newsfeeds</a>
-                    </li>
-                    <li class="{{ Active::pattern('admin/responsetimepanic') }}">
-                        <a href="#">Response time per panic signal</a>
-                    </li>
-                    <li class="{{ Active::pattern('admin/responsetimerescuer') }}">
-                        <a href="#">Response time per Rescuer</a>
                     </li>
                     <li class="{{ Active::pattern('admin/usersaccess') }}">
                         <a href="#">App accessing users</a>
