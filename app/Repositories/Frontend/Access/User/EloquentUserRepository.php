@@ -370,6 +370,16 @@ class EloquentUserRepository implements UserRepositoryContract
 
     }
 
+    public function updateOnlineStatus($request)
+    {
+       $user=$this->find($request->id);
+        $user->online_status=$request->online_status;
+        $user->save();
+        return true;
+
+    }
+
+
     /**
      * @param $input
      * @return mixed

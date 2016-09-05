@@ -12,3 +12,4 @@ $api->get('/editdoctors/{id}', 'App\Http\Controllers\Frontend\User\ProfileContro
 $api->post('/updatedoctors', 'App\Http\Controllers\Frontend\User\ProfileController@updateDoctors');
 $api->post('/updatemedicalcondition', 'App\Http\Controllers\Frontend\User\ProfileController@updateMedicalCondition');
 $api->post('password/change', 'App\Http\Controllers\Frontend\Auth\PasswordController@changePassword')->name('auth.password.update');
+$api->post('updateonlinestatus', 'App\Http\Controllers\Frontend\User\ProfileController@updateOnlineStatus')->name('user.online.status');

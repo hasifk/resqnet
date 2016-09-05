@@ -7,6 +7,7 @@ use App\Http\Requests\Frontend\Access\ProfileImagesUploadRequest;
 use App\Http\Requests\Frontend\User\SaveDoctorsRequest;
 use App\Http\Requests\Frontend\User\UpdateDoctorsRequest;
 use App\Http\Requests\Frontend\User\UpdateMedicalConditionRequest;
+use App\Http\Requests\Frontend\User\UpdateOnlineStatusRequest;
 use App\Http\Requests\Frontend\User\UpdateProfileRequest;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
 
@@ -112,6 +113,18 @@ class ProfileController extends Controller
         if($this->user->updateMedicalCondition($request->all())):
 
             return response()->json(['status' => "Medical Condition Updated successfully"]);
+        else:
+            return response()->json(['status' => "Failed"]);
+        endif;
+
+
+    }
+    /***************************************************************************************************************/
+    public function updateOnlineStatus(UpdateOnlineStatusRequest $request) {
+
+        if($this->user->updateOnlineStatus($request)):
+
+            return response()->json(['status' => "Online Status Updated successfully"]);
         else:
             return response()->json(['status' => "Failed"]);
         endif;

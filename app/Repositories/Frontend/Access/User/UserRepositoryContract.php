@@ -75,5 +75,6 @@ interface UserRepositoryContract
     public function updateDoctors($request);
     public function findDoctor($id);
     public function updateMedicalCondition($request);
+    public function updateOnlineStatus($request);
     
 }
