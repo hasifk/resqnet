@@ -120,6 +120,38 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
             'amount' => $amount
         ];
     }
-    
+
+    public function getPanicSignalAmount($request) {
+        if ($request->rescur != "All") {
+                $type = RescuerType::where('id', $result->rescur)->value('type');
+                $role = Role::where('name', $type)->value('id');
+            } 
+            if ($request->category != "All")
+                $actives = ActiveRescuer::where('emergency_type', $request->category)->orderBy('id', 'desc')->get();
+            else
+           $actives=$this->rescueOperationRepository->ActiveRescuerAll();
+           foreach($actives as $active)
+           {
+               if(!empty($request->date))
+               {
+                   
+               }
+           }
+        if (!empty($request->state_id) && !empty($request->area_id)) {
+                $amount = "join('user',resquer_areaid', $request->area_id)->orWhere('user_areaid', $request->area_id)->count()";
+        } else if (!empty($request->country_id)) {
+            $country = Country::where('id', $request->country_id)->value('name');
+            if ($request->rescur == "Rescuer")
+                $amount = Newsfeed::where('resquer_countryid', $request->country_id)->count();
+            else if ($request->rescur == "Rescuee")
+                $amount = Newsfeed::where('user_countryid', $request->country_id)->count();
+            else
+                $amount = Newsfeed::where('resquer_countryid', $request->country_id)->orWhere('user_countryid', $request->country_id)->count();
+        }
+        return [
+            'country' => $country,
+            'amount' => $amount
+        ];
+    }
 
 }

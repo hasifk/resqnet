@@ -1,4 +1,6 @@
+
 @extends ('backend.layouts.master')
+
 @section('page-header')
 <h1>
     Statistics
@@ -44,17 +46,41 @@
 
                             </select>
                         </div>
+                        <div class="col-xs-12 col-sm-3 col-md-3 btn-group">
+                            <label for="office_life" class="control-label">Rescuer Type</label>
+                            <select name="rescuertype" id="rescuertype" class="form-control">
+                                <option value="All">All</option>
+                                @foreach($rescuertype as $type)
+                                <option
+                                    value="{{ $type->id }}"
+                                    >
+                                    {{ $type->type }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <div class="col-xs-12 m-t-20">
                         
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 btn-group m-t-25">
-                            <input type='text' class="form-control" />
+                        <div class="col-xs-12 col-sm-3 col-md-3 btn-group">
+                            <label for="office_life" class="control-label">Category</label>
+                            <select name="category" id="category" class="form-control">
+                                <option value="All">All</option>
+                                <option value="Medical">Medical</option>
+                                <option value="Crime">Crime</option>
+                            </select>
                         </div>
+                        
+                        <div class="col-xs-12 col-sm-3 col-md-3 btn-group input-append date">
+                            <label for="office_life" class="control-label">Date <i>(optional)</i></label>
+                            <input data-format="dd/MM/yyyy" type="text" class="form-control" id="datepicker"></input>
+                        </div>
+
                         <div class="col-xs-12 col-sm-3 col-md-3 btn-group m-t-25">
                             <label for="office_life" class="control-label"></label>
                             <button class="mnotification_delete btn btn-primary" id="search">Search</button>
                         </div>
+
                     </div><!-- /.box -->
                 </div>
                 <div class="col-md-12 m-t-25">
@@ -70,6 +96,7 @@
 </section>
 
 @endsection
+
 @section('after-scripts-end')
 <script>
     $(document).ready(function () {
@@ -115,9 +142,11 @@
                     country_id: $('#country_id').val(),
                     state_id: $('#state_id').val(),
                     area_id: $('#area_id').val(),
-                    rescur: type,
+                    rescur: $('#rescuertype').val(),
+                    category: $('#category').val(),
+                    date: $('#datepicker').val(),
                 }
-                $.getJSON('/admin/newsfeedamount/', formData, function result(data) {
+                $.getJSON('/admin/panicsignalamount/', formData, function result(data) {
                     //console.log(data);
                     if (type != 'All')
                         type = type;
@@ -129,10 +158,16 @@
                 });
             }
         });
+
     });
-    $(function () {
-        $('#datetimepicker6').datetimepicker();
+    $(document).ready(function () {
+
+        $('#datepicker').datepicker({
+            format: "dd/mm/yyyy"
+        });
+
     });
+
 </script>
 @endsection
 
