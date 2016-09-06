@@ -20,6 +20,7 @@ class EloquentRescueOperationRepository {
         $userid = $result->userid;
         $userloc = $this->showLocation($userid); //app user id
         $actives = $this->activeUsers(); //getting all active users
+        $rescuers=array();
         foreach ($actives as $active) {
             $user = User::find($active->user_id);
             if ($user->role_id == $role) {
@@ -40,10 +41,10 @@ class EloquentRescueOperationRepository {
             $obj->emergency_type = $result->emergency_type;
             $obj->save();
             $rescuee = User::find($userid);
-           // $this->notification($app_id);
-           // $userdetails['rescuee'] = $rescuee->toArray();
-           // $userdetails['rescuer'] = $rescuers;
-            $userdetails['active_rescuers_id'] = $obj->id;
+            $this->notification($app_id);
+//            $userdetails['rescuee'] = $rescuee->toArray();
+            $userdetails['rescuer'] = $rescuers;
+           // $userdetails['active_rescuers_id'] = $obj->id;
         else:
             $userdetails['status'] = "No Rescuers available";
         endif;
@@ -60,7 +61,7 @@ class EloquentRescueOperationRepository {
 
             $msg = array
                 (
-                'message' => 'Gogul Moonchiii',
+                'message' => 'Gogul Moonchiii ini melal ee vazhikk vannekkarud ',
                 'title' => "Notification",
                 'subtitle' => 'This is a subtitle. subtitle',
                 'tickerText' => 'Ticker text here...Ticker text here...Ticker text here',
