@@ -20,7 +20,6 @@ class EloquentRescueOperationRepository {
         $userid = $result->userid;
         $userloc = $this->showLocation($userid); //app user id
         $actives = $this->activeUsers(); //getting all active users
-        $rescuers=array();
         foreach ($actives as $active) {
             $user = User::find($active->user_id);
             if ($user->role_id == $role) {
@@ -41,7 +40,7 @@ class EloquentRescueOperationRepository {
             $obj->emergency_type = $result->emergency_type;
             $obj->save();
             $rescuee = User::find($userid);
-            $this->notification($app_id);
+           // $this->notification($app_id);
 //            $userdetails['rescuee'] = $rescuee->toArray();
             $userdetails['rescuer'] = $rescuers;
            // $userdetails['active_rescuers_id'] = $obj->id;
