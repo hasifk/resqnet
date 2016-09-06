@@ -26,7 +26,7 @@ class RescuerTypeSeeder extends Seeder
                 'updated_at'        => Carbon::now(),
             ],
             [
-                'type'          => 'Fireman',
+                'type'          => 'Fire',
                 'created_at'        => Carbon::now(),
                 'updated_at'        => Carbon::now(),
             ],
