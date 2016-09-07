@@ -32,7 +32,6 @@ class EloquentRescueOperationRepository {
                 }
             }
         }
-        $userdetails = '';
         if (!empty($rescuers)):
             sort($rescuers);
             $obj = new ActiveRescuer;
@@ -41,17 +40,17 @@ class EloquentRescueOperationRepository {
             $obj->emergency_type = $result->emergency_type;
             $obj->save();
             $rescuee = User::find($userid);
-            $this->notification($app_id, $obj->id);
-//            $userdetails['rescuee'] = $rescuee->toArray();
-            $userdetails['rescuer'] = $rescuers;
+            $userdetails['rescuee'] = $rescuee->toArray();
+            $userdetails['$result->emergency_type'] = $result->emergency_type;
             $userdetails['active_rescuers_id'] = $obj->id;
+            $this->notification($app_id, $userdetails);
         else:
             $userdetails['status'] = "No Rescuers available";
         endif;
         return $userdetails;
     }
 
-    public function notification($app_id, $panic_id) {
+    public function notification($app_id, $userdetails) {
 // API access key from Google API's Console
         define('API_ACCESS_KEY', 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ');
 
@@ -59,7 +58,7 @@ class EloquentRescueOperationRepository {
 
         $msg = array
             (
-            'message' => '',
+            'message' => "The User " . $userdetails['rescuee']->firstname . " " . $userdetails['rescuee']->lastname . "Reqested an Emergency(" . $userdetails['$result->emergency_type'] . ")",
             'title' => "Notification",
             'subtitle' => 'This is a subtitle. subtitle',
             'tickerText' => 'Ticker text here...Ticker text here...Ticker text here',
@@ -67,7 +66,7 @@ class EloquentRescueOperationRepository {
             'sound' => 1,
             'largeIcon' => 'large_icon',
             'smallIcon' => 'small_icon',
-            'panicid' => $panic_id,
+            'panicid' => $userdetails['active_rescuers_id'],
         );
         $fields = array
             (
@@ -95,6 +94,15 @@ class EloquentRescueOperationRepository {
     }
 
     //for getting all active users
+    public function rescuerOperationDetails($id) {
+        $details=ActiveRescuer::join('users', 'activerescuers.rescuee_id', '=', 'users.id')
+                ->join('locations', 'activerescuers.rescuee_id', '=', 'locations.user_id')
+                ->select('activerescuers.id', 'activerescuers.emergency_type', 'users.firstname', 'users.lastname', 'users.phone', 'users.email', 'users.current_medical_conditions', 'users.prior_medical_conditions', 'users.allergies', 'locations.address', 'locations.lat', 'locations.long')
+                ->where('activerescuers.id', $id)
+                ->get()->toArray();
+        
+        return $details;
+    }
 
     public function activeUsers() {
         return Location::where('status', 1)->get();
