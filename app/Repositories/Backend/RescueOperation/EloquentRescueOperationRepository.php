@@ -154,6 +154,7 @@ class EloquentRescueOperationRepository {
         $obj->user_id = $request->user_id;
         $obj->lat = $request->lat;
         $obj->long = $request->long;
+        $obj->address = $request->address;
         $obj->status = 1;
         $obj->save();
         return $obj;
