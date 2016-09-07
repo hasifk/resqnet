@@ -17,7 +17,7 @@ class CreateLocationsTable extends Migration
             $table->integer('user_id')->unsigned()->unique();
             $table->string('lat');
             $table->string('long');
-            $table->text('address');
+            $table->text('address')->nullable();
             $table->boolean('status');
             $table->timestamps();
             $table->foreign('user_id')
