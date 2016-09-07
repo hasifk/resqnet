@@ -45,7 +45,7 @@ class RescueOperationController extends Controller {
     public function rescuerOperationResponse(RescuerOperation $request)
     {
         //save the resquer details once they accepted rescuee requests
-        return response()->json(['rescue_operation' =>$this->rescueOperationRepository->rescuersResponse($request)->toArray()]);
+        return response()->json(['rescue_operation' => $this->rescueOperationRepository->rescuersResponse($request)]);
 
     }
     public function rescueeForm()
