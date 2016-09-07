@@ -39,7 +39,7 @@ class EloquentRescueOperationRepository {
             $obj->rescuers_ids = json_encode($rescuers);
             $obj->emergency_type = $result->emergency_type;
             $obj->save();
-            $rescuee = User::find($userid)->toArray();
+            $rescuee = User::find($userid);
             $userdetails['rescuee'] = $rescuee;
             $userdetails['$result->emergency_type'] = $result->emergency_type;
             $userdetails['active_rescuers_id'] = $obj->id;
