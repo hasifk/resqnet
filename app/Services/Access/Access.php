@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\Access;
+use App\Models\Access\User\User;
 
 /**
  * Class Access
@@ -66,6 +67,20 @@ class Access
     public function hasRoles($roles, $needsAll = false)
     {
         if ($user = $this->user()) {
+            //If not an array, make a one item array
+            if (!is_array($roles)) {
+                $roles = array($roles);
+            }
+
+            return $user->hasRoles($roles, $needsAll);
+        }
+
+        return false;
+    }
+
+    public function hasRolesApp($roles, $needsAll = false,$id)
+    {
+        if ($user = User::find($id)) {
             //If not an array, make a one item array
             if (!is_array($roles)) {
                 $roles = array($roles);
