@@ -78,7 +78,7 @@ class Access
         return false;
     }
 
-    public function hasRolesApp($roles, $needsAll = false,$id)
+    public function hasRolesApp($roles,$id,$needsAll = false)
     {
         if ($user = User::find($id)) {
             //If not an array, make a one item array
