@@ -45,7 +45,7 @@ class NewsfeedController extends Controller {
     public function showMyNewsfeeds($id) {
 
         if (access()->hasRolesApp(['Police', 'Fire', 'Paramedic'],$id)):
-            $newsfeeds=$this->newsfeedRepository->getMyNewsFeeds();
+            $newsfeeds=$this->newsfeedRepository->getMyNewsFeeds($id);
         if (!empty($newsfeeds)):
             return response()->json(['newsfeeds' => $newsfeeds->toArray()]);
         else:

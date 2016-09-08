@@ -13,8 +13,8 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                         ->paginate(10);
     }
 
-    public function getMyNewsFeeds() {
-        return Newsfeed::where('user_id', access()->id())->orderBy('id', 'desc')->get();
+    public function getMyNewsFeeds($id) {
+        return Newsfeed::where('user_id', $id)->orderBy('id', 'desc')->get();
     }
 
     public function getNewsFeeds() {
