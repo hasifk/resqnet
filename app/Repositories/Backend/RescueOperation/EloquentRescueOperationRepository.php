@@ -32,6 +32,7 @@ class EloquentRescueOperationRepository {
                 }
             }
         }
+        $userdetails='';
         if (!empty($rescuers)):
             sort($rescuers);
             $obj = new ActiveRescuer;
