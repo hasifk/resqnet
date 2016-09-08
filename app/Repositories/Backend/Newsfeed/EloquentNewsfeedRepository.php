@@ -17,24 +17,29 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
         return Newsfeed::where('user_id', $id)->orderBy('id', 'desc')->get();
     }
 
-    public function getNewsFeeds() {
-        if (access()->hasRoles(['Police', 'Fire', 'Paramedic'])) {
-
+    public function getNewsFeeds($id) {
+        if (access()->hasRolesApp(['Police', 'Fire', 'Paramedic'], $id)) {
             return Newsfeed::join('users', function ($join) {
-                                $join->on('newsfeeds.countryid', '=', 'users.country_id')->orOn('newsfeeds.areaid', '=', 'users.area_id')
-                                ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All']);
-                            })->join('assigned_roles', 'assigned_roles.user_id', '=', 'users.id')
+                                $join
+                                ->on('newsfeeds.countryid', '=', 'users.country_id')
+                                ->orOn('newsfeeds.areaid', '=', 'users.area_id');
+                            })
+                            ->join('assigned_roles', 'assigned_roles.user_id', '=', 'users.id')
                             ->whereIn('assigned_roles.role_id', [2, 3, 4])
+                            ->where('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
                             ->select('newsfeeds.id', 'newsfeeds.news_title')
                             ->get();
-        } else if (access()->hasRoles(['User'])) {
+        } else if (access()->hasRolesApp(['User'], $id)) {
             return Newsfeed::join('users', function ($join) {
-                                $join->on('newsfeeds.countryid', '=', 'users.country_id')->orOn('newsfeeds.areaid', '=', 'users.area_id')
-                                ->whereIn('newsfeeds.newsfeed_type', ['User', 'All']);
+                                $join
+                                ->on('newsfeeds.countryid', '=', 'users.country_id')
+                                ->orOn('newsfeeds.areaid', '=', 'users.area_id');
                             })->join('assigned_roles', 'assigned_roles.user_id', '=', 'users.id')
-                            ->where('assigned_roles.role_id', 5)
+                            ->where('assigned_roles.role_id',5)
+                            ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
                             ->select('newsfeeds.id', 'newsfeeds.news_title')->get();
         }
+        
     }
 
     public function save($request) {

@@ -33,10 +33,10 @@ class NewsfeedController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function showNewsfeeds() {
-        $newsfeeds = $this->newsfeedRepository->getNewsFeeds();
+    public function showNewsfeeds($id) {
+        $newsfeeds = $this->newsfeedRepository->getNewsFeeds($id);
         if (!empty($newsfeeds)):
-            return response()->json(['newsfeeds' => $newsfeeds->toArray()]);
+            return response()->json(['newsfeeds' => $newsfeeds]);
         else:
             return response()->json(['newsfeeds' => 'No newfeed found']);
         endif;
