@@ -148,17 +148,14 @@ class EloquentRescueOperationRepository {
             $message['message'] = $user->firstname . " " . $user->lastname . " Accepted Your Request";
             $message['id'] = $obj->id;
             $message['to']="User";
-            $app_id['app_id'][] = $user->app_id;
-            $app_id['device_type'][] = $user->device_type;
         else:
             $user = User::find($request->rescuer_id);
             $message['message'] = "Another Rescuer Accepted this request";
             $message['id'] = $request->active_rescuers_id;
             $message['to']="Rescuer";
-            $app_id['app_id'][] = $user->app_id;
-            $app_id['device_type'][] = $user->device_type;
-            return $request->active_rescuers_id;
         endif;
+        $app_id['app_id'][] = $user->app_id;
+        $app_id['device_type'][] = $user->device_type;
         $this->notification($app_id, $message);
     }
 
