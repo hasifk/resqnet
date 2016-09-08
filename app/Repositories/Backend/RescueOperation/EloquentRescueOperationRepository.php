@@ -44,8 +44,8 @@ class EloquentRescueOperationRepository {
             $rescuee = User::find($userid);
             $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . "Reqested an Emergency(" . $result->emergency_type . ")";
             $message['id'] = $obj->id;
-            $this->notification($app_id, $message);
-            $userdetails = 'SUCCESS';
+          $userdetails=  $this->notification($app_id, $message);
+            //$userdetails = 'SUCCESS';
         else:
             $userdetails = "No Rescuers available";
         endif;
@@ -53,11 +53,12 @@ class EloquentRescueOperationRepository {
     }
 
     public function notification($app_id, $message) {
-        
+        define('API_ACCESS_KEY', 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ');
         foreach ($app_id['device_type'] as $key => $device) {
+           // $ar[]=array($app_id['app_id'][$key]);
             if ($device == 'Android') {
                 // API access key from Google API's Console
-                define('API_ACCESS_KEY', 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ');
+                
 
                 // prep the bundle
 
@@ -85,21 +86,23 @@ class EloquentRescueOperationRepository {
                     'Content-Type: application/json'
                 );
 
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, 'https://android.googleapis.com/gcm/send');
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-                $result = curl_exec($ch);
-                //echo $result;
-                // Close connection
-                curl_close($ch);
+//                $ch = curl_init();
+//                curl_setopt($ch, CURLOPT_URL, 'https://android.googleapis.com/gcm/send');
+//                curl_setopt($ch, CURLOPT_POST, true);
+//                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+//                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+//                $result = curl_exec($ch);
+//                //echo $result;
+//                // Close connection
+//                curl_close($ch);
             } else {
                 
             }
+            
         }
+       // return $ar;
     }
 
     //for getting all active users
