@@ -42,7 +42,7 @@ class NewsfeedController extends Controller {
         endif;
     }
 
-    public function showMyNewsfeeds() {
+    public function showMyNewsfeeds($id) {
 
         if (access()->hasRoles(['Police', 'Fire', 'Paramedic'])):
             $newsfeeds=$this->newsfeedRepository->getMyNewsFeeds();

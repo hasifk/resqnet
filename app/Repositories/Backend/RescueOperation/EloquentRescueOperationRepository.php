@@ -43,6 +43,7 @@ class EloquentRescueOperationRepository {
             $rescuee = User::find($userid);
             $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . "Reqested an Emergency(" . $result->emergency_type . ")";
             $message['id'] = $obj->id;
+            $message['to']="Rescuer";
             $this->notification($app_id, $message);
             $userdetails = 'SUCCESS';
         else:
@@ -70,6 +71,7 @@ class EloquentRescueOperationRepository {
                     'largeIcon' => 'large_icon',
                     'smallIcon' => 'small_icon',
                     'panicid' => $message['id'],
+                    'notification_type' => $message['to']
                 );
                 $fields = array
                     (
@@ -141,17 +143,23 @@ class EloquentRescueOperationRepository {
             $obj->active_rescuers_id = $request->active_rescuers_id;
             $obj->rescuer_id = $request->rescuer_id;
             $obj->save();
-            return $obj;
+            $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id)->value('rescuee_id');
+            $user = User::find($rescuee_id);
+            $message['message'] = $user->firstname . " " . $user->lastname . " Accepted Your Request";
+            $message['id'] = $obj->id;
+            $message['to']="User";
+            $app_id['app_id'][] = $user->app_id;
+            $app_id['device_type'][] = $user->device_type;
         else:
             $user = User::find($request->rescuer_id);
             $message['message'] = "Another Rescuer Accepted this request";
             $message['id'] = $request->active_rescuers_id;
+            $message['to']="Rescuer";
             $app_id['app_id'][] = $user->app_id;
             $app_id['device_type'][] = $user->device_type;
-            $this->notification($app_id, $message);
             return $request->active_rescuers_id;
-
         endif;
+        $this->notification($app_id, $message);
     }
 
     public function distanceCalculation($point1_lat, $point1_long, $point2_lat, $point2_long, $unit = 'km', $decimals = 2) {
@@ -188,12 +196,6 @@ class EloquentRescueOperationRepository {
     }
 
     public function listsOfRescuers() {
-//        $obj = new ActiveRescuer;
-//        $obj->rescuee_id = 3;
-//        $rescuers=array(1,2);
-//        $obj->rescuers_ids = json_encode($rescuers);
-//        $obj->save();
-
         $rescuers = $this->ActiveRescuerAll();
         $users = array();
         if (!empty($rescuers)) {
@@ -229,13 +231,6 @@ class EloquentRescueOperationRepository {
         $seconds = $tot_sec % 60;
 
         return "$hours:$minutes:$seconds";
-    }
-
-    public function taggedRescuer() {
-        return Operation::join('activerescuers', 'activerescuers.id', '=', 'operations.active_rescuers_id')
-                        ->join('user', 'user.id', '=', 'operations.rescuer_id')
-                        ->select('operations.*', 'user.firstname', 'user.lastname')
-                        ->get();
     }
 
 }

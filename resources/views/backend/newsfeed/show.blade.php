@@ -16,7 +16,7 @@
     <tbody>
         <tr>
             <th>To</th>
-            <td>@if($newsfeed->resquer_countryid!=0 ||$newsfeed->resquer_areaid!=0  ) Rescuers @else Users @endif</td>
+            <td>{{$newsfeed->newsfeed_type}}</td>
         </tr>
         @if(!empty($newsfeed->image_path))
         <tr>
