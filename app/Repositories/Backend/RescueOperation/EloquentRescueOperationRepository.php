@@ -42,8 +42,8 @@ class EloquentRescueOperationRepository {
             $rescuee = User::find($userid);
             $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . "Reqested an Emergency(" . $result->emergency_type . ")";
             $message['id'] = $obj->id;
-            $userdetails = $this->notification($app_id, $message);
-            $userdetails = 'SUCCESS';
+             $this->notification($app_id, $message);
+            //$userdetails = 'SUCCESS';
         else:
             $userdetails = "No Rescuers available";
         endif;
@@ -75,7 +75,7 @@ class EloquentRescueOperationRepository {
                     'registration_ids' => $app_id['app_id'][$key],
                     'data' => $msg
                 );
-                // return $fields;
+                 return $fields;
                 $headers = array
                     (
                     'Authorization: key=' . API_ACCESS_KEY,
