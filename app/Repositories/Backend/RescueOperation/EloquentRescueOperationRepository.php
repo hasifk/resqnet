@@ -29,7 +29,6 @@ class EloquentRescueOperationRepository {
                     $rescuers[] = $active->user_id;
                     $app_id['app_id'][] = $user->app_id;
                     $app_id['device_type'][] = $user->device_type;
-                    
                 }
                 
             }
@@ -79,7 +78,7 @@ class EloquentRescueOperationRepository {
                     'registration_ids' => array($app_id['app_id'][$key]),
                     'data' => $msg
                 );
-                return $fields;
+                //return $fields;
                 $headers = array
                     (
                     'Authorization: key=' . API_ACCESS_KEY,
