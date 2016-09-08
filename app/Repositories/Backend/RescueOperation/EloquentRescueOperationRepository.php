@@ -29,10 +29,12 @@ class EloquentRescueOperationRepository {
                     $rescuers[] = $active->user_id;
                     $app_id['app_id'][] = $user->app_id;
                     $app_id['device_type'][] = $user->device_type;
+                    
                 }
+                
             }
         }
-        $userdetails='';
+        //$userdetails='';
         if (!empty($rescuers)):
             sort($rescuers);
             $obj = new ActiveRescuer;
@@ -43,8 +45,8 @@ class EloquentRescueOperationRepository {
             $rescuee = User::find($userid);
             $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . "Reqested an Emergency(" . $result->emergency_type . ")";
             $message['id'] = $obj->id;
-             $this->notification($app_id, $message);
-            //$userdetails = 'SUCCESS';
+            $this->notification($app_id, $message);
+            $userdetails = 'SUCCESS';
         else:
             $userdetails = "No Rescuers available";
         endif;
@@ -52,6 +54,7 @@ class EloquentRescueOperationRepository {
     }
 
     public function notification($app_id, $message) {
+        
         foreach ($app_id['device_type'] as $key => $device) {
             if ($device == 'Android') {
                 // API access key from Google API's Console
@@ -73,10 +76,10 @@ class EloquentRescueOperationRepository {
                 );
                 $fields = array
                     (
-                    'registration_ids' => $app_id['app_id'][$key],
+                    'registration_ids' => array($app_id['app_id'][$key]),
                     'data' => $msg
                 );
-                 return $fields;
+                return $fields;
                 $headers = array
                     (
                     'Authorization: key=' . API_ACCESS_KEY,
