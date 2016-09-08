@@ -23,10 +23,9 @@ class RescuerOperation extends FormRequest
      */
     public function rules()
     {   
-        return [
+       return [
             'active_rescuers_id' =>'required',
-            'rescuee_id' =>'required',
-            'type' =>'rescuer_id'
+            'rescuer_id' =>'required',
         ];
     }
 }
