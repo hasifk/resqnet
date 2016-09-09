@@ -16,6 +16,7 @@ class StatisticsController extends Controller {
      */
     private $statistics;
     private $user;
+    private $rescueOperationRepository;
 
     public function __construct(StatisticsRepositoryContract $statistics, UserRepositoryContract $user, EloquentRescueOperationRepository $rescueOperationRepository) {
 
@@ -106,7 +107,7 @@ class StatisticsController extends Controller {
     public function panicsignalAmount(Request $request) {
         $result = $this->statistics->getPanicSignalAmount($request);
         $view = [
-            'place' => $result['country'],
+            //'place' => $result['country'],
             'amount' => $result['amount']
         ];
         return $view;

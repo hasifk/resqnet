@@ -166,7 +166,7 @@ class EloquentUserRepository implements UserRepositoryContract
         return $user;
     }
 
-    public function updateUserStub(array $data)
+    public function updateUserStub($data)
     {
         $user=User::find($data['id']);
         $user->firstname= $data['firstname'];
@@ -178,7 +178,7 @@ class EloquentUserRepository implements UserRepositoryContract
         return $user;
     }
 
-    public function saveDoctors(array $data)
+    public function saveDoctors($data)
     {
             $doctor=new Doctor;
             $doctor->user_id=$data['user_id'];
@@ -190,7 +190,7 @@ class EloquentUserRepository implements UserRepositoryContract
 
     }
 
-    public function updateDoctors(array $data)
+    public function updateDoctors($data)
     {
         $doctor=Doctor::find($data['id']);
             $doctor->name= (!empty($data['name'])) ? $data['name'] : '';
@@ -201,7 +201,7 @@ class EloquentUserRepository implements UserRepositoryContract
 
     }
 
-    public function updateMedicalCondition(array $data)
+    public function updateMedicalCondition($data)
     {
         $user=User::find($data['id']);
         $user->current_medical_conditions= (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '';

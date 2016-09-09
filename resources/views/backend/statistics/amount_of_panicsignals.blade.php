@@ -52,7 +52,7 @@
                                 <option value="All">All</option>
                                 @foreach($rescuertype as $type)
                                 <option
-                                    value="{{ $type->id }}"
+                                    value="{{ $type->type }}"
                                     >
                                     {{ $type->type }}
                                 </option>
@@ -147,13 +147,13 @@
                     date: $('#datepicker').val(),
                 }
                 $.getJSON('/admin/panicsignalamount/', formData, function result(data) {
-                    //console.log(data);
-                    if (type != 'All')
-                        type = type;
-                    else
-                        type = "All Users";
-                    var listitems = '<th>The Amount Of News Feeds Sent To  ' + type + ' In ' + data.place + ' is : ' + data.amount + '</th>';
-                    $('#panicamount').html(listitems);
+                    console.log(data);
+//                    if (type != 'All')
+//                        type = type;
+//                    else
+//                        type = "All Users";
+//                    var listitems = '<th>The Amount Of News Feeds Sent To  ' + type + ' In ' + data.place + ' is : ' + data.amount + '</th>';
+//                    $('#panicamount').html(listitems);
 
                 });
             }
