@@ -213,7 +213,7 @@ class EloquentUserRepository implements UserRepositoryContract
 
      public function profileImageUpload($request)
      {
-         $obj = $this->find(Auth::user()->id);
+         $obj = $this->find($request->user_id);
          $obj->attachProfileImage($request->avatar);
          return true;
      }
@@ -387,14 +387,15 @@ class EloquentUserRepository implements UserRepositoryContract
      */
     public function changePassword($input)
     {
-        /*$user = $this->find(access()->id());*/
-        $user = $this->find($input['user_id']);
+        $id=$input['user_id'];
+       /* $user = $this->find(access()->id());*/
+        /*$user = $this->find($input['user_id']);
 
         if (Hash::check($input['old_password'], $user->password)) {
             $user->password = bcrypt($input['password']);
             return $user->save();
         }
 
-        throw new GeneralException(trans('exceptions.frontend.auth.password.change_mismatch'));
+        throw new GeneralException(trans('exceptions.frontend.auth.password.change_mismatch'));*/
     }
 }

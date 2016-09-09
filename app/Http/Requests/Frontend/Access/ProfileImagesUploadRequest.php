@@ -23,26 +23,7 @@ class ProfileImagesUploadRequest extends FormRequest
      */
     public function rules()
     {
-        /*$rules = [];
 
-        $image = $this->file('avatar');
-
-        $mimeTypes = [
-            config('mimes.jpeg'),
-            config('mimes.jpg'),
-            config('mimes.jpe'),
-            config('mimes.png')
-        ];
-
-        $mimeTypes = array_flatten($mimeTypes);
-
-        if ( ! in_array($image->getClientMimeType(), $mimeTypes) ) {
-            $rules['avatar'] = 'required';
-        } else {
-            $rules['avatar'] = 'image|max:5000|mimes:jpeg,jpg,png';
-        }
-
-        return $rules;*/
         return [
             'avatar' => 'required|image|max:5000|mimes:jpeg,jpg,png',
         ];
