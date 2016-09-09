@@ -45,9 +45,12 @@ class NewsfeedController extends Controller {
     public function showMyNewsfeeds() {
 
         if (access()->hasRoles(['Police', 'Fire', 'Paramedic'])):
-            $newsfeeds=$this->newsfeedRepository->getMyNewsFeeds();
-        if (!empty($newsfeeds)):
-            return response()->json(['newsfeeds' => $newsfeeds->toArray()]);
+            $newsfeeds1=$this->newsfeedRepository->getMyNewsFeeds();
+
+        if (!empty($newsfeeds1)):
+            $newsfeeds=$newsfeeds1->toArray();
+
+            return response()->json(['newsfeeds' => $newsfeeds]);
         else:
             return response()->json(['newsfeeds' => 'No newfeed found']);
         endif;
