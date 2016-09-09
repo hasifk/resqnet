@@ -181,7 +181,7 @@ class EloquentUserRepository implements UserRepositoryContract
     public function saveDoctors($data)
     {
             $doctor=new Doctor;
-            $doctor->user_id=Auth::user()->id;
+            $doctor->user_id=$data->user_id;
             $doctor->name= (!empty($data['name'])) ? $data['name'] : '';
             $doctor->surname=(!empty($data['surname'])) ? $data['surname'] : '';
             $doctor->phone= (!empty($data['phone'])) ? $data['phone'] : '';

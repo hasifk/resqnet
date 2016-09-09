@@ -45,7 +45,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
             $obj = $this->find($request->id);
         else {
             $obj = new Newsfeed;
-            $obj->user_id = $request->userid;
+            $obj->user_id = $request->user_id;
             $obj->newsfeed_type = $request->newsfeed_type;
             $obj->countryid = $request->countryid;
             $obj->areaid = (!empty($request->areaid)) ? $request->areaid : '';
