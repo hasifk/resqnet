@@ -73,7 +73,7 @@ class ProfileController extends Controller
 
     public function saveDoctors(SaveDoctorsRequest $request) {
 
-        if($this->user->saveDoctors($request->all())):
+        if($this->user->saveDoctors($request)):
 
             return response()->json(['status' => "Doctors info Updated successfully"]);
         else:
@@ -98,7 +98,7 @@ class ProfileController extends Controller
     /***************************************************************************************************************/
     public function updateDoctors(UpdateDoctorsRequest $request) {
 
-        if($this->user->updateDoctors($request->all())):
+        if($this->user->updateDoctors($request)):
 
             return response()->json(['status' => "Doctors info Updated successfully"]);
         else:
@@ -110,7 +110,7 @@ class ProfileController extends Controller
     /***************************************************************************************************************/
     public function updateMedicalCondition(UpdateMedicalConditionRequest $request) {
 
-        if($this->user->updateMedicalCondition($request->all())):
+        if($this->user->updateMedicalCondition($request)):
 
             return response()->json(['status' => "Medical Condition Updated successfully"]);
         else:

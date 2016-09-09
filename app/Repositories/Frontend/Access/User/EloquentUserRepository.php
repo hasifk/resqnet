@@ -166,7 +166,7 @@ class EloquentUserRepository implements UserRepositoryContract
         return $user;
     }
 
-    public function updateUserStub(array $data)
+    public function updateUserStub($data)
     {
         $user=User::find($data['id']);
         $user->firstname= $data['firstname'];
@@ -178,35 +178,35 @@ class EloquentUserRepository implements UserRepositoryContract
         return $user;
     }
 
-    public function saveDoctors(array $data)
+    public function saveDoctors($request)
     {
             $doctor=new Doctor;
-            $doctor->user_id=$data['user_id'];
-            $doctor->name= (!empty($data['name'])) ? $data['name'] : '';
-            $doctor->surname=(!empty($data['surname'])) ? $data['surname'] : '';
-            $doctor->phone= (!empty($data['phone'])) ? $data['phone'] : '';
+            $doctor->user_id=$request->user_id;
+            $doctor->name= $request->name;
+            $doctor->surname=$request->surname;
+            $doctor->phone= $request->phone;
             $doctor->save();
             return $doctor;
 
     }
 
-    public function updateDoctors(array $data)
+    public function updateDoctors($request)
     {
-        $doctor=Doctor::find($data['id']);
-            $doctor->name= (!empty($data['name'])) ? $data['name'] : '';
-            $doctor->surname=(!empty($data['surname'])) ? $data['surname'] : '';
-            $doctor->phone= (!empty($data['phone'])) ? $data['phone'] : '';
+        $doctor=Doctor::find($request->id);
+            $doctor->name= $request->name;
+            $doctor->surname=$request->surname;
+            $doctor->phone= $request->phone;
             $doctor->save();
             return $doctor;
 
     }
 
-    public function updateMedicalCondition(array $data)
+    public function updateMedicalCondition($request)
     {
-        $user=User::find($data['id']);
-        $user->current_medical_conditions= (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '';
-        $user->prior_medical_conditions=(!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '';
-        $user->allergies= (!empty($data['allergies'])) ? $data['allergies'] : '';
+        $user=User::find($request->id);
+        $user->current_medical_conditions= $request->current_medical_conditions;
+        $user->prior_medical_conditions=$request->prior_medical_conditions;
+        $user->allergies=$request->allergies;
         $user->save();
         return $user;
     }
