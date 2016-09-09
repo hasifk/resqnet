@@ -108,6 +108,7 @@ return [
         'user' => [
             'profile_updated' => 'Profile successfully updated.',
             'password_updated' => 'Password successfully updated.',
+            'password_updation_failed' => 'Password updation failed.',
         ],
 
         'welcome_to' => 'Welcome to :place',

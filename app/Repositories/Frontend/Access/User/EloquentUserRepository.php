@@ -178,42 +178,42 @@ class EloquentUserRepository implements UserRepositoryContract
         return $user;
     }
 
-    public function saveDoctors($data)
+    public function saveDoctors($request)
     {
             $doctor=new Doctor;
-            $doctor->user_id=$data['user_id'];
-            $doctor->name= (!empty($data['name'])) ? $data['name'] : '';
-            $doctor->surname=(!empty($data['surname'])) ? $data['surname'] : '';
-            $doctor->phone= (!empty($data['phone'])) ? $data['phone'] : '';
+            $doctor->user_id=$request->user_id;
+            $doctor->name= $request->name;
+            $doctor->surname=$request->surname;
+            $doctor->phone= $request->phone;
             $doctor->save();
             return $doctor;
 
     }
 
-    public function updateDoctors($data)
+    public function updateDoctors($request)
     {
-        $doctor=Doctor::find($data['id']);
-            $doctor->name= (!empty($data['name'])) ? $data['name'] : '';
-            $doctor->surname=(!empty($data['surname'])) ? $data['surname'] : '';
-            $doctor->phone= (!empty($data['phone'])) ? $data['phone'] : '';
+        $doctor=Doctor::find($request->id);
+            $doctor->name= $request->name;
+            $doctor->surname=$request->surname;
+            $doctor->phone= $request->phone;
             $doctor->save();
             return $doctor;
 
     }
 
-    public function updateMedicalCondition($data)
+    public function updateMedicalCondition($request)
     {
-        $user=User::find($data['id']);
-        $user->current_medical_conditions= (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '';
-        $user->prior_medical_conditions=(!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '';
-        $user->allergies= (!empty($data['allergies'])) ? $data['allergies'] : '';
+        $user=User::find($request->id);
+        $user->current_medical_conditions= $request->current_medical_conditions;
+        $user->prior_medical_conditions=$request->prior_medical_conditions;
+        $user->allergies=$request->allergies;
         $user->save();
         return $user;
     }
 
      public function profileImageUpload($request)
      {
-         $obj = $this->find(Auth::user()->id);
+         $obj = $this->find($request->user_id);
          $obj->attachProfileImage($request->avatar);
          return true;
      }
@@ -387,7 +387,8 @@ class EloquentUserRepository implements UserRepositoryContract
      */
     public function changePassword($input)
     {
-        $user = $this->find(access()->id());
+        /* $user = $this->find(access()->id());*/
+        $user = $this->find($input['user_id']);
 
         if (Hash::check($input['old_password'], $user->password)) {
             $user->password = bcrypt($input['password']);

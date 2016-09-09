@@ -24,7 +24,10 @@ trait ChangePasswords
      * @return mixed
      */
     public function changePassword(ChangePasswordRequest $request) {
-        $this->user->changePassword($request->all());
+        if($this->user->changePassword($request->all())):
         return response()->json(['success' => trans('strings.frontend.user.password_updated')]);
+            else:
+                return response()->json(['failure' => trans('strings.frontend.user.password_updation_failed')]);
+                endif;
     }
 }
