@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Crypt;
 
 class AuthController extends Controller
 {
@@ -30,7 +31,8 @@ class AuthController extends Controller
             $user->device_type=$request->device_type;
             $user->online_status=1;
             $user->save();
-            $token = \JWTAuth::fromUser($user);
+            /*$token = \JWTAuth::fromUser($user);*/
+            $token=Crypt::encrypt($user->id);
             return response()->json(['token' => $token,'user_id'=>$user->id,'user_role'=>$user->role_name]);
         } else {
             return response()->json(['status' => 'Login Failed.invalid password or username']);

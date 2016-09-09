@@ -53,9 +53,10 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
     require (__DIR__ . '/Routes/Api/Access.php');
 
    /* $api->group(['middleware' => ['jwt.auth']], function ($api) {*/
-
+    $api->group(['middleware' => ['appdcr']], function ($api) {
         require (__DIR__ . '/Routes/Api/Profile.php');
         require (__DIR__ . '/Routes/Api/Newsfeed.php');
         require (__DIR__ . '/Routes/Api/RescueOperations.php');
+    });
     /*});*/
 });

@@ -18,7 +18,8 @@ class ChangePasswordRequest extends FormRequest
      */
     public function authorize()
     {
-        return access()->user()->canChangePassword();
+       /* return access()->user()->canChangePassword();*/
+        return true;
     }
 
     /**
