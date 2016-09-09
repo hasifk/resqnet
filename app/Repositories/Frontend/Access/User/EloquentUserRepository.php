@@ -388,7 +388,7 @@ class EloquentUserRepository implements UserRepositoryContract
     public function changePassword($input)
     {
         /*$user = $this->find(access()->id());*/
-        $user = $this->find($input['id']);
+        $user = $this->find($input['user_id']);
 
         if (Hash::check($input['old_password'], $user->password)) {
             $user->password = bcrypt($input['password']);
