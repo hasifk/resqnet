@@ -36,7 +36,7 @@ class NewsfeedController extends Controller {
     public function showNewsfeeds($id) {
         $newsfeeds = $this->newsfeedRepository->getNewsFeeds($id);
         if (!empty($newsfeeds)):
-            return response()->json(['newsfeeds' => $newsfeeds]);
+            return response()->json(['newsfeeds' => $newsfeeds->toArray()]);
         else:
             return response()->json(['newsfeeds' => 'No newfeed found']);
         endif;
