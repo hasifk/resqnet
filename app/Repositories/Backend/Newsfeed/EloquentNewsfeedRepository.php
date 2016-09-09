@@ -3,6 +3,7 @@
 namespace App\Repositories\Backend\Newsfeed;
 
 use App\Models\Newsfeed\Newsfeed;
+use App\Models\Access\User\User;
 use Auth;
 use Event;
 
@@ -13,28 +14,30 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                         ->paginate(10);
     }
 
-    public function getMyNewsFeeds() {
-        return Newsfeed::where('user_id', access()->id())->orderBy('id', 'desc')->get();
+    public function getMyNewsFeeds($id) {
+        return Newsfeed::where('user_id', $id)->orderBy('id', 'desc')->get();
     }
 
-    public function getNewsFeeds() {
-        if (access()->hasRoles(['Police', 'Fire', 'Paramedic'])) {
-
-            return Newsfeed::join('users', function ($join) {
-                                $join->on('newsfeeds.countryid', '=', 'users.country_id')->orOn('newsfeeds.areaid', '=', 'users.area_id')
-                                ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All']);
-                            })->join('assigned_roles', 'assigned_roles.user_id', '=', 'users.id')
-                            ->whereIn('assigned_roles.role_id', [2, 3, 4])
+    public function getNewsFeeds($id) {
+        $user=User::find($id);
+        
+        if (access()->hasRolesApp(['Police', 'Fire', 'Paramedic'], $id)) {
+         
+        
+            return Newsfeed::where('newsfeeds.countryid', '=',$user->country_id)
+                    ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
+                    ->orWhere('newsfeeds.areaid', '=', $user->area_id)
+                    ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
                             ->select('newsfeeds.id', 'newsfeeds.news_title')
                             ->get();
-        } else if (access()->hasRoles(['User'])) {
-            return Newsfeed::join('users', function ($join) {
-                                $join->on('newsfeeds.countryid', '=', 'users.country_id')->orOn('newsfeeds.areaid', '=', 'users.area_id')
-                                ->whereIn('newsfeeds.newsfeed_type', ['User', 'All']);
-                            })->join('assigned_roles', 'assigned_roles.user_id', '=', 'users.id')
-                            ->where('assigned_roles.role_id', 5)
+        } else if (access()->hasRolesApp(['User'], $id)) {
+            return Newsfeed::where('newsfeeds.countryid', '=',$user->country_id)
+                            ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
+                    ->orWhere('newsfeeds.areaid', '=', $user->area_id)
+                    ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
                             ->select('newsfeeds.id', 'newsfeeds.news_title')->get();
         }
+        
     }
 
     public function save($request) {
@@ -42,7 +45,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
             $obj = $this->find($request->id);
         else {
             $obj = new Newsfeed;
-            $obj->user_id = access()->id();
+            $obj->user_id = $request->user_id;
             $obj->newsfeed_type = $request->newsfeed_type;
             $obj->countryid = $request->countryid;
             $obj->areaid = (!empty($request->areaid)) ? $request->areaid : '';

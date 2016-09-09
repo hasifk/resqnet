@@ -33,8 +33,8 @@ class NewsfeedController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function showNewsfeeds() {
-        $newsfeeds = $this->newsfeedRepository->getNewsFeeds();
+    public function showNewsfeeds($id) {
+        $newsfeeds = $this->newsfeedRepository->getNewsFeeds($id);
         if (!empty($newsfeeds)):
             return response()->json(['newsfeeds' => $newsfeeds->toArray()]);
         else:
@@ -42,15 +42,13 @@ class NewsfeedController extends Controller {
         endif;
     }
 
-    public function showMyNewsfeeds() {
+    public function showMyNewsfeeds($id) {
 
-        if (access()->hasRoles(['Police', 'Fire', 'Paramedic'])):
-            $newsfeeds1=$this->newsfeedRepository->getMyNewsFeeds();
 
-        if (!empty($newsfeeds1)):
-            $newsfeeds=$newsfeeds1->toArray();
-
-            return response()->json(['newsfeeds' => $newsfeeds]);
+        if (access()->hasRolesApp(['Police', 'Fire', 'Paramedic'],$id)):
+            $newsfeeds=$this->newsfeedRepository->getMyNewsFeeds($id);
+        if (!empty($newsfeeds)):
+            return response()->json(['newsfeeds' => $newsfeeds->toArray()]);
         else:
             return response()->json(['newsfeeds' => 'No newfeed found']);
         endif;

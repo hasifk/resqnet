@@ -15,7 +15,7 @@ interface NewsFeedRepositoryContract {
 
     public function getNewsfeedPaginated();
 
-    public function getMyNewsFeeds();
+    public function getMyNewsFeeds($id);
 
     public function newsFeedSearch($request);
 
