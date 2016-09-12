@@ -7,6 +7,7 @@ use App\Http\Requests\Frontend\Auth\RegisterRequest;
 use App\Http\Requests\Frontend\Auth\RegrescuerRequest;
 use App\Http\Requests\Frontend\Auth\UpdateRequest;
 use App\Http\Requests\Frontend\Auth\UpdaterescuerRequest;
+use App\Http\Requests\Frontend\User\EditProfileRequest;
 use Illuminate\Support\Facades\File;
 use Storage;
 
@@ -74,9 +75,9 @@ trait RegistersUsers
         }
     }
     /***************************************************************************************************************/
-    public function editProfile($id)
+    public function editProfile(EditProfileRequest $request)
     {
-        $user1 = $this->user->find($id);
+        $user1 = $this->user->find($request->user_id);
         $user= $user1->toArray();
         if ($user1->avatar_filename && $user1->avatar_extension && $user1->avatar_path) {
 

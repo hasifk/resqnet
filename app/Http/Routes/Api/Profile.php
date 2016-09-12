@@ -6,7 +6,7 @@ $api->post('/saveprofileimage', 'App\Http\Controllers\Frontend\User\ProfileContr
 
 $api->post('/updateprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@updateProfile');
 $api->post('/updaterescuerprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@updaterescuerProfile');
-$api->get('/editprofile/{id}', 'App\Http\Controllers\Frontend\Auth\AuthController@editProfile');
+$api->post('/editprofile', 'App\Http\Controllers\Frontend\Auth\AuthController@editProfile');
 $api->post('/savedoctors', 'App\Http\Controllers\Frontend\User\ProfileController@saveDoctors');
 $api->post('/editdoctors', 'App\Http\Controllers\Frontend\User\ProfileController@editDoctors');
 $api->post('/updatedoctors', 'App\Http\Controllers\Frontend\User\ProfileController@updateDoctors');
