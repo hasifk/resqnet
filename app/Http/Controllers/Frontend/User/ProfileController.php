@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontend\Access\ProfileImagesUploadRequest;
+use App\Http\Requests\Frontend\User\EditDoctorsRequest;
 use App\Http\Requests\Frontend\User\SaveDoctorsRequest;
 use App\Http\Requests\Frontend\User\UpdateDoctorsRequest;
 use App\Http\Requests\Frontend\User\UpdateMedicalConditionRequest;
@@ -84,9 +85,9 @@ class ProfileController extends Controller
     }
 
     /***************************************************************************************************************/
-    public function editDoctors($id) {
+    public function editDoctors(EditDoctorsRequest $request) {
 
-        if($doctors=$this->user->findDoctor($id)):
+        if($doctors=$this->user->findDoctor($request->id)):
 
             return response()->json(['doctors_info' => $doctors->toArray()]);
         else:
