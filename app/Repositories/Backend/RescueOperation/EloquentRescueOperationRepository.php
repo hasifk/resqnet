@@ -102,11 +102,11 @@ class EloquentRescueOperationRepository {
     }
 
     //for getting all active users
-    public function rescuerOperationDetails($id) {
+    public function rescuerOperationDetails($active_rescuers_id) {
         $details = ActiveRescuer::join('users', 'activerescuers.rescuee_id', '=', 'users.id')
                         ->join('locations', 'activerescuers.rescuee_id', '=', 'locations.user_id')
                         ->select('activerescuers.id', 'activerescuers.emergency_type', 'users.firstname', 'users.lastname', 'users.phone', 'users.email', 'users.current_medical_conditions', 'users.prior_medical_conditions', 'users.allergies', 'locations.address', 'locations.lat', 'locations.long')
-                        ->where('activerescuers.id', $id)
+                        ->where('activerescuers.id', $active_rescuers_id)
                         ->get()->toArray();
 
         return $details;
