@@ -20,7 +20,7 @@ class AppDCRMiddleware
         $token=$request->token;
         try {
             $decrypted = Crypt::decrypt($token);
-            $request->request->add(['user_id'=>$decrypted]);
+           /* $request->request->add(['user_id'=>$decrypted]);*/
         } catch (DecryptException $e) {
             return response()->json(['status' => "invalid token"]);
         }
