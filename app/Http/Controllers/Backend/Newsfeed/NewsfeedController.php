@@ -44,7 +44,7 @@ class NewsfeedController extends Controller {
         endif;
     }
 
-    public function showMyNewsfeeds(EditNewsfeedRequest $request) {
+    public function showMyNewsfeeds(ShowNewsfeedRequest $request) {
 
 
         if (access()->hasRolesApp(['Police', 'Fire', 'Paramedic'],$request->user_id)):
