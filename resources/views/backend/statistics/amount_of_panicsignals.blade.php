@@ -86,7 +86,12 @@
                 <div class="col-md-12 m-t-25">
                     <table class="table table-striped table-bordered table-hover">
                         <tr><th>Total Amount Of Panic Signals is : {{$amount}}</th></tr>
-                        <tr id="panicamount"></tr>
+                        <tr id="panicamoun">
+                            <th><table class="table table-striped table-bordered table-hover"><tr><th>Country</th><th>Rescuer Type</th><th>Category</th><th>Date</th><th>Amount</th></tr>
+                        
+                                <tr id="panicamount"></tr>
+                        </table></th>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -147,13 +152,8 @@
                     date: $('#datepicker').val(),
                 }
                 $.getJSON('/admin/panicsignalamount/', formData, function result(data) {
-                    console.log(data);
-//                    if (type != 'All')
-//                        type = type;
-//                    else
-//                        type = "All Users";
-//                    var listitems = '<th>The Amount Of News Feeds Sent To  ' + type + ' In ' + data.place + ' is : ' + data.amount + '</th>';
-//                    $('#panicamount').html(listitems);
+                    var listitems = '<th>'+ data.country + '</th><th>' + $('#rescuertype').val() + '</th><th>' + $('#category').val() + '<th></th>'+$('#datepicker').val()+'</th><th>'+data.amount+'</th></table></th>';
+                    $('#panicamount').html(listitems);
 
                 });
             }
