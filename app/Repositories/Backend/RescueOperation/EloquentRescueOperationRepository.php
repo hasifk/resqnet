@@ -146,7 +146,7 @@ class EloquentRescueOperationRepository {
             $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id)->value('rescuee_id');
             $user = User::find($rescuee_id);
             $message['message'] = $user->firstname . " " . $user->lastname . " Accepted Your Request";
-            $message['id'] = $obj->id;
+            $message['id'] = $request->active_rescuers_id;
             $message['to']="User";
         else:
             $user = User::find($request->rescuer_id);
