@@ -28,7 +28,7 @@ class EditDoctorsRequest extends FormRequest
     public function rules()
     {
         return [
-            'id'  => 'required'
+            'user_id'  => 'required'
         ];
     }
 }

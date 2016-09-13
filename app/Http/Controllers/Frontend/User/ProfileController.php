@@ -87,7 +87,7 @@ class ProfileController extends Controller
     /***************************************************************************************************************/
     public function editDoctors(EditDoctorsRequest $request) {
 
-        if($doctors=$this->user->findDoctor($request->id)):
+        if($doctors=$this->user->findDoctor($request->user_id)):
 
             return response()->json(['doctors_info' => $doctors->toArray()]);
         else:

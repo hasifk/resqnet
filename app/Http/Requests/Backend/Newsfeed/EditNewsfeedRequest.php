@@ -3,7 +3,7 @@ namespace App\Http\Requests\Backend\Newsfeed;
 
 use Dingo\Api\Http\FormRequest;
 
-class CreateNewsfeedRequest extends FormRequest
+class EditNewsfeedRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,7 @@ class CreateNewsfeedRequest extends FormRequest
     {
         return [
             'user_id'=>'required',
-            'news' =>'required',
-            'news_title' =>'required',
-            'countryid' =>'required',
-            'newsfeed_type' =>'required',
-            'img'   =>'required|mimes:jpeg,bmp,png'
+            'id'=>'required',
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\RescueOperation;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\Location\UpdateLocationRequest;
+use App\Http\Requests\Backend\RescuerOperation\RescuerDetails;
 use App\Repositories\Backend\RescueOperation\EloquentRescueOperationRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests\Backend\RescueeOperation\RescueeOperation;
@@ -38,8 +39,8 @@ class RescueOperationController extends Controller {
        $userdetails=$this->rescueOperationRepository->findActiveRescuers($request);  //find resquers within 5 KM
        return response()->json(['operation' => $userdetails]);
     }
-    public function rescuerOperationDetails($id) {
-        $details=$this->rescueOperationRepository->rescuerOperationDetails($id);
+    public function rescuerOperationDetails(RescuerDetails $request) {
+        $details=$this->rescueOperationRepository->rescuerOperationDetails($request->active_rescuers_id);
        return response()->json(['operation' => $details]);
     }
     public function rescuerOperationResponse(RescuerOperation $request)

@@ -1,9 +1,10 @@
 <?php
-namespace App\Http\Requests\Backend\Newsfeed;
+
+namespace App\Http\Requests\Backend\RescuerOperation;
 
 use Dingo\Api\Http\FormRequest;
 
-class CreateNewsfeedRequest extends FormRequest
+class RescuerDetails extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,14 +22,9 @@ class CreateNewsfeedRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {
-        return [
-            'user_id'=>'required',
-            'news' =>'required',
-            'news_title' =>'required',
-            'countryid' =>'required',
-            'newsfeed_type' =>'required',
-            'img'   =>'required|mimes:jpeg,bmp,png'
+    {   
+       return [
+            'active_rescuers_id' =>'required',
         ];
     }
 }
