@@ -35,10 +35,12 @@ trait ResetsPasswords
 
         switch ($response) {
             case Password::RESET_LINK_SENT:
-                return redirect()->back()->with('status', trans($response));
+              
+                return response()->json(['status' => 'Reset Password link sent to your registered Email Id']);
 
             case Password::INVALID_USER:
-                return redirect()->back()->withErrors(['email' => trans($response)]);
+
+                return response()->json(['status' => 'Invalid User']);
         }
     }
 
@@ -49,11 +51,11 @@ trait ResetsPasswords
     public function showResetForm($token = null)
     {
         if (is_null($token)) {
-            return $this->showLinkRequestForm();
-        }
 
-        return view('frontend.auth.passwords.reset')
-            ->with('token', $token);
+            return response()->json(['Token' => 'Null']);
+        }
+        return response()->json(['Token' => $token]);
+
     }
 
     /**
@@ -72,12 +74,11 @@ trait ResetsPasswords
 
         switch ($response) {
             case Password::PASSWORD_RESET:
-                return redirect($this->redirectPath())->with('status', trans($response));
+                return response()->json(['status' => 'Your Password has been reset']);
 
             default:
-                return redirect()->back()
-                    ->withInput($request->only('email'))
-                    ->withErrors(['email' => trans($response)]);
+                return response()->json(['status' => 'Password reset request for '.$request->email.' failed']);
+
         }
     }
 
