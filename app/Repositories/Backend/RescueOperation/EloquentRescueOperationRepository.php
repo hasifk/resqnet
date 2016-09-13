@@ -157,7 +157,7 @@ class EloquentRescueOperationRepository {
         $app_id['app_id'][] = $user->app_id;
         $app_id['device_type'][] = $user->device_type;
         $this->notification($app_id, $message);
-       return $obj->id;
+       return $request->active_rescuers_id;;
     }
 
     public function distanceCalculation($point1_lat, $point1_long, $point2_lat, $point2_long, $unit = 'km', $decimals = 2) {
