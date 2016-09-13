@@ -131,47 +131,71 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
     }
 
     public function getPanicSignalAmount($request) {
-        if ($request->category != "All"){
-            if (!empty($request->date))
-            $actives = ActiveRescuer::where('emergency_type', $request->category)->where(\DB::raw("DATE(created_at) = '".$request->date."'"))->orderBy('id', 'desc')->get();
-            else
-            $actives = ActiveRescuer::where('emergency_type', $request->category)->orderBy('id', 'desc')->get();
+
+        function area($value) {
+            return ActiveRescuer::join('users', 'activerescuers.rescuee_id', '=', 'users.id')->where('users.area_id', $value);
+        }
+
+        function country($value) {
+            return ActiveRescuer::join('users', 'activerescuers.rescuee_id', '=', 'users.id')->where('users.country_id', $value);
+        }
+
+        if ($request->category != "All") {
+            if (!empty($request->date)):
+                if (!empty($request->state_id) && !empty($request->area_id)) {
+                    $actives = area($request->area_id)->where('activerescuers.emergency_type', $request->category)->where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
+                } else if (!empty($request->country_id)) {
+                    $actives = country($request->country_id)->where('activerescuers.emergency_type', $request->category)->where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
+                } else
+                    $actives = ActiveRescuer::where('emergency_type', $request->category)->where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
+            else:
+                if (!empty($request->state_id) && !empty($request->area_id)) {
+                    $actives = area($request->area_id)->where('activerescuers.emergency_type', $request->category)->get();
+                } else if (!empty($request->country_id)) {
+                    $actives = country($request->country_id)->where('activerescuers.emergency_type', $request->category)->get();
+                } else
+                    $actives = ActiveRescuer::where('emergency_type', $request->category)->orderBy('activerescuers.id', 'desc')->get();
+            endif;
         }
         else {
-            $actives = $this->rescueOperationRepository->ActiveRescuerAll();
+            if (!empty($request->date)):
+                if (!empty($request->state_id) && !empty($request->area_id)) {
+                    $actives = $this->area($request->area_id)->where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
+                } else if (!empty($request->country_id)) {
+                    $actives = $this->country($request->country_id)->where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
+                } else
+                    $actives = ActiveRescuer::where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
+            else:
+                if (!empty($request->state_id) && !empty($request->area_id)) {
+                    $actives = area($request->area_id)->orderBy('activerescuers.id', 'desc')->get();
+                } else if (!empty($request->country_id)) {
+                    $actives = country($request->country_id)->orderBy('activerescuers.id', 'desc')->get();
+                } else
+                    $actives = $this->rescueOperationRepository->ActiveRescuerAll();
+            endif;
+          
         }
-        
+
         if ($request->rescur != "All")
-            $role = Role::where('name', $request->rescur)->value('id');
+            $role[] = Role::where('name', $request->rescur)->value('id');
+        else
+            $role=array(1,2,3);
         $f = 0;
         if (!empty($actives)):
             foreach ($actives as $active) {
                 if (!empty($active->rescuers_ids)):
                     $rescuer = json_decode($active->rescuers_ids); //getting all the rescuers corresponding to panic 
                     $users = \DB::table('assigned_roles')->where('user_id', $rescuer[0])->value('id');
-                    if (!empty($role) && $users == $role) {
+                    if (!empty($role) && in_array($users,$role)) {
                         $f++;
                     }
 
                 endif;
             }
         endif;
-        
-
-//        if (!empty($request->state_id) && !empty($request->area_id)) {
-//            $amount = "join('user',resquer_areaid', $request->area_id)->orWhere('user_areaid', $request->area_id)->count()";
-//        } else if (!empty($request->country_id)) {
-//            $country = Country::where('id', $request->country_id)->value('name');
-//            if ($request->rescur == "Rescuer")
-//                $amount = Newsfeed::where('resquer_countryid', $request->country_id)->count();
-//            else if ($request->rescur == "Rescuee")
-//                $amount = Newsfeed::where('user_countryid', $request->country_id)->count();
-//            else
-//                $amount = Newsfeed::where('resquer_countryid', $request->country_id)->orWhere('user_countryid', $request->country_id)->count();
-//        }
         return [
             //'country' => $country,
-            'amount' => $actives
+            'amount' => $f
         ];
     }
 

@@ -146,7 +146,7 @@ class EloquentRescueOperationRepository {
             $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id)->value('rescuee_id');
             $user = User::find($rescuee_id);
             $message['message'] = $user->firstname . " " . $user->lastname . " Accepted Your Request";
-            $message['id'] = $obj->id;
+            $message['id'] = $request->active_rescuers_id;
             $message['to']="User";
         else:
             $user = User::find($request->rescuer_id);
@@ -157,6 +157,7 @@ class EloquentRescueOperationRepository {
         $app_id['app_id'][] = $user->app_id;
         $app_id['device_type'][] = $user->device_type;
         $this->notification($app_id, $message);
+       return $request->active_rescuers_id;;
     }
 
     public function distanceCalculation($point1_lat, $point1_long, $point2_lat, $point2_long, $unit = 'km', $decimals = 2) {
