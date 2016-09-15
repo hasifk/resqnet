@@ -52,7 +52,7 @@
                             <label for="office_life" class="control-label"></label>
                             <button class="mnotification_delete btn btn-primary" id="search">Search</button>
                         </div>
-                        <div class="col-xs-12 col-sm-3 col-md-3 btn-group m-t-25">
+                        <div class="col-xs-12 col-sm-6 col-md-6 btn-group m-t-25">
                             <label for="office_life" class="control-label"></label>
                             <div class="pull-left">
                                 <?php echo $lists->links(); ?>

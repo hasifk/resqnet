@@ -12,5 +12,6 @@ Route::group([
         Route::get('amountofpanicsignals', 'StatisticsController@amountOfPanicSignals')->name('admin.statistics.amountofpanicsignals');
         Route::get('panicsignalamount', 'StatisticsController@panicsignalAmount')->name('admin.statistics.panicsignalsamount');
         Route::get('listsofrescuers', 'StatisticsController@listsOfRescuers')->name('admin.statistics.listsofrescuers');
+        Route::get('rescuerslists', 'StatisticsController@rescuersLists')->name('admin.statistics.listsofrescuers');
        
 });

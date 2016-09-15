@@ -128,5 +128,19 @@ class StatisticsController extends Controller {
         ];
         return view('backend.statistics.amount_of_listsofrescuers', $view);
     }
+    public function rescuersLists()
+    {
+        $users=$this->rescueOperationRepository->listsOfRescuers();
+        $view = [
+            'countries' => $this->user->countries(),
+            'rescuertype' => $this->user->rescuerTypeDetails(),
+            'lists' => $this->rescueOperationRepository->ActiveRescuerPaginate(),
+            'users' => !empty($users['active'])?$users['active']:'',
+            'tagged' => !empty($users['tagged'])?$users['tagged']:'',
+            'panicrespnse'=>!empty($users['panicresponse'])?$users['panicresponse']:'',
+            'rescuerresponse'=>!empty($users['rescuerresponse'])?$users['rescuerresponse']:'',
+        ];
+        return view('backend.statistics.amount_of_listsofrescuers', $view);
+    }
 
 }
