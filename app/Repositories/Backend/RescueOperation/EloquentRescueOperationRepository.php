@@ -17,7 +17,7 @@ class EloquentRescueOperationRepository {
     public function findActiveRescuers($result) {
         $type = RescuerType::where('id', $result->type)->value('type');
         $role = Role::where('name', $type)->value('id');
-        $userid = $result->userid;
+        $userid = $result->user_id;
         $userloc = $this->showLocation($userid); //app user id
         $actives = $this->activeUsers(); //getting all active users
         foreach ($actives as $active) {
@@ -78,7 +78,6 @@ class EloquentRescueOperationRepository {
                     'registration_ids' => array($app_id['app_id'][$key]),
                     'data' => $msg
                 );
-
                 $headers = array
                     (
                     'Authorization: key=' . API_ACCESS_KEY,
@@ -156,7 +155,8 @@ class EloquentRescueOperationRepository {
         endif;
         $app_id['app_id'][] = $user->app_id;
         $app_id['device_type'][] = $user->device_type;
-        $this->notification($app_id, $message);
+        
+      $this->notification($app_id, $message);
        return $request->active_rescuers_id;;
     }
 
