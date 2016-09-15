@@ -152,7 +152,7 @@
                     date: $('#datepicker').val(),
                 }
                 $.getJSON('/admin/panicsignalamount/', formData, function result(data) {
-                    var listitems = '<th>'+ data.country + '</th><th>' + $('#rescuertype').val() + '</th><th>' + $('#category').val() + '<th></th>'+$('#datepicker').val()+'</th><th>'+data.amount+'</th></table></th>';
+                    var listitems = '<th>'+ data.place + '</th><th>' + $('#rescuertype').val() + '</th><th>' + $('#category').val() + '<th></th>'+$('#datepicker').val()+'</th><th>'+data.amount+'</th></table></th>';
                     $('#panicamount').html(listitems);
 
                 });

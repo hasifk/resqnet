@@ -43,7 +43,7 @@ class EloquentRescueOperationRepository {
             $rescuee = User::find($userid);
             $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . "Reqested an Emergency(" . $result->emergency_type . ")";
             $message['id'] = $obj->id;
-            $message['to']="Rescuer";
+            $message['to'] = "Rescuer";
             $this->notification($app_id, $message);
             $userdetails = 'SUCCESS';
         else:
@@ -142,22 +142,23 @@ class EloquentRescueOperationRepository {
             $obj->active_rescuers_id = $request->active_rescuers_id;
             $obj->rescuer_id = $request->rescuer_id;
             $obj->save();
-            $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id)->value('rescuee_id');
-            $user = User::find($rescuee_id);
+            // $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id)->value('rescuee_id');
+            $user = User::find($request->rescuer_id);
             $message['message'] = $user->firstname . " " . $user->lastname . " Accepted Your Request";
             $message['id'] = $request->active_rescuers_id;
-            $message['to']="User";
+            $message['to'] = "User";
         else:
             $user = User::find($request->rescuer_id);
             $message['message'] = "Another Rescuer Accepted this request";
             $message['id'] = $request->active_rescuers_id;
-            $message['to']="Rescuer";
+            $message['to'] = "Rescuer";
         endif;
         $app_id['app_id'][] = $user->app_id;
         $app_id['device_type'][] = $user->device_type;
-        
-      $this->notification($app_id, $message);
-       return $request->active_rescuers_id;;
+
+        $this->notification($app_id, $message);
+        return $request->active_rescuers_id;
+        ;
     }
 
     public function distanceCalculation($point1_lat, $point1_long, $point2_lat, $point2_long, $unit = 'km', $decimals = 2) {
@@ -227,7 +228,11 @@ class EloquentRescueOperationRepository {
         $hours = floor($tot_sec / 3600);
         $minutes = floor(($tot_sec / 60) % 60);
         $seconds = $tot_sec % 60;
-
+        if ($hours >= 24) {
+            $days = floor($hours / 24);
+            $hr = floor($hours % 24);
+            $hours = $days . ' Days &' . $hr;
+        }
         return "$hours:$minutes:$seconds";
     }
 

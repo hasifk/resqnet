@@ -19,25 +19,22 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
     }
 
     public function getNewsFeeds($user_id) {
-        $user=User::find($user_id);
-        
+        $user = User::find($user_id);
+
         if (access()->hasRolesApp(['Police', 'Fire', 'Paramedic'], $user_id)) {
-         
-        
-            return Newsfeed::where('newsfeeds.countryid', '=',$user->country_id)
-                    ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
-                    ->orWhere('newsfeeds.areaid', '=', $user->area_id)
-                    ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
-                            ->select('newsfeeds.id', 'newsfeeds.news_title','image_filename','image_extension','image_path')
+            return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
+                            ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
+                            ->orWhere('newsfeeds.areaid', '=', $user->area_id)
+                            ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
+                            ->select('newsfeeds.id', 'newsfeeds.news_title', 'image_filename', 'image_extension', 'image_path')
                             ->get();
         } else if (access()->hasRolesApp(['User'], $user_id)) {
-            return Newsfeed::where('newsfeeds.countryid', '=',$user->country_id)
+            return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
                             ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
-                    ->orWhere('newsfeeds.areaid', '=', $user->area_id)
-                    ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
-                            ->select('newsfeeds.id', 'newsfeeds.news_title','image_filename','image_extension','image_path')->get();
+                            ->orWhere('newsfeeds.areaid', '=', $user->area_id)
+                            ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
+                            ->select('newsfeeds.id', 'newsfeeds.news_title', 'image_filename', 'image_extension', 'image_path')->get();
         }
-        
     }
 
     public function save($request) {
@@ -46,7 +43,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
         else {
             $obj = new Newsfeed;
             $obj->user_id = $request->user_id;
-           // $obj->newsfeed_type = $request->newsfeed_type;
+            // $obj->newsfeed_type = $request->newsfeed_type;
             $obj->countryid = $request->countryid;
             $obj->areaid = (!empty($request->areaid)) ? $request->areaid : '';
         }
