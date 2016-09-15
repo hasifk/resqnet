@@ -41,7 +41,7 @@ class EloquentRescueOperationRepository {
             $obj->emergency_type = $result->emergency_type;
             $obj->save();
             $rescuee = User::find($userid);
-            $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . "Reqested an Emergency(" . $result->emergency_type . ")";
+            $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . " Reqested an Emergency(" . $result->emergency_type . ")";
             $message['id'] = $obj->id;
             $message['to'] = "Rescuer";
             $this->notification($app_id, $message);
@@ -142,11 +142,12 @@ class EloquentRescueOperationRepository {
             $obj->active_rescuers_id = $request->active_rescuers_id;
             $obj->rescuer_id = $request->rescuer_id;
             $obj->save();
-            // $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id)->value('rescuee_id');
+            $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id)->value('rescuee_id');
             $user = User::find($request->rescuer_id);
             $message['message'] = $user->firstname . " " . $user->lastname . " Accepted Your Request";
             $message['id'] = $request->active_rescuers_id;
             $message['to'] = "User";
+            $user = User::find($rescuee_id);
         else:
             $user = User::find($request->rescuer_id);
             $message['message'] = "Another Rescuer Accepted this request";
@@ -231,7 +232,7 @@ class EloquentRescueOperationRepository {
         if ($hours >= 24) {
             $days = floor($hours / 24);
             $hr = floor($hours % 24);
-            $hours = $days . ' Days &' . $hr;
+            $hours = $days . ' Days & ' . $hr;
         }
         return "$hours:$minutes:$seconds";
     }
