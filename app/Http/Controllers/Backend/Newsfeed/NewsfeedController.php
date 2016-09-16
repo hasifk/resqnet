@@ -119,7 +119,6 @@ class NewsfeedController extends Controller {
         endif;
     }
 
-
     public function updateNewsfeed(UpdateNewsfeedRequest $request) {
         if (access()->hasRolesApp(['Police', 'Fire', 'Paramedic'],$request->user_id)):
             return response()->json(['newsfeed' => $this->newsfeedRepository->save($request)->toArray()]);
