@@ -78,7 +78,7 @@ class NewsfeedController extends Controller {
             $user=$this->user->find($newsfeed1->user_id);
              $operationtime = strtotime($newsfeed1->created_at);
              $mytime = Carbon::now();
-             $finishedtime= $mytime->toDateTimeString();
+             $finishedtime=strtotime($mytime->toDateTimeString());
              $tot_sec = round(abs($finishedtime - $operationtime));
              $time=$this->newsfeedRepository->timeCalculator($tot_sec);
             if ($newsfeed1->image_filename && $newsfeed1->image_extension && $newsfeed1->image_path) {
