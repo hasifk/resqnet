@@ -8,6 +8,7 @@ use App\Http\Requests\Backend\Newsfeed\EditNewsfeedRequest;
 use App\Http\Requests\Backend\Newsfeed\ShowNewsfeedRequest;
 use App\Http\Requests\Backend\Newsfeed\UpdateNewsfeedRequest;
 use App\Models\Newsfeed\Newsfeed;
+use Carbon\Carbon;
 use App\Repositories\Backend\Newsfeed\NewsFeedRepositoryContract;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
 
@@ -76,16 +77,17 @@ class NewsfeedController extends Controller {
             $newsfeed= $newsfeed1->toArray();
             $user=$this->user->find($newsfeed1->user_id);
              $operationtime = strtotime($newsfeed1->created_at);
-             $mytime = Carbon\Carbon::now();
+             $mytime = Carbon::now();
              $finishedtime= $mytime->toDateTimeString();
              $tot_sec = round(abs($finishedtime - $operationtime));
              $time=$this->newsfeedRepository->timeCalculator($tot_sec);
             if ($newsfeed1->image_filename && $newsfeed1->image_extension && $newsfeed1->image_path) {
 
                 $newsfeed['newsfeed_image_src']=url('/image/'.$newsfeed1->id.'/'.$newsfeed1->image_filename.'.'.$newsfeed1->image_extension);
-                $newsfeed['username']=$user->firstname." ".$user->lastname;
-                $newsfeed['time']=$time;
+               
             }
+             $newsfeed['username']=$user->firstname." ".$user->lastname;
+                $newsfeed['time']=$time;
             return response()->json(['newsfeed' => $newsfeed]);
          else:
         return response()->json(['newsfeeds' => 'No newfeed found']);

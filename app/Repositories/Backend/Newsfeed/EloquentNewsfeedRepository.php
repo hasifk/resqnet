@@ -101,6 +101,8 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
         else if ($minutes < 1) {
             $time = "Now";
         }
+        else
+            $time=$minutes." Min Ago";
         return $time;
     }
 
