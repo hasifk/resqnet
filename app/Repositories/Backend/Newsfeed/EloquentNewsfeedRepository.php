@@ -92,7 +92,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
         // $seconds = $tot_sec % 60;
         
         if ($hours >= 1) {
-            $time = $hours . " Ago";
+            $time=$hours>=2?$hours." Hrs Ago":$hours." Hr Ago";
             if ($hours >= 24) {
                 $days = floor($hours / 24);
                 $time = $days . ' Days Ago';
