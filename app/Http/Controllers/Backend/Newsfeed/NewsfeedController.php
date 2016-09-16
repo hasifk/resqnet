@@ -74,9 +74,17 @@ class NewsfeedController extends Controller {
 
             if($newsfeed1 = $this->newsfeedRepository->find($request->id)):
             $newsfeed= $newsfeed1->toArray();
+            $user=$this->user->find($newsfeed1->user_id);
+             $operationtime = strtotime($newsfeed1->created_at);
+             $mytime = Carbon\Carbon::now();
+             $finishedtime= $mytime->toDateTimeString();
+             $tot_sec = round(abs($finishedtime - $operationtime));
+             $time=$this->newsfeedRepository->timeCalculator($tot_sec);
             if ($newsfeed1->image_filename && $newsfeed1->image_extension && $newsfeed1->image_path) {
 
                 $newsfeed['newsfeed_image_src']=url('/image/'.$newsfeed1->id.'/'.$newsfeed1->image_filename.'.'.$newsfeed1->image_extension);
+                $newsfeed['username']=$user->firstname." ".$user->lastname;
+                $newsfeed['time']=$time;
             }
             return response()->json(['newsfeed' => $newsfeed]);
          else:

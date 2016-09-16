@@ -26,7 +26,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                             ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
                             ->orWhere('newsfeeds.areaid', '=', $user->area_id)
                             ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
-                            ->select('newsfeeds.id', 'newsfeeds.news_title', 'image_filename', 'image_extension', 'image_path')
+                            ->select('newsfeeds.id', 'newsfeeds.news_title', 'newsfeeds.image_filename', 'image_extension', 'image_path')
                             ->get();
         } else if (access()->hasRolesApp(['User'], $user_id)) {
             return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
@@ -84,6 +84,24 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
         } else
             $newsfeed = $this->getNewsfeedPaginated();
         return $newsfeed;
+    }
+
+    public function timeCalculator($tot_sec) {
+        $hours = floor($tot_sec / 3600);
+        $minutes = floor(($tot_sec / 60) % 60);
+        // $seconds = $tot_sec % 60;
+        
+        if ($hours >= 1) {
+            $time = $hours . " Ago";
+            if ($hours >= 24) {
+                $days = floor($hours / 24);
+                $time = $days . ' Days Ago';
+            }
+        }
+        else if ($minutes < 1) {
+            $time = "Now";
+        }
+        return $time;
     }
 
 }
