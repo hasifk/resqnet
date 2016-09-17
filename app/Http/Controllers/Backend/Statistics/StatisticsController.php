@@ -128,7 +128,7 @@ class StatisticsController extends Controller {
         ];
         return view('backend.statistics.amount_of_listsofrescuers', $view);
     }
-    public function rescuersLists()
+    public function rescuersLists(Request $request)
     {
         $users=$this->rescueOperationRepository->listsOfRescuers();
         $view = [
