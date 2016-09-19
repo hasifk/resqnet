@@ -392,28 +392,28 @@ class EloquentUserRepository implements UserRepositoryContract {
         return HealthInsurance::where('user_id', $id)->first();
     }
 
-    public function saveEmergencyContacts($requests) {
+    public function saveEmergencyContacts($request) {
         if ($request->has('id'))
             $obj = $this->findEmergencyContacts($request->id);
         else {
             $obj = new EmergencyContact;
-            $obj->user_id = $requests->user_id;
+            $obj->user_id = $request->user_id;
         }
-        $obj->emergency1 = $requests->emergency1;
-        $obj->emergency2 = $requests->emergency2;
-        $obj->emergency3 = $requests->emergency3;
+        $obj->emergency1 = $request->emergency1;
+        $obj->emergency2 = $request->emergency2;
+        $obj->emergency3 = $request->emergency3;
         $obj->save();
     }
 
-    public function saveHealthInsurance($requests) {
+    public function saveHealthInsurance($request) {
         if ($request->has('id'))
             $obj = $this->findHealthinsurance($request->id);
         else {
             $obj = new HealthInsurance;
-            $obj->user_id = $requests->user_id;
+            $obj->user_id = $request->user_id;
         }
-        $obj->service_provider = $requests->service_provider;
-        $obj->insurance_no = $requests->insurance_no;
+        $obj->service_provider = $request->service_provider;
+        $obj->insurance_no = $request->insurance_no;
         $obj->save();
     }
 

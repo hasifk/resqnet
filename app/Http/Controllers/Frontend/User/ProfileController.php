@@ -128,20 +128,20 @@ class ProfileController extends Controller {
         endif;
     }
 
-    public function saveEmergencyContacts(Request $requests) {
-        $this->user->SaveEmergencyContacts($requests);
+    public function saveEmergencyContacts(Request $request) {
+        $this->user->SaveEmergencyContacts($request);
     }
 
-    public function viewEmergencyContacts(Request $requests) {
-        $this->user->emergencyContacts($requests->user_id);
+    public function viewEmergencyContacts(Request $request) {
+        $this->user->emergencyContacts($request->user_id);
     }
 
-    public function saveHealthInsurance(Request $requests) {
-        $this->user->SaveHealthInsurance($requests);
+    public function saveHealthInsurance(Request $request) {
+        $this->user->SaveHealthInsurance($request);
     }
 
-    public function viewHealthInsurance(Request $requests) {
-        $this->user->healthinsurance($requests->user_id);
+    public function viewHealthInsurance(Request $request) {
+        $this->user->healthinsurance($request->user_id);
     }
 
     public function upgradeStatus() {
