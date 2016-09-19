@@ -11,6 +11,7 @@ use App\Http\Requests\Frontend\User\UpdateMedicalConditionRequest;
 use App\Http\Requests\Frontend\User\UpdateOnlineStatusRequest;
 use App\Http\Requests\Frontend\User\UpdateProfileRequest;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
+use Illuminate\Http\Request;
 
 /**
  * Class ProfileController
