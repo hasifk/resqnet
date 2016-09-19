@@ -18,8 +18,8 @@ use App\Repositories\Frontend\Access\User\UserRepositoryContract as FrontendUser
  * Class EloquentUserRepository
  * @package App\Repositories\User
  */
-class EloquentUserRepository implements UserRepositoryContract
-{
+class EloquentUserRepository implements UserRepositoryContract {
+
     /**
      * @var RoleRepositoryContract
      */
@@ -35,10 +35,8 @@ class EloquentUserRepository implements UserRepositoryContract
      * @param FrontendUserRepositoryContract $user
      */
     public function __construct(
-        RoleRepositoryContract $role,
-        FrontendUserRepositoryContract $user
-    )
-    {
+    RoleRepositoryContract $role, FrontendUserRepositoryContract $user
+    ) {
         $this->role = $role;
         $this->user = $user;
     }
@@ -49,8 +47,7 @@ class EloquentUserRepository implements UserRepositoryContract
      * @throws GeneralException
      * @return mixed
      */
-    public function findOrThrowException($id, $withRoles = false)
-    {
+    public function findOrThrowException($id, $withRoles = false) {
         if ($withRoles) {
             $user = User::with('roles')->withTrashed()->find($id);
         } else {
@@ -71,21 +68,19 @@ class EloquentUserRepository implements UserRepositoryContract
      * @param  int         $status
      * @return mixed
      */
-    public function getUsersPaginated($per_page, $status = 1, $order_by = 'id', $sort = 'asc')
-    {
+    public function getUsersPaginated($per_page, $status = 1, $order_by = 'id', $sort = 'asc') {
         return User::where('status', $status)
-            ->orderBy($order_by, $sort)
-            ->paginate($per_page);
+                        ->orderBy($order_by, $sort)
+                        ->paginate($per_page);
     }
 
     /**
      * @param  $per_page
      * @return \Illuminate\Pagination\Paginator
      */
-    public function getDeletedUsersPaginated($per_page)
-    {
+    public function getDeletedUsersPaginated($per_page) {
         return User::onlyTrashed()
-            ->paginate($per_page);
+                        ->paginate($per_page);
     }
 
     /**
@@ -93,10 +88,9 @@ class EloquentUserRepository implements UserRepositoryContract
      * @param  string  $sort
      * @return mixed
      */
-    public function getAllUsers($order_by = 'id', $sort = 'asc')
-    {
+    public function getAllUsers($order_by = 'id', $sort = 'asc') {
         return User::orderBy($order_by, $sort)
-            ->get();
+                        ->get();
     }
 
     /**
@@ -107,8 +101,7 @@ class EloquentUserRepository implements UserRepositoryContract
      * @throws UserNeedsRolesException
      * @return bool
      */
-    public function create($input, $roles, $permissions)
-    {
+    public function create($input, $roles, $permissions) {
         $user = $this->createUserStub($input);
 
         if ($user->save()) {
@@ -140,14 +133,13 @@ class EloquentUserRepository implements UserRepositoryContract
      * @return bool
      * @throws GeneralException
      */
-    public function update($id, $input, $roles, $permissions)
-    {
+    public function update($id, $input, $roles, $permissions) {
         $user = $this->findOrThrowException($id);
         $this->checkUserByEmail($input, $user);
 
         if ($user->update($input)) {
             //For whatever reason this just wont work in the above call, so a second is needed for now
-            $user->status    = isset($input['status']) ? 1 : 0;
+            $user->status = isset($input['status']) ? 1 : 0;
             $user->confirmed = isset($input['confirmed']) ? 1 : 0;
             $user->save();
 
@@ -167,11 +159,10 @@ class EloquentUserRepository implements UserRepositoryContract
      * @throws GeneralException
      * @return bool
      */
-    public function updatePassword($id, $input)
-    {
+    public function updatePassword($id, $input) {
         $user = $this->findOrThrowException($id);
         $user->password = bcrypt($input['password']);
-        
+
         if ($user->save())
             return true;
 
@@ -183,8 +174,7 @@ class EloquentUserRepository implements UserRepositoryContract
      * @throws GeneralException
      * @return bool
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         if (auth()->id() == $id) {
             throw new GeneralException(trans('exceptions.backend.access.users.cant_delete_self'));
         }
@@ -202,8 +192,7 @@ class EloquentUserRepository implements UserRepositoryContract
      * @throws GeneralException
      * @return boolean|null
      */
-    public function delete($id)
-    {
+    public function delete($id) {
         $user = $this->findOrThrowException($id, true);
 
         //Detach all roles & permissions
@@ -222,8 +211,7 @@ class EloquentUserRepository implements UserRepositoryContract
      * @throws GeneralException
      * @return bool
      */
-    public function restore($id)
-    {
+    public function restore($id) {
         $user = $this->findOrThrowException($id);
 
         if ($user->restore()) {
@@ -239,13 +227,12 @@ class EloquentUserRepository implements UserRepositoryContract
      * @throws GeneralException
      * @return bool
      */
-    public function mark($id, $status)
-    {
+    public function mark($id, $status) {
         if (access()->id() == $id && $status == 0) {
             throw new GeneralException(trans('exceptions.backend.access.users.cant_deactivate_self'));
         }
 
-        $user         = $this->findOrThrowException($id);
+        $user = $this->findOrThrowException($id);
         $user->status = $status;
 
         if ($user->save()) {
@@ -262,8 +249,7 @@ class EloquentUserRepository implements UserRepositoryContract
      * @param  $roles
      * @throws UserNeedsRolesException
      */
-    private function validateRoleAmount($user, $roles)
-    {
+    private function validateRoleAmount($user, $roles) {
         //Validate that there's at least one role chosen, placing this here so
         //at lease the user can be updated first, if this fails the roles will be
         //kept the same as before the user was updated
@@ -286,15 +272,13 @@ class EloquentUserRepository implements UserRepositoryContract
      * @param  $user
      * @throws GeneralException
      */
-    private function checkUserByEmail($input, $user)
-    {
+    private function checkUserByEmail($input, $user) {
         //Figure out if email is not the same
         if ($user->email != $input['email']) {
             //Check to see if email exists
             if (User::where('email', '=', $input['email'])->first()) {
                 throw new GeneralException(trans('exceptions.backend.access.users.email_error'));
             }
-
         }
     }
 
@@ -302,8 +286,7 @@ class EloquentUserRepository implements UserRepositoryContract
      * @param $roles
      * @param $user
      */
-    private function flushRoles($roles, $user)
-    {
+    private function flushRoles($roles, $user) {
         //Flush roles out, then add array of new ones
         $user->detachRoles($user->roles);
         $user->attachRoles($roles['assignees_roles']);
@@ -313,96 +296,64 @@ class EloquentUserRepository implements UserRepositoryContract
      * @param $permissions
      * @param $user
      */
-    private function flushPermissions($permissions, $user)
-    {
+    private function flushPermissions($permissions, $user) {
         //Flush permissions out, then add array of new ones if any
         $user->detachPermissions($user->permissions);
         if (count($permissions['permission_user']) > 0) {
             $user->attachPermissions($permissions['permission_user']);
         }
-
     }
 
     /**
      * @param  $roles
      * @throws GeneralException
      */
-    private function checkUserRolesCount($roles)
-    {
+    private function checkUserRolesCount($roles) {
         //User Updated, Update Roles
         //Validate that there's at least one role chosen
         if (count($roles['assignees_roles']) == 0) {
             throw new GeneralException(trans('exceptions.backend.access.users.role_needed'));
         }
-
     }
 
     /**
      * @param  $input
      * @return mixed
      */
-    private function createUserStub($input)
-    {
-        $user                    = new User;
-        $user->name              = $input['name'];
-        $user->email             = $input['email'];
-        $user->password          = bcrypt($input['password']);
-        $user->status            = isset($input['status']) ? 1 : 0;
+    private function createUserStub($input) {
+        $user = new User;
+        $user->name = $input['name'];
+        $user->email = $input['email'];
+        $user->password = bcrypt($input['password']);
+        $user->status = isset($input['status']) ? 1 : 0;
         $user->confirmation_code = md5(uniqid(mt_rand(), true));
-        $user->confirmed         = isset($input['confirmed']) ? 1 : 0;
+        $user->confirmed = isset($input['confirmed']) ? 1 : 0;
         return $user;
-   }
-   public function doctorslists($id)
-   {
-       return Doctor::where('user_id',$id)->get();
-   }
-   public function emergencyContacts($id)
-   {
-       return EmergencyContact::where('user_id',$id)->first();
-   }
-    public function findEmergencyContacts($id)
-   {
-       return EmergencyContact::find($id);
-   }
-    public function findHealthinsurance($id)
-   {
-       return HealthInsurance::find($id);
-   }
-    public function healthinsurance($id)
-   {
-       return HealthInsurance::where('user_id',$id)->first();
-   }
-    public function country($id) {   
-        
+    }
+
+    public function doctorslists($id) {
+        return Doctor::where('user_id', $id)->get();
+    }
+
+    public function emergencyContacts($id) {
+        return EmergencyContact::where('user_id', $id)->first();
+    }
+
+    public function healthinsurance($id) {
+        return HealthInsurance::where('user_id', $id)->first();
+    }
+
+    public function country($id) {
+
         return Country::find($id);
     }
-     public function state($id) {   
-            return State::find($id);
+
+    public function state($id) {
+        return State::find($id);
     }
-     public function area($id) {   
-         return City::find($id);
+
+    public function area($id) {
+        return City::find($id);
     }
-    public function saveEmergencyContacts($requests) {
-        if ($request->has('id'))
-            $obj = $this->findEmergencyContacts($request->id);
-        else {
-        $obj=new EmergencyContact;
-        $obj->user_id=$requests->user_id;
-        }
-        $obj->emergency1=$requests->emergency1;
-        $obj->emergency2=$requests->emergency2;
-        $obj->emergency3=$requests->emergency3;
-        $obj->save();
-    }
-     public function saveHealthInsurance($requests) {
-        if ($request->has('id'))
-            $obj = $this->findHealthinsurance($request->id);
-        else {
-        $obj=new HealthInsurance;
-        $obj->user_id=$requests->user_id;
-        }
-        $obj->service_provider=$requests->service_provider;
-        $obj->insurance_no=$requests->insurance_no;
-        $obj->save();
-    }
+
 }
