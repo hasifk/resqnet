@@ -133,7 +133,12 @@ class ProfileController extends Controller {
     }
 
     public function viewEmergencyContacts(Request $request) {
-        $this->user->emergencyContacts($request->user_id);
+
+        if ($res = $this->user->emergencyContacts($request->user_id)):
+            return response()->json(['emergencycontacts' => $res->toArray()]);
+        else:
+            return response()->json(['emergencycontacts' => "No Emergency Contacts Found"]);
+        endif;
     }
 
     public function saveHealthInsurance(Request $request) {
@@ -141,7 +146,12 @@ class ProfileController extends Controller {
     }
 
     public function viewHealthInsurance(Request $request) {
-        $this->user->healthinsurance($request->user_id);
+        if ($res = $this->user->healthinsurance($request->user_id)):
+
+            return response()->json(['healthinsurance' => $res->toArray()]);
+        else:
+            return response()->json(['healthinsurance' => "No Health Insurance Found"]);
+        endif;
     }
 
     public function upgradeStatus() {
