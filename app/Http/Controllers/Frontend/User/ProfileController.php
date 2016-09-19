@@ -141,30 +141,12 @@ class ProfileController extends Controller {
         endif;
     }
 
-    public function updateEmergencyContacts(Request $request) {
-
-        if ($res = $this->user->findEmergencyContacts($request->id)):
-            return response()->json(['emergencycontacts' => $res->toArray()]);
-        else:
-            return response()->json(['emergencycontacts' => "No Emergency Contacts Found"]);
-        endif;
-    }
-
     public function saveHealthInsurance(Request $request) {
         $this->user->SaveHealthInsurance($request);
     }
 
     public function viewHealthInsurance(Request $request) {
         if ($res = $this->user->healthinsurance($request->user_id)):
-
-            return response()->json(['healthinsurance' => $res->toArray()]);
-        else:
-            return response()->json(['healthinsurance' => "No Health Insurance Found"]);
-        endif;
-    }
-
-    public function updateHealthInsurance(Request $request) {
-        if ($res = $this->user->findHealthinsurance($request->id)):
 
             return response()->json(['healthinsurance' => $res->toArray()]);
         else:
