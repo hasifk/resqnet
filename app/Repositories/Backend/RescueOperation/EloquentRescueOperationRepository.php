@@ -195,34 +195,67 @@ class EloquentRescueOperationRepository {
         return $obj;
     }
 
-    public function listsOfRescuers() {
-        $rescuers = $this->ActiveRescuerAll();
-        $users = array();
+    public function rescuersLists() {
+        $rescuers = $this->ActiveRescuerPaginate();
         if (!empty($rescuers)) {
-            foreach ($rescuers as $active) {
-
-                $users['active'][$active->rescuee_id] = User::find($active->rescuee_id);
+            foreach ($rescuers as $key => $active) {
+                $res = array();
+                $rescuers[$key]['rescuee_details'] = User::find($active->rescuee_id);
                 if (!empty($active->rescuers_ids)):
                     $resccuer_id = json_decode($active->rescuers_ids);
                     foreach ($resccuer_id as $resid)
-                        $users['active'][$resid] = User::find($resid);
+                        $res[] = User::find($resid);
                 endif;
+                $rescuers[$key]['rescuers_details'] = $res;
                 $operation = Operation::where('active_rescuers_id', $active->id)->first();
                 if (!empty($operation)) {
-                    $users['tagged'][$active->id] = User::find($operation->rescuer_id);
+                    $rescuers[$key]['tagged'] = User::find($operation->rescuer_id);
                     $activetime = strtotime($active->created_at);
                     $operationtime = strtotime($operation->created_at);
                     if (!empty($operation->finished_at)):
                         $finishedtime = strtotime($operation->finished_at);
                         $tot_sec = round(abs($finishedtime - $operationtime));
-                        $users['rescuerresponse'][$active->id] = $this->timeCalculator($tot_sec);
+                        $rescuers[$key]['rescuerresponse'] = $this->timeCalculator($tot_sec);
                     endif;
                     $tot_sec = round(abs($operationtime - $activetime));
-                    $users['panicresponse'][$active->id] = $this->timeCalculator($tot_sec);
+                    $rescuers[$key]['panicresponse'] = $this->timeCalculator($tot_sec);
                 }
             }
         }
-        return $users;
+        return $rescuers;
+    }
+
+    public function listsOfRescuers($panicids) {
+        
+        $rescuers=array();
+        if (!empty($panicids)) {
+            foreach($panicids as $value)
+            $rescuers[]=$this->ActiveRescuer($value);
+            foreach ($rescuers as $key => $active) {
+                $res = array();
+                $rescuers[$key]['rescuee_details'] = User::find($active->rescuee_id);
+                if (!empty($active->rescuers_ids)):
+                    $resccuer_id = json_decode($active->rescuers_ids);
+                    foreach ($resccuer_id as $resid)
+                        $res[] = User::find($resid);
+                endif;
+                $rescuers[$key]['rescuers_details'] = $res;
+                $operation = Operation::where('active_rescuers_id', $active->id)->first();
+                if (!empty($operation)) {
+                    $rescuers[$key]['tagged'] = User::find($operation->rescuer_id);
+                    $activetime = strtotime($active->created_at);
+                    $operationtime = strtotime($operation->created_at);
+                    if (!empty($operation->finished_at)):
+                        $finishedtime = strtotime($operation->finished_at);
+                        $tot_sec = round(abs($finishedtime - $operationtime));
+                        $rescuers[$key]['rescuerresponse'] = $this->timeCalculator($tot_sec);
+                    endif;
+                    $tot_sec = round(abs($operationtime - $activetime));
+                    $rescuers[$key]['panicresponse'] = $this->timeCalculator($tot_sec);
+                }
+            }
+        }
+        return $rescuers;
     }
 
     public function timeCalculator($tot_sec) {

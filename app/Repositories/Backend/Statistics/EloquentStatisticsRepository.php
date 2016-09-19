@@ -139,11 +139,12 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
         function country($value) {
             return ActiveRescuer::join('users', 'activerescuers.rescuee_id', '=', 'users.id')->where('users.country_id', $value);
         }
-       $country = Country::find($request->country_id)->value('name');
+
+        $country = Country::find($request->country_id)->value('name');
         if ($request->category != "All") {
             if (!empty($request->date)):
                 if (!empty($request->state_id) && !empty($request->area_id)) {
-                         $country = City::find($request->area_id)->value('name');
+                    $country = City::find($request->area_id)->value('name');
                     $actives = area($request->area_id)->where('activerescuers.emergency_type', $request->category)->where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
                 } else if (!empty($request->country_id)) {
                     $actives = country($request->country_id)->where('activerescuers.emergency_type', $request->category)->where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
@@ -177,21 +178,22 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
                 } else
                     $actives = $this->rescueOperationRepository->ActiveRescuerAll();
             endif;
-          
         }
 
         if ($request->rescur != "All")
             $role[] = Role::where('name', $request->rescur)->value('id');
         else
-            $role=array(1,2,3);
+            $role = array(1, 2, 3);
         $f = 0;
+        $lists=array();
         if (!empty($actives)):
             foreach ($actives as $active) {
                 if (!empty($active->rescuers_ids)):
                     $rescuer = json_decode($active->rescuers_ids); //getting all the rescuers corresponding to panic 
                     $users = \DB::table('assigned_roles')->where('user_id', $rescuer[0])->value('id');
-                    if (!empty($role) && in_array($users,$role)) {
+                    if (!empty($role) && in_array($users, $role)) {
                         $f++;
+                        $lists[] = $active->id;
                     }
 
                 endif;
@@ -199,7 +201,8 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
         endif;
         return [
             'country' => $country,
-            'amount' => $f
+            'amount' => $f,
+            'lists' => $lists
         ];
     }
 

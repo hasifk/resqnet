@@ -16,6 +16,7 @@
                 <!-- TO DO List -->
                 <div class="box box-primary">
                     <div class="col-xs-12 m-t-20">
+
                         <div class="col-xs-12 col-sm-6 col-md-3 btn-group">
                             <label for="office_life" class="control-label">Country <i><font color="red" size="3">*</font></i></label></label>
                             <select name="country_id" id="country_id" class="form-control">
@@ -43,25 +44,45 @@
 
                             </select>
                         </div>
+                        <div class="col-xs-12 col-sm-3 col-md-3 btn-group">
+                            <label for="office_life" class="control-label">Rescuer Type</label>
+                            <select name="rescuertype" id="rescuertype" class="form-control">
+                                <option value="All">All</option>
+                                @foreach($rescuertype as $type)
+                                <option
+                                    value="{{ $type->type }}"
+                                    >
+                                    {{ $type->type }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <div class="col-xs-12 m-t-20">
-                        <div class="col-xs-12 col-sm-3 col-md-3 btn-group m-t-25">
-                            <input type='text' class="form-control" />
+
+                        <div class="col-xs-12 col-sm-3 col-md-3 btn-group">
+                            <label for="office_life" class="control-label">Category</label>
+                            <select name="category" id="category" class="form-control">
+                                <option value="All">All</option>
+                                <option value="Medical">Medical</option>
+                                <option value="Crime">Crime</option>
+                            </select>
                         </div>
+
+                        <div class="col-xs-12 col-sm-3 col-md-3 btn-group input-append date">
+                            <label for="office_life" class="control-label">Date <i>(optional)</i></label>
+                            <input data-format="dd/MM/yyyy" type="text" class="form-control" id="datepicker"></input>
+                        </div>
+
                         <div class="col-xs-12 col-sm-3 col-md-3 btn-group m-t-25">
                             <label for="office_life" class="control-label"></label>
                             <button class="mnotification_delete btn btn-primary" id="search">Search</button>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 btn-group m-t-25">
-                            <label for="office_life" class="control-label"></label>
-                            <div class="pull-left">
-                                <?php echo $lists->links(); ?>
-                            </div>
-                        </div>
-                    </div><!-- /.box -->
 
+                    </div><!-- /.box -->
                 </div>
                 <div class="col-md-12 m-t-25">
+                    <?php print_r($lists[2]->rescuers_details); ?>
                     <table class="table table-striped table-bordered table-hover">
                         <tr><th>No</th><th>Users</th><th>Lists Of ResQuer</th><th>Tagged ResQuer</th><th>Panic Response</th><th>ResQuer Response</th><th>Date</th></tr>
                         <?php
@@ -71,18 +92,18 @@
                             <tr><td>{{$f++}}</td>
                                 <td>
 
-                                    <a href="{{route('admin.access.user.shows',$list->rescuee_id)}}"> {{ $users[$list->rescuee_id]->firstname.' '.$users[$list->rescuee_id]->lastname }} </a>
+                                    <a href="{{route('admin.access.user.shows',$list->rescuee_id)}}"> {{ $list->rescuee_details->firstname.' '.$list->rescuee_details->lastname }} </a>
 
                                 </td>
                                 <td>
                                     <table> <?php
-                                        if (!empty($list->rescuers_ids)):
-                                            $resccuer_id = json_decode($list->rescuers_ids)
+                                        if (!empty($list->rescuers_details)):
+                                            //$resccuer_id = json_decode($list->rescuers_ids)
                                             ?>
-                                            @foreach($resccuer_id as $resid)
+                                            @foreach($list->rescuers_details as $resid)
                                             <tr>
                                                 <td>
-                                                    <a href="{{route('admin.access.user.shows',$resid)}}">{{ $users[$resid]->firstname.' '.$users[$resid]->lastname }}</a>
+                                                    <a href="{{route('admin.access.user.shows',$resid->id)}}">{{ $resid->firstname.' '.$resid->lastname }}</a>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -94,17 +115,17 @@
                                     </table>
                                 </td>
                                 <td>
-                                    <?php if (!empty($tagged[$list->id])): ?>
-                                        <a href="{{route('admin.access.user.shows',$tagged[$list->id]->id)}}">
-                                            {{ $tagged[$list->id]->firstname.' '.$tagged[$list->id]->lastname }}</a>
+                                    <?php if (!empty($list->tagged)): ?>
+                                        <a href="{{route('admin.access.user.shows',$list->tagged->id)}}">
+                                            {{ $list->tagged->firstname.' '.$list->tagged->lastname }}</a>
                                         <?php
                                     else:
                                         echo "No Rescuer Tagged";
                                     endif;
                                     ?> 
                                 </td>
-                                <td> @if(!empty($panicrespnse[$list->id])){{ $panicrespnse[$list->id]}} @else No Rescuer Tagged @endif </td>
-                                <td> @if(!empty($rescuerresponse[$list->id])){{ $rescuerresponse[$list->id]}} @else No Rescuer Tagged @endif </td>
+                                <td> @if(!empty($list->panicresponse)){{ $list->panicresponse}} @else No Rescuer Tagged @endif </td>
+                                <td> @if(!empty($list->rescuerresponse)){{ $list->rescuerresponse}} @else No Rescuer Tagged @endif </td>
                                 <td>{{$list->created_at}}</td>
                             </tr>
                             <?php
@@ -166,14 +187,14 @@
                     area_id: $('#area_id').val(),
                     rescur: type,
                 }
-                $.getJSON('/admin/newsfeedamount/', formData, function result(data) {
-                    //console.log(data);
-                    if (type != 'All')
-                        type = type;
-                    else
-                        type = "All Users";
-                    var listitems = '<th>The Amount Of News Feeds Sent To  ' + type + ' In ' + data.place + ' is : ' + data.amount + '</th>';
-                    $('#newsamount').html(listitems);
+                $.getJSON('/admin/listsofrescuers/', formData, function result(data) {
+                    console.log(data);
+//                    if (type != 'All')
+//                        type = type;
+//                    else
+//                        type = "All Users";
+//                    var listitems = '<th>The Amount Of News Feeds Sent To  ' + type + ' In ' + data.place + ' is : ' + data.amount + '</th>';
+//                    $('#newsamount').html(listitems);
 
                 });
             }
@@ -184,4 +205,3 @@
     });
 </script>
 @endsection
-
