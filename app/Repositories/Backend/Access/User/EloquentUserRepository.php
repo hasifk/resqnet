@@ -360,6 +360,14 @@ class EloquentUserRepository implements UserRepositoryContract
    {
        return EmergencyContact::where('user_id',$id)->first();
    }
+    public function findEmergencyContacts($id)
+   {
+       return EmergencyContact::find($id);
+   }
+    public function findHealthinsurance($id)
+   {
+       return HealthInsurance::find($id);
+   }
     public function healthinsurance($id)
    {
        return HealthInsurance::where('user_id',$id)->first();
@@ -373,5 +381,28 @@ class EloquentUserRepository implements UserRepositoryContract
     }
      public function area($id) {   
          return City::find($id);
+    }
+    public function saveEmergencyContacts($requests) {
+        if ($request->has('id'))
+            $obj = $this->findEmergencyContacts($request->id);
+        else {
+        $obj=new EmergencyContact;
+        $obj->user_id=$requests->user_id;
+        }
+        $obj->emergency1=$requests->emergency1;
+        $obj->emergency2=$requests->emergency2;
+        $obj->emergency3=$requests->emergency3;
+        $obj->save();
+    }
+     public function saveHealthInsurance($requests) {
+        if ($request->has('id'))
+            $obj = $this->findHealthinsurance($request->id);
+        else {
+        $obj=new HealthInsurance;
+        $obj->user_id=$requests->user_id;
+        }
+        $obj->service_provider=$requests->service_provider;
+        $obj->insurance_no=$requests->insurance_no;
+        $obj->save();
     }
 }

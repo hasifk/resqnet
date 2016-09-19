@@ -13,3 +13,8 @@ $api->post('/updatedoctors', 'App\Http\Controllers\Frontend\User\ProfileControll
 $api->post('/updatemedicalcondition', 'App\Http\Controllers\Frontend\User\ProfileController@updateMedicalCondition');
 $api->post('password/change', 'App\Http\Controllers\Frontend\Auth\PasswordController@changePassword')->name('auth.password.update');
 $api->post('updateonlinestatus', 'App\Http\Controllers\Frontend\User\ProfileController@updateOnlineStatus')->name('user.online.status');
+$api->post('saveemergencycontacts', 'App\Http\Controllers\Frontend\User\ProfileController@saveEmergencyContacts');
+$api->post('viewemergencycontacts', 'App\Http\Controllers\Frontend\User\ProfileController@viewEmergencyContacts');
+$api->post('savehealthinsurance', 'App\Http\Controllers\Frontend\User\ProfileController@saveHealthInsurance');
+$api->post('viewhealthinsurance', 'App\Http\Controllers\Frontend\User\ProfileController@viewHealthInsurance');
+$api->post('upgrade', 'App\Http\Controllers\Frontend\User\ProfileController@upgradeStatus');

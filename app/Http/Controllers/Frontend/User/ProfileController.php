@@ -11,7 +11,7 @@ use App\Http\Requests\Frontend\User\UpdateMedicalConditionRequest;
 use App\Http\Requests\Frontend\User\UpdateOnlineStatusRequest;
 use App\Http\Requests\Frontend\User\UpdateProfileRequest;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
-
+use App\Repositories\Backend\Access\User\UserRepositoryContract;
 
 /**
  * Class ProfileController
@@ -24,9 +24,11 @@ class ProfileController extends Controller
      */
 
     private $user;
-    public function __construct(UserRepositoryContract $user)
+     private $backendUser;
+    public function __construct(UserRepositoryContract $user,UserRepositoryContract $backendUser)
     {
         $this->user = $user;
+        $this->user = $backendUser;
     }
     /***************************************************************************************************************/
     public function edit()
@@ -131,5 +133,17 @@ class ProfileController extends Controller
         endif;
 
 
+    }
+    public function saveEmergencyContacts(Requests $requests) {
+        $this->backendUser->SaveEmergencyContacts($requests);
+    }
+    public function viewEmergencyContacts(Requests $requests) {
+        $this->backendUser->emergencyContacts($requests->user_id);
+    }
+    public function saveHealthInsurance(Requests $requests) {
+        $this->backendUser->SaveHealthInsurance($requests);
+    }
+    public function viewHealthInsurance(Requests $requests) {
+        $this->backendUser->healthinsurance($requests->user_id);
     }
 }
