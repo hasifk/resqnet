@@ -30,6 +30,7 @@ class AuthController extends Controller
             $user->app_id=$request->app_id;
             $user->device_type=$request->device_type;
             $user->online_status=1;
+            $user->subscription_ends_at='2016-09-09 15:09:52';
             $user->save();
             /*$token = \JWTAuth::fromUser($user);*/
             $token=Crypt::encrypt($user->id);
