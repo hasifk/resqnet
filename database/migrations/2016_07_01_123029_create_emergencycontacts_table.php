@@ -15,9 +15,9 @@ class CreateEmergencycontactsTable extends Migration
         Schema::create('emergencycontacts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('emergency1')->nullable();
-            $table->integer('emergency2')->nullable();
-            $table->integer('emergency3')->nullable();
+            $table->string('emergency1')->nullable();
+            $table->string('emergency2')->nullable();
+            $table->string('emergency3')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at');
             $table->softDeletes();
