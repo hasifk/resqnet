@@ -15,6 +15,8 @@ $api->post('password/change', 'App\Http\Controllers\Frontend\Auth\PasswordContro
 $api->post('updateonlinestatus', 'App\Http\Controllers\Frontend\User\ProfileController@updateOnlineStatus')->name('user.online.status');
 $api->post('saveemergencycontacts', 'App\Http\Controllers\Frontend\User\ProfileController@saveEmergencyContacts');
 $api->post('viewemergencycontacts', 'App\Http\Controllers\Frontend\User\ProfileController@viewEmergencyContacts');
+$api->post('updateemergencycontacts', 'App\Http\Controllers\Frontend\User\ProfileController@updateEmergencyContacts');
 $api->post('savehealthinsurance', 'App\Http\Controllers\Frontend\User\ProfileController@saveHealthInsurance');
 $api->post('viewhealthinsurance', 'App\Http\Controllers\Frontend\User\ProfileController@viewHealthInsurance');
+$api->post('updatehealthinsurance', 'App\Http\Controllers\Frontend\User\ProfileController@updateHealthInsurance');
 $api->post('upgrade', 'App\Http\Controllers\Frontend\User\ProfileController@upgradeStatus');
