@@ -24,7 +24,7 @@ class RescueeOperation extends FormRequest
     public function rules()
     {   
         return [
-            'userid' =>'required',
+            'user_id' =>'required',
             'type' =>'required',
             'emergency_type'=>'required',
         ];

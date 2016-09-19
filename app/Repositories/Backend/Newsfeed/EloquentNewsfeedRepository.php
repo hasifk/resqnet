@@ -19,25 +19,22 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
     }
 
     public function getNewsFeeds($user_id) {
-        $user=User::find($user_id);
-        
+        $user = User::find($user_id);
+
         if (access()->hasRolesApp(['Police', 'Fire', 'Paramedic'], $user_id)) {
-         
-        
-            return Newsfeed::where('newsfeeds.countryid', '=',$user->country_id)
-                    ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
-                    ->orWhere('newsfeeds.areaid', '=', $user->area_id)
-                    ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
-                            ->select('newsfeeds.id', 'newsfeeds.news_title','image_filename','image_extension','image_path')
+            return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
+                            ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
+                            ->orWhere('newsfeeds.areaid', '=', $user->area_id)
+                            ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
+                            ->select('newsfeeds.id', 'newsfeeds.news_title', 'newsfeeds.image_filename', 'image_extension', 'image_path')
                             ->get();
         } else if (access()->hasRolesApp(['User'], $user_id)) {
-            return Newsfeed::where('newsfeeds.countryid', '=',$user->country_id)
+            return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
                             ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
-                    ->orWhere('newsfeeds.areaid', '=', $user->area_id)
-                    ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
-                            ->select('newsfeeds.id', 'newsfeeds.news_title','image_filename','image_extension','image_path')->get();
+                            ->orWhere('newsfeeds.areaid', '=', $user->area_id)
+                            ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
+                            ->select('newsfeeds.id', 'newsfeeds.news_title', 'image_filename', 'image_extension', 'image_path')->get();
         }
-        
     }
 
     public function save($request) {
@@ -46,7 +43,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
         else {
             $obj = new Newsfeed;
             $obj->user_id = $request->user_id;
-           // $obj->newsfeed_type = $request->newsfeed_type;
+            // $obj->newsfeed_type = $request->newsfeed_type;
             $obj->countryid = $request->countryid;
             $obj->areaid = (!empty($request->areaid)) ? $request->areaid : '';
         }
@@ -87,6 +84,26 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
         } else
             $newsfeed = $this->getNewsfeedPaginated();
         return $newsfeed;
+    }
+
+    public function timeCalculator($tot_sec) {
+        $hours = floor($tot_sec / 3600);
+        $minutes = floor(($tot_sec / 60) % 60);
+        // $seconds = $tot_sec % 60;
+        
+        if ($hours >= 1) {
+            $time=$hours>=2?$hours." Hrs Ago":$hours." Hr Ago";
+            if ($hours >= 24) {
+                $days = floor($hours / 24);
+                $time = $days . ' Days Ago';
+            }
+        }
+        else if ($minutes < 1) {
+            $time = "Now";
+        }
+        else
+            $time=$minutes." Min Ago";
+        return $time;
     }
 
 }

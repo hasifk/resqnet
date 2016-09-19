@@ -8,6 +8,7 @@ use App\Http\Requests\Backend\Newsfeed\EditNewsfeedRequest;
 use App\Http\Requests\Backend\Newsfeed\ShowNewsfeedRequest;
 use App\Http\Requests\Backend\Newsfeed\UpdateNewsfeedRequest;
 use App\Models\Newsfeed\Newsfeed;
+use Carbon\Carbon;
 use App\Repositories\Backend\Newsfeed\NewsFeedRepositoryContract;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
 
@@ -74,10 +75,19 @@ class NewsfeedController extends Controller {
 
             if($newsfeed1 = $this->newsfeedRepository->find($request->id)):
             $newsfeed= $newsfeed1->toArray();
+            $user=$this->user->find($newsfeed1->user_id);
+             $operationtime = strtotime($newsfeed1->created_at);
+             $mytime = Carbon::now();
+             $finishedtime=strtotime($mytime->toDateTimeString());
+             $tot_sec = round(abs($finishedtime - $operationtime));
+             $time=$this->newsfeedRepository->timeCalculator($tot_sec);
             if ($newsfeed1->image_filename && $newsfeed1->image_extension && $newsfeed1->image_path) {
 
                 $newsfeed['newsfeed_image_src']=url('/image/'.$newsfeed1->id.'/'.$newsfeed1->image_filename.'.'.$newsfeed1->image_extension);
+               
             }
+             $newsfeed['username']=$user->firstname." ".$user->lastname;
+                $newsfeed['time']=$time;
             return response()->json(['newsfeed' => $newsfeed]);
          else:
         return response()->json(['newsfeeds' => 'No newfeed found']);
@@ -108,7 +118,6 @@ class NewsfeedController extends Controller {
             return response()->json(['status' => "You do not have access to do that"]);
         endif;
     }
-
 
     public function updateNewsfeed(UpdateNewsfeedRequest $request) {
         if (access()->hasRolesApp(['Police', 'Fire', 'Paramedic'],$request->user_id)):

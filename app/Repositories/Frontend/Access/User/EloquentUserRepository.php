@@ -8,6 +8,8 @@ use App\Models\Countries\City;
 use App\Models\Countries\Country;
 use App\Models\Countries\State;
 use App\Models\Rescuer\RescuerType;
+use App\Models\Access\HealthInsurance\HealthInsurance;
+use App\Models\Access\EmergencyContact\EmergencyContact;
 use Illuminate\Support\Facades\Mail;
 use App\Exceptions\GeneralException;
 use Illuminate\Support\Facades\Hash;
@@ -19,8 +21,7 @@ use Auth;
  * Class EloquentUserRepository
  * @package App\Repositories\Frontend\User
  */
-class EloquentUserRepository implements UserRepositoryContract
-{
+class EloquentUserRepository implements UserRepositoryContract {
 
     /**
      * @var RoleRepositoryContract
@@ -30,8 +31,7 @@ class EloquentUserRepository implements UserRepositoryContract
     /**
      * @param RoleRepositoryContract $role
      */
-    public function __construct(RoleRepositoryContract $role)
-    {
+    public function __construct(RoleRepositoryContract $role) {
         $this->role = $role;
     }
 
@@ -39,8 +39,7 @@ class EloquentUserRepository implements UserRepositoryContract
      * @param $id
      * @return mixed
      */
-    public function find($id)
-    {
+    public function find($id) {
         return User::findOrFail($id);
     }
 
@@ -65,15 +64,14 @@ class EloquentUserRepository implements UserRepositoryContract
     public function findByToken($token) {
         $user = User::where('confirmation_code', $token)->first();
 
-        if (! $user instanceof User)
+        if (!$user instanceof User)
             throw new GeneralException(trans('exceptions.frontend.auth.confirmation.not_found'));
 
         return $user;
     }
 
-    public function findDoctor($user_id)
-    {
-        return Doctor::where('user_id',$user_id)->select(['id','name','surname','phone'])->first();
+    public function findDoctor($user_id) {
+        return Doctor::where('user_id', $user_id)->select(['id', 'name', 'surname', 'phone'])->first();
     }
 
     /**
@@ -81,75 +79,73 @@ class EloquentUserRepository implements UserRepositoryContract
      * @param bool $provider
      * @return static
      */
-    public function create(array $data, $provider = false)
-    {
+    public function create(array $data, $provider = false) {
         if ($provider) {
 
             $user = User::create([
-                'firstname' => $data['firstname'],
-                'lastname' => (!empty($data['lastname'])) ? $data['lastname'] : '',
-                'dob' => (!empty($data['dob'])) ? $data['dob'] : '',
-                'country_id' => (!empty($data['country_id'])) ? $data['country_id'] : '',
-                'area_id' => (!empty($data['area_id'])) ? $data['area_id'] : '',
-                'jurisdiction' => (!empty($data['jurisdiction'])) ? $data['jurisdiction'] : '',
-                'displayname' => (!empty($data['display_name'])) ? $data['display_name'] : '',
-                'rescuer_type_id' => (!empty($data['rescuer_type_id'])) ? $data['rescuer_type_id'] : '',
-                'dept_id' => (!empty($data['dept_id'])) ? $data['dept_id'] : '',
-                'email' => $data['email'],
-                'password' =>null,
-                'status' =>0,
-                'current_medical_conditions' => (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '',
-                'prior_medical_conditions' => (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '',
-                'allergies' => (!empty($data['allegries'])) ? $data['allegries'] : '',
-                'phone' => (!empty($data['phone'])) ? $data['phone'] : '',
-                'subscription_id' =>(!empty($data['subscription_id'])) ? $data['subscription_id'] : '',
-                'subscription_info' => (!empty($data['subscription_info'])) ? $data['subscription_info'] : '',
-                'subscription_plan' => (!empty($data['subscription_plan'])) ? $data['subscription_plan'] : '',
-                'subscription_ends_at' => (!empty($data['subscription_ends_at'])) ? $data['subscription_ends_at'] : '',
-                'confirmation_code' => md5(uniqid(mt_rand(), true)),
-                'confirmed' => 1,
+                        'firstname' => $data['firstname'],
+                        'lastname' => (!empty($data['lastname'])) ? $data['lastname'] : '',
+                        'dob' => (!empty($data['dob'])) ? $data['dob'] : '',
+                        'country_id' => (!empty($data['country_id'])) ? $data['country_id'] : '',
+                        'area_id' => (!empty($data['area_id'])) ? $data['area_id'] : '',
+                        'jurisdiction' => (!empty($data['jurisdiction'])) ? $data['jurisdiction'] : '',
+                        'displayname' => (!empty($data['display_name'])) ? $data['display_name'] : '',
+                        'rescuer_type_id' => (!empty($data['rescuer_type_id'])) ? $data['rescuer_type_id'] : '',
+                        'dept_id' => (!empty($data['dept_id'])) ? $data['dept_id'] : '',
+                        'email' => $data['email'],
+                        'password' => null,
+                        'status' => 0,
+                        'current_medical_conditions' => (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '',
+                        'prior_medical_conditions' => (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '',
+                        'allergies' => (!empty($data['allegries'])) ? $data['allegries'] : '',
+                        'phone' => (!empty($data['phone'])) ? $data['phone'] : '',
+                        'subscription_id' => (!empty($data['subscription_id'])) ? $data['subscription_id'] : '',
+                        'subscription_info' => (!empty($data['subscription_info'])) ? $data['subscription_info'] : '',
+                        'subscription_plan' => (!empty($data['subscription_plan'])) ? $data['subscription_plan'] : '',
+                        'subscription_ends_at' => (!empty($data['subscription_ends_at'])) ? $data['subscription_ends_at'] : '',
+                        'confirmation_code' => md5(uniqid(mt_rand(), true)),
+                        'confirmed' => 1,
             ]);
-
         } else {
             $user = User::create([
-                'firstname' => $data['firstname'],
-                'lastname' => (!empty($data['lastname'])) ? $data['lastname'] : '',
-                'dob' => (!empty($data['dob'])) ? $data['dob'] : '',
-                'country_id' =>(!empty($data['country_id'])) ? $data['country_id'] : '',
-                'area_id' => (!empty($data['area_id'])) ? $data['area_id'] : '',
-                'jurisdiction' => (!empty($data['jurisdiction'])) ? $data['jurisdiction'] : '',
-                'displayname' =>(!empty($data['display_name'])) ? $data['display_name'] : '',
-                'rescuer_type_id' => (!empty($data['rescuer_type_id'])) ? $data['rescuer_type_id'] : '',
-                'dept_id' => (!empty($data['dept_id'])) ? $data['dept_id'] : '',
-                'email' => $data['email'],
-                'password' => bcrypt($data['password']),
-                'status' =>0,
-                'current_medical_conditions' => (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '',
-                'prior_medical_conditions' => (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '',
-                'allergies' => (!empty($data['allegries'])) ? $data['allegries'] : '',
-                'phone' => (!empty($data['phone'])) ? $data['phone'] : '',
-                'subscription_id' =>(!empty($data['subscription_id'])) ? $data['subscription_id'] : '',
-                'subscription_info' => (!empty($data['subscription_info'])) ? $data['subscription_info'] : '',
-                'subscription_plan' => (!empty($data['subscription_plan'])) ? $data['subscription_plan'] : '',
-                'subscription_ends_at' => (!empty($data['subscription_ends_at'])) ? $data['subscription_ends_at'] : '',
-                'confirmation_code' => md5(uniqid(mt_rand(), true)),
-                'confirmed' => config('access.users.confirm_email') ? 0 : 1,
+                        'firstname' => $data['firstname'],
+                        'lastname' => (!empty($data['lastname'])) ? $data['lastname'] : '',
+                        'dob' => (!empty($data['dob'])) ? $data['dob'] : '',
+                        'country_id' => (!empty($data['country_id'])) ? $data['country_id'] : '',
+                        'area_id' => (!empty($data['area_id'])) ? $data['area_id'] : '',
+                        'jurisdiction' => (!empty($data['jurisdiction'])) ? $data['jurisdiction'] : '',
+                        'displayname' => (!empty($data['display_name'])) ? $data['display_name'] : '',
+                        'rescuer_type_id' => (!empty($data['rescuer_type_id'])) ? $data['rescuer_type_id'] : '',
+                        'dept_id' => (!empty($data['dept_id'])) ? $data['dept_id'] : '',
+                        'email' => $data['email'],
+                        'password' => bcrypt($data['password']),
+                        'status' => 0,
+                        'current_medical_conditions' => (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '',
+                        'prior_medical_conditions' => (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '',
+                        'allergies' => (!empty($data['allegries'])) ? $data['allegries'] : '',
+                        'phone' => (!empty($data['phone'])) ? $data['phone'] : '',
+                        'subscription_id' => (!empty($data['subscription_id'])) ? $data['subscription_id'] : '',
+                        'subscription_info' => (!empty($data['subscription_info'])) ? $data['subscription_info'] : '',
+                        'subscription_plan' => (!empty($data['subscription_plan'])) ? $data['subscription_plan'] : '',
+                        'subscription_ends_at' => (!empty($data['subscription_ends_at'])) ? $data['subscription_ends_at'] : '',
+                        'confirmation_code' => md5(uniqid(mt_rand(), true)),
+                        'confirmed' => config('access.users.confirm_email') ? 0 : 1,
             ]);
         }
 
         /**
          * Add the default site role to the new user
          */
-        if(empty($data['rescuer_type_id'])):
-        $user->attachRole($this->role->getDefaultUserRole());
-            else:
-                $type=RescuerType::where('id',$data['rescuer_type_id'])->value('type');
-                $role_id = \DB::table('roles')->where('name', $type)->value('id');
-                $user->attachRoles(array($role_id));
-                endif;
+        if (empty($data['rescuer_type_id'])):
+            $user->attachRole($this->role->getDefaultUserRole());
+        else:
+            $type = RescuerType::where('id', $data['rescuer_type_id'])->value('type');
+            $role_id = \DB::table('roles')->where('name', $type)->value('id');
+            $user->attachRoles(array($role_id));
+        endif;
 
         $user->update([
-            'membership_no' => $user->id.str_random(5)]);
+            'membership_no' => $user->id . str_random(5)]);
         /**
          * If users have to confirm their email and this is not a social account,
          * send the confirmation email
@@ -166,64 +162,57 @@ class EloquentUserRepository implements UserRepositoryContract
         return $user;
     }
 
-    public function updateUserStub($data)
-    {
-        $user=User::find($data['id']);
-        $user->firstname= $data['firstname'];
-        $user->lastname=(!empty($data['lastname'])) ? $data['lastname'] : '';
-        $user->dob= (!empty($data['dob'])) ? $data['dob'] : '';
-        $user->jurisdiction=(!empty($data['jurisdiction'])) ? $data['jurisdiction'] : '';
-        $user->phone= (!empty($data['phone'])) ? $data['phone'] : '';
+    public function updateUserStub($data) {
+        $user = User::find($data['id']);
+        $user->firstname = $data['firstname'];
+        $user->lastname = (!empty($data['lastname'])) ? $data['lastname'] : '';
+        $user->dob = (!empty($data['dob'])) ? $data['dob'] : '';
+        $user->jurisdiction = (!empty($data['jurisdiction'])) ? $data['jurisdiction'] : '';
+        $user->phone = (!empty($data['phone'])) ? $data['phone'] : '';
         $user->save();
         return $user;
     }
 
-    public function saveDoctors($request)
-    {
-            $doctor=new Doctor;
-            $doctor->user_id=$request->user_id;
-            $doctor->name= $request->name;
-            $doctor->surname=$request->surname;
-            $doctor->phone= $request->phone;
-            $doctor->save();
-            return $doctor;
-
+    public function saveDoctors($request) {
+        $doctor = new Doctor;
+        $doctor->user_id = $request->user_id;
+        $doctor->name = $request->name;
+        $doctor->surname = $request->surname;
+        $doctor->phone = $request->phone;
+        $doctor->save();
+        return $doctor;
     }
 
-    public function updateDoctors($request)
-    {
-        $doctor=Doctor::find($request->id);
-            $doctor->name= $request->name;
-            $doctor->surname=$request->surname;
-            $doctor->phone= $request->phone;
-            $doctor->save();
-            return $doctor;
-
+    public function updateDoctors($request) {
+        $doctor = Doctor::find($request->id);
+        $doctor->name = $request->name;
+        $doctor->surname = $request->surname;
+        $doctor->phone = $request->phone;
+        $doctor->save();
+        return $doctor;
     }
 
-    public function updateMedicalCondition($request)
-    {
-        $user=User::find($request->id);
-        $user->current_medical_conditions= $request->current_medical_conditions;
-        $user->prior_medical_conditions=$request->prior_medical_conditions;
-        $user->allergies=$request->allergies;
+    public function updateMedicalCondition($request) {
+        $user = User::find($request->id);
+        $user->current_medical_conditions = $request->current_medical_conditions;
+        $user->prior_medical_conditions = $request->prior_medical_conditions;
+        $user->allergies = $request->allergies;
         $user->save();
         return $user;
     }
 
-     public function profileImageUpload($request)
-     {
-         $obj = $this->find($request->user_id);
-         $obj->attachProfileImage($request->avatar);
-         return true;
-     }
+    public function profileImageUpload($request) {
+        $obj = $this->find($request->user_id);
+        $obj->attachProfileImage($request->avatar);
+        return true;
+    }
+
     /**
      * @param $data
      * @param $provider
      * @return EloquentUserRepository
      */
-    public function findOrCreateSocial($data, $provider)
-    {
+    public function findOrCreateSocial($data, $provider) {
         /**
          * Check to see if there is a user with this email first
          */
@@ -234,33 +223,33 @@ class EloquentUserRepository implements UserRepositoryContract
          * The true flag indicate that it is a social account
          * Which triggers the script to use some default values in the create method
          */
-        if (! $user) {
+        if (!$user) {
             $user = $this->create([
-                'name'  => $data->name,
+                'name' => $data->name,
                 'email' => $data->email ? : "{$data->id}@{$provider}.com",
-            ], true);
+                    ], true);
         }
 
         /**
          * See if the user has logged in with this social account before
          */
-        if (! $user->hasProvider($provider)) {
+        if (!$user->hasProvider($provider)) {
             /**
              * Gather the provider data for saving and associate it with the user
              */
             $user->providers()->save(new SocialLogin([
-                'provider'    => $provider,
+                'provider' => $provider,
                 'provider_id' => $data->id,
-                'token'       => $data->token,
-                'avatar'      => $data->avatar,
+                'token' => $data->token,
+                'avatar' => $data->avatar,
             ]));
-        }else{
-             /**
+        } else {
+            /**
              * Update the users information, token and avatar can be updated.
              */
             $user->providers()->update([
-                'token'       => $data->token,
-                'avatar'      => $data->avatar,
+                'token' => $data->token,
+                'avatar' => $data->avatar,
             ]);
         }
 
@@ -275,8 +264,7 @@ class EloquentUserRepository implements UserRepositoryContract
      * @return bool
      * @throws GeneralException
      */
-    public function confirmAccount($token)
-    {
+    public function confirmAccount($token) {
         $user = $this->findByToken($token);
 
         if ($user->confirmed == 1) {
@@ -295,17 +283,16 @@ class EloquentUserRepository implements UserRepositoryContract
      * @param $user
      * @return mixed
      */
-    public function sendConfirmationEmail($user)
-    {
+    public function sendConfirmationEmail($user) {
         //$user can be user instance or id
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             $user = $this->find($user);
         }
 
-        return Mail::send('frontend.auth.emails.confirm', ['token' => $user->confirmation_code,'membership_no' => $user->membership_no], function ($message) use ($user) {
-            $message->to($user->email, $user->name)->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
-        });
-    } 
+        return Mail::send('frontend.auth.emails.confirm', ['token' => $user->confirmation_code, 'membership_no' => $user->membership_no], function ($message) use ($user) {
+                    $message->to($user->email, $user->name)->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
+                });
+    }
 
     /**
      * @param $user_id
@@ -322,8 +309,7 @@ class EloquentUserRepository implements UserRepositoryContract
      * @return mixed
      * @throws GeneralException
      */
-    public function updateProfile($id, $input)
-    {
+    public function updateProfile($id, $input) {
         $user = $this->find($id);
         $user->name = $input['name'];
 
@@ -342,52 +328,44 @@ class EloquentUserRepository implements UserRepositoryContract
         return $user->save();
     }
 
+    public function countries() {
 
-    public function countries() {   
-        
         return Country::select(['id', 'name'])->get();
-
     }
-
 
     public function areas() {
 
         return City::select(['id', 'name'])->get();
-
     }
 
-    public function states($id) {   
-            return State::where('country_id', $id)->get();
+    public function states($id) {
+        return State::where('country_id', $id)->get();
     }
+
     public function cities($id) {
-            return City::where('state_id',$id)
-                ->select(['id', 'name'])
-                ->get();
-    }
-    public function rescuerTypeDetails()
-    {
-        return  RescuerType::select(['id', 'type'])->get();
-
+        return City::where('state_id', $id)
+                        ->select(['id', 'name'])
+                        ->get();
     }
 
-    public function updateOnlineStatus($request)
-    {
-       $user=$this->find($request->id);
-        $user->online_status=$request->online_status;
+    public function rescuerTypeDetails() {
+        return RescuerType::select(['id', 'type'])->get();
+    }
+
+    public function updateOnlineStatus($request) {
+        $user = $this->find($request->id);
+        $user->online_status = $request->online_status;
         $user->save();
         return true;
-
     }
-
 
     /**
      * @param $input
      * @return mixed
      * @throws GeneralException
      */
-    public function changePassword($input)
-    {
-        /* $user = $this->find(access()->id());*/
+    public function changePassword($input) {
+        /* $user = $this->find(access()->id()); */
         $user = $this->find($input['user_id']);
 
         if (Hash::check($input['old_password'], $user->password)) {
@@ -397,4 +375,46 @@ class EloquentUserRepository implements UserRepositoryContract
 
         throw new GeneralException(trans('exceptions.frontend.auth.password.change_mismatch'));
     }
+
+    public function emergencyContacts($id) {
+        return EmergencyContact::where('user_id', $id)->first();
+    }
+
+    public function findEmergencyContacts($id) {
+        return EmergencyContact::find($id);
+    }
+
+    public function findHealthinsurance($id) {
+        return HealthInsurance::find($id);
+    }
+
+    public function healthinsurance($id) {
+        return HealthInsurance::where('user_id', $id)->first();
+    }
+
+    public function saveEmergencyContacts($request) {
+        if ($request->has('id'))
+            $obj = $this->findEmergencyContacts($request->id);
+        else {
+            $obj = new EmergencyContact;
+            $obj->user_id = $request->user_id;
+        }
+        $obj->emergency1 = $request->emergency1;
+        $obj->emergency2 = $request->emergency2;
+        $obj->emergency3 = $request->emergency3;
+        $obj->save();
+    }
+
+    public function saveHealthInsurance($request) {
+        if ($request->has('id'))
+            $obj = $this->findHealthinsurance($request->id);
+        else {
+            $obj = new HealthInsurance;
+            $obj->user_id = $request->user_id;
+        }
+        $obj->service_provider = $request->service_provider;
+        $obj->insurance_no = $request->insurance_no;
+        $obj->save();
+    }
+
 }

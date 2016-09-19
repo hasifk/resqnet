@@ -107,7 +107,7 @@ class StatisticsController extends Controller {
     public function panicsignalAmount(Request $request) {
         $result = $this->statistics->getPanicSignalAmount($request);
         $view = [
-            //'place' => $result['country'],
+            'place' => $result['country'],
             'amount' => $result['amount']
         ];
         return $view;
@@ -116,6 +116,20 @@ class StatisticsController extends Controller {
     /*     * ***************************************************************************************************** */
 
     public function listsOfRescuers() {
+        $users=$this->rescueOperationRepository->listsOfRescuers();
+        $view = [
+            'countries' => $this->user->countries(),
+            'rescuertype' => $this->user->rescuerTypeDetails(),
+            'lists' => $this->rescueOperationRepository->ActiveRescuerPaginate(),
+            'users' => !empty($users['active'])?$users['active']:'',
+            'tagged' => !empty($users['tagged'])?$users['tagged']:'',
+            'panicrespnse'=>!empty($users['panicresponse'])?$users['panicresponse']:'',
+            'rescuerresponse'=>!empty($users['rescuerresponse'])?$users['rescuerresponse']:'',
+        ];
+        return view('backend.statistics.amount_of_listsofrescuers', $view);
+    }
+    public function rescuersLists(Request $request)
+    {
         $users=$this->rescueOperationRepository->listsOfRescuers();
         $view = [
             'countries' => $this->user->countries(),
