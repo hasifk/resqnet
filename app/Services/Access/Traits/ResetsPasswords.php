@@ -35,7 +35,7 @@ trait ResetsPasswords
 
         switch ($response) {
             case Password::RESET_LINK_SENT:
-              
+
                 return response()->json(['status' => 'Reset Password link sent to your registered Email Id']);
 
             case Password::INVALID_USER:
