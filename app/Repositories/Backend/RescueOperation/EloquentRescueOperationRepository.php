@@ -8,6 +8,7 @@ use App\Models\RescueOperation\ActiveRescuer;
 use App\Models\RescueOperation\Location;
 use App\Models\RescueOperation\Operation;
 use App\Models\Rescuer\RescuerType;
+use App\Models\Access\EmergencyContact\EmergencyContact;
 use Illuminate\Http\Request;
 use Auth;
 use Storage;
@@ -45,6 +46,16 @@ class EloquentRescueOperationRepository {
             $message['id'] = $obj->id;
             $message['to'] = "Rescuer";
             $this->notification($app_id, $message);
+            if (!empty($contacts = $this->emergencyContacts($userid))) {
+                if (!empty($contacts->emergency1))
+                    $app_id = $this->membershipChecking($contacts->emergency1);
+                if (!empty($contacts->emergency2))
+                   $app_id= $this->membershipChecking($contacts->emergency2);
+                if (!empty($contacts->emergency3))
+                   $app_id= $this->membershipChecking($contacts->emergency3);
+                $message['to'] = "Emergency";
+                    $this->notification($app_id, $message);
+            }
             $userdetails = 'SUCCESS';
         else:
             $userdetails = "No Rescuers available";
@@ -98,6 +109,19 @@ class EloquentRescueOperationRepository {
                 
             }
         }
+    }
+
+    public function emergencyContacts($id) {
+        return EmergencyContact::where('user_id', $id)->first();
+    }
+
+    public function membershipChecking($number) {
+        $user = User::where('membership_no', $number)->first();
+        if (!empty($user)) {
+            $app_id['app_id'][] = $user->app_id;
+            $app_id['device_type'][] = $user->device_type;
+        }
+        return $app_id;
     }
 
     //for getting all active users
@@ -226,11 +250,11 @@ class EloquentRescueOperationRepository {
     }
 
     public function listsOfRescuers($panicids) {
-        
-        $rescuers=array();
+
+        $rescuers = array();
         if (!empty($panicids)) {
-            foreach($panicids as $value)
-            $rescuers[]=$this->ActiveRescuer($value);
+            foreach ($panicids as $value)
+                $rescuers[] = $this->ActiveRescuer($value);
             foreach ($rescuers as $key => $active) {
                 $res = array();
                 $rescuers[$key]['rescuee_details'] = User::find($active->rescuee_id);
