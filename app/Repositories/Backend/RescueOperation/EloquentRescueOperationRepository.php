@@ -43,7 +43,7 @@ class EloquentRescueOperationRepository {
         $obj->rescuee_id = $userid;
         $obj->rescuers_ids = !empty($rescuers) ? json_encode($rescuers) : '';
         $obj->emergency_type = $result->emergency_type;
-        //$obj->emergency_ids = !empty($appids) ? json_encode($appids[1]) : '';
+        $obj->emergency_ids = !empty($appids) ? json_encode($appids[1]) : '';
         $obj->save();
         $message['id'] = $obj->id;
         
