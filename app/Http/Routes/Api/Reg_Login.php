@@ -2,6 +2,7 @@
 $api->get('register', 'App\Http\Controllers\Frontend\Auth\AuthController@showRegistrationForm')->name('auth.register');
 $api->post('/login', [ 'uses' => 'App\Http\Controllers\AuthController@postLogin']);
 $api->post('/register', 'App\Http\Controllers\Frontend\Auth\AuthController@register');
+$api->post('/fbregister', 'App\Http\Controllers\Frontend\Auth\AuthController@fbRegister');
 $api->post('/rescuerregister', 'App\Http\Controllers\Frontend\Auth\AuthController@rescuerregister');
 $api->get('getstates/{id}', function($id) {
     $states = DB::table('states')->where('country_id', $id)->select(['id', 'name'])->get();

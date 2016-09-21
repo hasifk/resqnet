@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->string('membership_no');
             $table->string('app_id');
             $table->string('device_type');
+            $table->string('fb_id');
             $table->boolean('online_status')->default(false);
             $table->string('firstname');
             $table->string('lastname');

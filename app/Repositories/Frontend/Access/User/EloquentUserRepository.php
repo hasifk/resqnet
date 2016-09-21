@@ -85,6 +85,7 @@ class EloquentUserRepository implements UserRepositoryContract {
             $user = User::create([
                         'firstname' => $data['firstname'],
                         'lastname' => (!empty($data['lastname'])) ? $data['lastname'] : '',
+                        'fb_id' => (!empty($data['fb_id'])) ? $data['fb_id'] : '',
                         'dob' => (!empty($data['dob'])) ? $data['dob'] : '',
                         'country_id' => (!empty($data['country_id'])) ? $data['country_id'] : '',
                         'area_id' => (!empty($data['area_id'])) ? $data['area_id'] : '',
@@ -110,6 +111,7 @@ class EloquentUserRepository implements UserRepositoryContract {
             $user = User::create([
                         'firstname' => $data['firstname'],
                         'lastname' => (!empty($data['lastname'])) ? $data['lastname'] : '',
+                        'fb_id' => (!empty($data['fb_id'])) ? $data['fb_id'] : '',
                         'dob' => (!empty($data['dob'])) ? $data['dob'] : '',
                         'country_id' => (!empty($data['country_id'])) ? $data['country_id'] : '',
                         'area_id' => (!empty($data['area_id'])) ? $data['area_id'] : '',
@@ -172,6 +174,15 @@ class EloquentUserRepository implements UserRepositoryContract {
         $user->save();
         return $user;
     }
+
+    public function fbCreate($request) {
+        $user = new User;
+        $user->email = $request->email;
+        $user->fb_id = $request->fb_id;
+        $user->save();
+        return $user;
+    }
+
 
     public function saveDoctors($request) {
         $doctor = new Doctor;

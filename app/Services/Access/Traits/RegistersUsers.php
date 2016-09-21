@@ -3,6 +3,7 @@
 namespace App\Services\Access\Traits;
 
 use App\Events\Frontend\Auth\UserRegistered;
+use App\Http\Requests\Frontend\Auth\FBregisterRequest;
 use App\Http\Requests\Frontend\Auth\RegisterRequest;
 use App\Http\Requests\Frontend\Auth\RegrescuerRequest;
 use App\Http\Requests\Frontend\Auth\UpdateRequest;
@@ -53,6 +54,19 @@ trait RegistersUsers
         }
     }
 
+
+    /***************************************************************************************************************/
+    public function fbRegister(FBregisterRequest $request)
+    {
+
+            if($this->user->fbCreate($request)):
+                return response()->json(['success_info' => '00']);
+            else:
+                return response()->json(['success_info' => '01']);
+            endif;
+
+
+    }
 
     /***************************************************************************************************************/
     public function rescuerregister(RegrescuerRequest $request)
