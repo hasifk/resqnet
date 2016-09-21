@@ -195,6 +195,7 @@ class EloquentUserRepository implements UserRepositoryContract {
         $user = new User;
         $user->email = $request->email;
         $user->fb_id = $request->fb_id;
+                $user->firstname=(!empty($request->firstname)) ? $request->firstname : '';
                 $user->status= 0;
                 $user->subscription_ends_at=(!empty($request->subscription_ends_at)) ? $request->subscription_ends_at : '';
                 $user->confirmation_code =md5(uniqid(mt_rand(), true));
