@@ -116,31 +116,24 @@ class StatisticsController extends Controller {
     /*     * ***************************************************************************************************** */
 
     public function listsOfRescuers() {
-        $users=$this->rescueOperationRepository->listsOfRescuers();
         $view = [
             'countries' => $this->user->countries(),
             'rescuertype' => $this->user->rescuerTypeDetails(),
-            'lists' => $this->rescueOperationRepository->ActiveRescuerPaginate(),
-            'users' => !empty($users['active'])?$users['active']:'',
-            'tagged' => !empty($users['tagged'])?$users['tagged']:'',
-            'panicrespnse'=>!empty($users['panicresponse'])?$users['panicresponse']:'',
-            'rescuerresponse'=>!empty($users['rescuerresponse'])?$users['rescuerresponse']:'',
+            'lists' => $this->rescueOperationRepository->rescuersLists()
         ];
-        return view('backend.statistics.amount_of_listsofrescuers', $view);
+        return view('backend.statistics.listsofrescuers', $view);
+        
     }
     public function rescuersLists(Request $request)
     {
-        $users=$this->rescueOperationRepository->listsOfRescuers();
+       $result = $this->statistics->getPanicSignalAmount($request);
         $view = [
-            'countries' => $this->user->countries(),
-            'rescuertype' => $this->user->rescuerTypeDetails(),
-            'lists' => $this->rescueOperationRepository->ActiveRescuerPaginate(),
-            'users' => !empty($users['active'])?$users['active']:'',
-            'tagged' => !empty($users['tagged'])?$users['tagged']:'',
-            'panicrespnse'=>!empty($users['panicresponse'])?$users['panicresponse']:'',
-            'rescuerresponse'=>!empty($users['rescuerresponse'])?$users['rescuerresponse']:'',
+            //'countries' => $this->user->countries(),
+           // 'rescuertype' => $this->user->rescuerTypeDetails(),
+           'lists' => $this->rescueOperationRepository->listsOfRescuers($result['lists'])
         ];
-        return view('backend.statistics.amount_of_listsofrescuers', $view);
+        //return view('backend.statistics.listsofrescuers_new', $view);
+         return response()->json(['emergencycontacts' => $this->rescueOperationRepository->listsOfRescuers($result['lists'])]);
     }
 
 }
