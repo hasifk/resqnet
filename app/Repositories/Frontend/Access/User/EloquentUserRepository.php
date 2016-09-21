@@ -175,12 +175,40 @@ class EloquentUserRepository implements UserRepositoryContract {
         return $user;
     }
 
-    public function fbCreate($request) {
+    public function fbLogin($request) {
+        $user_id=User::where('email',$request->email)->where('fb_id',$request->fb_id)->value('id');
+        $email_id=User::where('email',$request->email)->value('id');
+        if(!empty($user_id)):
+            $user=$this->find($user_id);
+            return $user;
+        elseif(!empty($email_id)):
+            $user=$this->find($email_id);
+            if($user->role_name!='User'):
+                return "access_denied";
+            elseif(!empty($user->fb_id)):
+                return "access_denied";
+                endif;
+            $user->fb_id = $request->fb_id;
+            $user->save();
+            return $user;
+            else:
         $user = new User;
         $user->email = $request->email;
         $user->fb_id = $request->fb_id;
+                $user->status= 0;
+                $user->subscription_ends_at=(!empty($request->subscription_ends_at)) ? $request->subscription_ends_at : '';
+                $user->confirmation_code =md5(uniqid(mt_rand(), true));
+                $user->confirmed = config('access.users.confirm_email') ? 0 : 1;
         $user->save();
+                $user->membership_no = $user->id . str_random(5);
+                $user->save();
+                $role_id = \DB::table('roles')->where('name', 'User')->value('id');
+                $user->attachRoles(array($role_id));
+                if (config('access.users.confirm_email')) {
+                    $this->sendConfirmationEmail($user);
+                }
         return $user;
+                endif;
     }
 
 
