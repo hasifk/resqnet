@@ -74,63 +74,71 @@
                             <input data-format="dd/MM/yyyy" type="text" class="form-control" id="datepicker"></input>
                         </div>
 
-                        <div class="col-xs-12 col-sm-3 col-md-3 btn-group m-t-25">
+                        <div class="col-xs-12 col-sm-3 col-md-2 btn-group m-t-25">
                             <label for="office_life" class="control-label"></label>
                             <button class="mnotification_delete btn btn-primary" id="search">Search</button>
+                        </div>
+                         <div class="col-xs-12 col-sm-3 col-md-3 btn-group m-t-25">
+                            <label for="office_life" class="control-label"></label>
+                            <?php echo $lists->links(); ?>
                         </div>
 
                     </div><!-- /.box -->
                 </div>
                 <div class="col-md-12 m-t-25">
-                    <?php print_r($lists[2]->rescuers_details); ?>
+
                     <table class="table table-striped table-bordered table-hover">
-                        <tr><th>No</th><th>Users</th><th>Lists Of ResQuer</th><th>Tagged ResQuer</th><th>Panic Response</th><th>ResQuer Response</th><th>Date</th></tr>
-                        <?php
-                        $f = 1;
-                        foreach ($lists as $list):
-                            ?>
-                            <tr><td>{{$f++}}</td>
-                                <td>
+                        <thead>
+                            <tr><th>No</th><th>Users</th><th>Lists Of ResQuer</th><th>Tagged ResQuer</th><th>Panic Response</th><th>ResQuer Response</th><th>Date</th></tr>
+                        </thead>
+                        <tbody id="listss">
+                            <?php
+                            $f = 1;
+                            foreach ($lists as $list):
+                                ?>
+                                <tr><td>{{$f++}}</td>
+                                    <td>
 
-                                    <a href="{{route('admin.access.user.shows',$list->rescuee_id)}}"> {{ $list->rescuee_details->firstname.' '.$list->rescuee_details->lastname }} </a>
+                                        <a href="{{route('admin.access.user.shows',$list->rescuee_id)}}"> {{ $list->rescuee_details->firstname.' '.$list->rescuee_details->lastname }} </a>
 
-                                </td>
-                                <td>
-                                    <table> <?php
-                                        if (!empty($list->rescuers_details)):
-                                            //$resccuer_id = json_decode($list->rescuers_ids)
+                                    </td>
+                                    <td>
+                                        <table> <?php
+                                            if (!empty($list->rescuers_details)):
+                                                //$resccuer_id = json_decode($list->rescuers_ids)
+                                                ?>
+                                                @foreach($list->rescuers_details as $resid)
+                                                <tr>
+                                                    <td>
+                                                        <a href="{{route('admin.access.user.shows',$resid->id)}}">{{ $resid->firstname.' '.$resid->lastname }}</a>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                                <?php
+                                            else:
+                                                echo "No Rescuers Found";
+                                            endif;
                                             ?>
-                                            @foreach($list->rescuers_details as $resid)
-                                            <tr>
-                                                <td>
-                                                    <a href="{{route('admin.access.user.shows',$resid->id)}}">{{ $resid->firstname.' '.$resid->lastname }}</a>
-                                                </td>
-                                            </tr>
-                                            @endforeach
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <?php if (!empty($list->tagged)): ?>
+                                            <a href="{{route('admin.access.user.shows',$list->tagged->id)}}">
+                                                {{ $list->tagged->firstname.' '.$list->tagged->lastname }}</a>
                                             <?php
                                         else:
-                                            echo "No Rescuers Found";
+                                            echo "No Rescuer Tagged";
                                         endif;
-                                        ?>
-                                    </table>
-                                </td>
-                                <td>
-                                    <?php if (!empty($list->tagged)): ?>
-                                        <a href="{{route('admin.access.user.shows',$list->tagged->id)}}">
-                                            {{ $list->tagged->firstname.' '.$list->tagged->lastname }}</a>
-                                        <?php
-                                    else:
-                                        echo "No Rescuer Tagged";
-                                    endif;
-                                    ?> 
-                                </td>
-                                <td> @if(!empty($list->panicresponse)){{ $list->panicresponse}} @else No Rescuer Tagged @endif </td>
-                                <td> @if(!empty($list->rescuerresponse)){{ $list->rescuerresponse}} @else No Rescuer Tagged @endif </td>
-                                <td>{{$list->created_at}}</td>
-                            </tr>
-                            <?php
-                        endforeach;
-                        ?>
+                                        ?> 
+                                    </td>
+                                    <td> @if(!empty($list->panicresponse)){{ $list->panicresponse}} @else No Rescuer Tagged @endif </td>
+                                    <td> @if(!empty($list->rescuerresponse)){{ $list->rescuerresponse}} @else No Rescuer Tagged @endif </td>
+                                    <td>{{$list->created_at}}</td>
+                                </tr>
+                                <?php
+                            endforeach;
+                            ?>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -185,23 +193,24 @@
                     country_id: $('#country_id').val(),
                     state_id: $('#state_id').val(),
                     area_id: $('#area_id').val(),
-                    rescur: type,
+                    rescur: $('#rescuertype').val(),
+                    category: $('#category').val(),
+                    date: $('#datepicker').val(),
                 }
-                $.getJSON('/admin/listsofrescuers/', formData, function result(data) {
+                $.getJSON('/admin/rescuerslists/', formData, function result(data) {
                     console.log(data);
-//                    if (type != 'All')
-//                        type = type;
-//                    else
-//                        type = "All Users";
-//                    var listitems = '<th>The Amount Of News Feeds Sent To  ' + type + ' In ' + data.place + ' is : ' + data.amount + '</th>';
-//                    $('#newsamount').html(listitems);
+                   // $('#listss').html(data);
 
                 });
             }
         });
     });
-    $(function () {
-        $('#datetimepicker6').datetimepicker();
+    $(document).ready(function () {
+
+        $('#datepicker').datepicker({
+            format: "dd/mm/yyyy"
+        });
+
     });
 </script>
 @endsection

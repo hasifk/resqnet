@@ -115,25 +115,25 @@ class StatisticsController extends Controller {
 
     /*     * ***************************************************************************************************** */
 
-    public function listsOfRescuers(Request $request) {
-        $panicids=$this->statistics->getPanicSignalAmount($request);
-        $view = [
-            'countries' => $this->user->countries(),
-            'rescuertype' => $this->user->rescuerTypeDetails(),
-            'lists' => $this->rescueOperationRepository->listsOfRescuers($panicids['lists'])
-        ];
-        //return view('backend.statistics.amount_of_listsofrescuers', $view);
-         return response()->json(['emergencycontacts' => $this->rescueOperationRepository->listsOfRescuers($panicids['lists'])]);
-    }
-    public function rescuersLists()
-    {
-       
+    public function listsOfRescuers() {
         $view = [
             'countries' => $this->user->countries(),
             'rescuertype' => $this->user->rescuerTypeDetails(),
             'lists' => $this->rescueOperationRepository->rescuersLists()
         ];
-        return view('backend.statistics.amount_of_listsofrescuers', $view);
+        return view('backend.statistics.listsofrescuers', $view);
+        
+    }
+    public function rescuersLists(Request $request)
+    {
+       $result = $this->statistics->getPanicSignalAmount($request);
+        $view = [
+            //'countries' => $this->user->countries(),
+           // 'rescuertype' => $this->user->rescuerTypeDetails(),
+           'lists' => $this->rescueOperationRepository->listsOfRescuers($result['lists'])
+        ];
+        //return view('backend.statistics.listsofrescuers_new', $view);
+         return response()->json(['emergencycontacts' => $this->rescueOperationRepository->listsOfRescuers($result['lists'])]);
     }
 
 }

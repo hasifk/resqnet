@@ -34,7 +34,7 @@ class EloquentRescueOperationRepository {
             }
         }
         //$userdetails='';
-        if (!empty($rescuers)):
+        if (!empty($rescuers)) {
             sort($rescuers);
             $obj = new ActiveRescuer;
             $obj->rescuee_id = $userid;
@@ -47,19 +47,15 @@ class EloquentRescueOperationRepository {
             $message['to'] = "Rescuer";
             $this->notification($app_id, $message);
             if (!empty($contacts = $this->emergencyContacts($userid))) {
-                if (!empty($contacts->emergency1))
-                    $app_id = $this->membershipChecking($contacts->emergency1);
-                if (!empty($contacts->emergency2))
-                   $app_id= $this->membershipChecking($contacts->emergency2);
-                if (!empty($contacts->emergency3))
-                   $app_id= $this->membershipChecking($contacts->emergency3);
-                $message['to'] = "Emergency";
+                if (!empty($app_id = $this->membershipChecking($contacts))) {
+                    $message['to'] = "Emergency";
                     $this->notification($app_id, $message);
+                }
             }
             $userdetails = 'SUCCESS';
-        else:
+        } else
             $userdetails = "No Rescuers available";
-        endif;
+
         return $userdetails;
     }
 
@@ -89,6 +85,7 @@ class EloquentRescueOperationRepository {
                     'registration_ids' => array($app_id['app_id'][$key]),
                     'data' => $msg
                 );
+
                 $headers = array
                     (
                     'Authorization: key=' . API_ACCESS_KEY,
@@ -112,14 +109,19 @@ class EloquentRescueOperationRepository {
     }
 
     public function emergencyContacts($id) {
-        return EmergencyContact::where('user_id', $id)->first();
+        return EmergencyContact::where('user_id', $id)->first()->toArray();
     }
 
-    public function membershipChecking($number) {
-        $user = User::where('membership_no', $number)->first();
-        if (!empty($user)) {
-            $app_id['app_id'][] = $user->app_id;
-            $app_id['device_type'][] = $user->device_type;
+    public function membershipChecking($contacts) {
+        $app_id = array();
+        for ($i = 1; $i < 4; $i++) {
+            if (!empty($contacts['emergency' . $i])) {
+                $user = User::where('membership_no', $contacts['emergency' . $i])->first();
+                if (!empty($user)) {
+                    $app_id['app_id'][] = $user->app_id;
+                    $app_id['device_type'][] = $user->device_type;
+                }
+            }
         }
         return $app_id;
     }
