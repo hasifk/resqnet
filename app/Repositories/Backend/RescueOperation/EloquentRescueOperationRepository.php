@@ -46,22 +46,22 @@ class EloquentRescueOperationRepository {
             $message['id'] = $obj->id;
             $message['to'] = "Rescuer";
             $this->notification($app_id, $message);
-            if (!empty($contacts = $this->emergencyContacts($userid))) {
-                if (!empty($app_id = $this->membershipChecking($contacts))) {
-                    $message['to'] = "Emergency";
-                    $this->notification($app_id, $message);
-                }
-            }
+
             $userdetails = 'SUCCESS';
         } else
             $userdetails = "No Rescuers available";
-
+        if (!empty($contacts = $this->emergencyContacts($userid))) {
+            if (!empty($app_id = $this->membershipChecking($contacts))) {
+                $message['to'] = "Emergency";
+                $this->notification($app_id, $message);
+            }
+        }
         return $userdetails;
     }
 
     public function notification($app_id, $message) {
         // API access key from Google API's Console
-       // define('API_ACCESS_KEY', 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ');
+        // define('API_ACCESS_KEY', 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ');
         foreach ($app_id['device_type'] as $key => $device) {
             // $ar[]=array($app_id['app_id'][$key]);
             if ($device == 'Android') {
