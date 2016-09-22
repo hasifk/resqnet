@@ -18,3 +18,5 @@ $api->post('viewemergencycontacts', 'App\Http\Controllers\Frontend\User\ProfileC
 $api->post('savehealthinsurance', 'App\Http\Controllers\Frontend\User\ProfileController@saveHealthInsurance');
 $api->post('viewhealthinsurance', 'App\Http\Controllers\Frontend\User\ProfileController@viewHealthInsurance');
 $api->post('upgrade', 'App\Http\Controllers\Frontend\User\ProfileController@upgradeStatus');
+
+$api->post('/updatefbinfo', 'App\Http\Controllers\Frontend\Auth\AuthController@updateFbInfo');

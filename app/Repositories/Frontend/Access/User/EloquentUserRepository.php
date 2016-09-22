@@ -213,6 +213,19 @@ class EloquentUserRepository implements UserRepositoryContract {
     }
 
 
+    public function updateFbInfo($data) {
+        $user = User::find($data['user_id']);
+        $user->firstname = $data['firstname'];
+        $user->lastname = (!empty($data['lastname'])) ? $data['lastname'] : '';
+        $user->country_id = (!empty($data['country_id'])) ? $data['country_id'] : '';
+        $user->area_id = (!empty($data['area_id'])) ? $data['area_id'] : '';
+        $user->dob = (!empty($data['dob'])) ? $data['dob'] : '';
+        $user->phone = (!empty($data['phone'])) ? $data['phone'] : '';
+        $user->save();
+        return $user;
+    }
+
+
     public function saveDoctors($request) {
         $doctor = new Doctor;
         $doctor->user_id = $request->user_id;

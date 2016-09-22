@@ -77,4 +77,5 @@ interface UserRepositoryContract
     public function updateMedicalCondition($request);
     public function updateOnlineStatus($request);
     public function fbLogin($request);
+    public function updateFbInfo($data);
 }
