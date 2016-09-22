@@ -21,7 +21,7 @@ class EloquentRescueOperationRepository {
         $userid = $result->user_id;
         $userloc = $this->showLocation($userid); //app user id
         $actives = $this->activeUsers(); //getting all active users
-        $rescuers=array();
+        $rescuers = array();
         foreach ($actives as $active) {
             $user = User::find($active->user_id);
             if ($user->role_id == $role) {
@@ -37,7 +37,7 @@ class EloquentRescueOperationRepository {
         $rescuee = User::find($userid);
         $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . " Reqested an Emergency(" . $result->emergency_type . ")";
         if (!empty($contacts = $this->emergencyContacts($userid)))
-            $appids = $this->membershipChecking($contacts,$rescuers);
+            $appids = $this->membershipChecking($contacts, $rescuers);
         sort($rescuers);
         $obj = new ActiveRescuer;
         $obj->rescuee_id = $userid;
@@ -46,14 +46,14 @@ class EloquentRescueOperationRepository {
         $obj->emergency_ids = !empty($appids) ? json_encode($appids[1]) : '';
         $obj->save();
         $message['id'] = $obj->id;
-        
+
         if (!empty($rescuers)) {
             $message['to'] = "Rescuer";
             $this->notification($app_id, $message);
             $userdetails = 'SUCCESS';
         } else
             $userdetails = "No Rescuers available";
-         if (!empty($appids)) {
+        if (!empty($appids)) {
             $message['to'] = "Emergency";
             $this->notification($appids[0], $message);
         }
@@ -110,19 +110,21 @@ class EloquentRescueOperationRepository {
     }
 
     public function emergencyContacts($id) {
-        return EmergencyContact::where('user_id', $id)->first()->toArray();
+        $emergency= EmergencyContact::where('user_id', $id)->first();
+        return !empty($emergency)?$emergency->toArray():$emergency;
+            
     }
 
-    public function membershipChecking($contacts,$rescuers) {
+    public function membershipChecking($contacts, $rescuers) {
         $app_id = array();
         for ($i = 1; $i < 4; $i++) {
             if (!empty($contacts['emergency' . $i])) {
                 $user = User::where('membership_no', $contacts['emergency' . $i])->first();
                 if (!empty($user)) {
-                    if(!in_array($user->id,$rescuers)){
-                    $app_id[0]['app_id'][] = $user->app_id;
-                    $app_id[0]['device_type'][] = $user->device_type;
-                    $app_id[1][] = $user->id;
+                    if (!in_array($user->id, $rescuers)) {
+                        $app_id[0]['app_id'][] = $user->app_id;
+                        $app_id[0]['device_type'][] = $user->device_type;
+                        $app_id[1][] = $user->id;
                     }
                 }
             }
@@ -147,6 +149,10 @@ class EloquentRescueOperationRepository {
 
     public function ActiveRescuer($id) {
         return ActiveRescuer::find($id);
+    }
+
+    public function ActiveRescuers($id) {
+        return ActiveRescuer::whereIn('id', $id)->orderBy('id', 'desc')->paginate();
     }
 
     public function ActiveRescuerAll() {
@@ -259,8 +265,9 @@ class EloquentRescueOperationRepository {
 
         $rescuers = array();
         if (!empty($panicids)) {
-            foreach ($panicids as $value)
-                $rescuers[] = $this->ActiveRescuer($value);
+            $rescuers = $this->ActiveRescuers($panicids);
+//            foreach ($panicids as $value)
+//                $rescuers[] = $this->ActiveRescuer($value);
             foreach ($rescuers as $key => $active) {
                 $res = array();
                 $rescuers[$key]['rescuee_details'] = User::find($active->rescuee_id);
