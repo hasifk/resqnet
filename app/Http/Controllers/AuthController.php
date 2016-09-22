@@ -56,7 +56,7 @@ class AuthController extends Controller
              endif;
             $token=Crypt::encrypt($user->id);
             return response()->json(['token' => $token,'user_id'=>$user->id,
-                'user_role'=>$user->role_name,'subscription_ends_at'=>$user->subscription_ends_at]);
+                'user_role'=>$user->role_name,'subscription_ends_at'=>$user->subscription_ends_at,'country_id'=>$user->country_id]);
         else:
             return response()->json(['status' => 'Failed']);
         endif;
