@@ -154,6 +154,17 @@ class EloquentUserRepository implements UserRepositoryContract {
          *
          * If this is a social account they are confirmed through the social provider by default
          */
+
+        /** Emergency contact start*/
+        $obj = new EmergencyContact;
+        $obj->user_id = $user->id;
+
+       $obj->emergency1 = (!empty($data['emergency1'])) ? $data['emergency1'] : '';
+       $obj->emergency2 =  (!empty($data['emergency2'])) ? $data['emergency2'] : '';
+       $obj->emergency3 = (!empty($data['emergency3'])) ? $data['emergency3'] : '';
+       $obj->save();
+
+        /** Emergency end */
         if (config('access.users.confirm_email') && $provider === false) {
             $this->sendConfirmationEmail($user);
         }
