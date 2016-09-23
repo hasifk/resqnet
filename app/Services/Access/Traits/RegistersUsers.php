@@ -5,6 +5,7 @@ namespace App\Services\Access\Traits;
 use App\Events\Frontend\Auth\UserRegistered;
 use App\Http\Requests\Frontend\Auth\RegisterRequest;
 use App\Http\Requests\Frontend\Auth\RegrescuerRequest;
+use App\Http\Requests\Frontend\Auth\UpdateFbRequest;
 use App\Http\Requests\Frontend\Auth\UpdateRequest;
 use App\Http\Requests\Frontend\Auth\UpdaterescuerRequest;
 use App\Http\Requests\Frontend\User\EditProfileRequest;
@@ -89,8 +90,21 @@ trait RegistersUsers
     /***************************************************************************************************************/
     public function updateProfile(UpdateRequest $request)
     {
-        $user = $this->user->updateUserStub($request->all());
+       if ($user = $this->user->updateUserStub($request->all())):
             return response()->json(['user' => $user->toArray()]);
+           else:
+               return response()->json(['status' => 'failed']);
+               endif;
+
+    }
+    /***************************************************************************************************************/
+    public function updateFbInfo(UpdateFbRequest $request)
+    {
+        if($user = $this->user->updateFbInfo($request->all())):
+        return response()->json(['user' => $user->toArray()]);
+            else:
+                return response()->json(['status' => 'failed']);
+        endif;
 
     }
     /***************************************************************************************************************/

@@ -19,6 +19,7 @@ class NewsfeedController extends Controller {
      * @var EloquentCompanyRepository
      */
     private $newsfeedRepository;
+    private $user;
 
     public function __construct(NewsFeedRepositoryContract $newsfeedRepository,UserRepositoryContract $user) {
 
@@ -44,10 +45,13 @@ class NewsfeedController extends Controller {
 
                     $newsfeeds[$key]['newsfeed_image_src']=url('/image/'.$newsfeeds[$key]['id'].'/'.$newsfeeds[$key]['image_filename'].'.'.$newsfeeds[$key]['image_extension']);
                 }
+
+                $user=$this->user->find($newsfeeds[$key]['user_id']);
+                $newsfeeds[$key]['rescuer_name']=$user->firstname." ".$user->lastname;
             }
             return response()->json(['newsfeeds' => $newsfeeds->toArray()]);
         else:
-            return response()->json(['newsfeeds' => 'No newfeed found']);
+            return response()->json(['newsfeeds' => 'No NewsFeed found']);
         endif;
     }
 
@@ -65,7 +69,7 @@ class NewsfeedController extends Controller {
             }
             return response()->json(['newsfeeds' => $newsfeeds->toArray()]);
         else:
-            return response()->json(['newsfeeds' => 'No newfeed found']);
+            return response()->json(['newsfeeds' => 'No NewsFeed found']);
         endif;
         else:
             return response()->json(['status' => "You do not have access to do that"]);
@@ -90,7 +94,7 @@ class NewsfeedController extends Controller {
                 $newsfeed['time']=$time;
             return response()->json(['newsfeed' => $newsfeed]);
          else:
-        return response()->json(['newsfeeds' => 'No newfeed found']);
+        return response()->json(['newsfeeds' => 'No NewsFeed found']);
         endif;
 
 

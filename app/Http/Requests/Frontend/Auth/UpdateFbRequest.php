@@ -8,7 +8,7 @@ use Dingo\Api\Http\FormRequest;
  * Class RegisterRequest
  * @package App\Http\Requests\Frontend\Access
  */
-class FBloginRequest extends FormRequest
+class UpdateFbRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,10 +28,10 @@ class FBloginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required',
-            'fb_id' =>'required',
-            'app_id' => 'required',
-            'device_type' =>'required'
+            'user_id'      =>'required',
+            'firstname' => 'required|max:255',
+            'country_id' => 'required|numeric',
+            'area_id' => 'required|numeric',
         ];
     }
 }

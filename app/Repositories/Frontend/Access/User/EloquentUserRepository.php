@@ -98,7 +98,7 @@ class EloquentUserRepository implements UserRepositoryContract {
                         'status' => 0,
                         'current_medical_conditions' => (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '',
                         'prior_medical_conditions' => (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '',
-                        'allergies' => (!empty($data['allegries'])) ? $data['allegries'] : '',
+                        'allergies' => (!empty($data['allergies'])) ? $data['allergies'] : '',
                         'phone' => (!empty($data['phone'])) ? $data['phone'] : '',
                         'subscription_id' => (!empty($data['subscription_id'])) ? $data['subscription_id'] : '',
                         'subscription_info' => (!empty($data['subscription_info'])) ? $data['subscription_info'] : '',
@@ -124,7 +124,7 @@ class EloquentUserRepository implements UserRepositoryContract {
                         'status' => 0,
                         'current_medical_conditions' => (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '',
                         'prior_medical_conditions' => (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '',
-                        'allergies' => (!empty($data['allegries'])) ? $data['allegries'] : '',
+                        'allergies' => (!empty($data['allergies'])) ? $data['allergies'] : '',
                         'phone' => (!empty($data['phone'])) ? $data['phone'] : '',
                         'subscription_id' => (!empty($data['subscription_id'])) ? $data['subscription_id'] : '',
                         'subscription_info' => (!empty($data['subscription_info'])) ? $data['subscription_info'] : '',
@@ -154,6 +154,17 @@ class EloquentUserRepository implements UserRepositoryContract {
          *
          * If this is a social account they are confirmed through the social provider by default
          */
+
+        /** Emergency contact start*/
+        $obj = new EmergencyContact;
+        $obj->user_id = $user->id;
+
+       $obj->emergency1 = (!empty($data['emergency1'])) ? $data['emergency1'] : '';
+       $obj->emergency2 =  (!empty($data['emergency2'])) ? $data['emergency2'] : '';
+       $obj->emergency3 = (!empty($data['emergency3'])) ? $data['emergency3'] : '';
+       $obj->save();
+
+        /** Emergency end */
         if (config('access.users.confirm_email') && $provider === false) {
             $this->sendConfirmationEmail($user);
         }
@@ -180,6 +191,9 @@ class EloquentUserRepository implements UserRepositoryContract {
         $email_id=User::where('email',$request->email)->value('id');
         if(!empty($user_id)):
             $user=$this->find($user_id);
+            $user->app_id=$request->app_id;
+            $user->device_type=$request->device_type;
+            $user->save();
             return $user;
         elseif(!empty($email_id)):
             $user=$this->find($email_id);
@@ -189,12 +203,16 @@ class EloquentUserRepository implements UserRepositoryContract {
                 return "access_denied";
                 endif;
             $user->fb_id = $request->fb_id;
+            $user->app_id=$request->app_id;
+            $user->device_type=$request->device_type;
             $user->save();
             return $user;
             else:
         $user = new User;
         $user->email = $request->email;
         $user->fb_id = $request->fb_id;
+                $user->app_id=$request->app_id;
+                $user->device_type=$request->device_type;
                 $user->firstname=(!empty($request->firstname)) ? $request->firstname : '';
                 $user->status= 0;
                 $user->subscription_ends_at=(!empty($request->subscription_ends_at)) ? $request->subscription_ends_at : '';
@@ -210,6 +228,19 @@ class EloquentUserRepository implements UserRepositoryContract {
                 }
         return $user;
                 endif;
+    }
+
+
+    public function updateFbInfo($data) {
+        $user = User::find($data['user_id']);
+        $user->firstname = $data['firstname'];
+        $user->lastname = (!empty($data['lastname'])) ? $data['lastname'] : '';
+        $user->country_id = (!empty($data['country_id'])) ? $data['country_id'] : null;
+        $user->area_id = (!empty($data['area_id'])) ? $data['area_id'] : null;
+        $user->dob = (!empty($data['dob'])) ? $data['dob'] : '';
+        $user->phone = (!empty($data['phone'])) ? $data['phone'] : '';
+        $user->save();
+        return $user;
     }
 
 
