@@ -180,6 +180,9 @@ class EloquentUserRepository implements UserRepositoryContract {
         $email_id=User::where('email',$request->email)->value('id');
         if(!empty($user_id)):
             $user=$this->find($user_id);
+            $user->app_id=$request->app_id;
+            $user->device_type=$request->device_type;
+            $user->save();
             return $user;
         elseif(!empty($email_id)):
             $user=$this->find($email_id);
@@ -189,12 +192,16 @@ class EloquentUserRepository implements UserRepositoryContract {
                 return "access_denied";
                 endif;
             $user->fb_id = $request->fb_id;
+            $user->app_id=$request->app_id;
+            $user->device_type=$request->device_type;
             $user->save();
             return $user;
             else:
         $user = new User;
         $user->email = $request->email;
         $user->fb_id = $request->fb_id;
+                $user->app_id=$request->app_id;
+                $user->device_type=$request->device_type;
                 $user->firstname=(!empty($request->firstname)) ? $request->firstname : '';
                 $user->status= 0;
                 $user->subscription_ends_at=(!empty($request->subscription_ends_at)) ? $request->subscription_ends_at : '';
@@ -217,8 +224,8 @@ class EloquentUserRepository implements UserRepositoryContract {
         $user = User::find($data['user_id']);
         $user->firstname = $data['firstname'];
         $user->lastname = (!empty($data['lastname'])) ? $data['lastname'] : '';
-        $user->country_id = (!empty($data['country_id'])) ? $data['country_id'] : '';
-        $user->area_id = (!empty($data['area_id'])) ? $data['area_id'] : '';
+        $user->country_id = (!empty($data['country_id'])) ? $data['country_id'] : null;
+        $user->area_id = (!empty($data['area_id'])) ? $data['area_id'] : null;
         $user->dob = (!empty($data['dob'])) ? $data['dob'] : '';
         $user->phone = (!empty($data['phone'])) ? $data['phone'] : '';
         $user->save();

@@ -29,7 +29,9 @@ class FBloginRequest extends FormRequest
     {
         return [
             'email' => 'required',
-            'fb_id' =>'required'
+            'fb_id' =>'required',
+            'app_id' => 'required',
+            'device_type' =>'required'
         ];
     }
 }
