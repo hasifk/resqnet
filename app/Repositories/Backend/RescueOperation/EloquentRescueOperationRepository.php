@@ -22,41 +22,44 @@ class EloquentRescueOperationRepository {
         $userloc = $this->showLocation($userid); //app user id
         $actives = $this->activeUsers(); //getting all active users
         $rescuers = array();
-        foreach ($actives as $active) {
-            $user = User::find($active->user_id);
-            if ($user->role_id == $role) {
-                // $rescuers[] = $active->user_id;
-                if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 5) {
-
-                    $rescuers[] = $active->user_id;
-                    $app_id['app_id'][] = $user->app_id;
-                    $app_id['device_type'][] = $user->device_type;
+        if (!empty($userloc)) {
+            foreach ($actives as $active) {
+                $user = User::find($active->user_id);
+                if ($user->role_id == $role) {
+                    if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 5) {
+                        $rescuers[] = $active->user_id;
+                        $app_id['app_id'][] = $user->app_id;
+                        $app_id['device_type'][] = $user->device_type;
+                    }
                 }
             }
-        }
-        $rescuee = User::find($userid);
-        $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . " Reqested an Emergency(" . $result->emergency_type . ")";
-        if (!empty($contacts = $this->emergencyContacts($userid)))
-            $appids = $this->membershipChecking($contacts, $rescuers);
-        sort($rescuers);
-        $obj = new ActiveRescuer;
-        $obj->rescuee_id = $userid;
-        $obj->rescuers_ids = !empty($rescuers) ? json_encode($rescuers) : '';
-        $obj->emergency_type = $result->emergency_type;
-        $obj->emergency_ids = !empty($appids) ? json_encode($appids[1]) : '';
-        $obj->save();
-        $message['id'] = $obj->id;
 
-        if (!empty($rescuers)) {
-            $message['to'] = "Rescuer";
-            $this->notification($app_id, $message);
-            $userdetails = 'SUCCESS';
+            $rescuee = User::find($userid);
+            $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . " Reqested an Emergency(" . $result->emergency_type . ")";
+            if (!empty($contacts = $this->emergencyContacts($userid)))
+                $appids = $this->membershipChecking($contacts, $rescuers);
+            sort($rescuers);
+            $obj = new ActiveRescuer;
+            $obj->rescuee_id = $userid;
+            $obj->role_id = $role;
+            $obj->rescuers_ids = !empty($rescuers) ? json_encode($rescuers) : '';
+            $obj->emergency_type = $result->emergency_type;
+            $obj->emergency_ids = !empty($appids) ? json_encode($appids[1]) : '';
+
+            $obj->save();
+            $message['id'] = $obj->id;
+            if (!empty($rescuers)) {
+                $message['to'] = "Rescuer";
+                $this->notification($app_id, $message);
+                $userdetails = 'SUCCESS';
+            } else
+                $userdetails = "No Rescuers available";
+            if (!empty($appids)) {
+                $message['to'] = "Emergency";
+                $this->notification($appids[0], $message);
+            }
         } else
-            $userdetails = "No Rescuers available";
-        if (!empty($appids)) {
-            $message['to'] = "Emergency";
-            $this->notification($appids[0], $message);
-        }
+            $userdetails = "Please enable Location services";
         return $userdetails;
     }
 
@@ -110,9 +113,8 @@ class EloquentRescueOperationRepository {
     }
 
     public function emergencyContacts($id) {
-        $emergency= EmergencyContact::where('user_id', $id)->first();
-        return !empty($emergency)?$emergency->toArray():$emergency;
-            
+        $emergency = EmergencyContact::where('user_id', $id)->first();
+        return !empty($emergency) ? $emergency->toArray() : $emergency;
     }
 
     public function membershipChecking($contacts, $rescuers) {
@@ -152,7 +154,7 @@ class EloquentRescueOperationRepository {
     }
 
     public function ActiveRescuers($id) {
-        return ActiveRescuer::whereIn('id', $id)->orderBy('id', 'desc')->paginate();
+        return ActiveRescuer::whereIn('id', $id)->orderBy('id', 'desc')->paginate(10);
     }
 
     public function ActiveRescuerAll() {
@@ -195,7 +197,6 @@ class EloquentRescueOperationRepository {
 
         $this->notification($app_id, $message);
         return $request->active_rescuers_id;
-        ;
     }
 
     public function distanceCalculation($point1_lat, $point1_long, $point2_lat, $point2_long, $unit = 'km', $decimals = 2) {
@@ -231,18 +232,24 @@ class EloquentRescueOperationRepository {
         return $obj;
     }
 
-    public function rescuersLists() {
+    public function listsOfRescuers() {
         $rescuers = $this->ActiveRescuerPaginate();
         if (!empty($rescuers)) {
             foreach ($rescuers as $key => $active) {
-                $res = array();
+                $res1=$res2=array();
                 $rescuers[$key]['rescuee_details'] = User::find($active->rescuee_id);
                 if (!empty($active->rescuers_ids)):
                     $resccuer_id = json_decode($active->rescuers_ids);
                     foreach ($resccuer_id as $resid)
-                        $res[] = User::find($resid);
+                        $res1[] = User::find($resid);
                 endif;
-                $rescuers[$key]['rescuers_details'] = $res;
+                $rescuers[$key]['rescuers_details'] = $res1;
+                if (!empty($active->emergency_ids)):
+                    $emergency_id = json_decode($active->emergency_ids);
+                    foreach ($emergency_id as $resid)
+                        $res2[] = User::find($resid);
+                endif;
+                $rescuers[$key]['emergency_details'] = $res2;
                 $operation = Operation::where('active_rescuers_id', $active->id)->first();
                 if (!empty($operation)) {
                     $rescuers[$key]['tagged'] = User::find($operation->rescuer_id);
@@ -261,22 +268,27 @@ class EloquentRescueOperationRepository {
         return $rescuers;
     }
 
-    public function listsOfRescuers($panicids) {
+    public function rescuersLists($panicids) {
 
         $rescuers = array();
+       
         if (!empty($panicids)) {
             $rescuers = $this->ActiveRescuers($panicids);
-//            foreach ($panicids as $value)
-//                $rescuers[] = $this->ActiveRescuer($value);
             foreach ($rescuers as $key => $active) {
-                $res = array();
+                $res1=$res2=array();
                 $rescuers[$key]['rescuee_details'] = User::find($active->rescuee_id);
                 if (!empty($active->rescuers_ids)):
                     $resccuer_id = json_decode($active->rescuers_ids);
                     foreach ($resccuer_id as $resid)
-                        $res[] = User::find($resid);
+                        $res1[] = User::find($resid);
                 endif;
-                $rescuers[$key]['rescuers_details'] = $res;
+                $rescuers[$key]['rescuers_details'] = $res1;
+                if (!empty($active->emergency_ids)):
+                    $emergency_id = json_decode($active->emergency_ids);
+                    foreach ($emergency_id as $resid)
+                        $res2[] = User::find($resid);
+                endif;
+                $rescuers[$key]['emergency_details'] = $res2;
                 $operation = Operation::where('active_rescuers_id', $active->id)->first();
                 if (!empty($operation)) {
                     $rescuers[$key]['tagged'] = User::find($operation->rescuer_id);
@@ -285,13 +297,15 @@ class EloquentRescueOperationRepository {
                     if (!empty($operation->finished_at)):
                         $finishedtime = strtotime($operation->finished_at);
                         $tot_sec = round(abs($finishedtime - $operationtime));
-                        $rescuers[$key]['rescuerresponse'] = $this->timeCalculator($tot_sec);
+                        $rescuers[$key]['finished'] = $this->timeCalculator($tot_sec);
                     endif;
                     $tot_sec = round(abs($operationtime - $activetime));
-                    $rescuers[$key]['panicresponse'] = $this->timeCalculator($tot_sec);
+                    $rescuers[$key]['rescuerresponse'] = $this->timeCalculator($tot_sec);
                 }
             }
         }
+        else
+             $rescuers = $this->ActiveRescuers([0]);
         return $rescuers;
     }
 

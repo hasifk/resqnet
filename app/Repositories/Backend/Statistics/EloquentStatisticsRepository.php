@@ -130,12 +130,14 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
         ];
     }
 
-    public function area($value) {
-        return ActiveRescuer::join('users', 'activerescuers.rescuee_id', '=', 'users.id')->where('users.area_id', $value);
+   public function area($value) {
+        return ActiveRescuer::join('users', 'activerescuers.rescuee_id', '=', 'users.id')->where('users.area_id', $value)
+                        ->select('activerescuers.rescuers_ids', 'activerescuers.id','activerescuers.role_id');
     }
 
     public function country($value) {
-        return ActiveRescuer::join('users', 'activerescuers.rescuee_id', '=', 'users.id')->where('users.country_id', $value);
+        return ActiveRescuer::join('users', 'activerescuers.rescuee_id', '=', 'users.id')->where('users.country_id', $value)
+                        ->select('activerescuers.rescuers_ids', 'activerescuers.id','activerescuers.role_id')->orderBy('activerescuers.id', 'desc');
     }
 
     public function getPanicSignalAmount($request) {
@@ -174,7 +176,7 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
                     $country = City::find($request->area_id)->value('name');
                     $actives = $this->area($request->area_id)->orderBy('activerescuers.id', 'desc')->get();
                 } else if (!empty($request->country_id)) {
-                    $actives = $this->country($request->country_id)->orderBy('activerescuers.id', 'desc')->get();
+                    $actives = $this->country($request->country_id)->get();
                 } else
                     $actives = $this->rescueOperationRepository->ActiveRescuerAll();
             endif;
@@ -183,22 +185,17 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
         if ($request->rescur != "All")
             $role[] = Role::where('name', $request->rescur)->value('id');
         else
-            $role = array(1, 2, 3);
+            $role = array(2, 3, 4);
         $f = 0;
-        $lists = array();
-        if (!empty($actives)):
+        $lists=array();
+        if (!empty($actives)) {
             foreach ($actives as $active) {
-                if (!empty($active->rescuers_ids)):
-                    $rescuer = json_decode($active->rescuers_ids); //getting all the rescuers corresponding to panic 
-                    $users = \DB::table('assigned_roles')->where('user_id', $rescuer[0])->value('id');
-                    if (!empty($role) && in_array($users, $role)) {
-                        $f++;
-                        $lists[] = $active->id;
-                    }
-
-                endif;
+                if (in_array($active->role_id, $role)) {
+                    $f++;
+                    $lists[] = $active->id;
+                }
             }
-        endif;
+        }
         return [
             'country' => $country,
             'amount' => $f,
