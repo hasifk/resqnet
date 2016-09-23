@@ -41,7 +41,8 @@ class AuthController extends Controller
             /*$token = \JWTAuth::fromUser($user);*/
             $token=Crypt::encrypt($user->id);
             return response()->json(['token' => $token,'user_id'=>$user->id,
-                'user_role'=>$user->role_name,'subscription_ends_at'=>$user->subscription_ends_at]);
+                'user_role'=>$user->role_name,'subscription_ends_at'=>$user->subscription_ends_at,
+                'membership_no'=>$user->membership_no]);
         } else {
             return response()->json(['status' => 'Login Failed.invalid password or username']);
         }
@@ -57,7 +58,7 @@ class AuthController extends Controller
             $token=Crypt::encrypt($user->id);
             return response()->json(['token' => $token,'user_id'=>$user->id,
                 'user_role'=>$user->role_name,'subscription_ends_at'=>$user->subscription_ends_at,
-                'fb_id'=>$user->fb_id,'country_id'=>$user->country_id]);
+                'fb_id'=>$user->fb_id,'country_id'=>$user->country_id,'membership_no'=>$user->membership_no]);
         else:
             return response()->json(['status' => 'Failed']);
         endif;
