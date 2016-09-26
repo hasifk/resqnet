@@ -177,13 +177,27 @@ class EloquentUserRepository implements UserRepositoryContract {
 
     public function updateUserStub($data) {
         $user = User::find($data['id']);
+        if(!empty($user)):
         $user->firstname = $data['firstname'];
         $user->lastname = (!empty($data['lastname'])) ? $data['lastname'] : '';
         $user->dob = (!empty($data['dob'])) ? $data['dob'] : '';
         $user->jurisdiction = (!empty($data['jurisdiction'])) ? $data['jurisdiction'] : '';
         $user->phone = (!empty($data['phone'])) ? $data['phone'] : '';
+        $user->current_medical_conditions = (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '';
+        $user->prior_medical_conditions = (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '';
+        $user->allergies = (!empty($data['allergies'])) ? $data['allergies'] : '';
         $user->save();
+
+            $emergency_contact= EmergencyContact::where('user_id',$user->id)->first();
+            if(!empty($emergency_contact)):
+            $emergency_contact->emergency1 = (!empty($data['emergency1'])) ? $data['emergency1'] : '';
+            $emergency_contact->emergency2 = (!empty($data['emergency2'])) ? $data['emergency2'] : '';
+            $emergency_contact->emergency3 = (!empty($data['emergency3'])) ? $data['emergency3'] : '';
+            $emergency_contact->save();
+                endif;
         return $user;
+            endif;
+        return;
     }
 
     public function fbLogin($request) {
