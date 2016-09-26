@@ -107,8 +107,11 @@
                             </thead>
                             <tbody>
                                 <?php
-                                if (!empty($lists)) {
-                                    $f = 1;
+                                if (count($lists) > 0) {
+                                    if ($lists->currentPage() > 1)
+                                        $f = ($lists->currentPage() - 1) * $lists->perPage() + 1;
+                                    else
+                                        $f = 1;
                                     foreach ($lists as $list):
                                         ?>
                                         <tr><th>{{$f++}}</th>
@@ -174,7 +177,7 @@
                                 }
                                 else {
                                     ?>
-                                    <tr><th>No Panic Signals</th></tr>
+                                    <tr><td colspan="8"><font color="red">No Panic Signals</font></td></tr>
                                     <?php
                                 }
                                 ?>

@@ -19,9 +19,11 @@
     </thead>
     <tbody>
         <?php
-        if (!empty($lists)) {
-            print_r($lists);
-            $f = 1;
+        if (count($lists) > 0) {
+            if ($lists->currentPage() > 1)
+                $f = ($lists->currentPage() - 1) * $lists->perPage() + 1;
+            else
+                $f = 1;
             foreach ($lists as $list):
                 ?>
                 <tr><th>{{$f++}}</th>
@@ -32,9 +34,8 @@
                     </td>
                     <td>
                         <table> <?php
-                            if (!empty($list->rescuers_details)):
-                                //$resccuer_id = json_decode($list->rescuers_ids)
-                                ?>
+        if (!empty($list->rescuers_details)):
+                    ?>
                                 @foreach($list->rescuers_details as $resid)
                                 <tr>
                                     <td>
@@ -51,8 +52,8 @@
                     </td>
                     <td>
                         <table> <?php
-                            if (!empty($list->emergency_details)):
-                                //$resccuer_id = json_decode($list->rescuers_ids)
+                    if (!empty($list->emergency_details)):
+                        //$resccuer_id = json_decode($list->rescuers_ids)
                                 ?>
                                 @foreach($list->emergency_details as $resid)
                                 <tr>
@@ -87,7 +88,7 @@
         }
         else {
             ?>
-            <tr><th>No Panic Signals</th></tr>
+            <tr><td colspan="8"><font color="red">No Panic Signals</font></td></tr>
             <?php
         }
         ?>
