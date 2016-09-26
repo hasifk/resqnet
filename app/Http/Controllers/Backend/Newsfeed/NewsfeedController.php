@@ -48,6 +48,12 @@ class NewsfeedController extends Controller {
 
                 $user=$this->user->find($newsfeeds[$key]['user_id']);
                 $newsfeeds[$key]['rescuer_name']=$user->firstname." ".$user->lastname;
+                $operationtime = strtotime($newsfeeds[$key]['created_at']);
+                $mytime = Carbon::now();
+                $finishedtime=strtotime($mytime->toDateTimeString());
+                $tot_sec = round(abs($finishedtime - $operationtime));
+                $time=$this->newsfeedRepository->timeCalculator($tot_sec);
+                $newsfeeds[$key]['time']=$time;
             }
             return response()->json(['newsfeeds' => $newsfeeds->toArray()]);
         else:
