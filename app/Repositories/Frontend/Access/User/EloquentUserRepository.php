@@ -189,7 +189,10 @@ class EloquentUserRepository implements UserRepositoryContract {
         $user->save();
 
             $emergency_contact= EmergencyContact::where('user_id',$user->id)->first();
-            if(!empty($emergency_contact)):
+            if(empty($emergency_contact)):
+                $emergency_contact = new EmergencyContact;
+                $emergency_contact->user_id = $user->id;
+            endif;
             $emergency_contact->emergency1 = (!empty($data['emergency1'])) ? $data['emergency1'] : '';
             $emergency_contact->emergency2 = (!empty($data['emergency2'])) ? $data['emergency2'] : '';
             $emergency_contact->emergency3 = (!empty($data['emergency3'])) ? $data['emergency3'] : '';
