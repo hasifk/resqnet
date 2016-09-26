@@ -197,7 +197,7 @@ class EloquentUserRepository implements UserRepositoryContract {
             $emergency_contact->emergency2 = (!empty($data['emergency2'])) ? $data['emergency2'] : '';
             $emergency_contact->emergency3 = (!empty($data['emergency3'])) ? $data['emergency3'] : '';
             $emergency_contact->save();
-                endif;
+
         return $user;
             endif;
         return;
