@@ -26,14 +26,14 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                             ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
                             ->orWhere('newsfeeds.areaid', '=', $user->area_id)
                             ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
-                            ->select('newsfeeds.id','newsfeeds.user_id', 'newsfeeds.news_title', 'newsfeeds.news','newsfeeds.image_filename', 'image_extension', 'image_path')
+                            ->select('newsfeeds.*')
                             ->get();
         } else if (access()->hasRolesApp(['User'], $user_id)) {
             return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
                             ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
                             ->orWhere('newsfeeds.areaid', '=', $user->area_id)
                             ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
-                            ->select('newsfeeds.id','newsfeeds.user_id', 'newsfeeds.news_title','newsfeeds.news', 'image_filename', 'image_extension', 'image_path')->get();
+                            ->select('newsfeeds.*')->get();
         }
     }
 
