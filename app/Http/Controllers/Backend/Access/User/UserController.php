@@ -84,8 +84,14 @@ class UserController extends Controller
     {
         $user=$this->users->findOrThrowException($id, true);
         $area=$this->users->area($user->area_id);
+        $avatar='';
+        if ($user->avatar_filename && $user->avatar_extension && $user->avatar_path) {
+
+            $avatar=url('/avatar/'.$user->id.'/'.$user->avatar_filename.'.'.$user->avatar_extension);
+        }
         $view = [
             'user' => $user,
+            'avatar'=>$avatar,
             'doctor'=> $this->users->doctorslists($user->id),
             'emergency' => $this->users->emergencyContacts($user->id),
             'insurance' => $this->users->healthinsurance($user->id),

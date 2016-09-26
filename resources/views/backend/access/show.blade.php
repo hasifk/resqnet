@@ -16,7 +16,12 @@
     <div role="tabpanel" class="tab-pane active" id="profile">
         <table class="table table-striped table-hover table-bordered dashboard-table">
             <tr>
-                <th colspan="2"><img src="{{$user->avatar_path.'/'.$user->avatar_filename.'.'.$user->avatar_extension}}"></th>
+                @if(!empty($avatar))
+                <th colspan="2"><img src="{{$avatar}}"></th>
+                    @else
+                    <th colspan="2"><img src="https://placeholdit.imgix.net/~text?txtsize=28&txt=150%C3%9784&w=150&h=84"/></th>
+                    @endif
+
             </tr>
             <tr>
                 <th>Name</th>
