@@ -119,7 +119,7 @@ class StatisticsController extends Controller {
         $view = [
             'countries' => $this->user->countries(),
             'rescuertype' => $this->user->rescuerTypeDetails(),
-            'lists' => $this->rescueOperationRepository->rescuersLists()
+            'lists' => $this->rescueOperationRepository->listsOfRescuers()
         ];
         return view('backend.statistics.listsofrescuers', $view);
         
@@ -128,12 +128,10 @@ class StatisticsController extends Controller {
     {
        $result = $this->statistics->getPanicSignalAmount($request);
         $view = [
-            //'countries' => $this->user->countries(),
-           // 'rescuertype' => $this->user->rescuerTypeDetails(),
-           'lists' => $this->rescueOperationRepository->listsOfRescuers($result['lists'])
+           'lists' => $this->rescueOperationRepository->rescuersLists($result['lists'])
         ];
-        //return view('backend.statistics.listsofrescuers_new', $view);
-         return response()->json(['emergencycontacts' => $this->rescueOperationRepository->listsOfRescuers($result['lists'])]);
+       return view('backend.statistics.listsofrescuers_new', $view);
+        //return response()->json(['emergencycontacts' => $this->rescueOperationRepository->listsOfRescuers($result['lists'])]);
     }
 
 }

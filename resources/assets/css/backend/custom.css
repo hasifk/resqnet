@@ -23,3 +23,11 @@ label.control-label i {
     color: gray;
     font-weight: normal;
 }
+#list thead th {
+   text-align: center;
+   vertical-align:top !important;
+}
+#list tbody th {
+   text-align: center;
+   font-weight: normal;
+}
