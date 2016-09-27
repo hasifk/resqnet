@@ -8,6 +8,7 @@ use App\Http\Requests\Backend\RescuerOperation\RescuerDetails;
 use App\Repositories\Backend\RescueOperation\EloquentRescueOperationRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests\Backend\RescueeOperation\RescueeOperation;
+use App\Http\Requests\Backend\RescueeOperation\NotificationLists;
 use App\Http\Requests\Backend\RescuerOperation\RescuerOperation;
 
 class RescueOperationController extends Controller {
@@ -60,7 +61,7 @@ class RescueOperationController extends Controller {
                 return response()->json(['status' =>'location update failed please try again']);
         endif;
     }
-    public function rescuerNotifications(Request $request)
+    public function rescuerNotifications(NotificationLists $request)
     {
         if($details=$this->rescueOperationRepository->rescuerNotifications($request)):
             return response()->json(['lists' => $details]);
