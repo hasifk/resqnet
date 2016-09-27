@@ -238,6 +238,7 @@ class EloquentRescueOperationRepository {
 
     public function rescuerNotifications($request) {
         $user = User::find($request->user_id);
+        $ids=array(0);
         if (!empty($rescuers = $this->rescuerRole($user->role_id))) {
             foreach ($rescuers as $rescuer) {
                 if (!empty($rescuer->rescuers_ids)) {
