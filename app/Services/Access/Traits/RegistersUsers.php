@@ -85,6 +85,9 @@ trait RegistersUsers
 
             $user['profile_image_src']=url('/avatar/'.$user1->id.'/'.$user1->avatar_filename.'.'.$user1->avatar_extension);
         }
+       if($emrg = $this->user->emergencyContacts($request->user_id)):
+           $user=array_merge($user,$emrg->toArray());
+           endif;
       return response()->json(['user' => $user]);
     }
     /***************************************************************************************************************/
