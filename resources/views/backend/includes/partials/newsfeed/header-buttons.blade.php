@@ -4,7 +4,10 @@
     <div class="row">
         <div class="col-xs-12 col-md-3 btn-group">
             <label for="office_life" class="control-label">Country <i><font color="red" size="3">*</font></i></label>
-            <select name="country_id" id="country_id" class="form-control selectpicker">
+<!--            <select name="country_id" id="country_id" class="form-control selectpicker" data-live-search="true">-->
+            <div>
+            <select data-placeholder="Choose a Country..." name="country_id" id="country_id" class="form-control chosen-select">
+                <option value=""></option>
                 @foreach($countries as $country)
                 <option
                     value="{{ $country->id }}"
@@ -13,6 +16,7 @@
                 </option>
                 @endforeach
             </select>
+            </div>
         </div>
 
         <div class="col-xs-12 col-md-3 btn-group">
@@ -44,6 +48,7 @@
 
 
         </div>
+
     </div>
 
 </div>

@@ -60,7 +60,8 @@ elixir(function(mix) {
       * Combine pre-processed backend CSS files
       */
      .styles([
-         'backend/app.css','backend/custom.css'
+         'backend/app.css','backend/custom.css',
+         'chosen/chosen.css'
      ], 'public/css/backend.css')
 
      /**
@@ -72,7 +73,8 @@ elixir(function(mix) {
          'backend/app.js',
          'backend/plugin/toastr/toastr.min.js',
          'backend/custom.js',
-         'bootstrap-datepicker/js/bootstrap-datepicker.js'
+         'bootstrap-datepicker/js/bootstrap-datepicker.js',
+         'chosen/chosen.jquery.js'
      ], 'public/js/backend.js')
 
     /**
