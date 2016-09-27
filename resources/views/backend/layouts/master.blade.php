@@ -17,7 +17,7 @@
         @yield('before-styles-end')
         {!! Html::style(elixir('css/backend.css')) !!}
         @yield('after-styles-end')
-
+        
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -26,37 +26,37 @@
         <![endif]-->
     </head>
     <body class="skin-{!! config('backend.theme') !!}">
-    <div class="wrapper">
-        @include('backend.includes.header')
-        @include('backend.includes.sidebar')
+        <div class="wrapper">
+            @include('backend.includes.header')
+            @include('backend.includes.sidebar')
 
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <section class="content-header">
-                @yield('page-header')
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    @yield('page-header')
 
-                {{-- Change to Breadcrumbs::render() if you want it to error to remind you to create the breadcrumbs for the given route --}}
-                {!! Breadcrumbs::renderIfExists() !!}
-            </section>
+                    {{-- Change to Breadcrumbs::render() if you want it to error to remind you to create the breadcrumbs for the given route --}}
+                    {!! Breadcrumbs::renderIfExists() !!}
+                </section>
 
-            <!-- Main content -->
-            <section class="content">
-                @include('includes.partials.messages')
-                @yield('content')
-            </section><!-- /.content -->
-        </div><!-- /.content-wrapper -->
+                <!-- Main content -->
+                <section class="content">
+                    @include('includes.partials.messages')
+                    @yield('content')
+                </section><!-- /.content -->
+            </div><!-- /.content-wrapper -->
 
-        @include('backend.includes.footer')
-    </div><!-- ./wrapper -->
+            @include('backend.includes.footer')
+        </div><!-- ./wrapper -->
 
-    <!-- JavaScripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="{{asset('js/vendor/jquery/jquery-2.1.4.min.js')}}"><\/script>')</script>
-    {!! Html::script('js/vendor/bootstrap/bootstrap.min.js') !!}
+        <!-- JavaScripts -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="{{asset('js / vendor / jquery / jquery - 2.1.4.min.js')}}"><\/script>')</script>
+        {!! Html::script('js/vendor/bootstrap/bootstrap.min.js') !!}
 
-    @yield('before-scripts-end')
-    {!! HTML::script(elixir('js/backend.js')) !!}
-    @yield('after-scripts-end')
+        @yield('before-scripts-end')
+        {!! HTML::script(elixir('js/backend.js')) !!}
+        @yield('after-scripts-end')
     </body>
 </html>

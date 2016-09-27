@@ -154,11 +154,15 @@ class EloquentRescueOperationRepository {
     }
 
     public function ActiveRescuers($id) {
-        return ActiveRescuer::whereIn('id', $id)->orderBy('id', 'desc')->paginate(10);
+        return ActiveRescuer::whereIn('id', $id)->orderBy('id', 'desc');
     }
 
     public function ActiveRescuerAll() {
         return ActiveRescuer::orderBy('id', 'desc')->get();
+    }
+
+    public function rescuerRole($id) {
+        return ActiveRescuer::where('role_id', $id)->orderBy('id', 'desc')->get();
     }
 
     public function ActiveRescuerPaginate() {
@@ -232,11 +236,26 @@ class EloquentRescueOperationRepository {
         return $obj;
     }
 
+    public function rescuerNotifications($request) {
+        $user = User::find($request->user_id);
+        if (!empty($rescuers = $this->rescuerRole($user->role_id))) {
+            foreach ($rescuers as $rescuer) {
+                if (!empty($rescuer->rescuers_ids)) {
+                    $rescuer_ids = json_decode($rescuer->rescuers_ids);
+                    if (in_array($request->user_id, $rescuer_ids)) {
+                        $ids[] = $rescuer->ids;
+                    }
+                }
+            }
+        }
+        return $this->ActiveRescuers($ids)->get();
+    }
+
     public function listsOfRescuers() {
         $rescuers = $this->ActiveRescuerPaginate();
         if (!empty($rescuers)) {
             foreach ($rescuers as $key => $active) {
-                $res1=$res2=array();
+                $res1 = $res2 = array();
                 $rescuers[$key]['rescuee_details'] = User::find($active->rescuee_id);
                 if (!empty($active->rescuers_ids)):
                     $resccuer_id = json_decode($active->rescuers_ids);
@@ -271,11 +290,11 @@ class EloquentRescueOperationRepository {
     public function rescuersLists($panicids) {
 
         $rescuers = array();
-       
+
         if (!empty($panicids)) {
-            $rescuers = $this->ActiveRescuers($panicids);
+            $rescuers = $this->ActiveRescuers($panicids)->paginate(10);
             foreach ($rescuers as $key => $active) {
-                $res1=$res2=array();
+                $res1 = $res2 = array();
                 $rescuers[$key]['rescuee_details'] = User::find($active->rescuee_id);
                 if (!empty($active->rescuers_ids)):
                     $resccuer_id = json_decode($active->rescuers_ids);
@@ -303,9 +322,8 @@ class EloquentRescueOperationRepository {
                     $rescuers[$key]['rescuerresponse'] = $this->timeCalculator($tot_sec);
                 }
             }
-        }
-        else
-             $rescuers = $this->ActiveRescuers([0]);
+        } else
+            $rescuers = $this->ActiveRescuers([0])->paginate(10);
         return $rescuers;
     }
 

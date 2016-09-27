@@ -6,7 +6,6 @@
     <small>{{ trans('strings.backend.dashboard.title') }}</small>
 </h1>
 @endsection
-
 @section('content')
 <h3>News Feeds</h3>
 @include('backend.includes.partials.newsfeed.header-buttons')
@@ -16,6 +15,12 @@
     </div>
 </div><!-- /.box-header -->
 @if($newsfeeds)
+<?php
+if ($newsfeeds->currentPage() > 1)
+    $f = ($newsfeeds->currentPage() - 1) * $newsfeeds->perPage() + 1;
+else
+    $f = 1;
+?>
 <table class="table table-responsive m-t-20">
     <thead>
         <tr class="danger">
@@ -27,7 +32,7 @@
     <tbody id="newsfeeds">
         @foreach($newsfeeds as $newsfeed)
         <tr>
-            <td>{{ $newsfeed->id }}</td>
+            <td>{{ $f++ }}</td>
             <td>{{ $newsfeed->news }}</td>
             <td>{!! $newsfeed->action_buttons !!}</td>
         </tr>
@@ -40,11 +45,15 @@
 @endunless
 
 @endsection
-
 @section('after-scripts-end')
 <script>
+     $(document).ready(function () {
+    $('.selectpicker').selectpicker({
+  style: 'btn-info',
+  size: 4
+});
+     });
     $(document).ready(function () {
-
         $('#country_id').on('change', function () {
             $('#state_id').html('<option value="">Please Select</option>');
             $('#area_id').html('<option value="">Please Select</option>');
@@ -71,37 +80,35 @@
             });
         });
         $('#search').on('click', function () {
-            if($('#country_id').val()=='')
+            if ($('#country_id').val() == '')
             {
                 alert("Please Select Country");
                 $('#country_id').focus();
-            }
-           else if($('#state_id').val()!='' && $('#area_id').val()=='')
+            } else if ($('#state_id').val() != '' && $('#area_id').val() == '')
             {
                 alert("Please Select City");
                 $('#area_id').focus();
-            }
-            else
+            } else
             {
-            var formData = {
-                country_id: $('#country_id').val(),
-                state_id: $('#state_id').val(),
-                area_id: $('#area_id').val(),
-                rescur: $('#rescur').val(),
-            }
-            $.ajax({
-                type: "get",
-                url: '/admin/newsfeedsearch/',
-                data: formData,
-                cache: false,
-                success: function (data) {
-                    //console.log(data);
-                    $('#newsfeeds').html(data);
+                var formData = {
+                    country_id: $('#country_id').val(),
+                    state_id: $('#state_id').val(),
+                    area_id: $('#area_id').val(),
+                    rescur: $('#rescur').val(),
                 }
-            })
-            
-        }
-        return false;
+                $.ajax({
+                    type: "get",
+                    url: '/admin/newsfeedsearch/',
+                    data: formData,
+                    cache: false,
+                    success: function (data) {
+                        //console.log(data);
+                        $('#newsfeeds').html(data);
+                    }
+                })
+
+            }
+            return false;
         });
     });
 </script>

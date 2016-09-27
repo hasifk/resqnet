@@ -12,7 +12,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract
     public function shows() {
         $userid = Auth::user()->id;
         return Notification::where('user_id', $userid)->orderBy('id', 'desc')
-            ->paginate(1);
+            ->paginate(10);
     }
 
     public function show($id) {

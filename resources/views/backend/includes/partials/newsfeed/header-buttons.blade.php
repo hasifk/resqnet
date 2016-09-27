@@ -4,8 +4,7 @@
     <div class="row">
         <div class="col-xs-12 col-md-3 btn-group">
             <label for="office_life" class="control-label">Country <i><font color="red" size="3">*</font></i></label>
-            <select name="country_id" id="country_id" class="form-control">
-                <option value="">Please Select</option>
+            <select name="country_id" id="country_id" class="form-control selectpicker">
                 @foreach($countries as $country)
                 <option
                     value="{{ $country->id }}"
