@@ -60,5 +60,13 @@ class RescueOperationController extends Controller {
                 return response()->json(['status' =>'location update failed please try again']);
         endif;
     }
+    public function rescuerNotifications(Request $request)
+    {
+        if($details=$this->rescueOperationRepository->rescuerNotifications($request)):
+            return response()->json(['lists' => $details]);
+            else:
+                return response()->json(['status' =>'No Panic Signals']);
+        endif;
+    }
 
 }
