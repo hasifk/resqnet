@@ -238,13 +238,13 @@ class EloquentRescueOperationRepository {
 
     public function rescuerNotifications($request) {
         $user = User::find($request->user_id);
-        $ids=array(0);
+        $ids=array();
         if (!empty($rescuers = $this->rescuerRole($user->role_id))) {
             foreach ($rescuers as $rescuer) {
                 if (!empty($rescuer->rescuers_ids)) {
                     $rescuer_ids = json_decode($rescuer->rescuers_ids);
                     if (in_array($request->user_id, $rescuer_ids)) {
-                        $ids[] = $rescuer->ids;
+                        $ids[] = $rescuer->id;
                     }
                 }
             }
