@@ -72,7 +72,7 @@ class RescueOperationController extends Controller {
     public function notificationResponce(RescuerDetails $request) {
         $details = $this->rescueOperationRepository->rescuerOperationDetails($request->active_rescuers_id);
         $operation = $this->rescueOperationRepository->findOperation($request->active_rescuers_id);
-        if($operation->rescuer_id==$request->rescuer_id)
+        if(!empty($operation) && $operation->rescuer_id==$request->rescuer_id)
             $details['accepted']='Y';
         else
             $details['accepted']='N';
