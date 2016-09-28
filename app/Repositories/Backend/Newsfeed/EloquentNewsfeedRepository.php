@@ -72,15 +72,15 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
     public function newsFeedSearch($request) {
 
         if (!empty($request->state_id) && !empty($request->area_id)) {
-            if ($request->newsfeed_type != "All")
-                $newsfeed = Newsfeed::where('areaid', $request->area_id)->where('newsfeed_type', $request->newsfeed_type)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+            if ($request->rescur != "All")
+                $newsfeed = Newsfeed::where('areaid', $request->area_id)->where('newsfeed_type', $request->rescur)->orderBy('id', 'desc')->paginate(10);
             else
                 $newsfeed = Newsfeed::where('areaid', $request->area_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
         } else if (!empty($request->country_id)) {
-            if ($request->newsfeed_type != "All")
-                $newsfeed = Newsfeed::where('countryid', $request->country_id)->where('newsfeed_type', $request->newsfeed_type)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+            if ($request->rescur != "All")
+                $newsfeed = Newsfeed::where('countryid', $request->country_id)->where('newsfeed_type', $request->rescur)->orderBy('id', 'desc')->paginate(10);
             else
-                $newsfeed = Newsfeed::where('countryid', $request->country_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+                $newsfeed = Newsfeed::where('countryid', $request->country_id)->orderBy('id', 'desc')->paginate(10);
         } else
             $newsfeed = $this->getNewsfeedPaginated();
         return $newsfeed;
@@ -90,19 +90,17 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
         $hours = floor($tot_sec / 3600);
         $minutes = floor(($tot_sec / 60) % 60);
         // $seconds = $tot_sec % 60;
-        
+
         if ($hours >= 1) {
-            $time=$hours>=2?$hours." Hrs Ago":$hours." Hr Ago";
+            $time = $hours >= 2 ? $hours . " Hrs Ago" : $hours . " Hr Ago";
             if ($hours >= 24) {
                 $days = floor($hours / 24);
                 $time = $days . ' Days Ago';
             }
-        }
-        else if ($minutes < 1) {
+        } else if ($minutes < 1) {
             $time = "Now";
-        }
-        else
-            $time=$minutes." Min Ago";
+        } else
+            $time = $minutes . " Min Ago";
         return $time;
     }
 
