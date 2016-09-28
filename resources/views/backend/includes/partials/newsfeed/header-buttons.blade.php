@@ -21,8 +21,9 @@
 
         <div class="col-xs-12 col-md-3 btn-group">
             <label for="office_life" class="control-label">State <i>(optional)</i></label>
-            <select name="state_id" id="state_id" class="form-control">
-                <option value="">Please Select</option>
+            <select data-placeholder="Choose a State..." name="state_id" id="state_id" class="form-control chosen-select">
+<!--            <select name="state_id" id="state_id" class="form-control">
+                <option value=""></option>-->
 
             </select>
         </div>

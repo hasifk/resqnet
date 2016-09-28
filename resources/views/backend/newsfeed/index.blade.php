@@ -61,10 +61,10 @@ else
 <script>
     $(document).ready(function () {
         $('#country_id').on('change', function () {
-            $('#state_id').html('<option value="">Please Select</option>');
-            $('#area_id').html('<option value="">Please Select</option>');
+            $('#state_id').html('<option value=""></option>');
+            $('#area_id').html('<option value=""></option>');
             $.getJSON('/admin/getstates/' + $(this).val(), function (json) {
-                var listitems = '<option value="">Please Select</option>';
+                var listitems = '<option value=""></option>';
                 $.each(json, function (key, value)
                 {
                     listitems += '<option value=' + value.id + '>' + value.name + '</option>';
