@@ -9,18 +9,18 @@
 @section('content')
 <h3>News Feeds</h3>
 @include('backend.includes.partials.newsfeed.header-buttons')
-<div class="box-header with-border">
-    <div class="pull-left">
-        <?php echo $newsfeeds->links(); ?>
-    </div>
-</div><!-- /.box-header -->
-@if($newsfeeds)
+<div id="newsfeeds">
 <?php
 if ($newsfeeds->currentPage() > 1)
     $f = ($newsfeeds->currentPage() - 1) * $newsfeeds->perPage() + 1;
 else
     $f = 1;
 ?>
+<div class="row col-xs-12 col-sm-12 col-md-12 btn-group">
+    <center>
+        <?php echo $newsfeeds->links(); ?>
+    </center>
+</div>
 <table class="table table-responsive m-t-20">
     <thead>
         <tr class="danger">
@@ -30,13 +30,13 @@ else
             <td>Action</td>
         </tr>
     </thead>
-    <tbody id="newsfeeds">
+    <tbody>
 
         @if(count($newsfeeds) > 0)
         @foreach($newsfeeds as $newsfeed)
         <tr>
-            <td>{{ $newsfeed->id }}</td>
-            <td>{{ $newsfeed->title }}</td>
+            <td>{{ $f++ }}</td>
+            <td>{{ $newsfeed->news_title }}</td>
             <td>{{ $newsfeed->newsfeed_type }}</td>
             <td>{!! $newsfeed->action_buttons !!}</td>
         </tr>
@@ -46,11 +46,14 @@ else
         @endif
     </tbody>
 </table>
+@if($newsfeeds->count() == $newsfeeds->perPage())
+<div class="row col-xs-12 col-sm-12 col-md-12 btn-group">
+    <center>
+        <?php echo $newsfeeds->links(); ?>
+    </center>
+</div>
 @endif
-@unless($newsfeeds)
-<h5>No News Feeds</h5>
-@endunless
-
+</div>
 @endsection
 @section('after-scripts-end')
 <script type="text/javascript">

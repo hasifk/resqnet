@@ -72,15 +72,17 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
     public function newsFeedSearch($request) {
 
         if (!empty($request->state_id) && !empty($request->area_id)) {
-            if ($request->rescur != "All")
+            if ($request->rescur != "")
                 $newsfeed = Newsfeed::where('areaid', $request->area_id)->where('newsfeed_type', $request->rescur)->orderBy('id', 'desc')->paginate(10);
             else
                 $newsfeed = Newsfeed::where('areaid', $request->area_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+            
         } else if (!empty($request->country_id)) {
-            if ($request->rescur != "All")
+            if ($request->rescur != "")
                 $newsfeed = Newsfeed::where('countryid', $request->country_id)->where('newsfeed_type', $request->rescur)->orderBy('id', 'desc')->paginate(10);
             else
                 $newsfeed = Newsfeed::where('countryid', $request->country_id)->orderBy('id', 'desc')->paginate(10);
+            
         } else
             $newsfeed = $this->getNewsfeedPaginated();
         return $newsfeed;
