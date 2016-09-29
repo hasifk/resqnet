@@ -84,7 +84,7 @@ class RescueOperationController extends Controller {
     }
 
     public function latestNotification(NotificationLists $request) {
-        if ($details = $this->rescueOperationRepository->rescuerNotifications($request)):
+        if (count($details = $this->rescueOperationRepository->rescuerNotifications($request))>0):
             foreach ($details as $value) {
                 if (!empty($operation = $this->rescueOperationRepository->findOperation($value->id))) {
                     if ($operation->rescuer_id == $request->user_id) {
