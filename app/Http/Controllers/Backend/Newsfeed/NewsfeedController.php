@@ -15,9 +15,7 @@ use App\Repositories\Frontend\Access\User\UserRepositoryContract;
 
 class NewsfeedController extends Controller {
 
-    /**
-     * @var EloquentCompanyRepository
-     */
+  
     private $newsfeedRepository;
     private $user;
 
