@@ -195,18 +195,19 @@ class NotificationController extends Controller {
         $states = $this->user->states($id);
         return response()->json($states);
     }
-     public function areas($id) {
-        $areas = $this->user->cities($id);
+
+    public function areas($id) {
+            $areas = $this->user->cities($id);
         return response()->json($areas);
     }
+
     public function search(Request $request) {
-         $view = [
+        $view = [
             'notification' => $this->notification->filter($request),
-             'category' => $this->notification->category(),
+            'category' => $this->notification->category(),
             'countries' => $this->user->countries(),
         ];
-       return view('backend.notifications.index_new', $view);
+        return view('backend.notifications.index_new', $view);
     }
-   
 
 }

@@ -16,7 +16,7 @@
     else
         $f = 1;
     ?>
-    <div class="row col-xs-12 col-sm-12 col-md-12 btn-group">
+    <div class="row col-xs-12 col-sm-12 col-md-12 btn-group m-t-25">
         <center>
             <?php echo $newsfeeds->links(); ?>
         </center>
@@ -24,19 +24,20 @@
     <table class="table table-responsive m-t-20">
         <thead>
             <tr class="danger">
-                <td>ID</td>
-                <td>Title</td>
-                <td>Type</td>
-                <td>Action</td>
+                <th>ID</th>
+                <th>Title</th>
+                <th>User</th>
+                <th>Type</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-
             @if(count($newsfeeds) > 0)
             @foreach($newsfeeds as $newsfeed)
             <tr>
                 <td>{{ $f++ }}</td>
                 <td>{{ $newsfeed->news_title }}</td>
+                <td><a href="{{route('admin.access.user.shows',$newsfeed->id)}}"><span>{{ $newsfeed->firstname." ". $newsfeed->lastname }}</span></a></td>
                 <td>{{ $newsfeed->newsfeed_type }}</td>
                 <td>{!! $newsfeed->action_buttons !!}</td>
             </tr>
@@ -69,12 +70,13 @@
     $(document).ready(function () {
         doChosen();
         $('#country_id').on('change', function () {
-            $('#state_id').html('<option value=""></option>');
-            $('#area_id').html('<option value=""></option>');
-            $.getJSON('/admin/getstates/' + $(this).val(), function (json) {
-                $('#state_id').html('<option value="">Please Select</option>');
-                $('#area_id').html('<option value=""></option>');
+           
+             $('#state_id').html('<option value="">Please Select</option>');
+                $('#area_id').html('<option value="">Please Select</option>');
+                $("#state_id").trigger("chosen:updated");
                 $("#area_id").trigger("chosen:updated");
+                if ($(this).val() != '') {
+            $.getJSON('/admin/getstates/' + $(this).val(), function (json) {
                 $.each(json, function (key, value)
                 {
                     //listitems += '<option value=' + value.id + '>' + value.name + '</option>';
@@ -85,21 +87,25 @@
                 $("#state_id").trigger("chosen:updated"); //Updating Chosen Dynamically
 
             });
-
+        }
+        else
+            location.reload();
         });
 
         $('#state_id').on('change', function () {
-            $('#area_id').html('<option value=""></option>');
-            $.getJSON('/admin/getareas/' + $(this).val(), function (json) {
-                $('#area_id').html('<option value="">Please Select</option>');
-                $.each(json, function (key, value)
-                {
-                    //listitems += '<option value=' + value.id + '>' + value.name + '</option>';
-                    $('#area_id').append('<option value=' + value.id + '>' + value.name + '</option>');
+            $('#area_id').html('<option value="">Please Select</option>');
+            if ($(this).val() != '') {
+                $.getJSON('/admin/getareas/' + $(this).val(), function (json) {
+
+                    $.each(json, function (key, value)
+                    {
+                        $('#area_id').append('<option value=' + value.id + '>' + value.name + '</option>');
+                    });
+
+                    $("#area_id").trigger("chosen:updated"); //Updating Chosen Dynamically
                 });
-                // $('#area_id').html(listitems);
+            } else
                 $("#area_id").trigger("chosen:updated"); //Updating Chosen Dynamically
-            });
         });
         $('#search').on('click', function () {
             if ($('#country_id').val() == '')

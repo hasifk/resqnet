@@ -69,32 +69,55 @@
 </section>
 @endsection
 @section('after-scripts-end')
+<script type="text/javascript">
+    function doChosen() {
+        $(".chosen-select").chosen({});
+        $(".chosen-select-deselect").chosen({allow_single_deselect: true});
+        $(".chosen-select-no-single").chosen({disable_search_threshold: 10});
+        $(".chosen-select-no-results").chosen({no_results_text: 'Oops, nothing found!'});
+        $(".chosen-select-width").chosen({width: "95%"});
+    }
+</script>
 <script>
     $(document).ready(function () {
+        doChosen();
         $('#country_id').on('change', function () {
-            $('#state_id').html('<option value="">Please Select</option>');
-            $('#area_id').html('<option value="">Please Select</option>');
+           
+             $('#state_id').html('<option value="">Please Select</option>');
+                $('#area_id').html('<option value="">Please Select</option>');
+                $("#state_id").trigger("chosen:updated");
+                $("#area_id").trigger("chosen:updated");
+                if ($(this).val() != '') {
             $.getJSON('/admin/getstates/' + $(this).val(), function (json) {
-                var listitems = '<option value="">Please Select</option>';
                 $.each(json, function (key, value)
                 {
-                    listitems += '<option value=' + value.id + '>' + value.name + '</option>';
+                    //listitems += '<option value=' + value.id + '>' + value.name + '</option>';
+                    $('#state_id').append('<option value=' + value.id + '>' + value.name + '</option>');
                 });
-                $('#state_id').html(listitems);
-                $('#area_id').html('<option value="">Please Select</option>');
+
+                //$('#state_id').html(listitems);
+                $("#state_id").trigger("chosen:updated"); //Updating Chosen Dynamically
+
             });
+        }
+        else
+            location.reload();
         });
 
         $('#state_id').on('change', function () {
-             $('#area_id').html('<option value="">Please Select</option>');
-            $.getJSON('/admin/getareas/' + $(this).val(), function (json) {
-                var listitems = '<option value="">Please Select</option>';
-                $.each(json, function (key, value)
-                {
-                    listitems += '<option value=' + value.id + '>' + value.name + '</option>';
+            $('#area_id').html('<option value="">Please Select</option>');
+            if ($(this).val() != '') {
+                $.getJSON('/admin/getareas/' + $(this).val(), function (json) {
+
+                    $.each(json, function (key, value)
+                    {
+                        $('#area_id').append('<option value=' + value.id + '>' + value.name + '</option>');
+                    });
+
+                    $("#area_id").trigger("chosen:updated"); //Updating Chosen Dynamically
                 });
-                $('#area_id').html(listitems);
-            });
+            } else
+                $("#area_id").trigger("chosen:updated"); //Updating Chosen Dynamically
         });
         $('#search').on('click', function () {
             var formData = {
