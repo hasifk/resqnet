@@ -37,7 +37,7 @@ class NewsfeedController extends Controller {
      */
     public function showNewsfeeds(ShowNewsfeedRequest $request) {
         $newsfeeds = $this->newsfeedRepository->getNewsFeeds($request->user_id);
-        if (!empty($newsfeeds)):
+        if (count($newsfeeds)>0):
             foreach ($newsfeeds as $key=>$item) {
                 if ($newsfeeds[$key]['image_filename'] && $newsfeeds[$key]['image_extension'] && $newsfeeds[$key]['image_path']) {
 
@@ -64,7 +64,7 @@ class NewsfeedController extends Controller {
 
         if (access()->hasRolesApp(['Police', 'Fire', 'Paramedic'],$request->user_id)):
             $newsfeeds=$this->newsfeedRepository->getMyNewsFeeds($request->user_id);
-        if (!empty($newsfeeds)):
+        if (count($newsfeeds)>0):
             foreach ($newsfeeds as $key=>$item) {
                 if ($newsfeeds[$key]['image_filename'] && $newsfeeds[$key]['image_extension'] && $newsfeeds[$key]['image_path']) {
 
