@@ -24,7 +24,7 @@ class AuthController extends Controller
         $user = [
             'firstname' => $request->get('firstname'),
             'email' => $request->get('email'),
-            'password' => bcrypt($request->get('passowrd'))
+            'password' => bcrypt($request->get('password'))
         ];
         $user =User::create($user);
         $token = \JWTAuth::fromUser($user);
