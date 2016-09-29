@@ -11,7 +11,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
 
     public function getNewsfeedPaginated() {
         return Newsfeed::orderBy('newsfeeds.id', 'desc')
-                        ->paginate(10);
+                        ->paginate(3);
     }
 
     public function getMyNewsFeeds($user_id) {
@@ -73,15 +73,15 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
 
         if (!empty($request->state_id) && !empty($request->area_id)) {
             if ($request->rescur != "")
-                $newsfeed = Newsfeed::where('areaid', $request->area_id)->where('newsfeed_type', $request->rescur)->orderBy('id', 'desc')->paginate(10);
+                $newsfeed = Newsfeed::where('areaid', $request->area_id)->where('newsfeed_type', $request->rescur)->orderBy('id', 'desc')->paginate(3);
             else
-                $newsfeed = Newsfeed::where('areaid', $request->area_id)->orderBy('newsfeeds.id', 'desc')->paginate(10);
+                $newsfeed = Newsfeed::where('areaid', $request->area_id)->orderBy('newsfeeds.id', 'desc')->paginate(3);
             
         } else if (!empty($request->country_id)) {
             if ($request->rescur != "")
-                $newsfeed = Newsfeed::where('countryid', $request->country_id)->where('newsfeed_type', $request->rescur)->orderBy('id', 'desc')->paginate(10);
+                $newsfeed = Newsfeed::where('countryid', $request->country_id)->where('newsfeed_type', $request->rescur)->orderBy('id', 'desc')->paginate(3);
             else
-                $newsfeed = Newsfeed::where('countryid', $request->country_id)->orderBy('id', 'desc')->paginate(10);
+                $newsfeed = Newsfeed::where('countryid', $request->country_id)->orderBy('id', 'desc')->paginate(3);
             
         } else
             $newsfeed = $this->getNewsfeedPaginated();

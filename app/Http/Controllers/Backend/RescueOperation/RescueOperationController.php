@@ -72,11 +72,32 @@ class RescueOperationController extends Controller {
     public function notificationResponce(RescuerDetails $request) {
         $details = $this->rescueOperationRepository->rescuerOperationDetails($request->active_rescuers_id);
         $operation = $this->rescueOperationRepository->findOperation($request->active_rescuers_id);
-        if(!empty($operation) && $operation->rescuer_id==$request->rescuer_id)
-            $details['accepted']='Y';
-        else
-            $details['accepted']='N';
+        if (!empty($operation)) {
+            if ($operation->rescuer_id == $request->rescuer_id)
+                $details['accepted'] = 'Y'; //this rescuer accepted
+            else
+                $details['accepted'] = 'N'; //another rescuer accepted
+        } else
+            $details['accepted'] = 'None'; //None of the rescuers accepted
+
         return $details;
+    }
+
+    public function latestNotification(NotificationLists $request) {
+        if ($details = $this->rescueOperationRepository->rescuerNotifications($request)):
+            $result = $this->rescueOperationRepository->rescuerOperationDetails($details[0]->id); //$details[0]->id getting the latest panic details
+            $operation = $this->rescueOperationRepository->findOperation($details[0]->id); //check wether the panic is accepted or not by any user
+            if (!empty($operation)) {
+                if ($operation->rescuer_id == $request->rescuer_id)
+                    $result['accepted'] = 'Y'; //this rescuer accepted
+                else
+                    $result['accepted'] = 'N'; //another rescuer accepted
+            } else
+                $result['accepted'] = 'None'; //None of the rescuers accepted
+            return response()->json(['result' => $result]);
+        else:
+            return response()->json(['status' => 'No Panic Signals']);
+        endif;
     }
 
 }

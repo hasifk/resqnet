@@ -31,9 +31,9 @@
             </select>
         </div>
         <div class="col-xs-12 col-md-2 btn-group">
-            <label for="office_life" class="control-label">User Type <i><font color="red" size="3">*</font></i></label>
+            <label for="office_life" class="control-label">User Type</label>
             <select name="rescur" id="rescur" class="form-control">
-                <option value=""></option>
+                <option value="">Please Select</option>
                 <option value="All">All</option>
                 <option value="Rescuer">Rescuer</option>
                 <option value="User">User</option>
