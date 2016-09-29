@@ -85,18 +85,19 @@ class RescueOperationController extends Controller {
 
     public function latestNotification(NotificationLists $request) {
         if ($details = $this->rescueOperationRepository->rescuerNotifications($request)):
-            $result = $this->rescueOperationRepository->rescuerOperationDetails($details[0]->id); //$details[0]->id getting the latest panic details
-            $operation = $this->rescueOperationRepository->findOperation($details[0]->id); //check wether the panic is accepted or not by any user
-            if (!empty($operation)) {
-                if ($operation->rescuer_id == $request->rescuer_id)
-                    $result['accepted'] = 'Y'; //this rescuer accepted
-                else
-                    $result['accepted'] = 'N'; //another rescuer accepted
-            } else
-                $result['accepted'] = 'None'; //None of the rescuers accepted
+            foreach ($details as $value) {
+                if (!empty($operation = $this->rescueOperationRepository->findOperation($value->id))) {
+                    if ($operation->rescuer_id == $request->user_id) {
+                        $result = $this->rescueOperationRepository->rescuerOperationDetails($value->id); // getting the latest panic details
+                        break;
+                    } else
+                        $result = "No Panic Signals Tagged";
+                } else
+                    $result = "No Panic Signals Tagged";
+            }
             return response()->json(['result' => $result]);
         else:
-            return response()->json(['status' => 'No Panic Signals']);
+            return response()->json(['result' => 'No Panic Signals']);
         endif;
     }
 
