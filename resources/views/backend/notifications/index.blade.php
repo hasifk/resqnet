@@ -120,6 +120,16 @@
                 $("#area_id").trigger("chosen:updated"); //Updating Chosen Dynamically
         });
         $('#search').on('click', function () {
+            if ($('#country_id').val() == '')
+            {
+                alert("Please Select Country");
+                $('#country_id').focus();
+            } else if ($('#state_id').val() != '' && $('#area_id').val() == '')
+            {
+                alert("Please Select City");
+                $('#area_id').focus();
+            } else
+            {
             var formData = {
                 country_id: $('#country_id').val(),
                 state_id: $('#state_id').val(),
@@ -135,6 +145,7 @@
                     $('#search_result').html(data);
                 }
             })
+        }
             return false;
         });
     });

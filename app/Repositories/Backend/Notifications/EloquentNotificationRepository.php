@@ -1,25 +1,26 @@
 <?php
+
 namespace App\Repositories\Backend\Notifications;
+
 use App\Models\Notifications\Notification;
 use App\Models\Notifications\NotificationCategory;
+use App\Models\Access\User\User;
 use Auth;
 use Event;
 
-class EloquentNotificationRepository implements NotificationRepositoryContract
-{
-
+class EloquentNotificationRepository implements NotificationRepositoryContract {
 
     public function shows() {
         $userid = Auth::user()->id;
         return Notification::where('user_id', $userid)->orderBy('id', 'desc')
-            ->paginate(10);
+                        ->paginate(10);
     }
 
     public function show($id) {
 
         $userid = Auth::user()->id;
         return Notification::where('user_id', $userid)->orderBy('id', 'desc')
-            ->paginate(10);
+                        ->paginate(10);
     }
 
     public function category() {
@@ -34,25 +35,94 @@ class EloquentNotificationRepository implements NotificationRepositoryContract
         $obj->country_id = (!empty($request->country_id)) ? $request->country_id : '';
         $obj->area_id = (!empty($request->area_id)) ? $request->area_id : '';
         $obj->notification = $request->notification;
-
         $obj->save();
+        $message=$request->notification;
+        if (!empty($request->country_id)) {
+            if(!empty($request->area_id))
+             $users=User::where('country_id', $request->country_id)->where('area_id', $request->area_id)->orderBy('id','desc')->get();
+            else 
+            $users = User::where('country_id', $request->country_id)->orderBy('id','desc')->get();
+            if (!empty($users)) {
+                foreach ($users as $value) {
+                    if ($users->role_id != 1) {
+                        $app_id['device_type'][] = $users->device_type;
+                        $app_id['app_id'][] = $users->app_id;
+                    }
+                }
+            }
+        }
+        else if (!empty($request->notif_cat==2)) {
+            $users = User::orderBy('id','desc')->get();
+        }
+        $this->notification($app_id,$message);
+    }
+
+    public function notification($app_id, $message) {
+        // API access key from Google API's Console
+        // define('API_ACCESS_KEY', 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ');
+        foreach ($app_id['device_type'] as $key => $device) {
+            // $ar[]=array($app_id['app_id'][$key]);
+            if ($device == 'Android') {
+                // prep the bundle
+
+                $msg = array
+                    (
+                    'message' => $message,
+                    'title' => "Notification",
+                    'subtitle' => 'This is a subtitle. subtitle',
+                    'tickerText' => 'Ticker text here...Ticker text here...Ticker text here',
+                    'vibrate' => 1,
+                    'sound' => 1,
+                    'largeIcon' => 'large_icon',
+                    'smallIcon' => 'small_icon',
+//                    'panicid' => $message['id'],
+//                    'notification_type' => $message['to']
+                );
+                $fields = array
+                    (
+                    'registration_ids' => array($app_id['app_id'][$key]),
+                    'data' => $msg
+                );
+
+                $headers = array
+                    (
+                    'Authorization: key=' . 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ',
+                    'Content-Type: application/json'
+                );
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, 'https://android.googleapis.com/gcm/send');
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+                $result = curl_exec($ch);
+                //echo $result;
+                // Close connection
+                curl_close($ch);
+            } else {
+                
+            }
+        }
     }
 
     public function find($id) {
         return Notification::find($id);
     }
+
     public function filter($request) {
         $userid = Auth::user()->id;
-        if(empty($request->country_id))
-        return $this->shows();
+        if (empty($request->country_id))
+            return $this->shows();
         else if (!empty($request->state_id) && !empty($request->area_id)) {
             return Notification::where('user_id', $userid)->where('area_id', $request->area_id)->orderBy('id', 'desc')
-                ->paginate(10);
-        } else{
+                            ->paginate(10);
+        } else {
             return Notification::where('user_id', $userid)->where('country_id', $request->country_id)->orderBy('id', 'desc')
-                ->paginate(10);
+                            ->paginate(10);
         }
     }
+
     public function NotificationDelete($request) {
         $ids = explode(",", $request->id);
         foreach ($ids as $value):

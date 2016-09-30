@@ -25,7 +25,7 @@
             </ul>
         </div>
         <div class="col-xs-12 col-md-2 btn-group">
-            <label for="office_life" class="col-md-4 control-label">Country</label>
+            <label for="office_life" class="col-md-4 control-label">Country<i><font color="red" size="3">*</font></i></label>
             <select data-placeholder="Choose a Country..." name="country_id" id="country_id" class="form-control chosen-select">
                 <option value="">Please Select</option>
                 @foreach($countries as $country)
