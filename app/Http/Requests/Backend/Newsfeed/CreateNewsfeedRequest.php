@@ -25,7 +25,6 @@ class CreateNewsfeedRequest extends FormRequest
         return [
             'user_id'=>'required',
             'news' =>'required',
-            'news_title' =>'required',
             'countryid' =>'required',
             'newsfeed_type' =>'required',
             'img'   =>'required|mimes:jpeg,bmp,png'
