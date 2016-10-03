@@ -24,7 +24,6 @@ class UpdateNewsfeedRequest extends FormRequest
     {
         return [
             'news' =>'required',
-            'news_title' =>'required',
             'id'=>'required'
         ];
     }

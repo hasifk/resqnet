@@ -48,7 +48,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
             $obj->areaid = (!empty($request->areaid)) ? $request->areaid : '';
         }
         $obj->newsfeed_type = (!empty($request->newsfeed_type)) ? $request->newsfeed_type : '';
-        $obj->news_title = $request->news_title;
+        $obj->news_title = (!empty($request->news_title)) ? $request->news_title : '';
         $obj->news = $request->news;
 
         $obj->save();
