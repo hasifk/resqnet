@@ -38,46 +38,46 @@
                                 </select>
                             </div>
                             <div class="row">
-                            <div class="form-group col-md-4" id="country" style="display: none;">
-                                <label for="office_life">Countries</label>
+                                <div class="form-group col-md-4" id="country" style="display: none;">
+                                    <label for="office_life">Countries<i><font color="red" size="3">*</font></i></label>
 
-                                <select name="country_id" id="country_id" class="form-control">
-                                    <option value="">Please select</option>
-                                    @foreach($countries as $country)
-                                    <option
-                                        value="{{ $country->id }}"
-                                        >
-                                        {{ $country->name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4" id="state" style="display: none;">
-                                <label for="office_life">State</label>
+                                    <select data-placeholder="Choose a Country..." name="country_id" id="country_id" class="form-control chosen-select">
+                                        <option value="">Please select</option>
+                                        @foreach($countries as $country)
+                                        <option
+                                            value="{{ $country->id }}"
+                                            >
+                                            {{ $country->name }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4" id="state" style="display: none;">
+                                    <label for="office_life">State</label>
 
-                                <select name="state_id" id="state_id" class="form-control">
-                                    <option value="">Please select</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4" id="area" style="display: none;">
-                                <label for="office_life">Areas</label>
+                                    <select data-placeholder="Choose a State..." name="state_id" id="state_id" class="form-control chosen-select">    
+                                        <option value="">Please select</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4" id="area" style="display: none;">
+                                    <label for="office_life">Areas</label>
 
-                                <select name="area_id" id="area_id" class="form-control">
-                                    <option value="">Please select</option>
+                                    <select data-placeholder="Choose a City..." name="area_id" id="area_id" class="form-control chosen-select">
+                                        <option value="">Please select</option>
 
-                                </select>
-                            </div>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Message</label>
-                                <textarea class="form-control textarea" name="notification" cols="30" rows="5"></textarea>
+                                <textarea class="form-control textarea" id="notification" name="notification" cols="30" rows="5"></textarea>
                             </div>
 
                         </div><!-- /.box-body -->
 
 
                         <div class="box-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary" id="submit">Submit</button>
                         </div>
                     </form>
                 </div><!-- /.box -->
@@ -87,8 +87,18 @@
 </section>
 @endsection
 @section('after-scripts-end')
+<script type="text/javascript">
+    function doChosen() {
+        $(".chosen-select").chosen({});
+        $(".chosen-select-deselect").chosen({allow_single_deselect: true});
+        $(".chosen-select-no-single").chosen({disable_search_threshold: 10});
+        $(".chosen-select-no-results").chosen({no_results_text: 'Oops, nothing found!'});
+        $(".chosen-select-width").chosen({width: "95%"});
+    }
+</script>
 <script>
     $(document).ready(function () {
+        doChosen();
         $("#notif_cat").change(function () {
             var id = $(this).children(":selected").attr("id");
             $('#country').hide();
@@ -102,29 +112,63 @@
             }
         });
         $('#country_id').on('change', function () {
+
             $('#state_id').html('<option value="">Please Select</option>');
             $('#area_id').html('<option value="">Please Select</option>');
-            $.getJSON('/admin/getstates/' + $(this).val(), function (json) {
-                var listitems = '<option value="">Please Select</option>';
-                $.each(json, function (key, value)
-                {
-                    listitems += '<option value=' + value.id + '>' + value.name + '</option>';
+            $("#state_id").trigger("chosen:updated");
+            $("#area_id").trigger("chosen:updated");
+            if ($(this).val() != '') {
+                $.getJSON('/admin/getstates/' + $(this).val(), function (json) {
+                    $.each(json, function (key, value)
+                    {
+                        //listitems += '<option value=' + value.id + '>' + value.name + '</option>';
+                        $('#state_id').append('<option value=' + value.id + '>' + value.name + '</option>');
+                    });
+
+                    //$('#state_id').html(listitems);
+                    $("#state_id").trigger("chosen:updated"); //Updating Chosen Dynamically
+
                 });
-                $('#state_id').html(listitems);
-            });
-        });
-        $('#state_id').on('change', function () {
-            $('#area_id').html('<option value="">Please Select</option>');
-            $.getJSON('/admin/getareas/' + $(this).val(), function (json) {
-                var listitems = '<option value="">Please Select</option>';
-                $.each(json, function (key, value)
-                {
-                    listitems += '<option value=' + value.id + '>' + value.name + '</option>';
-                });
-                $('#area_id').html(listitems);
-            });
+            } 
         });
 
+        $('#state_id').on('change', function () {
+            $('#area_id').html('<option value="">Please Select</option>');
+            if ($(this).val() != '') {
+                $.getJSON('/admin/getareas/' + $(this).val(), function (json) {
+
+                    $.each(json, function (key, value)
+                    {
+                        $('#area_id').append('<option value=' + value.id + '>' + value.name + '</option>');
+                    });
+
+                    $("#area_id").trigger("chosen:updated"); //Updating Chosen Dynamically
+                });
+            } else
+                $("#area_id").trigger("chosen:updated"); //Updating Chosen Dynamically
+        });
+        $('#submit').on('click', function () {
+            var id = $("#notif_cat").children(":selected").attr("id");
+            if (id == "Per Country")
+            {
+                if ($('#country_id').val() == ""){
+                    alert('Please Select Country');
+                    $('#country_id').focus();
+                    return false;
+                }
+                else if ($('#state_id').val() != "" && $('#area_id').val() == ""){
+                    $('#area_id').focus();
+                    alert('Please Select Area');
+                    return false;
+                }
+            }
+            if($('#notification').val().trim()=="")
+            {
+             $('#notification').focus();
+             return false;
+            }
+           
+        })
     });
 </script>
 @endsection

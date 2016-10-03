@@ -25,8 +25,8 @@
             </ul>
         </div>
         <div class="col-xs-12 col-md-2 btn-group">
-            <label for="office_life" class="col-md-4 control-label">Country</label>
-            <select name="country_id" id="country_id" class="form-control">
+            <label for="office_life" class="col-md-4 control-label">Country<i><font color="red" size="3">*</font></i></label>
+            <select data-placeholder="Choose a Country..." name="country_id" id="country_id" class="form-control chosen-select">
                 <option value="">Please Select</option>
                 @foreach($countries as $country)
                 <option
@@ -40,16 +40,15 @@
 
         <div class="col-xs-12 col-md-3 btn-group">
             <label for="office_life" class="control-label">State</label>
-            <select name="state_id" id="state_id" class="form-control">
+            <select data-placeholder="Choose a State..." name="state_id" id="state_id" class="form-control chosen-select">    
                 <option value="">Please Select</option>
 
             </select>
         </div>
         <div class="col-xs-12 col-md-3 btn-group">
             <label for="office_life" class="control-label">City</label>
-            <select name="area_id" id="area_id" class="form-control">
+             <select data-placeholder="Choose a City..." name="area_id" id="area_id" class="form-control chosen-select">
                 <option value="">Please Select</option>
-
             </select>
         </div>
         <div class="col-xs-12 col-md-2 btn-group m-t-25">

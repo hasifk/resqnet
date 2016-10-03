@@ -14,10 +14,6 @@
 <table class="table table-striped table-bordered table-hover">
 
     <tbody>
-        <tr>
-            <th>To</th>
-            <td>{{$newsfeed->newsfeed_type}}</td>
-        </tr>
         @if(!empty($newsfeed->image_path))
         <tr>
             <th></th>
@@ -25,17 +21,46 @@
         </tr>
         @endif
         <tr>
+            <th>To</th>
+            <td>{{$newsfeed->newsfeed_type}}</td>
+        </tr>
+        
+        <tr>
+            <th>User Name</th>
+            <td>{{ $newsfeed->firstname." ".$newsfeed->lastname }}</td>
+        </tr>
+         <tr>
+            <th>Country</th>
+            <td>{{ $newsfeed->name }}</td>
+        </tr>
+         @if(!empty($newsfeed->area))
+         <tr>
+            <th>Area</th>
+            <td>{{ $newsfeed->area }}</td>
+        </tr>
+        @endif
+        <tr>
+            <th>Date</th>
+            <th>{{ date('d-m-y h:i:s',strtotime($newsfeed->created_at)) }}</th>
+        </tr>
+        <tr>
+            <th>Title</th>
+            <th>{!! $newsfeed->news_title !!}</th>
+        </tr>
+        <tr>
             <th>News</th>
-            <td>{!! $newsfeed->news !!}</td>
+            <th>{!! $newsfeed->news !!}</th>
         </tr>
         <tr>
             <th></th>
             <th>
-                <a href="{{route('admin.newsfeed.newsfeedshow',$newsfeed->id)}}" class="btn btn-primary btn-xs">
+                <a href="{{URL::previous()}}" class="btn btn-danger btn-xs">Back</a>
+<!--                <a href="{{route('admin.newsfeed.newsfeedshow',$newsfeed->id)}}" class="btn btn-primary btn-xs">
                     Edit News
-                </a>
+                </a>-->
             </th>
         </tr>
+        
     </tbody>
 </table>
 <div class="clearfix"></div>
