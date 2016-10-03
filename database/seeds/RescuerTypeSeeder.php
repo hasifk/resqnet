@@ -17,16 +17,19 @@ class RescuerTypeSeeder extends Seeder
         $information = [
             [
                 'type'          => 'Police',
+                'display_name'          => 'Police Officer',
                 'created_at'        => Carbon::now(),
                 'updated_at'        => Carbon::now(),
             ],
             [
                 'type'          => 'Paramedic',
+                'display_name'          => 'Paramedic',
                 'created_at'        => Carbon::now(),
                 'updated_at'        => Carbon::now(),
             ],
             [
                 'type'          => 'Fire',
+                'display_name'          => 'Firemen',
                 'created_at'        => Carbon::now(),
                 'updated_at'        => Carbon::now(),
             ],
