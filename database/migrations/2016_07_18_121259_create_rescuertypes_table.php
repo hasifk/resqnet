@@ -15,6 +15,7 @@ class CreateRescuertypesTable extends Migration
         Schema::create('rescuertypes', function (Blueprint $table) {
             $table->increments('id')->unsigned();
             $table->string('type');
+            $table->string('display_name');
             $table->timestamps();
         });
     }
