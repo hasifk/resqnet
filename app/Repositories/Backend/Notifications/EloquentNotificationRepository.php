@@ -48,9 +48,9 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
         }
         if (!empty($users)) {
             foreach ($users as $value) {
-                if ($users->role_id != 1) {
-                    $app_id['device_type'][] = $users->device_type;
-                    $app_id['app_id'][] = $users->app_id;
+                if ($value->role_id != 1) {
+                    $app_id['device_type'][] = $value->device_type;
+                    $app_id['app_id'][] = $value->app_id;
                 }
             }
         }
@@ -63,8 +63,8 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
         foreach ($app_id['device_type'] as $key => $device) {
             // $ar[]=array($app_id['app_id'][$key]);
             if ($device == 'Android') {
-                // prep the bundle
-
+                // prev the bundle
+                
                 $msg = array
                     (
                     'message' => $message,
