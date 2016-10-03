@@ -437,7 +437,7 @@ class EloquentUserRepository implements UserRepositoryContract {
     }
 
     public function rescuerTypeDetails() {
-        return RescuerType::select(['id', 'type'])->get();
+        return RescuerType::all();
     }
 
     public function updateOnlineStatus($request) {
