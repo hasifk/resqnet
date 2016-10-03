@@ -24,10 +24,21 @@ label.control-label i {
     font-weight: normal;
 }
 #list thead th {
-   text-align: center;
-   vertical-align:top !important;
+    text-align: center;
+    vertical-align:top !important;
 }
 #list tbody th {
-   text-align: center;
-   font-weight: normal;
+    text-align: center;
+    font-weight: normal;
+}
+#country_id_chosen,#state_id_chosen,#area_id_chosen{
+    border-radius: 0px !important;
+    box-shadow: none !important;
+    border-color: #d2d6de !important;
+    width:100% !important;
+    font-size: 14px !important;
+}
+.chosen-container-single .chosen-single{
+    border-radius: 0px !important;
+    height: 34px !important;
 }
