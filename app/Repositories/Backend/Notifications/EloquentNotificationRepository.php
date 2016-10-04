@@ -55,7 +55,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
             }
         }
         
-        $this->notification($app_id, $message);
+       // $this->notification($app_id, $message);
     }
 
     public function notification($app_id, $message) {
