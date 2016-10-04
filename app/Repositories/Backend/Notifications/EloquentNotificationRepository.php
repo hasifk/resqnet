@@ -35,7 +35,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
         $obj->country_id = (!empty($request->country_id)) ? $request->country_id : '';
         $obj->area_id = (!empty($request->area_id)) ? $request->area_id : '';
         $obj->notification = $request->notification;
-        $obj->save();
+       // $obj->save();
         $message = $request->notification;
         if (!empty($request->country_id)) {
             if (!empty($request->area_id))
@@ -44,7 +44,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                 $users = User::where('country_id', $request->country_id)->orderBy('id', 'desc')->get();
         }
         else if (!empty($request->notif_cat == 2)) {
-            $users = User::find(2);
+            $users = User::orderBy('id', 'desc')->get();
         }
         if (!empty($users)) {
             foreach ($users as $value) {
@@ -55,7 +55,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
             }
         }
         
-        //$this->notification($app_id, $message);
+        $this->notification($app_id, $message);
     }
 
     public function notification($app_id, $message) {
