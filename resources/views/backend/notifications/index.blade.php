@@ -10,7 +10,7 @@
                 <!-- TO DO List -->
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><input type="checkbox" id="selectall"/> Notifications</h3>
+                        <h3 class="box-title"><input type="checkbox" id="selectall"/>Notifications</h3>
                         <div class="pull-right">
                             <?php echo $notification->links(); ?>
                         </div>
