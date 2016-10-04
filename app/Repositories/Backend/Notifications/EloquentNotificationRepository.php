@@ -36,24 +36,24 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
         $obj->area_id = (!empty($request->area_id)) ? $request->area_id : '';
         $obj->notification = $request->notification;
        // $obj->save();
-        $message = $request->notification;
-        if (!empty($request->country_id)) {
-            if (!empty($request->area_id))
-                $users = User::where('country_id', $request->country_id)->where('area_id', $request->area_id)->orderBy('id', 'desc')->get();
-            else
-                $users = User::where('country_id', $request->country_id)->orderBy('id', 'desc')->get();
-        }
-        else if (!empty($request->notif_cat == 2)) {
-            $users = User::orderBy('id', 'desc')->get();
-        }
-        if (!empty($users)) {
-            foreach ($users as $value) {
-                if ($value->role_id != 1) {
-                    $app_id['device_type'][] = $value->device_type;
-                    $app_id['app_id'][] = $value->app_id;
-                }
-            }
-        }
+//        $message = $request->notification;
+//        if (!empty($request->country_id)) {
+//            if (!empty($request->area_id))
+//                $users = User::where('country_id', $request->country_id)->where('area_id', $request->area_id)->orderBy('id', 'desc')->get();
+//            else
+//                $users = User::where('country_id', $request->country_id)->orderBy('id', 'desc')->get();
+//        }
+//        else if (!empty($request->notif_cat == 2)) {
+//            $users = User::orderBy('id', 'desc')->get();
+//        }
+//        if (!empty($users)) {
+//            foreach ($users as $value) {
+//                if ($value->role_id != 1) {
+//                    $app_id['device_type'][] = $value->device_type;
+//                    $app_id['app_id'][] = $value->app_id;
+//                }
+//            }
+//        }
         
        // $this->notification($app_id, $message);
     }
