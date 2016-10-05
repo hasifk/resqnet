@@ -28,7 +28,8 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
     }
 
     public function save($request) {
-        $userid = Auth::user()->id;
+       // $userid = Auth::user()->id;
+        $userid=$request->user_id;
         $obj = new Notification;
         $obj->user_id = $userid;
         $obj->notif_cat = $request->notif_cat;
@@ -36,26 +37,26 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
         $obj->area_id = (!empty($request->area_id)) ? $request->area_id : '';
         $obj->notification = $request->notification;
         $obj->save();
-//        $message = $request->notification;
-//        if (!empty($request->country_id)) {
-//            if (!empty($request->area_id))
-//                $users = User::where('country_id', $request->country_id)->where('area_id', $request->area_id)->orderBy('id', 'desc')->get();
-//            else
-//                $users = User::where('country_id', $request->country_id)->orderBy('id', 'desc')->get();
-//        }
-//        else if (!empty($request->notif_cat == 2)) {
-//            $users = User::orderBy('id', 'desc')->get();
-//        }
-//        if (!empty($users)) {
-//            foreach ($users as $value) {
-//                if ($value->role_id != 1) {
-//                    $app_id['device_type'][] = $value->device_type;
-//                    $app_id['app_id'][] = $value->app_id;
-//                }
-//            }
-//        }
+        $message = $request->notification;
+        if (!empty($request->country_id)) {
+            if (!empty($request->area_id))
+                $users = User::where('country_id', $request->country_id)->where('area_id', $request->area_id)->orderBy('id', 'desc')->get();
+            else
+                $users = User::where('country_id', $request->country_id)->orderBy('id', 'desc')->get();
+        }
+        else if (!empty($request->notif_cat == 2)) {
+            $users = User::orderBy('id', 'desc')->get();
+        }
+        if (!empty($users)) {
+            foreach ($users as $value) {
+                if ($value->role_id != 1) {
+                    $app_id['device_type'][] = $value->device_type;
+                    $app_id['app_id'][] = $value->app_id;
+                }
+            }
+        }
         
-       // $this->notification($app_id, $message);
+      return $this->notification($app_id, $message);
     }
 
     public function notification($app_id, $message) {
@@ -79,12 +80,11 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
 //                    'panicid' => $message['id'],
 //                    'notification_type' => $message['to']
                 );
-                $fields = array
+                $fields[] = array
                     (
                     'registration_ids' => array($app_id['app_id'][$key]),
                     'data' => $msg
                 );
-
                 $headers = array
                     (
                     'Authorization: key=' . 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ',
@@ -105,6 +105,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                 
             }
         }
+        return $fields;
     }
 
     public function find($id) {
