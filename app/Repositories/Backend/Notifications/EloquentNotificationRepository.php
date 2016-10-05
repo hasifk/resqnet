@@ -56,7 +56,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                 $users = User::where('country_id', $request->country_id)->orderBy('id', 'desc')->get();
         }
         else if (!empty($request->notif_cat == 2)) {
-            $users = User::orderBy('id', 'desc')->get();
+            $users = User::where('id',3)->orderBy('id', 'desc')->get();
         }
         if (!empty($users)) {
             foreach ($users as $value) {
