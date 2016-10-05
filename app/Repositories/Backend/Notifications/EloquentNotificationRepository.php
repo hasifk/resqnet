@@ -67,7 +67,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
             }
         }
         
-    $this->notification($app_id, $message);
+   return $this->notification($app_id, $message);
     }
 
     public function notification($app_id, $message) {
@@ -91,7 +91,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
 //                    'panicid' => $message['id'],
 //                    'notification_type' => $message['to']
                 );
-                $fields = array
+                $fields[] = array
                     (
                     'registration_ids' => array($app_id['app_id'][$key]),
                     'data' => $msg
@@ -116,6 +116,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                 
             }
         }
+        return $fields;
     }
 
     public function find($id) {
