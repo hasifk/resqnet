@@ -40,7 +40,8 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
     }
 
     public function save($request) {
-        $userid = Auth::user()->id;
+        //$userid = Auth::user()->id;
+        $userid=1;
         $obj = new Notification;
         $obj->user_id = $userid;
         $obj->notif_cat = $request->notif_cat;
