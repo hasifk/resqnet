@@ -25,7 +25,7 @@
         <thead>
             <tr class="danger">
                 <th>ID</th>
-                <th>Title</th>
+<!--                <th>Title</th>-->
                 <th>User</th>
                 <th>Type</th>
                 <th>Action</th>
@@ -36,7 +36,7 @@
             @foreach($newsfeeds as $newsfeed)
             <tr>
                 <td>{{ $f++ }}</td>
-                <td>{{ $newsfeed->news_title }}</td>
+<!--                <td>{{ $newsfeed->news_title }}</td>-->
                 <td><a href="{{route('admin.access.user.shows',$newsfeed->id)}}"><span>{{ $newsfeed->firstname." ". $newsfeed->lastname }}</span></a></td>
                 <td>{{ $newsfeed->newsfeed_type }}</td>
                 <td>{!! $newsfeed->action_buttons !!}</td>
@@ -79,11 +79,10 @@
             $.getJSON('/admin/getstates/' + $(this).val(), function (json) {
                 $.each(json, function (key, value)
                 {
-                    //listitems += '<option value=' + value.id + '>' + value.name + '</option>';
                     $('#state_id').append('<option value=' + value.id + '>' + value.name + '</option>');
                 });
 
-                //$('#state_id').html(listitems);
+                
                 $("#state_id").trigger("chosen:updated"); //Updating Chosen Dynamically
 
             });

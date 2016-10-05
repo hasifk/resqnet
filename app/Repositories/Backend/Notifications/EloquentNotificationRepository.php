@@ -10,20 +10,18 @@ use App\Models\Countries\City;
 use Auth;
 use Event;
 
-
 class EloquentNotificationRepository implements NotificationRepositoryContract {
 
     public function shows() {
         $userid = Auth::user()->id;
-        $results= Notification::join('notifcategories','notifications.notif_cat','=','notifcategories.id')
-                ->where('notifications.user_id',$userid)->orderBy('notifications.id', 'desc')->select('notifications.*','notifcategories.category')
-                ->paginate(10);
-        foreach($results as $key => $value)
-        {
-            if(!empty($value->country_id))
-                $results[$key]['country']=Country::find($value->country_id)->value('name');
-            if(!empty($value->area_id))
-                $results[$key]['area']=City::find($value->area_id)->value('name');
+        $results = Notification::join('notifcategories', 'notifications.notif_cat', '=', 'notifcategories.id')
+                ->where('notifications.user_id', $userid)->orderBy('notifications.id', 'desc')->select('notifications.*', 'notifcategories.category')
+                ->paginate(20);
+        foreach ($results as $key => $value) {
+            if (!empty($value->country_id))
+                $results[$key]['country'] = Country::find($value->country_id)->value('name');
+            if (!empty($value->area_id))
+                $results[$key]['area'] = City::find($value->area_id)->value('name');
         }
         return $results;
     }
@@ -32,7 +30,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
 
         $userid = Auth::user()->id;
         return Notification::where('user_id', $userid)->orderBy('id', 'desc')
-                        ->paginate(10);
+                        ->paginate(20);
     }
 
     public function category() {
@@ -40,16 +38,6 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
     }
 
     public function save($request) {
-        $userid = Auth::user()->id;
-        //$userid=1;
-        $obj = new Notification;
-        $obj->user_id = $userid;
-        $obj->notif_cat = $request->notif_cat;
-        $obj->country_id = (!empty($request->country_id)) ? $request->country_id : '';
-        $obj->area_id = (!empty($request->area_id)) ? $request->area_id : '';
-        $obj->notification = $request->notification;
-        $obj->save();
-        $message = $request->notification;
         if (!empty($request->country_id)) {
             if (!empty($request->area_id))
                 $users = User::where('country_id', $request->country_id)->where('area_id', $request->area_id)->orderBy('id', 'desc')->get();
@@ -66,9 +54,22 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                     $app_id['app_id'][] = $value->app_id;
                 }
             }
+
+            $userid = Auth::user()->id;
+            //$userid=1;
+            $obj = new Notification;
+            $obj->user_id = $userid;
+            $obj->notif_cat = $request->notif_cat;
+            $obj->country_id = (!empty($request->country_id)) ? $request->country_id : '';
+            $obj->area_id = (!empty($request->area_id)) ? $request->area_id : '';
+            $obj->notification = $request->notification;
+            $obj->save();
+            $message = $request->notification;
+
+
+
+            return $this->notification($app_id, $message);
         }
-        
-   return $this->notification($app_id, $message);
     }
 
     public function notification($app_id, $message) {
@@ -78,7 +79,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
             // $ar[]=array($app_id['app_id'][$key]);
             if ($device == 'Android') {
                 // prev the bundle
-                
+
                 $msg = array
                     (
                     'message' => $message,

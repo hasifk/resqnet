@@ -109,20 +109,10 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
 
         if (!empty($request->state_id) && !empty($request->area_id)) {
             $country = City::where('id', $request->area_id)->value('name');
-            if ($request->rescur == "Rescuer")
-                $amount = Newsfeed::where('resquer_areaid', $request->area_id)->count();
-            else if ($request->rescur == "Rescuee")
-                $amount = Newsfeed::where('user_areaid', $request->area_id)->count();
-            else
-                $amount = Newsfeed::where('resquer_areaid', $request->area_id)->orWhere('user_areaid', $request->area_id)->count();
+            $amount = Newsfeed::where('areaid', $request->area_id)->where('newsfeed_type',$request->rescur)->count();            
         } else if (!empty($request->country_id)) {
             $country = Country::where('id', $request->country_id)->value('name');
-            if ($request->rescur == "Rescuer")
-                $amount = Newsfeed::where('resquer_countryid', $request->country_id)->count();
-            else if ($request->rescur == "Rescuee")
-                $amount = Newsfeed::where('user_countryid', $request->country_id)->count();
-            else
-                $amount = Newsfeed::where('resquer_countryid', $request->country_id)->orWhere('user_countryid', $request->country_id)->count();
+                $amount = Newsfeed::where('countryid', $request->country_id)->where('newsfeed_type',$request->rescur)->count();
         }
         return [
             'country' => $country,
