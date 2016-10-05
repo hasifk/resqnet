@@ -15,6 +15,15 @@ Homestead.json
 /public/js/backend.js
 /public/js/backend.js.map
 
+/public/build/css/backend.css.map
+/public/build/js/backend.js.map
+/public/build/css/frontend.css.map
+/public/build/js/frontend.js.map
+/resources/assets/css/backend/main.css
+/resources/assets/css/frontend/app.css.map
+config/ide-helper.php
+
+
 .DS_Store
 Thumbs.db
 *.sublime-project
