@@ -26,14 +26,14 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                             ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
                             ->orWhere('newsfeeds.areaid', '=', $user->area_id)
                             ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
-                            ->select('newsfeeds.*')
+                            ->select('newsfeeds.*')->orderBy('newsfeeds.id', 'desc')
                             ->paginate(8);
         } else if (access()->hasRolesApp(['User'], $user_id)) {
             return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
                             ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
                             ->orWhere('newsfeeds.areaid', '=', $user->area_id)
                             ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
-                            ->select('newsfeeds.*')->paginate(8);
+                            ->select('newsfeeds.*')->orderBy('newsfeeds.id', 'desc')->paginate(8);
         }
     }
 
