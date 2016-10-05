@@ -55,8 +55,8 @@ class NotificationController extends Controller {
 
         $this->notification->save($request);
         
-        return redirect(route('backend.admin.notifications'));
-         //return response()->json(['result' => $this->notification->save($request)]);
+        //return redirect(route('backend.admin.notifications'));
+         return response()->json(['result' => $this->notification->save($request)]);
     }
 
     public function NotificationDelete(Request $request) {
