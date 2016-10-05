@@ -17,49 +17,58 @@
                         <a href="{{route('backend.admin.notificationcreate')}}"> <button class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button></a>
                     </div><!-- /.box-header -->
                     <div id="search_result">
-                    <div class="box-body">
-                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                            @if(count($notification)>0)
-                            @foreach($notification as $value)
-                            <?php $info = strip_tags($value->notification); ?>
-                            <div class="panel panel-default" id="removal">
-                                <div class="panel-heading" role="tab" id="heading_{{$value->id}}">
-                                    <h4 class="panel-title">
-                                        <span class="tools pull-left"><input type="checkbox" class="checkbox" name="check[]" value="{{$value->id}}" id="{{$value->id}}"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$value->id}}" aria-expanded="false" aria-controls="collapse_{{$value->id}}">
-                                            <span class="text"> {!!Str::limit($info,50)!!}</span>
-                                        </a>
-                                        <!-- General tools such as edit or delete-->
-                                        <span class="tools pull-right">
-                                            <i class="notification_delete fa fa-trash-o" id="{{$value->id}}"></i>
-                                        </span>
-                                    </h4>
+                        <div class="box-body">
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                @if(count($notification)>0)
+                                @foreach($notification as $value)
+                                <?php $info = strip_tags($value->notification); ?>
+                                <div class="panel panel-default" id="removal">
+                                    <div class="panel-heading" role="tab" id="heading_{{$value->id}}">
+                                        <h4 class="panel-title">
+                                            <span class="tools pull-left"><input type="checkbox" class="checkbox" name="check[]" value="{{$value->id}}" id="{{$value->id}}"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$value->id}}" aria-expanded="false" aria-controls="collapse_{{$value->id}}">
+                                                <span class="text"> {!!Str::limit($info,50)!!}</span>
+                                            </a>
+                                            <!-- General tools such as edit or delete-->
+                                            <span class="tools pull-right">
+                                                <i class="notification_delete fa fa-trash-o" id="{{$value->id}}"></i>
+                                            </span>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse_{{$value->id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_{{$value->id}}">
+                                        <div class="panel-body">
+                                            <table class="table table-responsive m-t-20">
+                                                <tr><th>To</th><td>{!!$value->category!!}</td></tr>
+                                                @if(!empty($value->country))
+                                                <tr><th>Country</th><td>{{$value->country}}</td></tr>
+                                                @endif
+                                                @if(!empty($value->area))
+                                                <tr><th>Area<td>{{$value->area}}</td></tr>
+                                                @endif
+                                                <tr><th>Notification</th><td>{!!$value->notification!!}</td></tr>
+                                            </table>
+                                        </div>
+                                    </div>
+
                                 </div>
-                                <div id="collapse_{{$value->id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_{{$value->id}}">
-                                    <div class="panel-body">
-                                        {!!$value->notification!!}
+                                @endforeach
+                                @else
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="heading">
+                                        <h4 class="panel-title">
+                                            <span class="text">No Notifications</span>
+                                        </h4>
                                     </div>
                                 </div>
-
+                                @endif
                             </div>
-                            @endforeach
-                            @else
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="heading">
-                                    <h4 class="panel-title">
-                                        <span class="text">No Notifications</span>
-                                    </h4>
-                                </div>
-                            </div>
+                        </div><!-- /.box-body -->
+                        <div class="box-footer clearfix no-border">
+                            @if(count($notification)>0)
+                            <button class="mnotification_delete btn btn-primary" >Delete</button>
                             @endif
-                        </div>
-                    </div><!-- /.box-body -->
-                    <div class="box-footer clearfix no-border">
-                        @if(count($notification)>0)
-                        <button class="mnotification_delete btn btn-primary" >Delete</button>
-                        @endif
 
-                    </div>
+                        </div>
                     </div>
                 </div><!-- /.box -->
             </div>
@@ -82,26 +91,25 @@
     $(document).ready(function () {
         doChosen();
         $('#country_id').on('change', function () {
-           
-             $('#state_id').html('<option value="">Please Select</option>');
-                $('#area_id').html('<option value="">Please Select</option>');
-                $("#state_id").trigger("chosen:updated");
-                $("#area_id").trigger("chosen:updated");
-                if ($(this).val() != '') {
-            $.getJSON('/admin/getstates/' + $(this).val(), function (json) {
-                $.each(json, function (key, value)
-                {
-                    //listitems += '<option value=' + value.id + '>' + value.name + '</option>';
-                    $('#state_id').append('<option value=' + value.id + '>' + value.name + '</option>');
+
+            $('#state_id').html('<option value="">Please Select</option>');
+            $('#area_id').html('<option value="">Please Select</option>');
+            $("#state_id").trigger("chosen:updated");
+            $("#area_id").trigger("chosen:updated");
+            if ($(this).val() != '') {
+                $.getJSON('/admin/getstates/' + $(this).val(), function (json) {
+                    $.each(json, function (key, value)
+                    {
+                        //listitems += '<option value=' + value.id + '>' + value.name + '</option>';
+                        $('#state_id').append('<option value=' + value.id + '>' + value.name + '</option>');
+                    });
+
+                    //$('#state_id').html(listitems);
+                    $("#state_id").trigger("chosen:updated"); //Updating Chosen Dynamically
+
                 });
-
-                //$('#state_id').html(listitems);
-                $("#state_id").trigger("chosen:updated"); //Updating Chosen Dynamically
-
-            });
-        }
-        else
-            location.reload();
+            } else
+                location.reload();
         });
 
         $('#state_id').on('change', function () {
@@ -130,27 +138,27 @@
                 $('#area_id').focus();
             } else
             {
-            var formData = {
-                country_id: $('#country_id').val(),
-                state_id: $('#state_id').val(),
-                area_id: $('#area_id').val(),
-            }
-            $.ajax({
-                type: "get",
-                url: '/admin/search/',
-                data: formData,
-                cache: false,
-                success: function (data) {
-                    //console.log(data);
-                    $('#search_result').html(data);
+                var formData = {
+                    country_id: $('#country_id').val(),
+                    state_id: $('#state_id').val(),
+                    area_id: $('#area_id').val(),
                 }
-            })
-        }
+                $.ajax({
+                    type: "get",
+                    url: '/admin/search/',
+                    data: formData,
+                    cache: false,
+                    success: function (data) {
+                        //console.log(data);
+                        $('#search_result').html(data);
+                    }
+                })
+            }
             return false;
         });
     });
 
-$(document).on("click", '.notification_delete,.mnotification_delete', function () {
+    $(document).on("click", '.notification_delete,.mnotification_delete', function () {
         var cursel = this;
         var value = new Array();
         var j = 0;
@@ -177,7 +185,7 @@ $(document).on("click", '.notification_delete,.mnotification_delete', function (
             {
                 $.ajax({
                     type: "GET",
-                    url:'/admin/notificationdelete',
+                    url: '/admin/notificationdelete',
                     data: "id=" + value,
                     cache: false,
                     success: function (data) {

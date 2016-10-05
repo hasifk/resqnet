@@ -28,6 +28,7 @@ class NotificationController extends Controller {
             'category' => $this->notification->category(),
             'countries' => $this->user->countries(),
         ];
+        
         return view('backend.notifications.index', $view);
     }
 
@@ -52,10 +53,10 @@ class NotificationController extends Controller {
 
     public function notificationSave(Notifications $request) {
 
-       // $this->notification->save($request);
+        $this->notification->save($request);
         
-       // return redirect(route('backend.admin.notifications'));
-         return response()->json(['result' => $this->notification->save($request)]);
+        return redirect(route('backend.admin.notifications'));
+         //return response()->json(['result' => $this->notification->save($request)]);
     }
 
     public function NotificationDelete(Request $request) {

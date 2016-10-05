@@ -5,15 +5,27 @@ namespace App\Repositories\Backend\Notifications;
 use App\Models\Notifications\Notification;
 use App\Models\Notifications\NotificationCategory;
 use App\Models\Access\User\User;
+use App\Models\Countries\Country;
+use App\Models\Countries\City;
 use Auth;
 use Event;
+
 
 class EloquentNotificationRepository implements NotificationRepositoryContract {
 
     public function shows() {
         $userid = Auth::user()->id;
-        return Notification::where('user_id', $userid)->orderBy('id', 'desc')
-                        ->paginate(10);
+        $results= Notification::join('notifcategories','notifications.notif_cat','=','notifcategories.id')
+                ->where('notifications.user_id',$userid)->orderBy('notifications.id', 'desc')->select('notifications.*','notifcategories.category')
+                ->paginate(10);
+        foreach($results as $key => $value)
+        {
+            if(!empty($value->country_id))
+                $results[$key]['country']=Country::find($value->country_id)->value('name');
+            if(!empty($value->area_id))
+                $results[$key]['area']=City::find($value->area_id)->value('name');
+        }
+        return $results;
     }
 
     public function show($id) {
@@ -28,8 +40,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
     }
 
     public function save($request) {
-       // $userid = Auth::user()->id;
-        $userid=$request->user_id;
+        $userid = Auth::user()->id;
         $obj = new Notification;
         $obj->user_id = $userid;
         $obj->notif_cat = $request->notif_cat;
@@ -56,7 +67,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
             }
         }
         
-      return $this->notification($app_id, $message);
+    $this->notification($app_id, $message);
     }
 
     public function notification($app_id, $message) {
@@ -80,7 +91,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
 //                    'panicid' => $message['id'],
 //                    'notification_type' => $message['to']
                 );
-                $fields[] = array
+                $fields = array
                     (
                     'registration_ids' => array($app_id['app_id'][$key]),
                     'data' => $msg
@@ -105,7 +116,6 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                 
             }
         }
-        return $fields;
     }
 
     public function find($id) {
