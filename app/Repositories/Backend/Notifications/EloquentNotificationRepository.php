@@ -40,8 +40,8 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
     }
 
     public function save($request) {
-        //$userid = Auth::user()->id;
-        $userid=1;
+        $userid = Auth::user()->id;
+        //$userid=1;
         $obj = new Notification;
         $obj->user_id = $userid;
         $obj->notif_cat = $request->notif_cat;
@@ -92,7 +92,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
 //                    'panicid' => $message['id'],
 //                    'notification_type' => $message['to']
                 );
-                $fields[] = array
+                $fields = array
                     (
                     'registration_ids' => array($app_id['app_id'][$key]),
                     'data' => $msg
@@ -117,7 +117,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                 
             }
         }
-        return $fields;
+        //return $fields;
     }
 
     public function find($id) {
