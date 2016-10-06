@@ -15,7 +15,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
     }
 
     public function getMyNewsFeeds($user_id) {
-        return Newsfeed::where('user_id', $user_id)->orderBy('id', 'desc')->paginate(8);
+        return Newsfeed::where('user_id', $user_id)->orderBy('id', 'desc')->paginate(20);
     }
 
     public function getNewsFeeds($user_id) {
@@ -27,13 +27,13 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                             ->orWhere('newsfeeds.areaid', '=', $user->area_id)
                             ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
                             ->select('newsfeeds.*')->orderBy('newsfeeds.id', 'desc')
-                            ->paginate(8);
+                            ->paginate(20);
         } else if (access()->hasRolesApp(['User'], $user_id)) {
             return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
                             ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
                             ->orWhere('newsfeeds.areaid', '=', $user->area_id)
                             ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
-                            ->select('newsfeeds.*')->orderBy('newsfeeds.id', 'desc')->paginate(8);
+                            ->select('newsfeeds.*')->orderBy('newsfeeds.id', 'desc')->paginate(20);
         }
     }
 
