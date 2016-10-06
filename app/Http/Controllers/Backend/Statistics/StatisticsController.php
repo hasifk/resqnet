@@ -108,6 +108,7 @@ class StatisticsController extends Controller {
         $result = $this->statistics->getPanicSignalAmount($request);
         $view = [
             'place' => $result['country'],
+            'area' => $result['area'],
             'amount' => $result['amount']
         ];
         return $view;

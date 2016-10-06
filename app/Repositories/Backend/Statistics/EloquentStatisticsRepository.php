@@ -132,11 +132,11 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
 
     public function getPanicSignalAmount($request) {
 
-        $country = Country::find($request->country_id)->value('name');
+        $country = Country::where('id',$request->country_id)->value('name');
         if ($request->category != "All") {
             if (!empty($request->date)):
                 if (!empty($request->state_id) && !empty($request->area_id)) {
-                    $country = City::find($request->area_id)->value('name');
+                    $area = City::where('id',$request->area_id)->value('name');
                     $actives = $this->area($request->area_id)->where('activerescuers.emergency_type', $request->category)->where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
                 } else if (!empty($request->country_id)) {
                     $actives = $this->country($request->country_id)->where('activerescuers.emergency_type', $request->category)->where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
@@ -144,7 +144,7 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
                     $actives = ActiveRescuer::where('emergency_type', $request->category)->where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
             else:
                 if (!empty($request->state_id) && !empty($request->area_id)) {
-                    $country = City::find($request->area_id)->value('name');
+                    $area = City::where('id',$request->area_id)->value('name');
                     $actives = $this->area($request->area_id)->where('activerescuers.emergency_type', $request->category)->get();
                 } else if (!empty($request->country_id)) {
                     $actives = $this->country($request->country_id)->where('activerescuers.emergency_type', $request->category)->get();
@@ -155,7 +155,7 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
         else {
             if (!empty($request->date)):
                 if (!empty($request->state_id) && !empty($request->area_id)) {
-                    $country = City::find($request->area_id)->value('name');
+                    $area = City::where('id',$request->area_id)->value('name');
                     $actives = $this->area($request->area_id)->where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
                 } else if (!empty($request->country_id)) {
                     $actives = $this->country($request->country_id)->where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
@@ -163,7 +163,7 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
                     $actives = ActiveRescuer::where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
             else:
                 if (!empty($request->state_id) && !empty($request->area_id)) {
-                    $country = City::find($request->area_id)->value('name');
+                    $area = City::where('id',$request->area_id)->value('name');
                     $actives = $this->area($request->area_id)->orderBy('activerescuers.id', 'desc')->get();
                 } else if (!empty($request->country_id)) {
                     $actives = $this->country($request->country_id)->get();
@@ -188,6 +188,7 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
         }
         return [
             'country' => $country,
+            'area' => !empty($area)?$area:'---',
             'amount' => $f,
             'lists' => $lists
         ];
