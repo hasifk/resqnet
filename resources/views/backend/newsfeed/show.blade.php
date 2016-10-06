@@ -43,10 +43,10 @@
             <th>Date</th>
             <th>{{ date('d-m-y h:i:s',strtotime($newsfeed->created_at)) }}</th>
         </tr>
-        <tr>
+<!--        <tr>
             <th>Title</th>
             <th>{!! $newsfeed->news_title !!}</th>
-        </tr>
+        </tr>-->
         <tr>
             <th>News</th>
             <th>{!! $newsfeed->news !!}</th>
