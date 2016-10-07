@@ -100,5 +100,9 @@ class RescueOperationController extends Controller {
             return response()->json(['result' => 'No Panic Signals']);
         endif;
     }
+    public function rescueeOperationCancel()
+    {
+        
+    }
 
 }
