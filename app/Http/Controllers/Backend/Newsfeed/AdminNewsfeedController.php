@@ -26,8 +26,17 @@ class AdminNewsfeedController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function showNewsfeeds() {
+     $newsfeeds=$this->newsfeedRepository->getNewsfeedPaginated();
+        if (count($newsfeeds)>0):
+            foreach ($newsfeeds as $key=>$item) {
+                if ($newsfeeds[$key]['image_filename'] && $newsfeeds[$key]['image_extension'] && $newsfeeds[$key]['image_path']) {
+
+                    $newsfeeds[$key]['newsfeed_image_src'] = url('/image/' . $newsfeeds[$key]['id'] . '/' . $newsfeeds[$key]['image_filename'] . '300x168.' . $newsfeeds[$key]['image_extension']);
+                }
+            }
+            endif;
         $view = [
-            'newsfeeds' => $this->newsfeedRepository->getNewsfeedPaginated(),
+            'newsfeeds' => $newsfeeds,
             'countries' => $this->user->countries(),
         ];
         return view('backend.newsfeed.index', $view);
@@ -43,13 +52,19 @@ class AdminNewsfeedController extends Controller {
     }
 
     public function newsFeedShow($id) {
-        $result = $this->newsfeedRepository->findNews($id);
-        if ($result->areaid > 0) {
-            $city = City::find($result->areaid);
-            $result['area'] = $city->name;
+        $newsfeed = $this->newsfeedRepository->findNews($id);
+        if ($newsfeed->areaid > 0) {
+            $city = City::find($newsfeed->areaid);
+            $newsfeed['area'] = $city->name;
+        }
+
+        if ($newsfeed->image_filename && $newsfeed->image_extension && $newsfeed->image_path) {
+
+            $newsfeed['newsfeed_image_src']=url('/image/'.$newsfeed->id.'/'.$newsfeed->image_filename.'300x168.'.$newsfeed->image_extension);
+
         }
         $view = [
-            'newsfeed' => $result,
+            'newsfeed' => $newsfeed,
         ];
         return view('backend.newsfeed.show', $view);
     }

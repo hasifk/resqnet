@@ -17,7 +17,7 @@
         @if(!empty($newsfeed->image_path))
         <tr>
             <th></th>
-            <td><img src="{{$newsfeed->image_path.'/'.$newsfeed->image_filename.'.'.$newsfeed->image_extension}}"</td>
+            <td><img src="{{$newsfeed->newsfeed_image_src}}" width="90" height="90"></td>
         </tr>
         @endif
         <tr>

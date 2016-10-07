@@ -28,6 +28,7 @@
 <!--                <th>Title</th>-->
                 <th>User</th>
                 <th>Type</th>
+                <th>Image</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -39,6 +40,7 @@
 <!--                <td>{{ $newsfeed->news_title }}</td>-->
                 <td><a href="{{route('admin.access.user.shows',$newsfeed->id)}}"><span>{{ $newsfeed->firstname." ". $newsfeed->lastname }}</span></a></td>
                 <td>{{ $newsfeed->newsfeed_type }}</td>
+                <td><img src="{{ $newsfeed->newsfeed_image_src }}" width="25" height="25"></td>
                 <td>{!! $newsfeed->action_buttons !!}</td>
             </tr>
             @endforeach
