@@ -53,5 +53,9 @@ class AdminNewsfeedController extends Controller {
         ];
         return view('backend.newsfeed.show', $view);
     }
+    public function deleteNewsFeed($id) {
+        $this->newsfeedRepository->delete($id);
+        return redirect(route('admin.newsfeed.index'));
+    }
 
 }

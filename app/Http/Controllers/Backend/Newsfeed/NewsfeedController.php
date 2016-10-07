@@ -35,6 +35,7 @@ class NewsfeedController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function showNewsfeeds(ShowNewsfeedRequest $request) {
         $newsfeeds = $this->newsfeedRepository->getNewsFeeds($request->user_id);
         if (count($newsfeeds)>0):

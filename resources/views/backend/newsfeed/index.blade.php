@@ -65,30 +65,30 @@
         $(".chosen-select-no-results").chosen({no_results_text: 'Oops, nothing found!'});
         $(".chosen-select-width").chosen({width: "95%"});
     }
+
 </script>
 <script>
     $(document).ready(function () {
         doChosen();
         $('#country_id').on('change', function () {
-           
-             $('#state_id').html('<option value="">Please Select</option>');
-                $('#area_id').html('<option value="">Please Select</option>');
-                $("#state_id").trigger("chosen:updated");
-                $("#area_id").trigger("chosen:updated");
-                if ($(this).val() != '') {
-            $.getJSON('/admin/getstates/' + $(this).val(), function (json) {
-                $.each(json, function (key, value)
-                {
-                    $('#state_id').append('<option value=' + value.id + '>' + value.name + '</option>');
+
+            $('#state_id').html('<option value="">Please Select</option>');
+            $('#area_id').html('<option value="">Please Select</option>');
+            $("#state_id").trigger("chosen:updated");
+            $("#area_id").trigger("chosen:updated");
+            if ($(this).val() != '') {
+                $.getJSON('/admin/getstates/' + $(this).val(), function (json) {
+                    $.each(json, function (key, value)
+                    {
+                        $('#state_id').append('<option value=' + value.id + '>' + value.name + '</option>');
+                    });
+
+
+                    $("#state_id").trigger("chosen:updated"); //Updating Chosen Dynamically
+
                 });
-
-                
-                $("#state_id").trigger("chosen:updated"); //Updating Chosen Dynamically
-
-            });
-        }
-        else
-            location.reload();
+            } else
+                location.reload();
         });
 
         $('#state_id').on('change', function () {
@@ -160,7 +160,15 @@
                 }
             })
         });
+
+        $('.newsfeed_delete').on('click', function () {
+            if (confirm("Are you sure want to delete")) {
+                return true;
+            }
+            return false;
+        });
     });
+
 </script>
 @endsection
 
