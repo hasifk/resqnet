@@ -65,7 +65,14 @@
         $(".chosen-select-no-results").chosen({no_results_text: 'Oops, nothing found!'});
         $(".chosen-select-width").chosen({width: "95%"});
     }
-
+    $(document).ready(function () {
+$('.newsfeed_delete').on('click', function () {
+            if (confirm("Are you sure want to delete")) {
+                return true;
+            }
+            return false;
+        });
+         });
 </script>
 <script>
     $(document).ready(function () {
@@ -159,13 +166,6 @@
                     $('#newsfeeds').html(data);
                 }
             })
-        });
-
-        $('.newsfeed_delete').on('click', function () {
-            if (confirm("Are you sure want to delete")) {
-                return true;
-            }
-            return false;
         });
     });
 
