@@ -65,7 +65,7 @@ class EloquentRescueOperationRepository {
     }
 
     public function rescueeOperationCancel($request) {
-        $obj = ActiveRescuer::find($obj->panicid);
+        $obj = ActiveRescuer::find($request->panicid);
         $obj->status=0;
         $obj->save();
     }
