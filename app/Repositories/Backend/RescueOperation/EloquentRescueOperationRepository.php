@@ -185,7 +185,6 @@ class EloquentRescueOperationRepository {
     }
 
     public function rescuersResponse($request) {
-       // if (ActiveRescuer::where('id', $request->active_rescuers_id)->value('status') == 1) {
             $operation = $this->findOperation($request->active_rescuers_id);
             if (empty($operation)):
                 $obj = new Operation;
@@ -194,32 +193,20 @@ class EloquentRescueOperationRepository {
                 $obj->save();
                 $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id)->value('rescuee_id');
                 $user = User::find($request->rescuer_id);
-                $message['message'] = $user->firstname . " " . $user->lastname . " Accepted Your Request" . $request->active_rescuers_id;
+                $message['message'] = $user->firstname . " " . $user->lastname . " Accepted Your Request";
                 $message['id'] = $request->active_rescuers_id;
                 $message['to'] = "User";
                 $user = User::find($rescuee_id);
             else:
                 $user = User::find($request->rescuer_id);
-                $message['message'] = "Another Rescuer Accepted this request" . $request->active_rescuers_id;
+                $message['message'] = "Another Rescuer Accepted this request";
                 $message['id'] = $request->active_rescuers_id;
                 $message['to'] = "Rescuer";
             endif;
             $app_id['app_id'][] = $user->app_id;
             $app_id['device_type'][] = $user->device_type;
-
             $this->notification($app_id, $message);
             return $request->active_rescuers_id;
-//        }
-//        else {
-//            $user = User::find($request->rescuer_id);
-//            $message['message'] = "This Request has been cancelled by the user" . $request->active_rescuers_id;
-//            $message['id'] = $request->active_rescuers_id;
-//            $message['to'] = "Rescuer";
-//            $app_id['app_id'][] = $user->app_id;
-//            $app_id['device_type'][] = $user->device_type;
-//            $this->notification($app_id, $message);
-//            return $request->active_rescuers_id;
-//        }
     }
 
     public function distanceCalculation($point1_lat, $point1_long, $point2_lat, $point2_long, $unit = 'km', $decimals = 2) {
