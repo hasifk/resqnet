@@ -90,7 +90,7 @@ class EloquentRescueOperationRepository {
                     'panicid' => $message['id'],
                     'notification_type' => $message['to']
                 );
-                $fields[] = array
+                $fields = array
                     (
                     'registration_ids' => array($app_id['app_id'][$key]),
                     'data' => $msg
@@ -102,17 +102,17 @@ class EloquentRescueOperationRepository {
                     'Content-Type: application/json'
                 );
 
-//                $ch = curl_init();
-//                curl_setopt($ch, CURLOPT_URL, 'https://android.googleapis.com/gcm/send');
-//                curl_setopt($ch, CURLOPT_POST, true);
-//                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-//                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-//                $result = curl_exec($ch);
-//               // echo $result;
-//                // Close connection
-//                curl_close($ch);
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, 'https://android.googleapis.com/gcm/send');
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+                $result = curl_exec($ch);
+               // echo $result;
+                // Close connection
+                curl_close($ch);
             } else {
                 
             }
