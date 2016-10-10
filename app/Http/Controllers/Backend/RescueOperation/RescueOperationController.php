@@ -100,9 +100,9 @@ class RescueOperationController extends Controller {
             return response()->json(['result' => 'No Panic Signals']);
         endif;
     }
-    public function rescueeOperationCancel()
+    public function rescueeOperationCancel(Request $request)
     {
-        
+        $this->rescueOperationRepository->rescueeOperationCancel($request->active_rescuers_id);
     }
 
 }
