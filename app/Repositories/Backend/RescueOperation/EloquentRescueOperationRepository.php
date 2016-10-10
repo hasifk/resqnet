@@ -185,7 +185,7 @@ class EloquentRescueOperationRepository {
     }
 
     public function rescuersResponse($request) {
-        if (ActiveRescuer::where('id', $request->panicid)->value('status') == 1) {
+        if (ActiveRescuer::where('id', $request->active_rescuers_id)->value('status') == 1) {
             $operation = $this->findOperation($request->active_rescuers_id);
             if (empty($operation)):
                 $obj = new Operation;
