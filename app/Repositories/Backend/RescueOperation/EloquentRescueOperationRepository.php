@@ -51,16 +51,23 @@ class EloquentRescueOperationRepository {
             if (!empty($rescuers)) {
                 $message['to'] = "Rescuer";
                 $this->notification($app_id, $message);
-                $userdetails = 'SUCCESS';
+                $userdetails['result'] = 'SUCCESS';
+                $userdetails['panicid'] = $obj->id;
             } else
-                $userdetails = "No Rescuers available";
+                $userdetails['result'] = "No Rescuers available";
             if (!empty($appids)) {
                 $message['to'] = "Emergency";
                 $this->notification($appids[0], $message);
             }
         } else
-            $userdetails = "Please enable Location services";
+            $userdetails['result'] = "Please enable Location services";
         return $userdetails;
+    }
+
+    public function rescueeOperationCancel($request) {
+        $obj = ActiveRescuer::find($obj->panicid);
+        $obj->status=0;
+        $obj->save();
     }
 
     public function notification($app_id, $message) {

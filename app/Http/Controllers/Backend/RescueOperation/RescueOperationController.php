@@ -74,7 +74,7 @@ class RescueOperationController extends Controller {
         $operation = $this->rescueOperationRepository->findOperation($request->active_rescuers_id);
         if (!empty($operation)) {
             if ($operation->rescuer_id == $request->rescuer_id)
-                $details['accepted'] = 'Y'; //this rescuer accepted
+                $details['accepted'] = 'Y'; //Current rescuer accepted
             else
                 $details['accepted'] = 'N'; //another rescuer accepted
         } else
@@ -99,6 +99,10 @@ class RescueOperationController extends Controller {
         else:
             return response()->json(['result' => 'No Panic Signals']);
         endif;
+    }
+    public function rescueeOperationCancel(Request $request)
+    {
+        $this->rescueOperationRepository->rescueeOperationCancel($request->active_rescuers_id);
     }
 
 }
