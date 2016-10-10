@@ -102,7 +102,8 @@ class RescueOperationController extends Controller {
     }
     public function rescueeOperationCancel(Request $request)
     {
-        $this->rescueOperationRepository->rescueeOperationCancel($request->active_rescuers_id);
+        $this->rescueOperationRepository->rescueeOperationCancel($request);
+        return response()->json(['result' => 'success']);
     }
 
 }
