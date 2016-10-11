@@ -98,7 +98,7 @@ class EloquentRescueOperationRepository {
 
                 $headers = array
                     (
-                    'Authorization: key=' . 'AIzaSyCIV5f3jWXOXuyE_jjXpWDDgGa4tAcmo6o',
+                    'Authorization: key=' . 'AIzaSyAJ3hG9ryU-_7mrdZYDOHBkTUWP8TyUoCA',
                     'Content-Type: application/json'
                 );
                 
@@ -113,10 +113,10 @@ class EloquentRescueOperationRepository {
 //                if ($result === FALSE) {
 //                    die('Curl failed: ' . curl_error($ch));
 //                }
-               // echo $result;
+               
                 // Close connection
                 curl_close($ch);
-                
+                return $result;
             } else {
                 
             }
@@ -211,8 +211,8 @@ class EloquentRescueOperationRepository {
             endif;
             $app_id['app_id'][] = $user->app_id;
             $app_id['device_type'][] = $user->device_type;
-            $this->notification($app_id, $message);
-            return $request->active_rescuers_id;
+            return $this->notification($app_id, $message);
+            //return $request->active_rescuers_id;
         }
         else {
             $user = User::find($request->rescuer_id);
@@ -221,8 +221,8 @@ class EloquentRescueOperationRepository {
             $message['to'] = "Rescuer";
             $app_id['app_id'][] = $user->app_id;
             $app_id['device_type'][] = $user->device_type;
-            $this->notification($app_id, $message);
-            return $request->active_rescuers_id;
+            return $this->notification($app_id, $message);
+            //return $request->active_rescuers_id;
         }
     }
 
