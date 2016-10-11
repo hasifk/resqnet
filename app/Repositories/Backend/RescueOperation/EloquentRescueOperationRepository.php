@@ -101,7 +101,6 @@ class EloquentRescueOperationRepository {
                     'Authorization: key=' . 'AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ',
                     'Content-Type: application/json'
                 );
-                
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, 'https://android.googleapis.com/gcm/send');
                 curl_setopt($ch, CURLOPT_POST, true);
@@ -110,18 +109,13 @@ class EloquentRescueOperationRepository {
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
                 $result = curl_exec($ch);
-//                if ($result === FALSE) {
-//                    die('Curl failed: ' . curl_error($ch));
-//                }
-               
-                // Close connection
+//echo $result;
+// Close connection
                 curl_close($ch);
-                echo $result;
             } else {
                 
             }
         }
-       // return $fields;
     }
 
     public function emergencyContacts($id) {
