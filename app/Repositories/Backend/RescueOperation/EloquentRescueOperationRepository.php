@@ -49,14 +49,14 @@ class EloquentRescueOperationRepository {
             $message['id'] = $obj->id;
             if (!empty($rescuers)) {
                 $message['to'] = "Rescuer";
-                $this->notification($app_id, $message);
+                return $this->notification($app_id, $message);
                 $userdetails['result'] = 'SUCCESS';
                 $userdetails['panicid'] = $obj->id;
             } else
                 $userdetails['result'] = "No Rescuers available";
             if (!empty($appids)) {
                 $message['to'] = "Emergency";
-                $this->notification($appids[0], $message);
+               return $this->notification($appids[0], $message);
             }
         } else
             $userdetails['result'] = "Please enable Location services";
@@ -90,7 +90,7 @@ class EloquentRescueOperationRepository {
                     'panicid' => $message['id'],
                     'notification_type' => $message['to']
                 );
-                $fields = array
+                $fields[] = array
                     (
                     'registration_ids' => array($app_id['app_id'][$key]),
                     'data' => $msg
@@ -121,7 +121,7 @@ class EloquentRescueOperationRepository {
                 
             }
         }
-       // return $fields;
+        return $fields;
     }
 
     public function emergencyContacts($id) {
