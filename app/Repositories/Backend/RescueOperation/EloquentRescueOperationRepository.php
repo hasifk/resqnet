@@ -92,7 +92,7 @@ class EloquentRescueOperationRepository {
                 );
                 $fields = array
                     (
-                    'registration_ids' => $app_id['app_id'][$key],
+                    'registration_ids' => array($app_id['app_id'][$key]),
                     'data' => $msg
                 );
 
