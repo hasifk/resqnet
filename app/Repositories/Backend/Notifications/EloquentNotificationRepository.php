@@ -65,9 +65,6 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
             $obj->notification = $request->notification;
             $obj->save();
             $message = $request->notification;
-
-
-
             return $this->notification($app_id, $message);
         }
     }
@@ -114,7 +111,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                
                 // Close connection
                 curl_close($ch);
-                echo $result;
+               // echo $result;
             } else {
                 
             }

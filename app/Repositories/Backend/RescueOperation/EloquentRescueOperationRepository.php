@@ -116,7 +116,7 @@ class EloquentRescueOperationRepository {
                
                 // Close connection
                 curl_close($ch);
-                return $result;
+                //echo $result;
             } else {
                 
             }
@@ -211,8 +211,8 @@ class EloquentRescueOperationRepository {
             endif;
             $app_id['app_id'][] = $user->app_id;
             $app_id['device_type'][] = $user->device_type;
-            return $this->notification($app_id, $message);
-            //return $request->active_rescuers_id;
+            $this->notification($app_id, $message);
+            return $request->active_rescuers_id;
         }
         else {
             $user = User::find($request->rescuer_id);
@@ -221,8 +221,8 @@ class EloquentRescueOperationRepository {
             $message['to'] = "Rescuer";
             $app_id['app_id'][] = $user->app_id;
             $app_id['device_type'][] = $user->device_type;
-            return $this->notification($app_id, $message);
-            //return $request->active_rescuers_id;
+            $this->notification($app_id, $message);
+            return $request->active_rescuers_id;
         }
     }
 
