@@ -98,7 +98,7 @@ class EloquentRescueOperationRepository {
 
                 $headers = array
                     (
-                    'Authorization: key=' . 'AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ',
+                    'Authorization: key=' . 'AIzaSyAJ3hG9ryU-_7mrdZYDOHBkTUWP8TyUoCA',
                     'Content-Type: application/json'
                 );
                 $ch = curl_init();
@@ -106,7 +106,7 @@ class EloquentRescueOperationRepository {
                 curl_setopt($ch, CURLOPT_POST, true);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
                 $result = curl_exec($ch);
 //echo $result;
