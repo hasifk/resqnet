@@ -90,7 +90,7 @@ class EloquentRescueOperationRepository {
                     'panicid' => $message['id'],
                     'notification_type' => $message['to']
                 );
-                $fields[] = array
+                $fields = array
                     (
                     'registration_ids' => array($app_id['app_id'][$key]),
                     'data' => $msg
@@ -116,7 +116,6 @@ class EloquentRescueOperationRepository {
                 
             }
         }
-        return $fields;
     }
 
     public function emergencyContacts($id) {
@@ -206,7 +205,7 @@ class EloquentRescueOperationRepository {
             endif;
             $app_id['app_id'][] = $user->app_id;
             $app_id['device_type'][] = $user->device_type;
-            return $this->notification($app_id, $message);
+            $this->notification($app_id, $message);
             return $request->active_rescuers_id;
         }
         else {
@@ -216,7 +215,7 @@ class EloquentRescueOperationRepository {
             $message['to'] = "Rescuer";
             $app_id['app_id'][] = $user->app_id;
             $app_id['device_type'][] = $user->device_type;
-            return $this->notification($app_id, $message);
+            $this->notification($app_id, $message);
             return $request->active_rescuers_id;
         }
     }
