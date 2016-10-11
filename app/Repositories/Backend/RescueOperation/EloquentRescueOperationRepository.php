@@ -110,7 +110,7 @@ class EloquentRescueOperationRepository {
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
                 $result = curl_exec($ch);
-               // echo $result;
+                echo $result;
                 // Close connection
                 curl_close($ch);
             } else {
