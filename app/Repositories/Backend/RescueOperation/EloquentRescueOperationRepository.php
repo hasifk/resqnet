@@ -121,7 +121,7 @@ class EloquentRescueOperationRepository {
                 
             }
         }
-        //return $result;
+       // return $fields;
     }
 
     public function emergencyContacts($id) {
