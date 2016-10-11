@@ -65,7 +65,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
             $obj->notification = $request->notification;
             $obj->save();
             $message = $request->notification;
-            return $this->notification($app_id, $message);
+            $this->notification($app_id, $message);
         }
     }
 
