@@ -186,30 +186,29 @@ class EloquentRescueOperationRepository {
     }
 
     public function rescuersResponse($request) {
-        return ActiveRescuer::where('id', $request->active_rescuers_id)->value('status');
-//        if (ActiveRescuer::where('id', $request->active_rescuers_id)->value('status') == 1) {
-//            $operation = $this->findOperation($request->active_rescuers_id);
-//            if (empty($operation)):
-//                $obj = new Operation;
-//                $obj->active_rescuers_id = $request->active_rescuers_id;
-//                $obj->rescuer_id = $request->rescuer_id;
-//                $obj->save();
-//                $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id)->value('rescuee_id');
-//                $user = User::find($request->rescuer_id);
-//                $message['message'] = $user->firstname . " " . $user->lastname . " Accepted Your Request";
-//                $message['id'] = $request->active_rescuers_id;
-//                $message['to'] = "User";
-//                $user = User::find($rescuee_id);
-//            else:
-//                $user = User::find($request->rescuer_id);
-//                $message['message'] = "Another Rescuer Accepted this request";
-//                $message['id'] = $request->active_rescuers_id;
-//                $message['to'] = "Rescuer";
-//            endif;
-//            $app_id['app_id'][] = $user->app_id;
-//            $app_id['device_type'][] = $user->device_type;
-//            $this->notification($app_id, $message);
-//            return $request->active_rescuers_id;
+      //  if (ActiveRescuer::where('id', $request->active_rescuers_id)->value('status') == 1) {
+            $operation = $this->findOperation($request->active_rescuers_id);
+            if (empty($operation)):
+                $obj = new Operation;
+                $obj->active_rescuers_id = $request->active_rescuers_id;
+                $obj->rescuer_id = $request->rescuer_id;
+                $obj->save();
+                $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id)->value('rescuee_id');
+                $user = User::find($request->rescuer_id);
+                $message['message'] = $user->firstname . " " . $user->lastname . " Accepted Your Request";
+                $message['id'] = $request->active_rescuers_id;
+                $message['to'] = "User";
+                $user = User::find($rescuee_id);
+            else:
+                $user = User::find($request->rescuer_id);
+                $message['message'] = "Another Rescuer Accepted this request";
+                $message['id'] = $request->active_rescuers_id;
+                $message['to'] = "Rescuer";
+            endif;
+            $app_id['app_id'][] = $user->app_id;
+            $app_id['device_type'][] = $user->device_type;
+            $this->notification($app_id, $message);
+            return $request->active_rescuers_id;
 //        }
 //        else {
 //            $user = User::find($request->rescuer_id);
