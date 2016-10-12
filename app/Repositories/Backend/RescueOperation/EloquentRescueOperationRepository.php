@@ -98,7 +98,7 @@ class EloquentRescueOperationRepository {
 
                 $headers = array
                     (
-                    'Authorization: key=' . 'AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ',
+                    'Authorization: key=' . 'AIzaSyAGZBGxFkYAE6ePXK2HfEwgnt5PUvy9CqQ',
                     'Content-Type: application/json'
                 );
                 $ch = curl_init();
@@ -184,7 +184,7 @@ class EloquentRescueOperationRepository {
     }
 
     public function rescuersResponse($request) {
-        if (ActiveRescuer::where('id', $request->active_rescuers_id)->value('status') == 1) {
+        if (trim(ActiveRescuer::where('id', $request->active_rescuers_id)->value('status')) === 1) {
             $operation = $this->findOperation($request->active_rescuers_id);
             if (empty($operation)):
                 $obj = new Operation;
