@@ -97,7 +97,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                 );
                 $headers = array
                     (
-                    'Authorization: key=AIzaSyA9xWs-8qlUpgEk02Np53EcwziS2ObmkHo',
+                    'Authorization: key=AIzaSyDbP0Qf-XcHQqUQ7idGG0rPIScnKB3KnQ0',
                     'Content-Type: application/json'
                 );
                 $ch = curl_init();
