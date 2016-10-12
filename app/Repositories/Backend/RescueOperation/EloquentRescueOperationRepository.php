@@ -116,6 +116,7 @@ class EloquentRescueOperationRepository {
                 
             }
         }
+        //return $fields;
     }
 
     public function emergencyContacts($id) {
@@ -184,38 +185,45 @@ class EloquentRescueOperationRepository {
     }
 
     public function rescuersResponse($request) {
-        if (trim(ActiveRescuer::where('id', $request->active_rescuers_id)->value('status')) == 1) {
+        $status = ActiveRescuer::where('id', $request->active_rescuers_id)->first();
+        if (!empty($status) && $status->status == 1) {
             $operation = $this->findOperation($request->active_rescuers_id);
             if (empty($operation)):
                 $obj = new Operation;
                 $obj->active_rescuers_id = $request->active_rescuers_id;
                 $obj->rescuer_id = $request->rescuer_id;
                 $obj->save();
-                $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id)->value('rescuee_id');
+                $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id);
                 $user = User::find($request->rescuer_id);
                 $message['message'] = $user->firstname . " " . $user->lastname . " Accepted Your Request";
                 $message['id'] = $request->active_rescuers_id;
                 $message['to'] = "User";
-                $user = User::find($rescuee_id);
+                $user = User::find($rescuee_id->rescuee_id);
+                $app_id['app_id'][] = $user->app_id;
+                $app_id['device_type'][] = $user->device_type;
+                $this->notification($app_id, $message);
+                return $request->active_rescuers_id;
             else:
                 $user = User::find($request->rescuer_id);
                 $message['message'] = "Another Rescuer Accepted this request";
                 $message['id'] = $request->active_rescuers_id;
                 $message['to'] = "Rescuer";
+                $app_id['app_id'][] = $user->app_id;
+                $app_id['device_type'][] = $user->device_type;
+                $this->notification($app_id, $message);
+                return $request->active_rescuers_id;
             endif;
-            $app_id['app_id'][] = $user->app_id;
-            $app_id['device_type'][] = $user->device_type;
-            $this->notification($app_id, $message);
-            return $request->active_rescuers_id;
         }
-        else {
+        else if (empty($status)) {
+            return 'Error';
+        } else {
             $user = User::find($request->rescuer_id);
             $message['message'] = "This Request has been Cancelled by the User";
             $message['id'] = $request->active_rescuers_id;
             $message['to'] = "Rescuer";
             $app_id['app_id'][] = $user->app_id;
             $app_id['device_type'][] = $user->device_type;
-            $this->notification($app_id, $message);
+            return $this->notification($app_id, $message);
             return $request->active_rescuers_id;
         }
     }
