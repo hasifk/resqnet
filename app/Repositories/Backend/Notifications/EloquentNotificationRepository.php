@@ -97,22 +97,21 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                 );
                 $headers = array
                     (
-                    'Authorization: key=AIzaSyDxUtj_5D1XdkfyJjVOYqvSfRqoGcz9Jl8',
+                    'Authorization: key=AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ',
                     'Content-Type: application/json'
                 );
                 $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+                curl_setopt($ch, CURLOPT_URL, 'https://android.googleapis.com/gcm/send');
                 curl_setopt($ch, CURLOPT_POST, true);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
                 $result = curl_exec($ch);
-
+               
                 // Close connection
                 curl_close($ch);
-                // echo $result;
+               // echo $result;
             } else {
                 
             }
