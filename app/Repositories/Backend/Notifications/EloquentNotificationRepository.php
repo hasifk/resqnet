@@ -97,7 +97,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                 );
                 $headers = array
                     (
-                    'Authorization: key=AIzaSyDbP0Qf-XcHQqUQ7idGG0rPIScnKB3KnQ0',
+                    'Authorization: key=AIzaSyDxUtj_5D1XdkfyJjVOYqvSfRqoGcz9Jl8',
                     'Content-Type: application/json'
                 );
                 $ch = curl_init();
@@ -105,6 +105,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                 curl_setopt($ch, CURLOPT_POST, true);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
                 $result = curl_exec($ch);
