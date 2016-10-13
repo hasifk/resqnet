@@ -28,4 +28,18 @@ class UserGroupsController extends Controller {
         return view('backend.operations.index', $view);
     }
 
+    public function setAdministrator() {
+        $view = [
+            'operations' => $this->operation->getOperations(),
+        ];
+        return view('backend.operations.index', $view);
+    }
+
+    public function postNewsFeed() {
+        $view = [
+            'operations' => $this->operation->getOperations(),
+        ];
+        return view('backend.operations.index', $view);
+    }
+
 }
