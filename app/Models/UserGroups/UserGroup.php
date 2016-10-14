@@ -1,6 +1,7 @@
 <?php
 namespace App\Models\UserGroups;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\UserGroups\Traits\Attribute\UserGroupAttribute;
 
 
 
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserGroup extends Model
 {
 
-//use NewsfeedAttribute;
+use UserGroupAttribute;
 
     /**
      * The attributes that are not mass assignable.
