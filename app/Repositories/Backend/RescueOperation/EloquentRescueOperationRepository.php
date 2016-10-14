@@ -33,7 +33,6 @@ class EloquentRescueOperationRepository {
                     }
                 }
             }
-
             $rescuee = User::find($userid);
             $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . " Reqested an Emergency(" . $result->emergency_type . ")";
             if (!empty($contacts = $this->emergencyContacts($userid)))
@@ -65,18 +64,18 @@ class EloquentRescueOperationRepository {
     }
 
     public function rescueeOperationCancel($request) {
-        $obj = ActiveRescuer::find($obj->panicid);
-        $obj->status=0;
+        $obj = ActiveRescuer::find($request->panicid);
+        $obj->status = 0;
         $obj->save();
     }
 
     public function notification($app_id, $message) {
-        // API access key from Google API's Console
-        // define('API_ACCESS_KEY', 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ');
+// API access key from Google API's Console
+// define('API_ACCESS_KEY', 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ');
         foreach ($app_id['device_type'] as $key => $device) {
-            // $ar[]=array($app_id['app_id'][$key]);
+// $ar[]=array($app_id['app_id'][$key]);
             if ($device == 'Android') {
-                // prep the bundle
+// prep the bundle
 
                 $msg = array
                     (
@@ -99,7 +98,7 @@ class EloquentRescueOperationRepository {
 
                 $headers = array
                     (
-                    'Authorization: key=' . 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ',
+                    'Authorization: key=' . 'AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ',
                     'Content-Type: application/json'
                 );
                 $ch = curl_init();
@@ -110,13 +109,14 @@ class EloquentRescueOperationRepository {
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
                 $result = curl_exec($ch);
-                //echo $result;
-                // Close connection
+//echo $result;
+// Close connection
                 curl_close($ch);
             } else {
                 
             }
         }
+        //return $fields;
     }
 
     public function emergencyContacts($id) {
@@ -141,7 +141,7 @@ class EloquentRescueOperationRepository {
         return $app_id;
     }
 
-    //for getting all active users
+//for getting all active users
     public function rescuerOperationDetails($active_rescuers_id) {
         $details = ActiveRescuer::join('users', 'activerescuers.rescuee_id', '=', 'users.id')
                         ->join('locations', 'activerescuers.rescuee_id', '=', 'locations.user_id')
@@ -185,36 +185,54 @@ class EloquentRescueOperationRepository {
     }
 
     public function rescuersResponse($request) {
-        $operation = $this->findOperation($request->active_rescuers_id);
-        if (empty($operation)):
-            $obj = new Operation;
-            $obj->active_rescuers_id = $request->active_rescuers_id;
-            $obj->rescuer_id = $request->rescuer_id;
-            $obj->save();
-            $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id)->value('rescuee_id');
+        $status = ActiveRescuer::where('id', $request->active_rescuers_id)->first();
+        if (!empty($status) && $status->status == 1) {
+            $operation = $this->findOperation($request->active_rescuers_id);
+            if (empty($operation)):
+                $obj = new Operation;
+                $obj->active_rescuers_id = $request->active_rescuers_id;
+                $obj->rescuer_id = $request->rescuer_id;
+                $obj->save();
+                $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id);
+                $user = User::find($request->rescuer_id);
+                $message['message'] = $user->firstname . " " . $user->lastname . " Accepted Your Request";
+                $message['id'] = $request->active_rescuers_id;
+                $message['to'] = "User";
+                $user = User::find($rescuee_id->rescuee_id);
+                $app_id['app_id'][] = $user->app_id;
+                $app_id['device_type'][] = $user->device_type;
+                $this->notification($app_id, $message);
+                return $request->active_rescuers_id;
+            else:
+                $user = User::find($request->rescuer_id);
+                $message['message'] = "Another Rescuer Accepted this request";
+                $message['id'] = $request->active_rescuers_id;
+                $message['to'] = "Rescuer";
+                $app_id['app_id'][] = $user->app_id;
+                $app_id['device_type'][] = $user->device_type;
+                $this->notification($app_id, $message);
+                return $request->active_rescuers_id;
+            endif;
+        }
+        else if (empty($status)) {
+            return 'Error';
+        } else {
             $user = User::find($request->rescuer_id);
-            $message['message'] = $user->firstname . " " . $user->lastname . " Accepted Your Request";
-            $message['id'] = $request->active_rescuers_id;
-            $message['to'] = "User";
-            $user = User::find($rescuee_id);
-        else:
-            $user = User::find($request->rescuer_id);
-            $message['message'] = "Another Rescuer Accepted this request";
+            $message['message'] = "This Request has been Cancelled by the User";
             $message['id'] = $request->active_rescuers_id;
             $message['to'] = "Rescuer";
-        endif;
-        $app_id['app_id'][] = $user->app_id;
-        $app_id['device_type'][] = $user->device_type;
-
-        $this->notification($app_id, $message);
-        return $request->active_rescuers_id;
+            $app_id['app_id'][] = $user->app_id;
+            $app_id['device_type'][] = $user->device_type;
+             $this->notification($app_id, $message);
+            return $request->active_rescuers_id;
+        }
     }
 
     public function distanceCalculation($point1_lat, $point1_long, $point2_lat, $point2_long, $unit = 'km', $decimals = 2) {
-        // Calculate the distance in degrees
+// Calculate the distance in degrees
         $degrees = rad2deg(acos((sin(deg2rad($point1_lat)) * sin(deg2rad($point2_lat))) + (cos(deg2rad($point1_lat)) * cos(deg2rad($point2_lat)) * cos(deg2rad($point1_long - $point2_long)))));
 
-        // Convert the distance in degrees to the chosen unit (kilometres, miles or nautical miles)
+// Convert the distance in degrees to the chosen unit (kilometres, miles or nautical miles)
         $distance = $degrees * 111.13384; // 1 degree = 111.13384 km, based on the average diameter of the Earth (12,735 km)
 
         return round($distance, $decimals);

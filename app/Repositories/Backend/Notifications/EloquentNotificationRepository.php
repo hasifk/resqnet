@@ -65,10 +65,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
             $obj->notification = $request->notification;
             $obj->save();
             $message = $request->notification;
-
-
-
-            return $this->notification($app_id, $message);
+            $this->notification($app_id, $message);
         }
     }
 
@@ -100,7 +97,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                 );
                 $headers = array
                     (
-                    'Authorization: key=' . 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ',
+                    'Authorization: key=AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ',
                     'Content-Type: application/json'
                 );
                 $ch = curl_init();
@@ -111,9 +108,10 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
                 $result = curl_exec($ch);
-                //echo $result;
+               
                 // Close connection
                 curl_close($ch);
+               // echo $result;
             } else {
                 
             }
