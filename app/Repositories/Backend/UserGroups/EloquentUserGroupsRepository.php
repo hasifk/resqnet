@@ -22,7 +22,6 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     public function userGroup($request) {
         return UserGroup::find($request->group_id);
     }
-
     public function CreateUserGroups($request) {
         if ($request->has('id')):
             $obj = UserGroup::find($request->id);
