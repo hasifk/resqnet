@@ -14,9 +14,9 @@ interface UserGroupsRepositoryContract {
      */
     //public function find($id);
 
-    public function userGroups($request);
+    public function userGroups();
 
-    public function CreateUserGroups();
+    public function CreateUserGroups($request);
 
     public function setAdministrator();
 

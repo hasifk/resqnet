@@ -4,6 +4,7 @@ namespace App\Repositories\Backend\UserGroups;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Backend\RescueOperation\AdminOperationRepositoryContract;
+use App\Models\UserGroups\UserGroup;
 
 class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
 
@@ -14,18 +15,15 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         $this->operation = $operation;
     }
 
-    public function userGroups($request) {
+    public function userGroups() {
         $view = [
             'operations' => $this->operation->getOperations(),
         ];
         return view('backend.operations.index', $view);
     }
 
-    public function CreateUserGroups() {
-        $view = [
-            'operations' => $this->operation->getOperations(),
-        ];
-        return view('backend.operations.index', $view);
+    public function CreateUserGroups($request) {
+        
     }
 
     public function setAdministrator() {

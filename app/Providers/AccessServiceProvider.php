@@ -117,6 +117,10 @@ class AccessServiceProvider extends ServiceProvider
             \App\Repositories\Backend\Notifications\NotificationRepositoryContract::class,
             \App\Repositories\Backend\Notifications\EloquentNotificationRepository::class
         );
+        $this->app->bind(
+            \App\Repositories\Backend\UserGroups\UserGroupsRepositoryContract::class,
+            \App\Repositories\Backend\UserGroups\EloquentUserGroupsRepository::class
+        );
 
     }
 

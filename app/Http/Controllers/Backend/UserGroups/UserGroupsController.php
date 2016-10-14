@@ -7,37 +7,37 @@ use App\Repositories\Backend\UserGroups\UserGroupsRepositoryContract;
 
 class UserGroupsController extends Controller {
 
-    private $operation;
+    private $groups;
 
-    public function __construct(UserGroupsRepositoryContract $operation) {
+    public function __construct(UserGroupsRepositoryContract $groups) {
 
-        $this->operation = $operation;
+        $this->groups = $groups;
     }
 
     public function userGroups() {
         $view = [
-            'operations' => $this->operation->userGroups($request),
+            'operations' => $this->groups->userGroups(),
         ];
         return view('backend.operations.index', $view);
     }
 
-    public function CreateUserGroups() {
+    public function CreateUserGroups(Request $request) {
         $view = [
-            'operations' => $this->operation->CreateUserGroups(),
+            'operations' => $this->groups->CreateUserGroups($request),
         ];
         return view('backend.operations.index', $view);
     }
 
     public function setAdministrator() {
         $view = [
-            'operations' => $this->operation->setAdministrator(),
+            'operations' => $this->groups->setAdministrator(),
         ];
         return view('backend.operations.index', $view);
     }
 
     public function postNewsFeed() {
         $view = [
-            'operations' => $this->operation->postNewsFeed($request),
+            'operations' => $this->groups->postNewsFeed($request),
         ];
         return view('backend.operations.index', $view);
     }
