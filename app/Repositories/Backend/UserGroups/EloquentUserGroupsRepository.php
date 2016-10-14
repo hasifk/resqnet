@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Backend\UserGroups;
+namespace App\Repositories\Backend\UserGroups;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Backend\UserGroups\UserGroupsRepositoryContract;
+use App\Repositories\Backend\RescueOperation\AdminOperationRepositoryContract;
 
-class UserGroupsController extends Controller {
+class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
 
     private $operation;
 
@@ -14,7 +14,7 @@ class UserGroupsController extends Controller {
         $this->operation = $operation;
     }
 
-    public function userGroups() {
+    public function userGroups($request) {
         $view = [
             'operations' => $this->operation->getOperations(),
         ];
@@ -35,7 +35,7 @@ class UserGroupsController extends Controller {
         return view('backend.operations.index', $view);
     }
 
-    public function postNewsFeed() {
+    public function postNewsFeed($request) {
         $view = [
             'operations' => $this->operation->getOperations(),
         ];
