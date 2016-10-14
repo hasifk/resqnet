@@ -19,11 +19,15 @@ class UserGroupsController extends Controller {
         return response()->json(['details' => $this->groups->userGroups($request)]);
     }
 
+    public function userGroup(Request $request) {
+        return response()->json(['details' => $this->groups->userGroup($request)]);
+    }
+
     public function CreateUserGroups(Request $request) {
-        
-         $this->groups->CreateUserGroups($request);
-      
-      return response()->json(['operation' => "success"]);
+
+        $this->groups->CreateUserGroups($request);
+
+        return response()->json(['operation' => "success"]);
     }
 
     public function setAdministrator() {
