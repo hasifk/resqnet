@@ -16,16 +16,22 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function userGroups($request) {
-        return UserGroup::where('user_id',$request->user_id)->get();
+        return UserGroup::where('user_id', $request->user_id)->get();
     }
+
     public function userGroup($request) {
         return UserGroup::find($request->group_id);
     }
+
     public function CreateUserGroups($request) {
-        $obj=new UserGroup;
-        $obj->user_id=$request->user_id;
-        $obj->name=$request->name;
-        $obj->gp_pin=$request->gp_pin;
+        if ($request->has('id')):
+            $obj = UserGroup::find($request->id);
+        else:
+            $obj = new UserGroup;
+            $obj->user_id = $request->user_id;
+        endif;
+        $obj->name = $request->name;
+        $obj->gp_pin = $request->gp_pin;
         //$obj->user_id=$request->user_id;
         //$obj->user_id=$request->user_id;
         $obj->save();
