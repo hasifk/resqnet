@@ -14,8 +14,8 @@ class GroupMembersTable extends Migration
     {
         Schema::create('group_members', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned()->unique();
-            $table->integer('group_id')->unsigned()->unique();
+            $table->integer('user_id')->unsigned();
+            $table->integer('group_id')->unsigned();
             $table->boolean('role')->default(false);
             $table->timestamps();
             $table->foreign('user_id')
