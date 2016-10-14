@@ -14,7 +14,7 @@ class UserGroupTable extends Migration
     {
         Schema::create('user_group', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned()->unique();
+            $table->integer('user_id')->unsigned();
             $table->string('name');
             $table->string('gp_image_filename');
             $table->string('gp_image_extension');
