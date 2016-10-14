@@ -15,10 +15,7 @@ class UserGroupsController extends Controller {
     }
 
     public function userGroups() {
-        $view = [
-            'operations' => $this->groups->userGroups(),
-        ];
-        return view('backend.operations.index', $view);
+        return response()->json(['details' => $this->groups->userGroups()]);
     }
 
     public function CreateUserGroups(Request $request) {

@@ -15,11 +15,8 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         $this->operation = $operation;
     }
 
-    public function userGroups() {
-        $view = [
-            'operations' => $this->operation->getOperations(),
-        ];
-        return view('backend.operations.index', $view);
+    public function userGroups($id) {
+        return UserGroup::find($id);
     }
 
     public function CreateUserGroups($request) {
