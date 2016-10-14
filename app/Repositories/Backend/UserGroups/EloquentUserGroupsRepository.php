@@ -23,7 +23,13 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function CreateUserGroups($request) {
-        
+        $obj=new UserGroup;
+        $obj->user_id=$request->user_id;
+        $obj->name=$request->name;
+        $obj->gp_pin=$request->gp_pin;
+        //$obj->user_id=$request->user_id;
+        //$obj->user_id=$request->user_id;
+        $obj->save();
     }
 
     public function setAdministrator() {

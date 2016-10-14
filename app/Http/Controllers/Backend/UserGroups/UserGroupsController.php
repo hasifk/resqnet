@@ -22,10 +22,10 @@ class UserGroupsController extends Controller {
     }
 
     public function CreateUserGroups(Request $request) {
-        $view = [
-            'operations' => $this->groups->CreateUserGroups($request),
-        ];
-        return view('backend.operations.index', $view);
+        
+         $this->groups->CreateUserGroups($request);
+      
+      return response()->json(['operation' => "success"]);
     }
 
     public function setAdministrator() {
