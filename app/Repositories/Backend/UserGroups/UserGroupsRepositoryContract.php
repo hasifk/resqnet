@@ -20,9 +20,13 @@ interface UserGroupsRepositoryContract {
 
     public function CreateUserGroups($request);
 
-    public function setAdministrator();
+    public function setAdministrator($request);
+    
+    public function addMembers($request);
 
     public function postNewsFeed($request);
+    
+     public function viewMembers($request);
 
     //public function getAmountOfNewsfeeds();
     //public function getNewsfeedAmount($request);

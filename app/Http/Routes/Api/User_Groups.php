@@ -3,6 +3,8 @@ $api->post('/usergroups', 'App\Http\Controllers\Backend\UserGroups\UserGroupsCon
 $api->post('/creategroup', 'App\Http\Controllers\Backend\UserGroups\UserGroupsController@CreateUserGroups')->name('user.groups.index');
 $api->post('/usergroup', 'App\Http\Controllers\Backend\UserGroups\UserGroupsController@userGroup')->name('user.groups.index');
 $api->post('/setadministrator', 'App\Http\Controllers\Backend\UserGroups\UserGroupsController@setAdministrator')->name('user.groups.index');
+$api->post('/addmembers', 'App\Http\Controllers\Backend\UserGroups\UserGroupsController@addMembers')->name('user.groups.index');
+$api->post('/viewmembers', 'App\Http\Controllers\Backend\UserGroups\UserGroupsController@viewMembers')->name('user.groups.index');
 $api->post('/postnewsfeed', 'App\Http\Controllers\Backend\UserGroups\UserGroupsController@postNewsFeed')->name('user.groups.index');
 //$api->post('/rescueoperations', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@rescuerOperationDetails')->name('rescuer.operation.index');
 //$api->post('/rescueroperation', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@rescuerOperationResponse')->name('rescuer.operation.index');

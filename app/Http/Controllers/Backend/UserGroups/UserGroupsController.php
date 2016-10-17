@@ -30,18 +30,32 @@ class UserGroupsController extends Controller {
         return response()->json(['operation' => "success"]);
     }
 
-    public function setAdministrator() {
+    public function setAdministrator(Request $request) {
         $view = [
-            'operations' => $this->groups->setAdministrator(),
+            'operations' => $this->groups->setAdministrator($request),
         ];
-        return view('backend.operations.index', $view);
+        return response()->json(['operation' => "success"]);
+    }
+
+    public function addMembers(Request $request) {
+        $view = [
+            'operations' => $this->groups->addMembers($request),
+        ];
+        return response()->json(['operation' => "success"]);
     }
 
     public function postNewsFeed() {
         $view = [
             'operations' => $this->groups->postNewsFeed($request),
         ];
-        return view('backend.operations.index', $view);
+        return response()->json(['operation' => "success"]);
+    }
+    
+    public function viewMembers() {
+        $view = [
+            'operations' => $this->groups->viewMembers($request),
+        ];
+        return response()->json(['operation' => "success"]);
     }
 
 }
