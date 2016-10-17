@@ -46,8 +46,8 @@
             <li class="{{ Active::pattern('admin/rescure_departments/*') }}">
                 <a href="{{route('backend.admin.rescure_departments')}}"><span>Department</span></a>
             </li>
-            <li class="{{ Active::pattern('admin/department/*') }}">
-                <a href="{{route('backend.admin.rescue_operations')}}"><span>User Groups</span></a>
+            <li class="{{ Active::pattern('admin/usergroup/*') }}">
+                <a href="{{route('user.groups.viewgroups')}}"><span>User Groups</span></a>
             </li>
             <li class="{{ Active::pattern('admin/department/*') }}">
                 <a href="{{route('backend.admin.rescue_operations')}}"><span>Operations</span></a>
