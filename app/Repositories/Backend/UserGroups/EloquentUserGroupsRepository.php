@@ -74,7 +74,6 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
      public function viewMembers($request) {
         return Member::join('user_group','group_members.group_id','user_group.id')
                 ->join('users','group_members.user_id','users.id')
-                ->where('user_group.user_id',$request);
+                ->where('user_group.user_id',$request)->get();
     }
-
 }
