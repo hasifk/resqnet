@@ -61,7 +61,7 @@ class ProfileController extends Controller {
 
     public function getAvatar($id, $image) {
         try {
-            $img = \Image::make(storage_path() . '/app/public/profile/avatar/' . $id . '/' . $image)->orientate()->response();
+            $img = \Image::make(storage_path() . '/app/public/profile/avatar/' . $id . '/' . $image)->response();
         } catch (\Exception $e) {
             return response()->json(['status' => "Image not found"]);
         }
