@@ -152,7 +152,7 @@ class NewsfeedController extends Controller {
     {
         try
         {
-            $img = \Image::make(storage_path() . '/app/public/newsfeed/image/'.$id.'/' . $image)->response();
+            $img = \Image::make(storage_path() . '/app/public/newsfeed/image/'.$id.'/' . $image)->orientate()->response();
         }
         catch(\Exception $e)
         {
