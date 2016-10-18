@@ -34,6 +34,7 @@ trait UserGroupAttribute {
 
                 foreach (config('image.customized.gp_image') as $image) {
                     $newsfeed_image = \Image::make($avatar);
+                    $newsfeed_image->orientate();
                     $newsfeed_image->resize($image['width'], $image['height'])->save(storage_path('app/' . $filePath . $file_name . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension()));
                     Storage::put($filePath . $file_name . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension(), file_get_contents(storage_path('app/' . $filePath . $file_name . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension())));
                     Storage::setVisibility($filePath . $file_name . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension(), 'public');
@@ -46,7 +47,7 @@ trait UserGroupAttribute {
         endif;
     }
 
-    public function detachNewsfeedImage() {
+    public function detachUserGroupImage() {
         if ($this->gp_image_filename && $this->gp_image_extension && $this->gp_image_path) {
 
             foreach (config('image.customized.newsfeed_image') as $image) {

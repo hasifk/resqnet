@@ -40,6 +40,13 @@ return array(
              ],
 
          ],
+         'gp_image' => [
+             [
+                 'height' => 90,
+                 'width'  => 90,
+             ],
+
+         ],
 
 
 ]
