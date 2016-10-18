@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
             $table->string('displayname');
             $table->string('jurisdiction');
             $table->integer('rescuer_type_id')->unsigned();
-            $table->integer('dept_id')->unsigned();
+            $table->string('dept_name');
             $table->string('email')->unique();
             $table->string('password')->nullable();
             $table->string('avatar_filename');
