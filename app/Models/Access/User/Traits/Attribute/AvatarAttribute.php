@@ -34,7 +34,7 @@ trait AvatarAttribute {
 
         foreach (config('image.customized.profile_avatar') as $image) {
             $avatar_image= \Image::make($avatar);
-            $avatar_image>orientate();
+            $avatar_image->orientate();
             $avatar_image->resize($image['width'], $image['height'])->save(storage_path('app/' . $filePath . $file_name . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension()));
             Storage::put($filePath . $file_name . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension(), file_get_contents(storage_path('app/' . $filePath . $file_name . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension())));
             Storage::setVisibility($filePath . $file_name. $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension(), 'public');
