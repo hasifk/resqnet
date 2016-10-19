@@ -25,7 +25,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function userGroup($id) {
-        return UserGroup::find($id)->orderBy('id', 'desc');
+        return UserGroup::find($id);
     }
 
     public function totalMembers($id) {
