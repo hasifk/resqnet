@@ -45,16 +45,20 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $obj = new UserGroup;
             $obj->user_id = $request->user_id;
         endif;
+        if ($request->has('name'))
         $obj->name = $request->name;
+        if ($request->has('gp_pin'))
         $obj->gp_pin = $request->gp_pin;
         $obj->save();
         $obj->attachUserGroupImage($request->avatar);
 
+        if (!$request->has('id')):
         $obj1 = new Member;
         $obj1->user_id = $request->user_id;
         $obj1->group_id = $obj->id;
         $obj1->role = 1;
         $obj1->save();
+        endif;
     }
 
     public function setAdministrator($request) {
