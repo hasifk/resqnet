@@ -49,6 +49,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         $obj->name = $request->name;
         if ($request->has('gp_pin'))
         $obj->gp_pin = $request->gp_pin;
+        if ($request->has('name') && $request->has('gp_pin'))
         $obj->save();
         
         $obj->attachUserGroupImage($request->avatar);
