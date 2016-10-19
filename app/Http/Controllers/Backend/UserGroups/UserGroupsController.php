@@ -21,14 +21,14 @@ class UserGroupsController extends Controller {
 
     public function userGroup(Request $request) {
         $lists = $this->groups->userGroup($request->group_id);
-        if (count($lists) > 0):
-            foreach ($lists as $key => $value) {
-                if ($lists[$key]['gp_image_filename'] && $lists[$key]['gp_image_extension'] && $lists[$key]['gp_image_path']) {
+      
+          
+                if ($lists['gp_image_filename'] && $lists['gp_image_extension'] && $lists['gp_image_path']) {
 
-                    $lists[$key]['gp_image_src'] = url('/gp_image/' . $lists[$key]['id'] . '/' . $lists[$key]['gp_image_filename'] . '300x168.' . $lists[$key]['gp_image_extension']);
+                    $lists['gp_image_src'] = url('/gp_image/' . $lists['id'] . '/' . $lists['gp_image_filename'] . '300x168.' . $lists['gp_image_extension']);
                 }
-            }
-        endif;
+         //   }
+       // endif;
         return response()->json(['details' => $lists]);
     }
 
