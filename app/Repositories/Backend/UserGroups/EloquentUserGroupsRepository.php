@@ -17,15 +17,15 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function userGroups($request, $paginate) {
-        return UserGroup::where('user_id', $request->user_id)->paginate($paginate);
+        return UserGroup::where('user_id', $request->user_id)->orderBy('id','DESC')->paginate($paginate);
     }
 
     public function userGrouplists() {
-        return UserGroup::paginate(20);
+        return UserGroup::paginate(20)->orderBy('id','DESC');
     }
 
     public function userGroup($id) {
-        return UserGroup::find($id);
+        return UserGroup::find($id)->orderBy('id','DESC');
     }
 
     public function totalMembers($id) {
@@ -35,7 +35,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     public function userGroupdetails($id) {
         return UserGroup::join('group_members','user_group.id','=','group_members.group_id')
                         ->join('users', 'group_members.user_id', 'users.id')->select('user_group.*','users.firstname','users.lastname','group_members.user_id')
-                        ->where('user_group.user_id', $id)->get();
+                        ->where('user_group.user_id', $id)->orderBy('user_group.id','DESC')->get();
     }
 
     public function CreateUserGroups($request) {
@@ -48,13 +48,13 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         $obj->name = $request->name;
         $obj->gp_pin = $request->gp_pin;
         $obj->save();
-        $obj->attachUserGroupImage($request->gp_img);
+        $obj->attachUserGroupImage($request->avatar);
 
         $obj1 = new Member;
         $obj1->user_id = $request->user_id;
         $obj1->group_id = $obj->id;
         $obj1->role = 1;
-        $obj->save();
+        $obj1->save();
     }
 
     public function setAdministrator($request) {
