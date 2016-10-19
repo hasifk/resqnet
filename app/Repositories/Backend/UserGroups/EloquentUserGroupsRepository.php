@@ -16,12 +16,26 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         $this->operation = $operation;
     }
 
-    public function userGroups($request) {
-        return UserGroup::where('user_id', $request->user_id)->get();
+    public function userGroups($request, $paginate) {
+        return UserGroup::where('user_id', $request->user_id)->paginate($paginate);
     }
 
-    public function userGroup($request) {
-        return UserGroup::find($request->group_id);
+    public function userGrouplists() {
+        return UserGroup::paginate(20);
+    }
+
+    public function userGroup($id) {
+        return UserGroup::find($id);
+    }
+
+    public function totalMembers($id) {
+        return Member::where('group_id',$id)->count();
+    }
+    
+    public function userGroupdetails($id) {
+        return UserGroup::join('group_members','user_group.id','=','group_members.group_id')
+                        ->join('users', 'group_members.user_id', 'users.id')->select('user_group.*','users.firstname','users.lastname','group_members.user_id')
+                        ->where('user_group.user_id', $id)->get();
     }
 
     public function CreateUserGroups($request) {
@@ -70,10 +84,10 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         ];
         return view('backend.operations.index', $view);
     }
-    
-     public function viewMembers($request) {
-        return Member::join('user_group','group_members.group_id','user_group.id')
-                ->join('users','group_members.user_id','users.id')
-                ->where('user_group.user_id',$request)->get();
+
+    public function viewMembers($id) {
+        return Member::join('users', 'group_members.user_id', 'users.id')
+                        ->where('user_group.user_id', $id)->select('')->get();
     }
+
 }

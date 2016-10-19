@@ -42,6 +42,7 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'middleware' => 'ad
     require (__DIR__ . '/Routes/Backend/Notifications.php');
     require (__DIR__ . '/Routes/Backend/Statistics.php');
     require (__DIR__ . '/Routes/Backend/LogViewer.php');
+    require (__DIR__ . '/Routes/Backend/User_Groups.php');
 });
 
 

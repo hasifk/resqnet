@@ -16,11 +16,11 @@ class UserGroupsController extends Controller {
     }
 
     public function userGroups(Request $request) {
-        return response()->json(['details' => $this->groups->userGroups($request)]);
+        return response()->json(['details' => $this->groups->userGroups($request,10)]);
     }
 
     public function userGroup(Request $request) {
-        return response()->json(['details' => $this->groups->userGroup($request)]);
+        return response()->json(['details' => $this->groups->userGroup($request->group_id)]);
     }
 
     public function CreateUserGroups(Request $request) {

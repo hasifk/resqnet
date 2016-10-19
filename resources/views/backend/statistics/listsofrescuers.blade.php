@@ -114,7 +114,8 @@
                                         $f = 1;
                                     foreach ($lists as $list):
                                         ?>
-                                        <tr><th>{{$f++}}</th>
+                                        <tr>
+                                            <th>{{$f++}}</th>
                                             <td>
 
                                                 <a href="{{route('admin.access.user.shows',$list->rescuee_id)}}"> {{ $list->rescuee_details->firstname.' '.$list->rescuee_details->lastname }} </a>

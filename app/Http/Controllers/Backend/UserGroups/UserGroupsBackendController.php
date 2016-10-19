@@ -15,18 +15,26 @@ class UserGroupsBackendController extends Controller {
         $this->groups = $groups;
     }
 
-    public function userGroups(Request $request) {
+    public function userGroups() {
+        $lists = $this->groups->userGrouplists();
+        foreach ($lists as $key => $value) {
+            $lists[$key]['amount'] = $this->groups->totalMembers($value->id);
+        }
         $view = [
-            'newsfeeds' => $this->groups->userGroups($request)
+            'usergroups' => $lists
         ];
-        return view('backend.newsfeed.index_new', $view);
+        return view('backend.UserGroups.index', $view);
     }
 
-    public function userGroup(Request $request) {
+    public function userGroup($id) {
+        $lists = $this->groups->userGroup($id);
+        foreach ($lists as $key => $value) {
+            $lists[$key]['members'] = $this->groups->viewMembers($value->id);
+        }
         $view = [
-            'newsfeeds' => $this->groups->userGroup($request)
+            'usergroups' => $this->groups->userGroup($id),
         ];
-        return view('backend.newsfeed.index_new', $view);
+        return view('backend.UserGroups.show', $view);
     }
 
     public function CreateUserGroups(Request $request) {
