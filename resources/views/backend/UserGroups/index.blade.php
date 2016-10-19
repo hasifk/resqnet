@@ -76,7 +76,7 @@
 
                                             </td>
                                             <td>
-                                                <a href="{{route('admin.access.user.shows',$groups->id)}}"> {{ $groups->name }} </a>
+                                               <img src="{{ $groups->gp_image_src }}" width="25" height="25">
                                             </td>
                                             <td>
                                                 {{$groups->amount}}

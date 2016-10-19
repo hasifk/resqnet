@@ -45,6 +45,10 @@ return array(
                  'height' => 90,
                  'width'  => 90,
              ],
+            [
+            'height' =>168,
+            'width'  => 300,
+        ],
 
          ],
 

@@ -57,5 +57,18 @@ class UserGroupsController extends Controller {
         ];
         return response()->json(['operation' => "success"]);
     }
+    public function getImage($id,$image)
+    {
+        try
+        {
+            $img = \Image::make(storage_path() . '/app/public/UserGroup/image/'.$id.'/' . $image)->orientate()->response();
+        }
+        catch(\Exception $e)
+        {
+            return response()->json(['status' => "Image not found"]);
+        }
+        return $img;
+
+    }
 
 }

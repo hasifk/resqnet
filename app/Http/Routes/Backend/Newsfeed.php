@@ -1,5 +1,4 @@
 <?php
-
 Route::group([
     'namespace'  => 'Newsfeed',
 ], function() {
