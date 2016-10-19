@@ -16,11 +16,20 @@ class UserGroupsController extends Controller {
     }
 
     public function userGroups(Request $request) {
-        return response()->json(['details' => $this->groups->userGroups($request,10)]);
+        return response()->json(['details' => $this->groups->userGroups($request, 10)]);
     }
 
     public function userGroup(Request $request) {
-        return response()->json(['details' => $this->groups->userGroup($request->group_id)]);
+        $lists = $this->groups->userGroup($request->group_id);
+        if (count($lists) > 0):
+            foreach ($lists as $key => $value) {
+                if ($lists[$key]['gp_image_filename'] && $lists[$key]['gp_image_extension'] && $lists[$key]['gp_image_path']) {
+
+                    $lists[$key]['gp_image_src'] = url('/gp_image/' . $lists[$key]['id'] . '/' . $lists[$key]['gp_image_filename'] . '300x168.' . $lists[$key]['gp_image_extension']);
+                }
+            }
+        endif;
+        return response()->json(['details' => $lists]);
     }
 
     public function CreateUserGroups(Request $request) {
@@ -50,25 +59,21 @@ class UserGroupsController extends Controller {
         ];
         return response()->json(['operation' => "success"]);
     }
-    
+
     public function viewMembers() {
         $view = [
             'operations' => $this->groups->viewMembers($request),
         ];
         return response()->json(['operation' => "success"]);
     }
-    public function getImage($id,$image)
-    {
-        try
-        {
-            $img = \Image::make(storage_path() . '/app/public/UserGroup/image/'.$id.'/' . $image)->orientate()->response();
-        }
-        catch(\Exception $e)
-        {
+
+    public function getImage($id, $image) {
+        try {
+            $img = \Image::make(storage_path() . '/app/public/UserGroup/image/' . $id . '/' . $image)->orientate()->response();
+        } catch (\Exception $e) {
             return response()->json(['status' => "Image not found"]);
         }
         return $img;
-
     }
 
 }
