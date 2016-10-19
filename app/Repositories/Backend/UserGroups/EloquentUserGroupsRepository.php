@@ -17,15 +17,15 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function userGroups($request, $paginate) {
-        return UserGroup::where('user_id', $request->user_id)->orderBy('id','DESC')->paginate($paginate);
+        return UserGroup::where('user_id', $request->user_id)->orderBy('id', 'desc')->paginate($paginate);
     }
 
     public function userGrouplists() {
-        return UserGroup::paginate(20)->orderBy('id','DESC');
+        return UserGroup::orderBy('id', 'desc')->paginate(20);
     }
 
     public function userGroup($id) {
-        return UserGroup::find($id)->orderBy('id','DESC');
+        return UserGroup::find($id)->orderBy('id', 'desc');
     }
 
     public function totalMembers($id) {
@@ -35,7 +35,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     public function userGroupdetails($id) {
         return UserGroup::join('group_members','user_group.id','=','group_members.group_id')
                         ->join('users', 'group_members.user_id', 'users.id')->select('user_group.*','users.firstname','users.lastname','group_members.user_id')
-                        ->where('user_group.user_id', $id)->orderBy('user_group.id','DESC')->get();
+                        ->where('user_group.user_id', $id)->orderBy('user_group.id', 'desc')->get();
     }
 
     public function CreateUserGroups($request) {
