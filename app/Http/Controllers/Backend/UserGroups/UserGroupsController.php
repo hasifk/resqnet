@@ -36,7 +36,7 @@ class UserGroupsController extends Controller {
 
         $this->groups->CreateUserGroups($request);
 
-        return response()->json(['operation' => "success"]);
+        return response()->json(['operation' => $this->groups->CreateUserGroups($request)]);
     }
 
     public function setAdministrator(Request $request) {
