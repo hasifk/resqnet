@@ -45,13 +45,16 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
 
     public function joinUsers($request) {
         $groups = UserGroup::where('gp_pin', $request->gp_pin)->first();
+        
         if (!empty($groups)) {
+            if (!empty($this->findMembersUser($request->user_id))){
             $obj1 = new Member;
             $obj1->user_id = $request->user_id;
             $obj1->group_id = $groups->id;
             $obj1->role = 0;
             $obj1->save();
             return "Success";
+        }
         }
         return "Not Valid";
     }
