@@ -33,10 +33,10 @@ class UserGroupsBackendController extends Controller {
     }
 
     public function userGroup($id) {
-        $lists = $this->groups->userGroup($id);
-        foreach ($lists as $key => $value) {
-            $lists[$key]['members'] = $this->groups->viewMembers($value->id);
-        }
+        $lists = $this->groups->deletegroups();
+//        foreach ($lists as $key => $value) {
+//            $lists[$key]['members'] = $this->groups->viewMembers($value->id);
+//        }
         $view = [
             'usergroups' => $this->groups->userGroup($id),
         ];

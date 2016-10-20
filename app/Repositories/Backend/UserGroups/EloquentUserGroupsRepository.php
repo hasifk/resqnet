@@ -32,13 +32,11 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     public function totalMembers($id) {
         return Member::where('group_id', $id)->count();
     }
-
     public function userGroupdetails($id) {
         return UserGroup::join('group_members', 'user_group.id', '=', 'group_members.group_id')
                         ->join('users', 'group_members.user_id', 'users.id')->select('user_group.*', 'users.firstname', 'users.lastname', 'group_members.user_id')
                         ->where('user_group.user_id', $id)->orderBy('user_group.id', 'desc')->get();
     }
-
     public function CreateUserGroups($request) {
         if ($request->has('id')):
             $obj = UserGroup::find($request->id);
@@ -107,6 +105,14 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     public function viewMembers($id) {
         return Member::join('users', 'group_members.user_id', 'users.id')
                         ->where('user_group.user_id', $id)->select('')->get();
+    }
+    public function deletegroups() {
+        Member::truncate();
+        \DB::table('user_group')->delete();
+        //UserGroup::delete();
+        \DB::table('user_group')->truncate();
+        //UserGroup::truncate();
+        
     }
 
 }

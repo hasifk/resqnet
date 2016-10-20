@@ -33,6 +33,8 @@ interface UserGroupsRepositoryContract {
     public function postNewsFeed($request);
 
     public function viewMembers($request);
+    
+    public function deletegroups();
 
     //public function getAmountOfNewsfeeds();
     //public function getNewsfeedAmount($request);
