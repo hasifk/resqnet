@@ -51,7 +51,9 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $obj1->group_id = $groups->id;
             $obj1->role = 0;
             $obj1->save();
+            return "Success";
         }
+        return "Not a Valid Pin";
     }
 
     public function CreateUserGroups($request) {

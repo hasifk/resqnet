@@ -21,14 +21,14 @@ class UserGroupsController extends Controller {
 
     public function userGroup(Request $request) {
         $lists = $this->groups->userGroup($request->group_id);
-      
-          if ($lists->gp_image_filename && $lists->gp_image_extension && $lists->gp_image_path) {
-                
 
-                    $lists['gp_image_src'] = url('/gp_image/' . $lists->id . '/' . $lists->gp_image_filename . '300x168.' . $lists->gp_image_extension);
-                }
-         //   }
-       // endif;
+        if ($lists->gp_image_filename && $lists->gp_image_extension && $lists->gp_image_path) {
+
+
+            $lists['gp_image_src'] = url('/gp_image/' . $lists->id . '/' . $lists->gp_image_filename . '300x168.' . $lists->gp_image_extension);
+        }
+        //   }
+        // endif;
         return response()->json(['details' => $lists]);
     }
 
@@ -40,12 +40,9 @@ class UserGroupsController extends Controller {
     }
 
     public function joinUsers(Request $request) {
-
-        $this->groups->joinUsers($request);
-
-        return response()->json(['operation' => "success"]);
+        return response()->json(['operation' => $this->groups->joinUsers($request)]);
     }
-    
+
     public function setAdministrator(Request $request) {
         $view = [
             'operations' => $this->groups->setAdministrator($request),
