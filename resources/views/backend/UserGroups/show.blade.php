@@ -14,50 +14,45 @@
 <table class="table table-striped table-bordered table-hover">
 
     <tbody>
-        @if(!empty($usergroup->image_path))
+        @if(!empty($usergroup->gp_image_path))
         <tr>
             <th></th>
-            <td><img src="{{$usergroup->newsfeed_image_src}}" width="90" height="90"></td>
+            <td><img src="{{$usergroup->gp_image_src}}" width="90" height="90"></td>
         </tr>
         @endif
         <tr>
-            <th>To</th>
+            <th>Group Name</th>
             <td>{{$usergroup->name}}</td>
         </tr>
 
         <tr>
-            <th>User Name</th>
-            <td>{{ $usergroup->firstname." ".$usergroup->lastname }}</td>
+            <th>Group Pin</th>
+            <td>{{ $usergroup->gp_pin }}</td>
         </tr>
         <tr>
-            <th>Country</th>
+            <th>Members</th>
             <td>
                 @if($usergroup->members)
-                <table>
+                <table class="table table-bordered">
+                    
                 <?php
                 foreach ($usergroup->members as $value) {
-                 echo $value->firstname;
+                    ?>
+                    <tr><td>{{ $value->firstname ." ".$value->lastname}} @if($value->role==1) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <sub><font color="gray" size="2"><i> Administrator </i></font></sub>@endif</td></tr>
+                 <?php
                 }
                 ?>
                 </table>
                 @endif
             </td>
         </tr>
-        @if(!empty($usergroup->area))
-        <tr>
-            <th>Area</th>
-            <td>{{ $usergroup->area }}</td>
-        </tr>
-        @endif
+        
         <tr>
             <th>Date</th>
             <th>{{ date('d-m-y h:i:s',strtotime($usergroup->created_at)) }}</th>
         </tr>
 
-        <tr>
-            <th>News</th>
-            <th>{!! $usergroup->news !!}</th>
-        </tr>
+        
         <tr>
             <th></th>
             <th>

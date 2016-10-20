@@ -34,8 +34,15 @@ class UserGroupsBackendController extends Controller {
 
     public function userGroup($id) {
         $lists = $this->groups->userGroup($id);
-        $lists['members'] = $this->groups->viewMembers($id);
-       
+        
+       if (count($lists) > 0):
+           $lists['members'] = $this->groups->viewMembers($id);
+                if ($lists['gp_image_filename'] && $lists['gp_image_extension'] && $lists['gp_image_path']) {
+
+                    $lists['gp_image_src'] = url('/gp_image/' . $lists['id'] . '/' . $lists['gp_image_filename'] . '300x168.' . $lists['gp_image_extension']);
+                
+            }
+        endif;
         $view = [
             'usergroup' => $lists,
         ];

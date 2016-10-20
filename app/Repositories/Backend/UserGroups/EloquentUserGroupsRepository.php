@@ -39,22 +39,23 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
 
     public function userGroupdetails($id) {
         return UserGroup::join('group_members', 'user_group.id', '=', 'group_members.group_id')
-                        ->join('users', 'group_members.user_id', 'users.id')->select('user_group.*', 'users.firstname', 'users.lastname', 'group_members.user_id')
+                        ->join('users', 'group_members.user_id', 'users.id')
+                        ->select('user_group.*', 'users.firstname', 'users.lastname', 'group_members.user_id')
                         ->where('user_group.user_id', $id)->orderBy('user_group.id', 'desc')->get();
     }
 
     public function joinUsers($request) {
         $groups = UserGroup::where('gp_pin', $request->gp_pin)->first();
-        
+
         if (!empty($groups)) {
-            if (!empty($this->findMembersUser($request->user_id))){
-            $obj1 = new Member;
-            $obj1->user_id = $request->user_id;
-            $obj1->group_id = $groups->id;
-            $obj1->role = 0;
-            $obj1->save();
-            return "Success";
-        }
+            if (!empty($this->findMembersUser($request->user_id))) {
+                $obj1 = new Member;
+                $obj1->user_id = $request->user_id;
+                $obj1->group_id = $groups->id;
+                $obj1->role = 0;
+                $obj1->save();
+                return "Success";
+            }
         }
         return "Not Valid";
     }
@@ -128,6 +129,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         return Member::join('users', 'group_members.user_id', '=', 'users.id')
                         ->where('group_members.group_id', $id)
                         ->select('users.firstname', 'users.lastname', 'group_members.role', 'group_members.id')
+                       // ->orderBy('user_group.id', 'desc')
                         ->get();
     }
 
