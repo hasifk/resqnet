@@ -55,25 +55,24 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
 
         $obj->attachUserGroupImage($request->avatar);
 
-//        if ($request->has('count')) {
-//            for ($i = 0; $i < $request->count; $i++) {
-//                if (!empty($request->membership_no[$i])) {
-//                    $usersid = User::where('membership_no', $request->membership_no[$i])->value('id');
-//                    $obj1 = new Member;
-//                    $obj1->user_id = $usersid;
-//                    $obj1->group_id = $obj->id;
-//                    $obj1->role = 1;
-//                    $obj1->save();
-//                }
-//            }
-//        } else if (!$request->has('img')):
-//            $obj1 = new Member;
-//            $obj1->user_id = $request->user_id;
-//            $obj1->group_id = $obj->id;
-//            $obj1->role = 1;
-//            $obj1->save();
-//        endif;
-        return $request->membership_no[0];
+        if ($request->has('count')) {
+            for ($i = 0; $i < $request->count; $i++) {
+                if (!empty($request->membership_no[$i])) {
+                    $usersid = User::where('membership_no', $request->membership_no[$i])->value('id');
+                    $obj1 = new Member;
+                    $obj1->user_id = $usersid;
+                    $obj1->group_id = $obj->id;
+                    $obj1->role = 1;
+                    $obj1->save();
+                }
+            }
+        } else if (!$request->has('img')):
+            $obj1 = new Member;
+            $obj1->user_id = $request->user_id;
+            $obj1->group_id = $obj->id;
+            $obj1->role = 1;
+            $obj1->save();
+        endif;
     }
 
     public function setAdministrator($request) {
