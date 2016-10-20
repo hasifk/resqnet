@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Backend\RescueOperation\AdminOperationRepositoryContract;
 use App\Models\UserGroups\UserGroup;
 use App\Models\UserGroups\Member;
+use App\Models\Access\User;
 
 class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
 
@@ -46,20 +47,32 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $obj->user_id = $request->user_id;
         endif;
         if ($request->has('name'))
-        $obj->name = $request->name;
+            $obj->name = $request->name;
         if ($request->has('gp_pin'))
-        $obj->gp_pin = $request->gp_pin;
+            $obj->gp_pin = $request->gp_pin;
         if ($request->has('name') && $request->has('gp_pin'))
-        $obj->save();
+            $obj->save();
         
         $obj->attachUserGroupImage($request->avatar);
 
-        if (!$request->has('id')):
-        $obj1 = new Member;
-        $obj1->user_id = $request->user_id;
-        $obj1->group_id = $obj->id;
-        $obj1->role = 1;
-        $obj1->save();
+        if ($request->has('count')) {
+            for ($i = 0; $i < $request->count; $i++) {
+                if (!empty($request->membership_no[$i])) {
+                    $usersid = User::where('membership_no', $request->membership_no[$i])->value('id');
+                    $obj1 = new Member;
+                    $obj1->user_id = $usersid;
+                    $obj1->group_id = $obj->id;
+                    $obj1->role = 1;
+                    $obj1->save();
+                }
+            }
+        }
+        else if (!$request->has('img')):
+                    $obj1 = new Member;
+                    $obj1->user_id = $request->user_id;
+                    $obj1->group_id = $obj->id;
+                    $obj1->role = 1;
+                    $obj1->save();
         endif;
     }
 
@@ -67,20 +80,20 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         if ($request->has('id')):
             $obj = Member::find($request->id);
         else:
-            $obj1 = new Member;
-            $obj1->user_id = $request->user_id;
-            $obj1->group_id = $obj->id;
+            $obj = new Member;
+            $obj->user_id = $request->user_id;
+            $obj->group_id = $obj->id;
         endif;
 
-        $obj1->role = 1;
+        $obj->role = 1;
         $obj->save();
     }
 
     public function addMembers($request) {
         $obj1 = new Member;
         $obj1->user_id = $request->user_id;
-        $obj1->group_id = $obj->id;
-        $obj1->role = 1;
+        $obj1->group_id = $request->id;
+        $obj1->role = 0;
         $obj->save();
     }
 
