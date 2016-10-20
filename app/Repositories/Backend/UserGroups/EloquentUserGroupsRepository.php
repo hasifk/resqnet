@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Backend\RescueOperation\AdminOperationRepositoryContract;
 use App\Models\UserGroups\UserGroup;
 use App\Models\UserGroups\Member;
-use App\Models\Access\User;
+use App\Models\Access\User\User;
 
 class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
 
@@ -32,11 +32,13 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     public function totalMembers($id) {
         return Member::where('group_id', $id)->count();
     }
+
     public function userGroupdetails($id) {
         return UserGroup::join('group_members', 'user_group.id', '=', 'group_members.group_id')
                         ->join('users', 'group_members.user_id', 'users.id')->select('user_group.*', 'users.firstname', 'users.lastname', 'group_members.user_id')
                         ->where('user_group.user_id', $id)->orderBy('user_group.id', 'desc')->get();
     }
+
     public function CreateUserGroups($request) {
         if ($request->has('id')):
             $obj = UserGroup::find($request->id);
@@ -50,7 +52,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $obj->gp_pin = $request->gp_pin;
         if ($request->has('name') && $request->has('gp_pin'))
             $obj->save();
-        
+
         $obj->attachUserGroupImage($request->avatar);
 
         if ($request->has('count')) {
@@ -64,13 +66,12 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                     $obj1->save();
                 }
             }
-        }
-        else if (!$request->has('img')):
-                    $obj1 = new Member;
-                    $obj1->user_id = $request->user_id;
-                    $obj1->group_id = $obj->id;
-                    $obj1->role = 1;
-                    $obj1->save();
+        } else if (!$request->has('img')):
+            $obj1 = new Member;
+            $obj1->user_id = $request->user_id;
+            $obj1->group_id = $obj->id;
+            $obj1->role = 1;
+            $obj1->save();
         endif;
     }
 
@@ -103,16 +104,18 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function viewMembers($id) {
-        return Member::join('users', 'group_members.user_id', 'users.id')
-                        ->where('user_group.user_id', $id)->select('')->get();
+        return Member::join('users', 'group_members.user_id', '=', 'users.id')
+                        ->where('group_members.group_id', $id)
+                        ->select('users.firstname', 'users.lastname', 'group_members.role', 'group_members.id')
+                        ->get();
     }
+
     public function deletegroups() {
         Member::truncate();
         \DB::table('user_group')->delete();
         //UserGroup::delete();
         \DB::table('user_group')->truncate();
         //UserGroup::truncate();
-        
     }
 
 }

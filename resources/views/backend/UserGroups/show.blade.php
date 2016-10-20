@@ -14,53 +14,60 @@
 <table class="table table-striped table-bordered table-hover">
 
     <tbody>
-        @if(!empty($newsfeed->image_path))
+        @if(!empty($usergroup->image_path))
         <tr>
             <th></th>
-            <td><img src="{{$newsfeed->newsfeed_image_src}}" width="90" height="90"></td>
+            <td><img src="{{$usergroup->newsfeed_image_src}}" width="90" height="90"></td>
         </tr>
         @endif
         <tr>
             <th>To</th>
-            <td>{{$newsfeed->newsfeed_type}}</td>
+            <td>{{$usergroup->name}}</td>
         </tr>
-        
+
         <tr>
             <th>User Name</th>
-            <td>{{ $newsfeed->firstname." ".$newsfeed->lastname }}</td>
+            <td>{{ $usergroup->firstname." ".$usergroup->lastname }}</td>
         </tr>
-         <tr>
+        <tr>
             <th>Country</th>
-            <td>{{ $newsfeed->name }}</td>
+            <td>
+                @if($usergroup->members)
+                <table>
+                <?php
+                foreach ($usergroup->members as $value) {
+                 echo $value->firstname;
+                }
+                ?>
+                </table>
+                @endif
+            </td>
         </tr>
-         @if(!empty($newsfeed->area))
-         <tr>
+        @if(!empty($usergroup->area))
+        <tr>
             <th>Area</th>
-            <td>{{ $newsfeed->area }}</td>
+            <td>{{ $usergroup->area }}</td>
         </tr>
         @endif
         <tr>
             <th>Date</th>
-            <th>{{ date('d-m-y h:i:s',strtotime($newsfeed->created_at)) }}</th>
+            <th>{{ date('d-m-y h:i:s',strtotime($usergroup->created_at)) }}</th>
         </tr>
-<!--        <tr>
-            <th>Title</th>
-            <th>{!! $newsfeed->news_title !!}</th>
-        </tr>-->
+
         <tr>
             <th>News</th>
-            <th>{!! $newsfeed->news !!}</th>
+            <th>{!! $usergroup->news !!}</th>
         </tr>
         <tr>
             <th></th>
             <th>
                 <a href="{{URL::previous()}}" class="btn btn-danger btn-xs">Back</a>
-<!--                <a href="{{route('admin.newsfeed.newsfeedshow',$newsfeed->id)}}" class="btn btn-primary btn-xs">
-                    Edit News
-                </a>-->
+                <!--                <a href="{{route('admin.newsfeed.newsfeedshow',$usergroup->id)}}" class="btn btn-primary btn-xs">
+                                    Edit News
+                                </a>-->
             </th>
         </tr>
-        
+
     </tbody>
 </table>
 <div class="clearfix"></div>
