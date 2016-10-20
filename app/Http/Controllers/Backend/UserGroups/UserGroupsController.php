@@ -39,6 +39,13 @@ class UserGroupsController extends Controller {
         return response()->json(['operation' => "success"]);
     }
 
+    public function joinUsers(Request $request) {
+
+        $this->groups->joinUsers($request);
+
+        return response()->json(['operation' => "success"]);
+    }
+    
     public function setAdministrator(Request $request) {
         $view = [
             'operations' => $this->groups->setAdministrator($request),
