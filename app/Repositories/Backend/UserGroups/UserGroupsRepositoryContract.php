@@ -20,6 +20,8 @@ interface UserGroupsRepositoryContract {
 
     public function userGroup($request);
 
+    public function findMembersUser($id);
+            
     public function totalMembers($id);
     
     public function userGroupdetails($id);

@@ -29,10 +29,14 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         return UserGroup::find($id);
     }
 
+    public function findMembersUser($id) {
+        return Member::where('user_id',$id)->first();
+    }
+    
     public function totalMembers($id) {
         return Member::where('group_id', $id)->count();
     }
-
+ 
     public function userGroupdetails($id) {
         return UserGroup::join('group_members', 'user_group.id', '=', 'group_members.group_id')
                         ->join('users', 'group_members.user_id', 'users.id')->select('user_group.*', 'users.firstname', 'users.lastname', 'group_members.user_id')
@@ -59,6 +63,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             for ($i = 0; $i < $request->count; $i++) {
                 if (!empty($request->membership_no[$i])) {
                     $usersid = User::where('membership_no', $request->membership_no[$i])->value('id');
+                    if(!empty($this->findMembersUser($usersid)))
                     $obj1 = new Member;
                     $obj1->user_id = $usersid;
                     $obj1->group_id = $obj->id;
