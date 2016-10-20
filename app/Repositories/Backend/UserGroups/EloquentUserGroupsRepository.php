@@ -53,7 +53,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $obj1->save();
             return "Success";
         }
-        return "Not a Valid Pin";
+        return "Not Valid";
     }
 
     public function CreateUserGroups($request) {
