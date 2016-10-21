@@ -77,7 +77,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
 
         $obj->attachUserGroupImage($request->avatar);
 
-        if ($request->has('count')) {
+        if ($request->has('count')) { //count is variable, used just for checking and it same as that of "count($request->membership_no)" 
             for ($i = 0; $i < count($request->membership_no); $i++) {
                 if (!empty($request->membership_no[$i])) {
                     if (!empty($usersid = User::where('membership_no', $request->membership_no[$i])->value('id'))) {
@@ -125,12 +125,21 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     public function postNewsFeed($request) {
         if (count($request->group_id) > 0) {
             for ($i = 0; $i < count($request->group_id); $i++) {
-                if (!empty($this->findMembersUser($request->user_id, $request->group_id))) {
-                    
-                }
-                $return[] = "No groups OR current user not in this group";
+                if (!empty($group = $this->userGroup($request->group_id))) {
+                    if (!empty($this->findMembersUser($request->user_id, $request->group_id))) {
+                        
+                        
+                        
+                        
+                        
+                    } else
+                        $return[] = "Current user not a Member of $group->name Group";
+                } else
+                    $return[] = "No groups found";
             }
         }
+        else $return[]="Please select any Group";
+            
     }
 
     public function viewMembers($id) {
