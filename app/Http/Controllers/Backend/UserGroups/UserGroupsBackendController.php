@@ -16,7 +16,7 @@ class UserGroupsBackendController extends Controller {
     }
 
     public function userGroups() {
-        $lists = $this->groups->deletegroups();
+        $lists = $this->groups->userGrouplists();
         if (count($lists) > 0):
             foreach ($lists as $key => $value) {
                 $lists[$key]['amount'] = $this->groups->totalMembers($value->id);

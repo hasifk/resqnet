@@ -77,7 +77,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         $obj->attachUserGroupImage($request->avatar);
 
         if ($request->has('count')) {
-            for ($i = 0; $i < $request->count; $i++) {
+            for ($i = 0; $i < count($request->membership_no); $i++) {
                 if (!empty($request->membership_no[$i])) {
                     $usersid = User::where('membership_no', $request->membership_no[$i])->value('id');
                     if (!empty($this->findMembersUser($usersid, $obj->id)))
