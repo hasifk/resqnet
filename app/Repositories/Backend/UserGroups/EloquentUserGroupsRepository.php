@@ -138,6 +138,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         //UserGroup::delete();
         //\DB::table('user_group')->truncate();
         //UserGroup::truncate();
+        return 1;
     }
 
 }
