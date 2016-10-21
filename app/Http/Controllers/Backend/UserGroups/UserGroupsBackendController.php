@@ -17,18 +17,18 @@ class UserGroupsBackendController extends Controller {
 
     public function userGroups() {
         $lists = $this->groups->deletegroups();
-//        if (count($lists) > 0):
-//            foreach ($lists as $key => $value) {
-//                $lists[$key]['amount'] = $this->groups->totalMembers($value->id);
-//                if ($lists[$key]['gp_image_filename'] && $lists[$key]['gp_image_extension'] && $lists[$key]['gp_image_path']) {
-//
-//                    $lists[$key]['gp_image_src'] = url('/gp_image/' . $lists[$key]['id'] . '/' . $lists[$key]['gp_image_filename'] . '300x168.' . $lists[$key]['gp_image_extension']);
-//                }
-//            }
-//        endif;
-//        $view = [
-//            'usergroups' => $lists
-//        ];
+        if (count($lists) > 0):
+            foreach ($lists as $key => $value) {
+                $lists[$key]['amount'] = $this->groups->totalMembers($value->id);
+                if ($lists[$key]['gp_image_filename'] && $lists[$key]['gp_image_extension'] && $lists[$key]['gp_image_path']) {
+
+                    $lists[$key]['gp_image_src'] = url('/gp_image/' . $lists[$key]['id'] . '/' . $lists[$key]['gp_image_filename'] . '300x168.' . $lists[$key]['gp_image_extension']);
+                }
+            }
+        endif;
+        $view = [
+            'usergroups' => $lists
+        ];
         return view('backend.UserGroups.index', $view);
     }
 
