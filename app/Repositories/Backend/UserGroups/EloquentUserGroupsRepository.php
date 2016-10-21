@@ -102,7 +102,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                         ->join('users', 'group_members.user_id', '=', 'users.id')
                         ->where('group_members.user_id', $request->user_id)
                         ->select('user_group.*','group_members.role','users.firstname', 'users.lastname')
-                        ->orderBy('user_group.id', 'asc')->get();
+                        ->orderBy('user_group.name', 'asc')->get();
     }
 
     public function addMembers($request) {
