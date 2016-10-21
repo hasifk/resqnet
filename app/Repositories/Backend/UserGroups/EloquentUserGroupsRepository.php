@@ -7,6 +7,7 @@ use App\Repositories\Backend\RescueOperation\AdminOperationRepositoryContract;
 use App\Models\UserGroups\UserGroup;
 use App\Models\UserGroups\Member;
 use App\Models\Access\User\User;
+use App\Models\Newsfeed\Newsfeed;
 
 class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
 
@@ -117,19 +118,33 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                 } else
                     $return[] = "Empty membership No";
             }
-        }
-        else 
+        } else
             $return[] = "Empty Array";
-        
+
         return $return;
     }
 
     public function postNewsFeed($request) {
         if (count($request->group_id) > 0) {
             for ($i = 0; $i < count($request->group_id); $i++) {
-                if (!empty($group = $this->userGroup($request->group_id))) {
-                    if (!empty($this->findMembersUser($request->user_id, $request->group_id))) {
-                        
+                if (!empty($group = $this->userGroup($request->group_id[$i]))) {
+                    if (!empty($this->findMembersUser($request->user_id, $request->group_id[$i]))) {
+                        $members = $this->viewMembers($request->group_id[$i]);
+                        foreach ($members as $member) {
+                            $obj = new Newsfeed;
+                            $obj->user_id = $member->user_id;
+                            // $obj->newsfeed_type = $request->newsfeed_type;
+                            $obj->countryid = $member->country_id;
+                            $obj->areaid = (!empty($request->areaid)) ? $request->areaid : '';
+                            $obj->group_id = $request->group_id[$i];
+                            $obj->newsfeed_type = (!empty($request->newsfeed_type)) ? $request->newsfeed_type : '';
+                            $obj->news_title = (!empty($request->news_title)) ? $request->news_title : '';
+                            $obj->news = $request->news;
+
+                            $obj->save();
+                            $obj->attachNewsfeedImage($request->img);
+                           $return[]="success";
+                        }
                     } else
                         $return[] = "Current user not a Member of $group->name Group";
                 } else
@@ -142,7 +157,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     public function viewMembers($id) {
         return Member::join('users', 'group_members.user_id', '=', 'users.id')
                         ->where('group_members.group_id', $id)
-                        ->select('users.firstname', 'users.lastname', 'group_members.role', 'group_members.id')
+                        ->select('users.firstname', 'users.lastname', 'users.country_id', 'group_members.role', 'group_members.id', 'group_members.user_id')
                         //->orderBy('user_group.id', 'desc')
                         ->paginate(20);
     }

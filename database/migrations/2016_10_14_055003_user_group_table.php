@@ -3,15 +3,14 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UserGroupTable extends Migration
-{
+class UserGroupTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('user_group', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
@@ -22,10 +21,10 @@ class UserGroupTable extends Migration
             $table->string('gp_pin');
             $table->timestamps();
             $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                    ->references('id')
+                    ->on('users')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
         });
     }
 
@@ -34,11 +33,11 @@ class UserGroupTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::table('user_group', function (Blueprint $table) {
             $table->dropForeign('user_group_user_id_foreign');
         });
         Schema::drop('user_group');
     }
+
 }
