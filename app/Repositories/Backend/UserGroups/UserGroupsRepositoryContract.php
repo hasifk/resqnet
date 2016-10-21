@@ -32,7 +32,7 @@ interface UserGroupsRepositoryContract {
 
     public function joinedGroupLists($request);
 
-    public function addMembers($request);
+    public function addMembers($request,$role);
 
     public function postNewsFeed($request);
 

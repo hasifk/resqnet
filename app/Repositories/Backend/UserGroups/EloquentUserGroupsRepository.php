@@ -78,23 +78,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         $obj->attachUserGroupImage($request->avatar);
 
         if ($request->has('count')) { //count is variable, used just for checking and it same as that of "count($request->membership_no)" 
-            for ($i = 0; $i < count($request->membership_no); $i++) {
-                if (!empty($request->membership_no[$i])) {
-                    if (!empty($usersid = User::where('membership_no', $request->membership_no[$i])->value('id'))) {
-                        if (empty($this->findMembersUser($usersid, $request->id))) { //To check already added or not
-                            $obj1 = new Member;
-                            $obj1->user_id = $usersid;
-                            $obj1->group_id = $request->id;
-                            $obj1->role = 1;
-                            $obj1->save();
-                            $return[] = "Success";
-                        } else
-                            $return[] = "already added";
-                    } else
-                        $return[] = "Not a valide Membership No.";
-                } else
-                    $return[] = "Empty membership No";
-            }
+            $return = $this->addMembers($request, $role = 1);
         } else if (!$request->has('img')):
             $obj1 = new Member;
             $obj1->user_id = $request->user_id;
@@ -114,12 +98,30 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                         ->orderBy('user_group.name', 'asc')->paginate(20);
     }
 
-    public function addMembers($request) {
-        $obj1 = new Member;
-        $obj1->user_id = $request->user_id;
-        $obj1->group_id = $request->id;
-        $obj1->role = 0;
-        $obj1->save();
+    public function addMembers($request, $role = 0) {
+        if (count($request->membership_no) > 0) {
+            for ($i = 0; $i < count($request->membership_no); $i++) {
+                if (!empty($request->membership_no[$i])) {
+                    if (!empty($usersid = User::where('membership_no', $request->membership_no[$i])->value('id'))) {
+                        if (empty($this->findMembersUser($usersid, $request->id))) { //To check already added or not
+                            $obj1 = new Member;
+                            $obj1->user_id = $usersid;
+                            $obj1->group_id = $request->id;
+                            $obj1->role = $role;
+                            $obj1->save();
+                            $return[] = "Success";
+                        } else
+                            $return[] = "already added";
+                    } else
+                        $return[] = "Not a valide Membership No.";
+                } else
+                    $return[] = "Empty membership No";
+            }
+        }
+        else 
+            $return[] = "Empty Array";
+        
+        return $return;
     }
 
     public function postNewsFeed($request) {
@@ -128,18 +130,13 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                 if (!empty($group = $this->userGroup($request->group_id))) {
                     if (!empty($this->findMembersUser($request->user_id, $request->group_id))) {
                         
-                        
-                        
-                        
-                        
                     } else
                         $return[] = "Current user not a Member of $group->name Group";
                 } else
                     $return[] = "No groups found";
             }
-        }
-        else $return[]="Please select any Group";
-            
+        } else
+            $return[] = "Please select any Group";
     }
 
     public function viewMembers($id) {
@@ -147,7 +144,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                         ->where('group_members.group_id', $id)
                         ->select('users.firstname', 'users.lastname', 'group_members.role', 'group_members.id')
                         //->orderBy('user_group.id', 'desc')
-                        ->get();
+                        ->paginate(20);
     }
 
     public function deletegroups() {
