@@ -87,13 +87,13 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                             $obj1->group_id = $request->id;
                             $obj1->role = 1;
                             $obj1->save();
-                            $return[]= "Success";
-                        }
-                        $return[]="already added";
-                    }
-                    $return[]= "Not a valide Membership No.";
-                }
-               $return[]= "Empty membership No";
+                            $return[] = "Success";
+                        } else
+                            $return[] = "already added";
+                    } else
+                        $return[] = "Not a valide Membership No.";
+                } else
+                    $return[] = "Empty membership No";
             }
         } else if (!$request->has('img')):
             $obj1 = new Member;
@@ -101,7 +101,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $obj1->group_id = $obj->id;
             $obj1->role = 1;
             $obj1->save();
-            $return[]= "Success";
+            $return[] = "Success";
         endif;
         return $return;
     }
@@ -128,6 +128,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                 if (!empty($this->findMembersUser($request->user_id, $request->group_id))) {
                     
                 }
+                $return[] = "No groups OR current user not in this group";
             }
         }
     }
