@@ -29,8 +29,8 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         return UserGroup::find($id);
     }
 
-    public function findMembersUser($id) {
-        return Member::where('user_id', $id)->first();
+    public function findMembersUser($userid, $groupid) {
+        return Member::where('user_id', $userid)->where('group_id', $groupid)->first();
     }
 
     public function totalMembers($id) {
@@ -48,7 +48,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         $groups = UserGroup::where('gp_pin', $request->gp_pin)->first();
 
         if (!empty($groups)) {
-            if (!empty($this->findMembersUser($request->user_id))) {
+            if (!empty($this->findMembersUser($request->user_id, $groups->id))) {
                 $obj1 = new Member;
                 $obj1->user_id = $request->user_id;
                 $obj1->group_id = $groups->id;
@@ -80,7 +80,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             for ($i = 0; $i < $request->count; $i++) {
                 if (!empty($request->membership_no[$i])) {
                     $usersid = User::where('membership_no', $request->membership_no[$i])->value('id');
-                    if (!empty($this->findMembersUser($usersid)))
+                    if (!empty($this->findMembersUser($usersid, $obj->id)))
                         $obj1 = new Member;
                     $obj1->user_id = $usersid;
                     $obj1->group_id = $obj->id;
@@ -129,7 +129,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         return Member::join('users', 'group_members.user_id', '=', 'users.id')
                         ->where('group_members.group_id', $id)
                         ->select('users.firstname', 'users.lastname', 'group_members.role', 'group_members.id')
-                       // ->orderBy('user_group.id', 'desc')
+                        // ->orderBy('user_group.id', 'desc')
                         ->get();
     }
 
