@@ -1,13 +1,11 @@
 @extends ('backend.layouts.master')
 @section('page-header')
 <h1>
-    Statistics
+    User Group Lists
 </h1>
 @endsection
 
 @section('content')
-
-<h3>Panic Signals And Tagged ResQuers</h3>
 
 <section class="content">
     <div class="row">

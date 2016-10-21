@@ -4,7 +4,7 @@
 
 @section('page-header')
 <h1>
-    News Feeds
+    User Group Details
 </h1>
 @endsection
 

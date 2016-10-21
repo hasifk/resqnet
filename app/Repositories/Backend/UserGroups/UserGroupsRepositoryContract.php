@@ -30,7 +30,7 @@ interface UserGroupsRepositoryContract {
     
     public function joinUsers($request);
 
-    public function setAdministrator($request);
+    public function joinedGroupLists($request);
 
     public function addMembers($request);
 

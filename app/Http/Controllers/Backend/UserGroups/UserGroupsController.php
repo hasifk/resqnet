@@ -40,11 +40,12 @@ class UserGroupsController extends Controller {
         return response()->json(['operation' => $this->groups->joinUsers($request)]);
     }
 
-    public function setAdministrator(Request $request) {
-        $view = [
-            'operations' => $this->groups->setAdministrator($request),
-        ];
-        return response()->json(['operation' => "success"]);
+    public function joinedGroupLists(Request $request) {
+         if(!empty($lists=$this->groups->joinedGroupLists($request)))
+         {
+              return response()->json(['operation' => $view]);
+         }
+        return response()->json(['operation' => "No Groups"]);
     }
 
     public function addMembers(Request $request) {

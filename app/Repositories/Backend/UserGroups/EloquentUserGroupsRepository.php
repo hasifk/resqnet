@@ -97,17 +97,12 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         endif;
     }
 
-    public function setAdministrator($request) {
-        if ($request->has('id')):
-            $obj = Member::find($request->id);
-        else:
-            $obj = new Member;
-            $obj->user_id = $request->user_id;
-            $obj->group_id = $obj->id;
-        endif;
-
-        $obj->role = 1;
-        $obj->save();
+    public function joinedGroupLists($request) {
+        return Member::join('user_group', 'group_members.group_id', '=', 'user_group.id')
+                        ->join('users', 'group_members.user_id', '=', 'users.id')
+                        ->where('group_members.user_id', $request->user_id)
+                        ->select('user_group.*','group_members.role','users.firstname', 'users.lastname')
+                        ->orderBy('user_group.id', 'asc')->get();
     }
 
     public function addMembers($request) {
@@ -119,9 +114,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function postNewsFeed($request) {
-        $view = [
-            'operations' => $this->operation->getOperations(),
-        ];
+
         return view('backend.operations.index', $view);
     }
 
