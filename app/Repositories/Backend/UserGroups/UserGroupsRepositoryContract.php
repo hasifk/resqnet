@@ -20,7 +20,7 @@ interface UserGroupsRepositoryContract {
 
     public function userGroup($request);
 
-    public function findMembersUser($id);
+    public function findMembersUser($userid, $groupid);
             
     public function totalMembers($id);
     
