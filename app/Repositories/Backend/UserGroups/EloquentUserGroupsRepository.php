@@ -80,15 +80,18 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             for ($i = 0; $i < count($request->membership_no); $i++) {
                 if (!empty($request->membership_no[$i])) {
                     $usersid = User::where('membership_no',$request->membership_no[$i])->value('id');
-                    if (empty($this->findMembersUser($usersid,$request->id)))
+                    if (empty($this->findMembersUser($usersid,$request->id))) //To check already added or not
                     {
                     $obj1 = new Member;
                     $obj1->user_id = $usersid;
                     $obj1->group_id = $request->id;
                     $obj1->role = 1;
                     $obj1->save();
+                    return "Success";
                     }
+                    return "already exists";
                 }
+                return "failed 2";
             }
         } else if (!$request->has('img')):
             $obj1 = new Member;
@@ -96,6 +99,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $obj1->group_id = $obj->id;
             $obj1->role = 1;
             $obj1->save();
+            return "Success";
         endif;
     }
 

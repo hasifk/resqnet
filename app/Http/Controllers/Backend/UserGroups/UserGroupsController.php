@@ -16,7 +16,7 @@ class UserGroupsController extends Controller {
     }
 
     public function userGroups(Request $request) {
-        return response()->json(['details' => $this->groups->userGroups($request, 10)]);
+        return response()->json(['details' => $this->groups->userGroupsCreateUserGroups($request, 10)]);
     }
 
     public function userGroup(Request $request) {
@@ -31,9 +31,9 @@ class UserGroupsController extends Controller {
 
     public function CreateUserGroups(Request $request) {
 
-        $this->groups->CreateUserGroups($request);
+        
 
-        return response()->json(['operation' => "success"]);
+        return response()->json(['operation' => $this->groups->CreateUserGroups($request)]);
     }
 
     public function joinUsers(Request $request) {
