@@ -114,8 +114,12 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function postNewsFeed($request) {
-
         for ($i = 0; $i < count($request->group_id); $i++) {
+            if (!empty($this->findMembersUser($request->user_id, $request->group_id)))
+            {
+                
+            }
+                    
         return view('backend.operations.index', $view);
         }
     }
@@ -132,7 +136,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         Member::truncate();
         \DB::table('user_group')->delete();
         //UserGroup::delete();
-        \DB::table('user_group')->truncate();
+        //\DB::table('user_group')->truncate();
         //UserGroup::truncate();
     }
 

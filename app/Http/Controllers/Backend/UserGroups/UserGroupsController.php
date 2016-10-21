@@ -16,7 +16,7 @@ class UserGroupsController extends Controller {
     }
 
     public function userGroups(Request $request) {
-        return response()->json(['details' => $this->groups->userGroups($request, 10)]);
+        return response()->json(['details' => $this->groups->deletegroups()]);
     }
 
     public function userGroup(Request $request) {
