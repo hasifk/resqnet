@@ -32,9 +32,11 @@
         <tr>
             <th>Members</th>
             <td>
+                
                 @if($usergroup->members)
-                <table class="table table-bordered">
-                    
+              
+                <table class="table table-fixed">
+                    <tbody>
                 <?php
                 foreach ($usergroup->members as $value) {
                     ?>
@@ -42,7 +44,9 @@
                  <?php
                 }
                 ?>
+                    </tbody>
                 </table>
+                
                 @endif
             </td>
         </tr>
