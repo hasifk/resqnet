@@ -64,9 +64,9 @@ class UserGroupsController extends Controller {
 
     public function viewMembers(Request $request) {
         $view = [
-            'operations' => $this->groups->viewMembers($request->group_id),
+            'members' => $this->groups->viewMembers($request->group_id),
         ];
-        return response()->json(['operation' => "success"]);
+        return response()->json(['operation' => $view]);
     }
 
     public function getImage($id, $image) {
