@@ -48,7 +48,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         $groups = UserGroup::where('gp_pin', $request->gp_pin)->first();
 
         if (!empty($groups)) {
-            if (!empty($this->findMembersUser($request->user_id, $groups->id))) {
+            if (empty($this->findMembersUser($request->user_id, $groups->id))) {
                 $obj1 = new Member;
                 $obj1->user_id = $request->user_id;
                 $obj1->group_id = $groups->id;
@@ -56,8 +56,9 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                 $obj1->save();
                 return "Success";
             }
+            return "Already Joined";
         }
-        return "Not Valid";
+        return "Not a Valid Pin";
     }
 
     public function CreateUserGroups($request) {
@@ -79,21 +80,20 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         if ($request->has('count')) {
             for ($i = 0; $i < count($request->membership_no); $i++) {
                 if (!empty($request->membership_no[$i])) {
-                    if(!empty($usersid = User::where('membership_no',$request->membership_no[$i])->value('id'))){
-                    if (empty($this->findMembersUser($usersid,$request->id))) //To check already added or not
-                    {
-                    $obj1 = new Member;
-                    $obj1->user_id = $usersid;
-                    $obj1->group_id = $request->id;
-                    $obj1->role = 1;
-                    $obj1->save();
-                    return "Success";
+                    if (!empty($usersid = User::where('membership_no', $request->membership_no[$i])->value('id'))) {
+                        if (empty($this->findMembersUser($usersid, $request->id))) { //To check already added or not
+                            $obj1 = new Member;
+                            $obj1->user_id = $usersid;
+                            $obj1->group_id = $request->id;
+                            $obj1->role = 1;
+                            $obj1->save();
+                            $return[]= "Success";
+                        }
+                        $return[]="already added";
                     }
-                    return "already exists";
+                    $return[]= "Not a valide Membership No.";
                 }
-                return "Not valide Membership No.";
-                }
-                return "Empty membership No";
+               $return[]= "Empty membership No";
             }
         } else if (!$request->has('img')):
             $obj1 = new Member;
@@ -101,15 +101,16 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $obj1->group_id = $obj->id;
             $obj1->role = 1;
             $obj1->save();
-            return "Success";
+            $return[]= "Success";
         endif;
+        return $return;
     }
 
     public function joinedGroupLists($request) {
         return Member::join('user_group', 'group_members.group_id', '=', 'user_group.id')
                         ->join('users', 'group_members.user_id', '=', 'users.id')
                         ->where('group_members.user_id', $request->user_id)
-                        ->select('user_group.*','group_members.role','users.firstname', 'users.lastname')
+                        ->select('user_group.*', 'group_members.role', 'users.firstname', 'users.lastname')
                         ->orderBy('user_group.name', 'asc')->paginate(20);
     }
 
@@ -122,13 +123,12 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function postNewsFeed($request) {
-        for ($i = 0; $i < count($request->group_id); $i++) {
-            if (!empty($this->findMembersUser($request->user_id, $request->group_id)))
-            {
-                
-            }
+        if (count($request->group_id) > 0) {
+            for ($i = 0; $i < count($request->group_id); $i++) {
+                if (!empty($this->findMembersUser($request->user_id, $request->group_id))) {
                     
-        return view('backend.operations.index', $view);
+                }
+            }
         }
     }
 
