@@ -41,9 +41,9 @@ class UserGroupsController extends Controller {
     }
 
     public function joinedGroupLists(Request $request) {
-         if(!empty($lists=$this->groups->joinedGroupLists($request)))
+         if(count($lists=$this->groups->joinedGroupLists($request))>0)
          {
-              return response()->json(['operation' => $view]);
+              return response()->json(['operation' => $lists]);
          }
         return response()->json(['operation' => "No Groups"]);
     }

@@ -102,7 +102,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                         ->join('users', 'group_members.user_id', '=', 'users.id')
                         ->where('group_members.user_id', $request->user_id)
                         ->select('user_group.*','group_members.role','users.firstname', 'users.lastname')
-                        ->orderBy('user_group.name', 'asc')->get();
+                        ->orderBy('user_group.name', 'asc')->paginate(20);
     }
 
     public function addMembers($request) {
@@ -115,14 +115,16 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
 
     public function postNewsFeed($request) {
 
+        for ($i = 0; $i < count($request->group_id); $i++) {
         return view('backend.operations.index', $view);
+        }
     }
 
     public function viewMembers($id) {
         return Member::join('users', 'group_members.user_id', '=', 'users.id')
                         ->where('group_members.group_id', $id)
                         ->select('users.firstname', 'users.lastname', 'group_members.role', 'group_members.id')
-                        // ->orderBy('user_group.id', 'desc')
+                        //->orderBy('user_group.id', 'desc')
                         ->get();
     }
 
