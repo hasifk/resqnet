@@ -79,13 +79,15 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         if ($request->has('count')) {
             for ($i = 0; $i < count($request->membership_no); $i++) {
                 if (!empty($request->membership_no[$i])) {
-                    $usersid = User::where('membership_no', $request->membership_no[$i])->value('id');
-                    if (!empty($this->findMembersUser($usersid, $obj->id)))
-                        $obj1 = new Member;
+                    $usersid = User::where('membership_no',$request->membership_no[$i])->value('id');
+                    if (!empty($this->findMembersUser($usersid, $request->group_id)))
+                    {
+                    $obj1 = new Member;
                     $obj1->user_id = $usersid;
-                    $obj1->group_id = $obj->id;
+                    $obj1->group_id = $request->group_id;
                     $obj1->role = 1;
                     $obj1->save();
+                    }
                 }
             }
         } else if (!$request->has('img')):
