@@ -137,10 +137,9 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                             $obj->countryid = $member->country_id;
                             $obj->areaid = (!empty($request->areaid)) ? $request->areaid : '';
                             $obj->group_id = $request->group_id[$i];
-                            $obj->newsfeed_type = (!empty($request->newsfeed_type)) ? $request->newsfeed_type : '';
+                            $obj->newsfeed_type = "User Group";
                             $obj->news_title = (!empty($request->news_title)) ? $request->news_title : '';
                             $obj->news = $request->news;
-
                             $obj->save();
                             $obj->attachNewsfeedImage($request->img);
                            $return[]="success";

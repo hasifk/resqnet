@@ -53,10 +53,8 @@ class UserGroupsController extends Controller {
     }
 
     public function postNewsFeed() {
-        $view = [
-            'operations' => $this->groups->postNewsFeed($request),
-        ];
-        return response()->json(['operation' => "success"]);
+       
+        return response()->json(['result' => $this->groups->postNewsFeed($request)]);
     }
 
     public function viewMembers(Request $request) {
