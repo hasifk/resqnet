@@ -55,6 +55,7 @@ class UserController extends Controller
         $this->users       = $users;
         $this->roles       = $roles;
         $this->permissions = $permissions;
+        $this->groups = $groups;
     }
 
     /**
@@ -111,8 +112,6 @@ class UserController extends Controller
             'area' => $area,
             'state' => $this->users->state($area->state_id),
             'usergroups' => $lists
-            
-            
         ];
         return view('backend.access.show', $view);
     }
