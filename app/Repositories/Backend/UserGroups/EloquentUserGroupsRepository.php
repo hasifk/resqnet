@@ -148,7 +148,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                     } else
                         $return[] = "Current user not a Member of $group->name Group";
                 } else
-                    $return[] = "No groups found";
+                    $return[] = $group_ids;
             }
         } else
             $return[] = "Please select any Group";
