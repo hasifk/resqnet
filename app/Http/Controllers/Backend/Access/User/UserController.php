@@ -17,6 +17,7 @@ use App\Http\Requests\Backend\Access\User\UpdateUserPasswordRequest;
 use App\Http\Requests\Backend\Access\User\PermanentlyDeleteUserRequest;
 use App\Http\Requests\Backend\Access\User\ResendConfirmationEmailRequest;
 use App\Repositories\Backend\Access\Permission\PermissionRepositoryContract;
+use App\Repositories\Backend\UserGroups\UserGroupsRepositoryContract;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract as FrontendUserRepositoryContract;
 
 /**
@@ -47,7 +48,8 @@ class UserController extends Controller
     public function __construct(
         UserRepositoryContract $users,
         RoleRepositoryContract $roles,
-        PermissionRepositoryContract $permissions
+        PermissionRepositoryContract $permissions,
+            UserGroupsRepositoryContract $groups
     )
     {
         $this->users       = $users;
@@ -89,6 +91,16 @@ class UserController extends Controller
 
             $avatar=url('/avatar/'.$user->id.'/'.$user->avatar_filename.'.'.$user->avatar_extension);
         }
+        $lists = $this->groups->userGrouplists();
+        if (count($lists) > 0):
+            foreach ($lists as $key => $value) {
+                $lists[$key]['amount'] = $this->groups->totalMembers($value->id);
+                if ($lists[$key]['gp_image_filename'] && $lists[$key]['gp_image_extension'] && $lists[$key]['gp_image_path']) {
+
+                    $lists[$key]['gp_image_src'] = url('/gp_image/' . $lists[$key]['id'] . '/' . $lists[$key]['gp_image_filename'] . '300x168.' . $lists[$key]['gp_image_extension']);
+                }
+            }
+        endif;
         $view = [
             'user' => $user,
             'avatar'=>$avatar,
@@ -98,6 +110,7 @@ class UserController extends Controller
             'country' => $this->users->country($user->country_id),
             'area' => $area,
             'state' => $this->users->state($area->state_id),
+            'usergroups' => $lists
             
             
         ];

@@ -52,7 +52,7 @@ class UserGroupsController extends Controller {
         return response()->json(['members' => $this->groups->addMembers($request)]);
     }
 
-    public function postNewsFeed() {
+    public function postNewsFeed(Request $request) {
        
         return response()->json(['result' => $this->groups->postNewsFeed($request)]);
     }

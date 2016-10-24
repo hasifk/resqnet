@@ -18,9 +18,9 @@
             <tr>
                 @if(!empty($avatar))
                 <th colspan="2"><img src="{{$avatar}}"></th>
-                    @else
-                    <th colspan="2"><img src="https://placeholdit.imgix.net/~text?txtsize=28&txt=150%C3%9784&w=150&h=84"/></th>
-                    @endif
+                @else
+                <th colspan="2"><img src="https://placeholdit.imgix.net/~text?txtsize=28&txt=150%C3%9784&w=150&h=84"/></th>
+                @endif
 
             </tr>
             <tr>
@@ -43,7 +43,7 @@
                     {{ $user->rescuer_type }}
                 </td>
             </tr>
-             <tr>
+            <tr>
                 <th>Email</th>
                 <td>
                     {{ $user->email }}
@@ -105,46 +105,67 @@
                 <th>Emergency Contacts</th>
                 <td>
                     <?php if (!empty($emergency)) { ?>
-                    <table>
+                        <table>
 
-                        <tr>
-                            <td>{{$emergency->emergency1}}</td>
-                        </tr>
-                        <?php if ($emergency->emergency2 !== 0) { ?>
                             <tr>
-                                <td>{{$emergency->emergency2}}</td>
+                                <td>{{$emergency->emergency1}}</td>
                             </tr>
-                        <?php } if ($emergency->emergency3 !== 0) { ?>
-                            <tr>
-                                <td>{{$emergency->emergency3}}</td>
-                            </tr>
-                        <?php } ?>
-                    </table>
-                    <?php } 
-                    else echo "---"
+                            <?php if ($emergency->emergency2 !== 0) { ?>
+                                <tr>
+                                    <td>{{$emergency->emergency2}}</td>
+                                </tr>
+                            <?php } if ($emergency->emergency3 !== 0) { ?>
+                                <tr>
+                                    <td>{{$emergency->emergency3}}</td>
+                                </tr>
+                            <?php } ?>
+                        </table>
+                        <?php
+                    } else
+                        echo "---"
                         ?>
                 </td>
 
             </tr>
+            <?php if (!empty($usergroups)) { ?>
+                <tr>
+                    <th>User Groups</th>
+                    <td>
 
+                        <table>
+                            <?php foreach ($usergroups as $groups): ?>
+                                <tr>
+                                    <td>
+
+                                        <a href="{{route('user.groups.view',$groups->id)}}"> {{ $groups->name }} </a>
+
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+
+                        </table>
+
+                    </td>
+                </tr>
+            <?php } ?>
             <tr>
                 <th>Health Insurance Details</th>
                 <td>
                     <?php if (!empty($insurance)) { ?>
-                    <table>
+                        <table>
 
-                        <tr>
-                            <th>Service Provider </th><td>&nbsp;&nbsp;:&nbsp;&nbsp; {{$insurance->service_provider}}</td>
-                        </tr>
-                        <tr>
-                            <th>Insurance No  </th><td> &nbsp;&nbsp;:&nbsp;&nbsp; {{$insurance->insurance_no}}</td>
-                        </tr>
-                     
-                    </table>
+                            <tr>
+                                <th>Service Provider </th><td>&nbsp;&nbsp;:&nbsp;&nbsp; {{$insurance->service_provider}}</td>
+                            </tr>
+                            <tr>
+                                <th>Insurance No  </th><td> &nbsp;&nbsp;:&nbsp;&nbsp; {{$insurance->insurance_no}}</td>
+                            </tr>
+
+                        </table>
                     <?php } else echo "---" ?>
                 </td>
             </tr>
-           
+
             <tr>
                 <th>Current Medical Conditions</th>
                 <td>
@@ -169,15 +190,15 @@
 
     </div>
     <div class="box box-success">
-            <div class="box-body">
-                <div class="pull-left">
-                    <a href="{{URL::previous()}}" class="btn btn-danger btn-xs">Back</a>
-                </div>
+        <div class="box-body">
+            <div class="pull-left">
+                <a href="{{URL::previous()}}" class="btn btn-danger btn-xs">Back</a>
+            </div>
 
-                
-                <div class="clearfix"></div>
-            </div><!-- /.box-body -->
-        </div><!--box-->
+
+            <div class="clearfix"></div>
+        </div><!-- /.box-body -->
+    </div><!--box-->
 
 </div>
 @stop
