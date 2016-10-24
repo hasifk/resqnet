@@ -151,6 +151,8 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             }
         } else
             $return[] = "Please select any Group";
+        
+        return $return;
     }
 
     public function viewMembers($id) {
