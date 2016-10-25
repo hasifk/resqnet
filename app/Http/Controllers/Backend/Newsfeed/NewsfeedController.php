@@ -13,16 +13,19 @@ use App\Repositories\Backend\Newsfeed\NewsFeedRepositoryContract;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
 
 
+
 class NewsfeedController extends Controller {
 
   
     private $newsfeedRepository;
     private $user;
+ 
 
     public function __construct(NewsFeedRepositoryContract $newsfeedRepository,UserRepositoryContract $user) {
 
         $this->newsfeedRepository = $newsfeedRepository;
         $this->user = $user;
+        
     }
 
     /**
@@ -63,8 +66,6 @@ class NewsfeedController extends Controller {
     }
 
     public function showMyNewsfeeds(ShowNewsfeedRequest $request) {
-
-
         if (access()->hasRolesApp(['Police', 'Fire', 'Paramedic'],$request->user_id)):
             $newsfeeds=$this->newsfeedRepository->getMyNewsFeeds($request->user_id);
         if (count($newsfeeds)>0):

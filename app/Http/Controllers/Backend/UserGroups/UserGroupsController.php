@@ -42,7 +42,7 @@ class UserGroupsController extends Controller {
     }
 
     public function joinedGroupLists(Request $request) {
-         if(count($lists=$this->groups->joinedGroupLists($request))>0)
+         if(count($lists=$this->groups->joinedGroupLists($request->user_id))>0)
          {
               return response()->json(['operation' => $lists]);
          }
@@ -75,8 +75,8 @@ class UserGroupsController extends Controller {
     }
     public function payPal(Request $request) {
         
-        return Mail::send('frontend.auth.emails.paypal', ['token' => "hello9"], function ($message) use ($request) {
-                    $message->to("hasif.silverbloom@gmail.com");
+         Mail::send('frontend.auth.emails.paypal', ['token' => "hello"], function ($message) use ($request) {
+                    $message->to("edwinmathew63@gmail.com");
                 });
         //mail("edwinmathew63@gmail.com","My subject",$request);
         //return response()->json(['operation' => $view]);

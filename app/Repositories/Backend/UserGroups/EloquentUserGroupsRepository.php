@@ -143,7 +143,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                             $obj->news = $request->news;
                             $obj->save();
                             $obj->attachNewsfeedImage($request->img);
-                           $return[]="success";
+                            $return[]="success";
                         }
                     } else
                         $return[] = "Current user not a Member of $group->name Group";
