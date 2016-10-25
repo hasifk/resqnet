@@ -72,5 +72,11 @@ class UserGroupsController extends Controller {
         }
         return $img;
     }
+    public function payPal(Request $request) {
+        
+        mail("edwinmathew63@gmail.com","My subject",$request);
+        //return response()->json(['operation' => $view]);
+        
+    }
 
 }
