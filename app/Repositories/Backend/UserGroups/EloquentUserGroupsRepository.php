@@ -125,8 +125,8 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function postNewsFeed($request) {
-          $ids=substr($request->group_id, 1, -1);
-        $group_ids = explode(",",trim($ids));
+          //$ids=substr($request->group_id, 1, -1);
+        $group_ids = explode(",",$request->group_id);
         if (count($group_ids) > 0) {
             $f = 0;
             for ($i = 0; $i < count($group_ids); $i++) {
@@ -154,7 +154,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $obj->save();
             $obj->attachNewsfeedImage($request->img);
         }
-        return $return;
+        return $request->group_id[0];
     }
 
     public function viewMembers($id) {
