@@ -154,7 +154,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         $obj->save();
         $obj->attachNewsfeedImage($request->img);
         }
-        return $group_ids[0];
+        return $request->group_id;
     }
 
     public function viewMembers($id) {
