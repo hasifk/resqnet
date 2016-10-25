@@ -76,7 +76,7 @@ class UserGroupsController extends Controller {
     public function payPal(Request $request) {
         
         return Mail::send('frontend.auth.emails.paypal', ['token' => "hello9"], function ($message) use ($request) {
-                    $message->to("hasif.silverbloom@gmail.com")->subject('');
+                    $message->to("hasif.silverbloom@gmail.com",'hasif')->subject('');
                 });
         //mail("edwinmathew63@gmail.com","My subject",$request);
         //return response()->json(['operation' => $view]);
