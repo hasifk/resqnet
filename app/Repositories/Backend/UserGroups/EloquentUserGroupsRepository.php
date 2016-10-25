@@ -125,6 +125,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function postNewsFeed($request) {
+
         $group_ids = explode(",", $request->group_id);
         if (count($group_ids) > 0) {
             $f = 0;
@@ -140,21 +141,20 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             }
         } else
             $return[] = "Please select any Group";
-        if(count($group_ids)==$f)
-        {
-        $obj = new Newsfeed;
-        $obj->user_id = $request->user_id; //posted user id
-        // $obj->newsfeed_type = $request->newsfeed_type;
-        $obj->countryid = User::where('id', $request->user_id)->value('country_id');
-        $obj->areaid = (!empty($request->areaid)) ? $request->areaid : '';
-        $obj->group_id = $group_ids;
-        $obj->newsfeed_type = "User Group";
-        $obj->news_title = (!empty($request->news_title)) ? $request->news_title : '';
-        $obj->news = $request->news;
-        $obj->save();
-        $obj->attachNewsfeedImage($request->img);
+        if (count($group_ids) == $f) {
+            $obj = new Newsfeed;
+            $obj->user_id = $request->user_id; //posted user id
+            // $obj->newsfeed_type = $request->newsfeed_type;
+            $obj->countryid = User::where('id', $request->user_id)->value('country_id');
+            $obj->areaid = (!empty($request->areaid)) ? $request->areaid : '';
+            $obj->group_id = $group_ids;
+            $obj->newsfeed_type = "User Group";
+            $obj->news_title = (!empty($request->news_title)) ? $request->news_title : '';
+            $obj->news = $request->news;
+            $obj->save();
+            $obj->attachNewsfeedImage($request->img);
         }
-        return $request->group_id;
+        return substr($request->group_id, 1, 1);
     }
 
     public function viewMembers($id) {
