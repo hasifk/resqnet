@@ -136,7 +136,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                     } else
                         $return[] = "Current user not a Member of $group->name Group";
                 } else
-                    $return[] = $group_ids[$i];
+                    $return[] = $group_ids;
             }
         } else
             $return[] = "Please select any Group";
@@ -154,7 +154,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         $obj->save();
         $obj->attachNewsfeedImage($request->img);
         }
-        return $return;
+        return $request->group_id;
     }
 
     public function viewMembers($id) {
