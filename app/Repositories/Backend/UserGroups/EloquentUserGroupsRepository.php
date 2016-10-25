@@ -125,7 +125,8 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function postNewsFeed($request) {
-        preg_match_all('/\d+/', $request->group_id, $id);
+        $gp_id=$request->group_id;
+        preg_match_all('/\d+/',$gp_id, $id);
         $group_ids = $id;
         if (count($group_ids) > 0) {
             $f = 0;
