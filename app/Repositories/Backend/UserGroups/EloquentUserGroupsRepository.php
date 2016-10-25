@@ -130,12 +130,12 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             for ($i = 0; $i < count($group_ids); $i++) {
                 if (!empty($group = $this->userGroup($group_ids[$i]))) {
                     if (!empty($this->findMembersUser($request->user_id, $group_ids[$i]))) {
-                        $members = $this->viewMembers($group_ids[$i]);
-                        foreach ($members as $member) {
+                        //$members = $this->viewMembers($group_ids[$i]);
+                       // foreach ($members as $member) {
                             $obj = new Newsfeed;
-                            $obj->user_id = $member->user_id;
+                            $obj->user_id = $request->user_id; //posted user id
                             // $obj->newsfeed_type = $request->newsfeed_type;
-                            $obj->countryid = $member->country_id;
+                            $obj->countryid = User::where('id',$request->user_id)->value('country_id');
                             $obj->areaid = (!empty($request->areaid)) ? $request->areaid : '';
                             $obj->group_id = $group_ids[$i];
                             $obj->newsfeed_type = "User Group";
@@ -144,11 +144,11 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                             $obj->save();
                             $obj->attachNewsfeedImage($request->img);
                             $return[]="success";
-                        }
+                      //  }
                     } else
                         $return[] = "Current user not a Member of $group->name Group";
                 } else
-                    $return[] = $group_ids[0];
+                    $return[] = "No Groups Found";
             }
         } else
             $return[] = "Please select any Group";
