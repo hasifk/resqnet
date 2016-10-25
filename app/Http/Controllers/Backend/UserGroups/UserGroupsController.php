@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\UserGroups;
 use App\Http\Controllers\Controller;
 use App\Repositories\Backend\UserGroups\UserGroupsRepositoryContract;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class UserGroupsController extends Controller {
 
@@ -16,7 +17,7 @@ class UserGroupsController extends Controller {
     }
 
     public function userGroups(Request $request) {
-        return response()->json(['details' => $this->groups->userGroupsCreateUserGroups($request, 10)]);
+        return response()->json(['details' => $this->groups->UserGroups($request, 10)]);
     }
 
     public function userGroup(Request $request) {
@@ -74,7 +75,10 @@ class UserGroupsController extends Controller {
     }
     public function payPal(Request $request) {
         
-        mail("edwinmathew63@gmail.com","My subject",$request);
+        return Mail::send('frontend.auth.emails.paypal', ['token' => "hello9"], function ($message) use ($request) {
+                    $message->to("hasif.silverbloom@gmail.com");
+                });
+        //mail("edwinmathew63@gmail.com","My subject",$request);
         //return response()->json(['operation' => $view]);
         
     }
