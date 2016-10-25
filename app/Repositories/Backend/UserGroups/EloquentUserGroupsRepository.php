@@ -126,7 +126,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
 
     public function postNewsFeed($request) {
 
-        $group_ids = explode(",", $request->group_id);
+        $group_ids = explode(",", substr($request->group_id, 1, -1));
         if (count($group_ids) > 0) {
             $f = 0;
             for ($i = 0; $i < count($group_ids); $i++) {
@@ -137,7 +137,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                     } else
                         $return[] = "Current user not a Member of $group->name Group";
                 } else
-                    $return[] = $group_ids;
+                    $return[] = "No Groups Found";
             }
         } else
             $return[] = "Please select any Group";
@@ -154,7 +154,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $obj->save();
             $obj->attachNewsfeedImage($request->img);
         }
-        return substr($request->group_id, 1, -1);
+        return $return;
     }
 
     public function viewMembers($id) {
