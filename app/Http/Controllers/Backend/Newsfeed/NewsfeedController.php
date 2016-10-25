@@ -42,7 +42,7 @@ class NewsfeedController extends Controller {
             foreach ($newsfeeds as $key=>$item) {
                 if ($newsfeeds[$key]['image_filename'] && $newsfeeds[$key]['image_extension'] && $newsfeeds[$key]['image_path']) {
 
-                    $newsfeeds[$key]['newsfeed_image_src']=url('/image/'.$newsfeeds[$key]['id'].'/'.$newsfeeds[$key]['image_filename'].'.'.$newsfeeds[$key]['image_extension']);
+                    $newsfeeds[$key]['newsfeed_image_src']=url('/image/'.$newsfeeds[$key]['id'].'/'.$newsfeeds[$key]['image_filename'].'136x136.'.$newsfeeds[$key]['image_extension']);
                 }
 
                 $user=$this->user->find($newsfeeds[$key]['user_id']);
