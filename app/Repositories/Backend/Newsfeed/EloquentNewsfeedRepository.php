@@ -36,8 +36,11 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                             ->select('newsfeeds.*')->orderBy('newsfeeds.id', 'desc')
                             ->paginate(20);
         } else if (access()->hasRolesApp(['User'], $user_id)) {
-            if (count($lists = $this->groups->joinedGroupLists($request)) > 0) {
-                
+            if (count($lists = $this->groups->joinedGroupLists($user_id)) > 0) {
+                Newsfeed::join('group_members', 'newsfeeds.group_id', '=', 'group_members.group_id')
+                        ->where('group_members.user_id', $user_id)
+                        ->select('newsfeeds.*')
+                        ->orderBy('newsfeeds.id', 'desc')->paginate(20);
             } else {
                 return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
                                 ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])

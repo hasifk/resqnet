@@ -91,10 +91,10 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         return $return;
     }
 
-    public function joinedGroupLists($request) {
+    public function joinedGroupLists($userid) {
         return Member::join('user_group', 'group_members.group_id', '=', 'user_group.id')
                         ->join('users', 'group_members.user_id', '=', 'users.id')
-                        ->where('group_members.user_id', $request->user_id)
+                        ->where('group_members.user_id', $userid)
                         ->select('user_group.*', 'group_members.role', 'users.firstname', 'users.lastname')
                         ->orderBy('user_group.name', 'asc')->paginate(20);
     }
