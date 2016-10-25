@@ -4,10 +4,17 @@ namespace App\Repositories\Backend\Newsfeed;
 
 use App\Models\Newsfeed\Newsfeed;
 use App\Models\Access\User\User;
+use App\Repositories\Backend\UserGroups\UserGroupsRepositoryContract;
 use Auth;
 use Event;
 
 class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
+
+    private $groups;
+
+    public function __construct(UserGroupsRepositoryContract $groups) {
+        $this->groups = $groups;
+    }
 
     public function getNewsfeedPaginated() {
         return Newsfeed::join('users', 'newsfeeds.user_id', '=', 'users.id')->select('newsfeeds.*', 'users.firstname', 'users.lastname')->orderBy('newsfeeds.id', 'desc')
@@ -29,11 +36,15 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                             ->select('newsfeeds.*')->orderBy('newsfeeds.id', 'desc')
                             ->paginate(20);
         } else if (access()->hasRolesApp(['User'], $user_id)) {
-            return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
-                            ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
-                            ->orWhere('newsfeeds.areaid', '=', $user->area_id)
-                            ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
-                            ->select('newsfeeds.*')->orderBy('newsfeeds.id', 'desc')->paginate(20);
+            if (count($lists = $this->groups->joinedGroupLists($request)) > 0) {
+                
+            } else {
+                return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
+                                ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
+                                ->orWhere('newsfeeds.areaid', '=', $user->area_id)
+                                ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
+                                ->select('newsfeeds.*')->orderBy('newsfeeds.id', 'desc')->paginate(20);
+            }
         }
     }
 
@@ -115,4 +126,5 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
             $time = $minutes . " Min Ago";
         return $time;
     }
+
 }
