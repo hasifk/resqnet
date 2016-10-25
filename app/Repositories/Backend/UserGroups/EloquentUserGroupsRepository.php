@@ -125,16 +125,15 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function postNewsFeed($request) {
-      
-        $ids=trim(substr($request->group_id, 1, -1));
-        $group_ids = explode(",",$ids);
+        $group_ids = explode(",",$request->group_id);
         if (count($group_ids) > 0) {
             $f = 0;
             for ($i = 0; $i < count($group_ids); $i++) {
-                if (!empty($group = $this->userGroup($group_ids[$i]))) {
-                    if (!empty($this->findMembersUser($request->user_id, $group_ids[$i]))) {
+                preg_match_all('/\d+/', $group_ids[0], $id);
+                if (!empty($group = $this->userGroup($id))) {
+                    if (!empty($this->findMembersUser($request->user_id, $id))) {
                         $f++;
-                        $return[] = "success";
+                        $return[] = "success :".$id;
                     } else
                         $return[] = "Current user not a Member of $group->name Group";
                 } else
@@ -155,7 +154,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $obj->save();
             $obj->attachNewsfeedImage($request->img);
         }
-        return $group_ids[0];
+        return $return;
     }
 
     public function viewMembers($id) {
