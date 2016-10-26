@@ -43,6 +43,7 @@ trait UserGroupAttribute {
                 $this->gp_image_extension = $newsfeedFile->getClientOriginalExtension();
                 $this->gp_image_path = $filePath;
                 $this->save();
+                return "success";
             endif;
         endif;
     }

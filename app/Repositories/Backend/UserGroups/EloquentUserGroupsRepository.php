@@ -76,7 +76,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         if ($request->has('name') && $request->has('gp_pin'))
             $obj->save();
 
-        $obj->attachUserGroupImage($request->avatar);
+       $return= $obj->attachUserGroupImage($request->avatar);
 
         if ($request->has('count')) { //count is variable, used just for checking and it same as that of "count($request->membership_no)" 
             $return = $this->addMembers($request, $role = 1);
@@ -86,7 +86,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $obj1->group_id = $obj->id;
             $obj1->role = 1;
             $obj1->save();
-            $return[] = "Success";
+            $return = "Success";
         endif;
         return $return;
     }
