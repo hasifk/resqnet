@@ -41,17 +41,23 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                 foreach ($newsfeeds as $newsfeed) {
                     $group_ids = json_decode($newsfeed->group_id);
                     foreach ($group_ids as $id) {
-                        if (!empty($this->groups->findMembersUser($user_id, $group_ids))) {
-                            $newsfeed_ids[]=$newsfeeds->id;
+                        if (!empty($this->groups->findMembersUser($user_id, $id))) {
+                            $newsfeed_ids[] = $newsfeed->id;
                         }
                     }
                 }
-                return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
-                                ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
-                                ->orWhere('newsfeeds.areaid', '=', $user->area_id)
-                                ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
-                                ->whereIn('newsfeeds.id', $newsfeed_ids)
-                                ->select('newsfeeds.*')->orderBy('newsfeeds.id', 'desc')->paginate(20);
+                if (count($newsfeed_ids) > 0) {
+                    return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
+                                    ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
+                                    ->orWhere('newsfeeds.areaid', '=', $user->area_id)
+                                    ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
+                                    ->orWhere(function($query) use($newsfeed_ids) {
+                                        $query->whereIn('newsfeeds.id', $newsfeed_ids);
+                                    })
+                                    ->select('newsfeeds.*')->orderBy('newsfeeds.id', 'desc')->paginate(20);
+                } else {
+                    return 0;
+                }
             } else {
                 return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
                                 ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
