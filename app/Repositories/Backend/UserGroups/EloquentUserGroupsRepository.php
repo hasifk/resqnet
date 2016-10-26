@@ -130,12 +130,10 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         if (count($group_ids) > 0) {
             $f = 0;
             for ($i = 0; $i < count($group_ids); $i++) {
-              //$group_ids[$i]=ltrim($group_ids[$i],"[");
-              //$group_ids[$i]=rtrim($group_ids[$i],"]");
                 if (!empty($group = $this->userGroup($group_ids[$i]))) {
                     if (!empty($this->findMembersUser($request->user_id, $group_ids[$i]))) {
                         $f++;
-                        $return[] = "success :".$f.":".count($group_ids);
+                        $return[] = "success";
                     } else
                         $return[] = "Current user not a Member of $group->name Group";
                 } else
