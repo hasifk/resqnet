@@ -15,7 +15,7 @@ class CreateNewsfeedsTable extends Migration {
             $table->increments('id')->unsigned();
             $table->string('newsfeed_type');
             $table->integer('user_id')->unsigned();
-            $table->integer('group_id')->default(false);
+            $table->string('group_id');
             $table->integer('countryid')->unsigned();
             $table->integer('areaid')->unsigned();
             $table->string('news_title');

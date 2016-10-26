@@ -37,10 +37,21 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                             ->paginate(20);
         } else if (access()->hasRolesApp(['User'], $user_id)) {
             if (count($lists = $this->groups->joinedGroupLists($user_id)) > 0) {
-               return Newsfeed::join('group_members', 'newsfeeds.group_id', '=', 'group_members.group_id')
-                        ->where('group_members.user_id', $user_id)
-                        ->select('newsfeeds.*')
-                        ->orderBy('newsfeeds.id', 'desc')->paginate(20);
+                $newsfeeds = Newsfeed::where('newsfeed_type', "User Group")->get();
+                foreach ($newsfeeds as $newsfeed) {
+                    $group_ids = json_decode($newsfeed->group_id);
+                    foreach ($group_ids as $id) {
+                        if (!empty($this->groups->findMembersUser($user_id, $id))) {
+                            $newsfeed_ids[]=$newsfeeds->id;
+                        }
+                    }
+                }
+                return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
+                                ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
+                                ->orWhere('newsfeeds.areaid', '=', $user->area_id)
+                                ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
+                                ->whereIn('newsfeeds.id', $newsfeed_ids)
+                                ->select('newsfeeds.*')->orderBy('newsfeeds.id', 'desc')->paginate(20);
             } else {
                 return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
                                 ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
@@ -57,7 +68,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
         else {
             $obj = new Newsfeed;
             $obj->user_id = $request->user_id;
-            // $obj->newsfeed_type = $request->newsfeed_type;
+// $obj->newsfeed_type = $request->newsfeed_type;
             $obj->countryid = $request->countryid;
             $obj->areaid = (!empty($request->areaid)) ? $request->areaid : '';
         }
@@ -115,7 +126,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
     public function timeCalculator($tot_sec) {
         $hours = floor($tot_sec / 3600);
         $minutes = floor(($tot_sec / 60) % 60);
-        // $seconds = $tot_sec % 60;
+// $seconds = $tot_sec % 60;
 
         if ($hours >= 1) {
             $time = $hours >= 2 ? $hours . " Hrs Ago" : $hours . " Hr Ago";
