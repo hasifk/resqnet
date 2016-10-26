@@ -41,7 +41,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                 foreach ($newsfeeds as $newsfeed) {
                     $group_ids = json_decode($newsfeed->group_id);
                     foreach ($group_ids as $id) {
-                        if (!empty($this->groups->findMembersUser($user_id, $id))) {
+                        if (!empty($this->groups->findMembersUser($user_id, $group_ids))) {
                             $newsfeed_ids[]=$newsfeeds->id;
                         }
                     }
