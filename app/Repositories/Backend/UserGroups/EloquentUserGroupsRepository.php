@@ -130,15 +130,16 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         if (count($group_ids) > 0) {
             $f = 0;
             for ($i = 0; $i < count($group_ids); $i++) {
-             preg_match_all('/([\d]+)/', $group_ids[$i], $match);
-//                if (!empty($group = $this->userGroup($match))) {
-//                    if (!empty($this->findMembersUser($request->user_id, $match))) {
-//                        $f++;
-//                        $return[] = "success";
-//                    } else
-//                        $return[] = "Current user not a Member of $group->name Group";
-//                } else
-//                    $return[] = "No Groups Found";
+              $group_ids[$i]=ltrim($group_ids[$i],"[");
+              $group_ids[$i]=rtrim($group_ids[$i],"]");
+                if (!empty($group = $this->userGroup($group_ids[$i]))) {
+                    if (!empty($this->findMembersUser($request->user_id, $group_ids[$i]))) {
+                        $f++;
+                        $return[] = "success";
+                    } else
+                        $return[] = "Current user not a Member of $group->name Group";
+                } else
+                    $return[] = "No Groups Found";
             }
         } else
             $return[] = "Please select any Group";
@@ -155,7 +156,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
            // $obj->save();
             //$obj->attachNewsfeedImage($request->img);
         }
-        return $match[0];
+        return $group_ids[0];
     }
 
     public function viewMembers($id) {
