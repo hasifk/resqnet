@@ -135,7 +135,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                 if (!empty($group = $this->userGroup($group_ids[$i]))) {
                     if (!empty($this->findMembersUser($request->user_id, $group_ids[$i]))) {
                         $f++;
-                        $return[] = "success";
+                        $return[] = "success :".$f.":".count($group_ids);
                     } else
                         $return[] = "Current user not a Member of $group->name Group";
                 } else
@@ -153,8 +153,8 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $obj->newsfeed_type = "User Group";
             $obj->news_title = (!empty($request->news_title)) ? $request->news_title : '';
             $obj->news = $request->news;
-            //$obj->save();
-            //$obj->attachNewsfeedImage($request->img);
+            $obj->save();
+            $obj->attachNewsfeedImage($request->img);
         }
         return $return;
     }
