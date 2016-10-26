@@ -154,7 +154,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $obj->news_title = (!empty($request->news_title)) ? $request->news_title : '';
             $obj->news = $request->news;
             $obj->save();
-            $obj->attachNewsfeedImage($request->img);
+            //$obj->attachNewsfeedImage($request->img);
         }
         return $return;
     }
