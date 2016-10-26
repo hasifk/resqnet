@@ -125,13 +125,13 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function postNewsFeed($request) {
-        
-        $group_ids=explode(",",$request->group_id);
+        $ids=substr($request->group_id,1,-1);
+        $group_ids=explode(",",$ids);
         if (count($group_ids) > 0) {
             $f = 0;
             for ($i = 0; $i < count($group_ids); $i++) {
-              $group_ids[$i]=ltrim($group_ids[$i],"[");
-              $group_ids[$i]=rtrim($group_ids[$i],"]");
+              //$group_ids[$i]=ltrim($group_ids[$i],"[");
+              //$group_ids[$i]=rtrim($group_ids[$i],"]");
                 if (!empty($group = $this->userGroup($group_ids[$i]))) {
                     if (!empty($this->findMembersUser($request->user_id, $group_ids[$i]))) {
                         $f++;
