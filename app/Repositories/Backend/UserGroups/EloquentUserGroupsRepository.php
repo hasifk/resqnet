@@ -131,14 +131,14 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $f = 0;
             for ($i = 0; $i < count($group_ids); $i++) {
              preg_match_all('/([\d]+)/', $group_ids[$i], $match);
-                if (!empty($group = $this->userGroup($match))) {
-                    if (!empty($this->findMembersUser($request->user_id, $match))) {
-                        $f++;
-                        $return[] = "success";
-                    } else
-                        $return[] = "Current user not a Member of $group->name Group";
-                } else
-                    $return[] = "No Groups Found";
+//                if (!empty($group = $this->userGroup($match))) {
+//                    if (!empty($this->findMembersUser($request->user_id, $match))) {
+//                        $f++;
+//                        $return[] = "success";
+//                    } else
+//                        $return[] = "Current user not a Member of $group->name Group";
+//                } else
+//                    $return[] = "No Groups Found";
             }
         } else
             $return[] = "Please select any Group";
