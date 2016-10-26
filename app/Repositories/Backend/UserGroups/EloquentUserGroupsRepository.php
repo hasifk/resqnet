@@ -153,8 +153,8 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $obj->newsfeed_type = "User Group";
             $obj->news_title = (!empty($request->news_title)) ? $request->news_title : '';
             $obj->news = $request->news;
-            $obj->save();
-            $obj->attachNewsfeedImage($request->img);
+           // $obj->save();
+          //  $obj->attachNewsfeedImage($request->img);
         }
         return $group_ids;
     }
