@@ -30,6 +30,7 @@ class CreateUsersTable extends Migration
             $table->string('dept_name');
             $table->string('email')->unique();
             $table->string('password')->nullable();
+            $table->longText('emergency_groups');
             $table->string('avatar_filename');
             $table->string('avatar_extension');
             $table->string('avatar_path');

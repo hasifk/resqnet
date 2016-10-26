@@ -38,6 +38,8 @@ interface UserGroupsRepositoryContract {
 
     public function viewMembers($request);
     
+    public function addEmergencyGroups($request);
+    
     public function deletegroups();
 
     //public function getAmountOfNewsfeeds();

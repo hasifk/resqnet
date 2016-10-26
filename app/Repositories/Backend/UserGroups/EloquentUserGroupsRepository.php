@@ -47,7 +47,6 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
 
     public function joinUsers($request) {
         $groups = UserGroup::where('gp_pin', $request->gp_pin)->first();
-
         if (!empty($groups)) {
             if (empty($this->findMembersUser($request->user_id, $groups->id))) {
                 $obj1 = new Member;
@@ -76,7 +75,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         if ($request->has('name') && $request->has('gp_pin'))
             $obj->save();
 
-       $return= $obj->attachUserGroupImage($request->avatar);
+        $return = $obj->attachUserGroupImage($request->avatar);
 
         if ($request->has('count')) { //count is variable, used just for checking and it same as that of "count($request->membership_no)" 
             $return = $this->addMembers($request, $role = 1);
@@ -125,8 +124,8 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function postNewsFeed($request) {
-        $ids=substr($request->group_id,1,-1);
-        $group_ids=explode(",",$ids);
+        $ids = substr($request->group_id, 1, -1);
+        $group_ids = explode(",", $ids);
         if (count($group_ids) > 0) {
             $f = 0;
             for ($i = 0; $i < count($group_ids); $i++) {
@@ -163,6 +162,28 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                         ->select('users.firstname', 'users.lastname', 'users.country_id', 'group_members.role', 'group_members.id', 'group_members.user_id')
                         //->orderBy('user_group.id', 'desc')
                         ->paginate(20);
+    }
+
+    public function addEmergencyGroups($request) {
+        $groups = UserGroup::where('gp_pin', $request->gp_pin)->first();
+        if (!empty($groups)) {
+            if ($request->has('user_id')):
+                if (!empty($users = User::find('id', $request->user_id))) {
+                    if (!empty($users->emergency_groups)) {
+                        $group_ids = json_decode($users->emergency_groups);
+                        if (in_array($groups->id, $group_ids))
+                            $return = "Aready Added";
+                        else
+                            array_push($group_ids, $groups->id);
+                    }
+                } else
+                    $group_ids[] = $request->gp_pin;
+                $user->emergency_groups = $group_ids;
+                $user->save();
+            endif;
+        } else
+            $return = "Invalid Group ID";
+        return $return;
     }
 
     public function deletegroups() {

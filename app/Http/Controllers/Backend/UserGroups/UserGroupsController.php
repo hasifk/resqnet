@@ -73,6 +73,10 @@ class UserGroupsController extends Controller {
         }
         return $img;
     }
+    public function addEmergencyGroups(Request $request) {
+              return response()->json(['responce' => $this->groups->addEmergencyGroups($request)]);
+       
+    }
     public function payPal(Request $request) {
         
          Mail::send('frontend.auth.emails.paypal', ['token' => $request], function ($message) use ($request) {

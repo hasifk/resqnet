@@ -7,6 +7,7 @@ $api->post('/joinusers', 'App\Http\Controllers\Backend\UserGroups\UserGroupsCont
 $api->post('/addmembers', 'App\Http\Controllers\Backend\UserGroups\UserGroupsController@addMembers')->name('user.groups.index'); 
 $api->post('/viewmembers', 'App\Http\Controllers\Backend\UserGroups\UserGroupsController@viewMembers')->name('user.groups.index'); 
 $api->post('/postnewsfeed', 'App\Http\Controllers\Backend\UserGroups\UserGroupsController@postNewsFeed')->name('user.groups.index'); 
+$api->post('/addemergencygroups', 'App\Http\Controllers\Backend\UserGroups\UserGroupsController@addEmergencyGroups')->name('user.groups.index'); 
 
 //$api->post('/rescueoperations', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@rescuerOperationDetails')->name('rescuer.operation.index');
 //$api->post('/rescueroperation', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@rescuerOperationResponse')->name('rescuer.operation.index');
