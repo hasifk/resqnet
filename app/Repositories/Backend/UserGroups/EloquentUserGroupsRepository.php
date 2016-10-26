@@ -125,15 +125,14 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function postNewsFeed($request) {
-       // $ids=substr($request->group_id,1,-1);
-       // $ids2=implode(",",array($ids));
-        $group_ids=explode(",","hellp,sdjjsddh");
+        
+        $group_ids=explode(",",$request->group_id);
         if (count($group_ids) > 0) {
             $f = 0;
             for ($i = 0; $i < count($group_ids); $i++) {
-               // preg_match_all('/\d+/', $group_ids[0], $matches);
-                if (!empty($group = $this->userGroup($group_ids[$i]))) {
-                    if (!empty($this->findMembersUser($request->user_id, $group_ids[$i]))) {
+             preg_match_all('/([\d]+)/', $group_ids[$i], $match);
+                if (!empty($group = $this->userGroup($match))) {
+                    if (!empty($this->findMembersUser($request->user_id, $match))) {
                         $f++;
                         $return[] = "success";
                     } else
@@ -156,7 +155,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
            // $obj->save();
             //$obj->attachNewsfeedImage($request->img);
         }
-        return gettype($request->group_id);
+        return $match;
     }
 
     public function viewMembers($id) {
