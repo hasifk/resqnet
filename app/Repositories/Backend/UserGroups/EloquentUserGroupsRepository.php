@@ -149,14 +149,14 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             // $obj->newsfeed_type = $request->newsfeed_type;
             $obj->countryid = User::where('id', $request->user_id)->value('country_id');
             $obj->areaid = (!empty($request->areaid)) ? $request->areaid : '';
-            $obj->group_id = $group_ids;
+            $obj->group_id = json_encode($group_ids);
             $obj->newsfeed_type = "User Group";
             $obj->news_title = (!empty($request->news_title)) ? $request->news_title : '';
             $obj->news = $request->news;
             $obj->save();
             //$obj->attachNewsfeedImage($request->img);
         }
-        return $request->user_id;
+        return $return;
     }
 
     public function viewMembers($id) {
