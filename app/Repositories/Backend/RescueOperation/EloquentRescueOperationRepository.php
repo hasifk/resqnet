@@ -9,11 +9,19 @@ use App\Models\RescueOperation\Location;
 use App\Models\RescueOperation\Operation;
 use App\Models\Rescuer\RescuerType;
 use App\Models\Access\EmergencyContact\EmergencyContact;
+//use App\Repositories\Backend\UserGroups\UserGroupsRepositoryContract;
 use Illuminate\Http\Request;
 use Auth;
 use Storage;
 
 class EloquentRescueOperationRepository {
+
+//    private $groups;
+//
+//    public function __construct(UserGroupsRepositoryContract $groups) {
+//
+//        $this->groups = $groups;
+//    }
 
     public function findActiveRescuers($result) {
         $type = RescuerType::where('id', $result->type)->value('type');
@@ -37,6 +45,15 @@ class EloquentRescueOperationRepository {
             $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . " Reqested an Emergency(" . $result->emergency_type . ")";
             if (!empty($contacts = $this->emergencyContacts($userid)))
                 $appids = $this->membershipChecking($contacts, $rescuers);
+
+//            if (!empty($rescuee->emergency_groups)) {
+//            $group_ids = json_decode($rescuee->emergency_groups);
+//            foreach ($group_ids as $gpid) {
+//                $pin[] = $this->groups->viewMembers($gpid);
+//            }
+            //   $user['emergency_gp_pin'] = $pin;
+            //   }
+
             sort($rescuers);
             $obj = new ActiveRescuer;
             $obj->rescuee_id = $userid;

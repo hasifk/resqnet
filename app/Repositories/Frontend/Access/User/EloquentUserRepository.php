@@ -530,9 +530,9 @@ class EloquentUserRepository implements UserRepositoryContract {
         if (!empty($user->emergency_groups)) {
             $group_ids = json_decode($user->emergency_groups);
             foreach ($group_ids as $gpid) {
-                $group[] = UserGroup::where('id', $gpid)->value('gp_pin');
+                $pin[] = UserGroup::where('id', $gpid)->value('gp_pin');
             }
-            $user['emergency_groups'] = $group;
+            $user['emergency_gp_pin'] = $pin;
         }
         return $user;
     }
