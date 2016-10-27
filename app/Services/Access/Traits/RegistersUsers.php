@@ -38,10 +38,11 @@ trait RegistersUsers
     public function register(RegisterRequest $request)
     {
         if (config('access.users.confirm_email')) {
-            if($this->user->create($request->all())):
-                return response()->json(['success_info' => '00']);
+            $result=$this->user->create($request->all());
+            if(is_numeric($result)):
+                return response()->json(['success_info' => '00','message' => $result]);
             else:
-                return response()->json(['success_info' => '01']);
+                return response()->json(['success_info' => '01','message' => $result]);
                 endif;
           /*  $token = \JWTAuth::fromUser($user);
             return response()->json(['token' => $token, 'user' => $user->toArray()]);*/

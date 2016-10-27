@@ -82,7 +82,7 @@ class EloquentUserRepository implements UserRepositoryContract {
      */
     public function create(array $data, $provider = false) {
         if (count($data['gp_pin']) > 0) {
-            for ($i = 0; $i < count($data['gp_pin'][$i]); $i++) {
+            for ($i = 0; $i < count($data['gp_pin']); $i++) {
                 $groups = UserGroup::where('gp_pin', $data['gp_pin'][$i])->first();
                 if (!empty($groups)) {
                     $group_ids[] = $groups->id;
@@ -185,7 +185,7 @@ class EloquentUserRepository implements UserRepositoryContract {
         /**
          * Return the user object
          */
-        return $user;
+        return $user->id;
     }
 
     public function updateUserStub($data) {
