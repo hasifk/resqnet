@@ -180,14 +180,14 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                                     array_push($group_ids, $groups->id);
                                     $users->emergency_groups = json_encode($group_ids);
                                     $users->save();
-                                    $return[] = "Success";
+                                   //$return[] = "Success";
                                     $f++;
                                 }
                             } else {
                                 $group_ids[] = $groups->id;
                                 $users->emergency_groups = json_encode($group_ids);
                                 $users->save();
-                                $return[] = "Success";
+                               // $return[] = "Success";
                                 $f++;
                             }
                         } else
