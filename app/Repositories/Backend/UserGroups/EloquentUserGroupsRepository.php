@@ -165,24 +165,30 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function addEmergencyGroups($request) {
-        $groups = UserGroup::where('gp_pin', $request->gp_pin)->first();
-        if (!empty($groups)) {
-            if ($request->has('user_id')):
-                if (!empty($users = User::find('id', $request->user_id))) {
-                    if (!empty($users->emergency_groups)) {
-                        $group_ids = json_decode($users->emergency_groups);
-                        if (in_array($groups->id, $group_ids))
-                            $return = "Aready Added";
-                        else
-                            array_push($group_ids, $groups->id);
-                    }
+        if (count($request->gp_pin) > 0) {
+            for ($i = 0; $i < count($request->gp_pin); $i++) {
+                $groups = UserGroup::where('gp_pin', $request->gp_pin[$i])->first();
+                if (!empty($groups)) {
+                    if ($request->has('user_id')) {
+                        if (!empty($users = User::find('id', $request->user_id))) {
+                            if (!empty($users->emergency_groups)) {
+                                $group_ids = json_decode($users->emergency_groups);
+                                if (in_array($groups->id, $group_ids))
+                                    $return[] = "Aready Added";
+                                else
+                                    array_push($group_ids, $groups->id);
+                            }
+                        } else
+                            $group_ids[] = $groups->id;
+                        $user->emergency_groups = json_encode($group_ids);
+                        $user->save();
+                    } else
+                        $return[] = "Error... user_id  not found";
                 } else
-                    $group_ids[] = $request->gp_pin;
-                $user->emergency_groups = $group_ids;
-                $user->save();
-            endif;
+                    $return = "Invalid Group ID";
+            }
         } else
-            $return = "Invalid Group ID";
+            $return = "Error...gp_pin not found";
         return $return;
     }
 
