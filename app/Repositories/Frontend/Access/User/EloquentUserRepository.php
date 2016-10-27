@@ -81,17 +81,26 @@ class EloquentUserRepository implements UserRepositoryContract {
      * @return static
      */
     public function create(array $data, $provider = false) {
-        if (count($data['gp_pin']) > 0) {
+        $return=array();
+        if (!empty($data['gp_pin'])) {
             for ($i = 0; $i < count($data['gp_pin']); $i++) {
                 $groups = UserGroup::where('gp_pin', $data['gp_pin'][$i])->first();
                 if (!empty($groups)) {
                     $group_ids[] = $groups->id;
                 } else {
-                    return "invalid Group Pin: " . $data['gp_pin'][$i];
-                    break;
+                    $return[] = "invalid Group Pin: " . $data['gp_pin'][$i];
                 }
             }
         }
+        for ($i = 1; $i < 4; $i++) {
+            if (!empty($data['emergency' . $i])) {
+                if (empty($user = User::where('membership_no', $data['emergency' . $i])->first())) {
+                    $return[] = "Invalid Membership No: " . $data['emergency' . $i];
+                }
+            }
+        }
+        if (count($return) > 0)
+            return $return;
         if ($provider) {
 
             $user = User::create([
@@ -171,10 +180,10 @@ class EloquentUserRepository implements UserRepositoryContract {
         /** Emergency contact start */
         $obj = new EmergencyContact;
         $obj->user_id = $user->id;
-
         $obj->emergency1 = (!empty($data['emergency1'])) ? $data['emergency1'] : '';
         $obj->emergency2 = (!empty($data['emergency2'])) ? $data['emergency2'] : '';
         $obj->emergency3 = (!empty($data['emergency3'])) ? $data['emergency3'] : '';
+
         $obj->save();
 
         /** Emergency end */
