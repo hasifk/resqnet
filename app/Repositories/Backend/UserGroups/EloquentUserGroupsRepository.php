@@ -170,22 +170,29 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                 $groups = UserGroup::where('gp_pin', $request->gp_pin[$i])->first();
                 if (!empty($groups)) {
                     if ($request->has('user_id')) {
-                        if (!empty($users = User::find('id', $request->user_id))) {
+                        if (!empty($users = User::find($request->user_id))) {
                             if (!empty($users->emergency_groups)) {
                                 $group_ids = json_decode($users->emergency_groups);
                                 if (in_array($groups->id, $group_ids))
                                     $return[] = "Aready Added";
-                                else
+                                else {
                                     array_push($group_ids, $groups->id);
+                                    $users->emergency_groups = json_encode($group_ids);
+                                    $users->save();
+                                    $return[] = "Success";
+                                }
+                            } else {
+                                $group_ids[] = $groups->id;
+                                $users->emergency_groups = json_encode($group_ids);
+                                $users->save();
+                                $return[] = "Success";
                             }
                         } else
-                            $group_ids[] = $groups->id;
-                        $user->emergency_groups = json_encode($group_ids);
-                        $user->save();
+                            $return[] = "No User Found";
                     } else
                         $return[] = "Error... user_id  not found";
                 } else
-                    $return = "Invalid Group ID";
+                    $return[] = "Invalid Group Pin : " . $request->gp_pin[$i];
             }
         } else
             $return = "Error...gp_pin not found";
