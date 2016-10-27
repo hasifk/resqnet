@@ -81,7 +81,7 @@ class EloquentUserRepository implements UserRepositoryContract {
      * @return static
      */
     public function create(array $data, $provider = false) {
-        $return=array();
+        $return = array();
         if (!empty($data['gp_pin'])) {
             for ($i = 0; $i < count($data['gp_pin']); $i++) {
                 $groups = UserGroup::where('gp_pin', $data['gp_pin'][$i])->first();
@@ -523,6 +523,18 @@ class EloquentUserRepository implements UserRepositoryContract {
         $obj->service_provider = $request->service_provider;
         $obj->insurance_no = $request->insurance_no;
         $obj->save();
+    }
+
+    public function userDetails($id) {
+        $user = $this->find($id);
+        if (!empty($user->emergency_groups)) {
+            $group_ids = json_decode($user->emergency_groups);
+            foreach ($group_ids as $gpid) {
+                $group[] = UserGroup::where('id', $gpid)->value('gp_pin');
+            }
+            $user['emergency_groups'] = $group;
+        }
+        return $user;
     }
 
 }

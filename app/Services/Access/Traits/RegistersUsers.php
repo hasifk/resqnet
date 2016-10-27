@@ -80,7 +80,7 @@ trait RegistersUsers
     /***************************************************************************************************************/
     public function editProfile(EditProfileRequest $request)
     {
-        $user1 = $this->user->find($request->user_id);
+        $user1 = $this->user->userDetails($request->user_id);
         $user= $user1->toArray();
         if ($user1->avatar_filename && $user1->avatar_extension && $user1->avatar_path) {
 

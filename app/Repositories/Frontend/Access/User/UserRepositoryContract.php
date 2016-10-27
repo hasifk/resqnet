@@ -78,4 +78,5 @@ interface UserRepositoryContract
     public function updateOnlineStatus($request);
     public function fbLogin($request);
     public function updateFbInfo($data);
+    public function userDetails($id);
 }
