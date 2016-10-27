@@ -81,13 +81,13 @@ class EloquentUserRepository implements UserRepositoryContract {
      * @return static
      */
     public function create(array $data, $provider = false) {
-        if (count($data['gp_pn']) > 0) {
-            for ($i = 0; $i < count($data['gp_pn'][$i]); $i++) {
-                $groups = UserGroup::where('gp_pin', $data['gp_pn'][$i])->first();
+        if (count($data['gp_pin']) > 0) {
+            for ($i = 0; $i < count($data['gp_pin'][$i]); $i++) {
+                $groups = UserGroup::where('gp_pin', $data['gp_pin'][$i])->first();
                 if (!empty($groups)) {
                     $group_ids[] = $groups->id;
                 } else {
-                    return "invalid Group Pin: " . $groups->id;
+                    return "invalid Group Pin: " . $data['gp_pin'][$i];
                     break;
                 }
             }
