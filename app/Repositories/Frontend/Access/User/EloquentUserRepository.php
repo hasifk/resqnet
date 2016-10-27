@@ -15,6 +15,7 @@ use App\Exceptions\GeneralException;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Access\User\SocialLogin;
 use App\Repositories\Backend\Access\Role\RoleRepositoryContract;
+use App\Models\UserGroups\UserGroup;
 use Auth;
 
 /**
@@ -80,6 +81,17 @@ class EloquentUserRepository implements UserRepositoryContract {
      * @return static
      */
     public function create(array $data, $provider = false) {
+        if (count($data['gp_pn']) > 0) {
+            for ($i = 0; $i < count($data['gp_pn'][$i]); $i++) {
+                $groups = UserGroup::where('gp_pin', $data['gp_pn'][$i])->first();
+                if (!empty($groups)) {
+                    $group_ids[] = $groups->id;
+                } else {
+                    return "invalid Group Pin: " . $groups->id;
+                    break;
+                }
+            }
+        }
         if ($provider) {
 
             $user = User::create([
@@ -96,6 +108,7 @@ class EloquentUserRepository implements UserRepositoryContract {
                         'email' => $data['email'],
                         'password' => null,
                         'status' => 0,
+                        'emergency_groups' => (!empty($group_ids)) ? json_encode($group_ids) : '',
                         'current_medical_conditions' => (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '',
                         'prior_medical_conditions' => (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '',
                         'allergies' => (!empty($data['allergies'])) ? $data['allergies'] : '',
@@ -122,6 +135,7 @@ class EloquentUserRepository implements UserRepositoryContract {
                         'email' => $data['email'],
                         'password' => bcrypt($data['password']),
                         'status' => 0,
+                        'emergency_groups' => (!empty($group_ids)) ? json_encode($group_ids) : '',
                         'current_medical_conditions' => (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '',
                         'prior_medical_conditions' => (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '',
                         'allergies' => (!empty($data['allergies'])) ? $data['allergies'] : '',
@@ -154,15 +168,14 @@ class EloquentUserRepository implements UserRepositoryContract {
          *
          * If this is a social account they are confirmed through the social provider by default
          */
-
-        /** Emergency contact start*/
+        /** Emergency contact start */
         $obj = new EmergencyContact;
         $obj->user_id = $user->id;
 
-       $obj->emergency1 = (!empty($data['emergency1'])) ? $data['emergency1'] : '';
-       $obj->emergency2 =  (!empty($data['emergency2'])) ? $data['emergency2'] : '';
-       $obj->emergency3 = (!empty($data['emergency3'])) ? $data['emergency3'] : '';
-       $obj->save();
+        $obj->emergency1 = (!empty($data['emergency1'])) ? $data['emergency1'] : '';
+        $obj->emergency2 = (!empty($data['emergency2'])) ? $data['emergency2'] : '';
+        $obj->emergency3 = (!empty($data['emergency3'])) ? $data['emergency3'] : '';
+        $obj->save();
 
         /** Emergency end */
         if (config('access.users.confirm_email') && $provider === false) {
@@ -177,19 +190,19 @@ class EloquentUserRepository implements UserRepositoryContract {
 
     public function updateUserStub($data) {
         $user = User::find($data['id']);
-        if(!empty($user)):
-        $user->firstname = $data['firstname'];
-        $user->lastname = (!empty($data['lastname'])) ? $data['lastname'] : '';
-        $user->dob = (!empty($data['dob'])) ? $data['dob'] : '';
-        $user->jurisdiction = (!empty($data['jurisdiction'])) ? $data['jurisdiction'] : '';
-        $user->phone = (!empty($data['phone'])) ? $data['phone'] : '';
-        $user->current_medical_conditions = (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '';
-        $user->prior_medical_conditions = (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '';
-        $user->allergies = (!empty($data['allergies'])) ? $data['allergies'] : '';
-        $user->save();
+        if (!empty($user)):
+            $user->firstname = $data['firstname'];
+            $user->lastname = (!empty($data['lastname'])) ? $data['lastname'] : '';
+            $user->dob = (!empty($data['dob'])) ? $data['dob'] : '';
+            $user->jurisdiction = (!empty($data['jurisdiction'])) ? $data['jurisdiction'] : '';
+            $user->phone = (!empty($data['phone'])) ? $data['phone'] : '';
+            $user->current_medical_conditions = (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '';
+            $user->prior_medical_conditions = (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '';
+            $user->allergies = (!empty($data['allergies'])) ? $data['allergies'] : '';
+            $user->save();
 
-            $emergency_contact= EmergencyContact::where('user_id',$user->id)->first();
-            if(empty($emergency_contact)):
+            $emergency_contact = EmergencyContact::where('user_id', $user->id)->first();
+            if (empty($emergency_contact)):
                 $emergency_contact = new EmergencyContact;
                 $emergency_contact->user_id = $user->id;
             endif;
@@ -198,55 +211,54 @@ class EloquentUserRepository implements UserRepositoryContract {
             $emergency_contact->emergency3 = (!empty($data['emergency3'])) ? $data['emergency3'] : '';
             $emergency_contact->save();
 
-        return $user;
-            endif;
+            return $user;
+        endif;
         return;
     }
 
     public function fbLogin($request) {
-        $user_id=User::where('email',$request->email)->where('fb_id',$request->fb_id)->value('id');
-        $email_id=User::where('email',$request->email)->value('id');
-        if(!empty($user_id)):
-            $user=$this->find($user_id);
-            $user->app_id=$request->app_id;
-            $user->device_type=$request->device_type;
+        $user_id = User::where('email', $request->email)->where('fb_id', $request->fb_id)->value('id');
+        $email_id = User::where('email', $request->email)->value('id');
+        if (!empty($user_id)):
+            $user = $this->find($user_id);
+            $user->app_id = $request->app_id;
+            $user->device_type = $request->device_type;
             $user->save();
             return $user;
-        elseif(!empty($email_id)):
-            $user=$this->find($email_id);
-            if($user->role_name!='User'):
+        elseif (!empty($email_id)):
+            $user = $this->find($email_id);
+            if ($user->role_name != 'User'):
                 return "access_denied";
-            elseif(!empty($user->fb_id)):
+            elseif (!empty($user->fb_id)):
                 return "access_denied";
-                endif;
+            endif;
             $user->fb_id = $request->fb_id;
-            $user->app_id=$request->app_id;
-            $user->device_type=$request->device_type;
+            $user->app_id = $request->app_id;
+            $user->device_type = $request->device_type;
             $user->save();
             return $user;
-            else:
-        $user = new User;
-        $user->email = $request->email;
-        $user->fb_id = $request->fb_id;
-                $user->app_id=$request->app_id;
-                $user->device_type=$request->device_type;
-                $user->firstname=(!empty($request->firstname)) ? $request->firstname : '';
-                $user->status= 0;
-                $user->subscription_ends_at=(!empty($request->subscription_ends_at)) ? $request->subscription_ends_at : '';
-                $user->confirmation_code =md5(uniqid(mt_rand(), true));
-                $user->confirmed = config('access.users.confirm_email') ? 0 : 1;
-        $user->save();
-                $user->membership_no = $user->id . str_random(5);
-                $user->save();
-                $role_id = \DB::table('roles')->where('name', 'User')->value('id');
-                $user->attachRoles(array($role_id));
-                if (config('access.users.confirm_email')) {
-                    $this->sendConfirmationEmail($user);
-                }
-        return $user;
-                endif;
+        else:
+            $user = new User;
+            $user->email = $request->email;
+            $user->fb_id = $request->fb_id;
+            $user->app_id = $request->app_id;
+            $user->device_type = $request->device_type;
+            $user->firstname = (!empty($request->firstname)) ? $request->firstname : '';
+            $user->status = 0;
+            $user->subscription_ends_at = (!empty($request->subscription_ends_at)) ? $request->subscription_ends_at : '';
+            $user->confirmation_code = md5(uniqid(mt_rand(), true));
+            $user->confirmed = config('access.users.confirm_email') ? 0 : 1;
+            $user->save();
+            $user->membership_no = $user->id . str_random(5);
+            $user->save();
+            $role_id = \DB::table('roles')->where('name', 'User')->value('id');
+            $user->attachRoles(array($role_id));
+            if (config('access.users.confirm_email')) {
+                $this->sendConfirmationEmail($user);
+            }
+            return $user;
+        endif;
     }
-
 
     public function updateFbInfo($data) {
         $user = User::find($data['user_id']);
@@ -259,7 +271,6 @@ class EloquentUserRepository implements UserRepositoryContract {
         $user->save();
         return $user;
     }
-
 
     public function saveDoctors($request) {
         $doctor = new Doctor;

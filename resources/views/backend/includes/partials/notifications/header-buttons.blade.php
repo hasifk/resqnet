@@ -2,7 +2,6 @@
 
 <div class="col-xs-12 col-md-12">
     <div class="row">
-
         <div class="col-xs-12 col-md-2 btn-group m-t-25">
             <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 Notifications <span class="caret"></span>
