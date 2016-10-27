@@ -175,7 +175,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                             if (!empty($users->emergency_groups)) {
                                 $group_ids = json_decode($users->emergency_groups);
                                 if (in_array($groups->id, $group_ids))
-                                    $return[] = "Aready Added";
+                                    $return[] = "Aready Added : ".$request->gp_pin[$i];
                                 else {
                                     array_push($group_ids, $groups->id);
                                     $users->emergency_groups = json_encode($group_ids);
