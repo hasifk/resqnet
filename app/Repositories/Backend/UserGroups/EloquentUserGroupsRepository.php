@@ -166,6 +166,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
 
     public function addEmergencyGroups($request) {
         if (count($request->gp_pin) > 0) {
+            $f = 0;
             for ($i = 0; $i < count($request->gp_pin); $i++) {
                 $groups = UserGroup::where('gp_pin', $request->gp_pin[$i])->first();
                 if (!empty($groups)) {
@@ -180,12 +181,14 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                                     $users->emergency_groups = json_encode($group_ids);
                                     $users->save();
                                     $return[] = "Success";
+                                    $f++;
                                 }
                             } else {
                                 $group_ids[] = $groups->id;
                                 $users->emergency_groups = json_encode($group_ids);
                                 $users->save();
                                 $return[] = "Success";
+                                $f++;
                             }
                         } else
                             $return[] = "No User Found";
@@ -196,7 +199,11 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             }
         } else
             $return = "Error...gp_pin not found";
-        return $return;
+
+        if (count($request->gp_pin) == $f)
+            $return = 1;
+        else
+            return $return;
     }
 
     public function deletegroups() {
