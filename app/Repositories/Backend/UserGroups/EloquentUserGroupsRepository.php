@@ -201,7 +201,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $return = "Error...gp_pin not found";
 
         if (count($request->gp_pin) == $f)
-            $return = "00";
+           return 1;
         else
             return $return;
     }
