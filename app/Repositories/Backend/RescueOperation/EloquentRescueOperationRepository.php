@@ -8,20 +8,21 @@ use App\Models\RescueOperation\ActiveRescuer;
 use App\Models\RescueOperation\Location;
 use App\Models\RescueOperation\Operation;
 use App\Models\Rescuer\RescuerType;
+use App\Models\UserGroups\Member;
 use App\Models\Access\EmergencyContact\EmergencyContact;
-//use App\Repositories\Backend\UserGroups\UserGroupsRepositoryContract;
+use App\Repositories\Backend\UserGroups\UserGroupsRepositoryContract;
 use Illuminate\Http\Request;
 use Auth;
 use Storage;
 
 class EloquentRescueOperationRepository {
 
-//    private $groups;
-//
-//    public function __construct(UserGroupsRepositoryContract $groups) {
-//
-//        $this->groups = $groups;
-//    }
+    private $groups;
+
+    public function __construct(UserGroupsRepositoryContract $groups) {
+
+        $this->groups = $groups;
+    }
 
     public function findActiveRescuers($result) {
         $type = RescuerType::where('id', $result->type)->value('type');
@@ -46,13 +47,22 @@ class EloquentRescueOperationRepository {
             if (!empty($contacts = $this->emergencyContacts($userid)))
                 $appids = $this->membershipChecking($contacts, $rescuers);
 
-//            if (!empty($rescuee->emergency_groups)) {
-//            $group_ids = json_decode($rescuee->emergency_groups);
-//            foreach ($group_ids as $gpid) {
-//                $pin[] = $this->groups->viewMembers($gpid);
-//            }
-            //   $user['emergency_gp_pin'] = $pin;
-            //   }
+            if (!empty($rescuee->emergency_groups)) {
+                $group_ids = json_decode($rescuee->emergency_groups);
+                foreach ($group_ids as $gpid) {
+                    $group_user = Member::where('id', $gpid)->value('user_id');
+                    if (!in_array($group_user, $rescuers)) {
+                        if (!empty($appids)) {
+                            if (!in_array($group_user, $appids[1])) {
+                                $user = User::find($group_user);
+                                $groups[0]['app_id'][] = $user->app_id;
+                                $groups[0]['device_type'][] = $user->device_type;
+                                $groups[1][$gpid] = $user->id; // indexes are group id and values are group members
+                            }
+                        }
+                    }
+                }
+            }
 
             sort($rescuers);
             $obj = new ActiveRescuer;
@@ -61,6 +71,7 @@ class EloquentRescueOperationRepository {
             $obj->rescuers_ids = !empty($rescuers) ? json_encode($rescuers) : '';
             $obj->emergency_type = $result->emergency_type;
             $obj->emergency_ids = !empty($appids) ? json_encode($appids[1]) : '';
+            $obj->emergency_groups=!empty($groups) ? json_encode($groups[1]) : '';
 
             $obj->save();
             $message['id'] = $obj->id;
@@ -74,6 +85,10 @@ class EloquentRescueOperationRepository {
             if (!empty($appids)) {
                 $message['to'] = "Emergency";
                 $this->notification($appids[0], $message);
+            }
+            if (!empty($groups)) {
+                $message['to'] = "EmergencyGroup";
+                $this->notification($groups[0], $message);
             }
         } else
             $userdetails['result'] = "Please enable Location services";

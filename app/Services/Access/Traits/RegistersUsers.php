@@ -95,7 +95,7 @@ trait RegistersUsers
     public function updateProfile(UpdateRequest $request)
     {
        if ($user = $this->user->updateUserStub($request->all())):
-            return response()->json(['user' => $user->toArray()]);
+            return response()->json(['user' => $user]);
            else:
                return response()->json(['status' => 'failed']);
                endif;
