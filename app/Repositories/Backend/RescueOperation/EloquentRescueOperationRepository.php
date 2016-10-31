@@ -36,7 +36,7 @@ class EloquentRescueOperationRepository {
             foreach ($actives as $active) {
                 $user = User::find($active->user_id);
                 if ($user->role_id == $role) {
-                    if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 5) {
+                    if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 3) {
                         $rescuers[] = $active->user_id;
                         $app_id['app_id'][] = $user->app_id;
                         $app_id['device_type'][] = $user->device_type;
@@ -51,14 +51,29 @@ class EloquentRescueOperationRepository {
             if (!empty($rescuee->emergency_groups)) {
                 $group_ids = json_decode($rescuee->emergency_groups);
                 foreach ($group_ids as $gpid) {
-                    $group_user = Member::where('id', $gpid)->value('user_id');
-                    if (!in_array($group_user, $rescuers)) {
-                        if (!empty($appids)) {
-                            if (!in_array($group_user, $appids[1])) {
-                                $user = User::find($group_user);
+                    $group_user = Member::where('group_id', $gpid)->get();
+                    foreach ($group_user as $value) {
+                        if ($value->user_id == $userid)
+                            continue;
+                        if (!in_array($value->user_id, $rescuers)) {
+                            if (!empty($appids)) {
+                                if (!in_array($value->user_id, $appids[1])) {
+                                    $user = User::find($value->user_id);
+                                    $groups[0]['app_id'][] = $user->app_id;
+                                    $groups[0]['device_type'][] = $user->device_type;
+                                    if (!empty($groups[1][$gpid]))
+                                        $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
+                                    else
+                                        $groups[1][$gpid] = $user->id;
+                                } 
+                            } else {
+                                $user = User::find($value->user_id);
                                 $groups[0]['app_id'][] = $user->app_id;
                                 $groups[0]['device_type'][] = $user->device_type;
-                                $groups[1][$gpid] = $user->id; // indexes are group id and values are group members
+                                if (!empty($groups[1][$gpid]))
+                                    $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
+                                else
+                                    $groups[1][$gpid] = $user->id;
                             }
                         }
                     }
@@ -319,7 +334,7 @@ class EloquentRescueOperationRepository {
         $rescuers = $this->ActiveRescuerPaginate();
         if (!empty($rescuers)) {
             foreach ($rescuers as $key => $active) {
-                $res1 = $res2 = array();
+                $res1 = $res2 = $res3 = array();
                 $rescuers[$key]['rescuee_details'] = User::find($active->rescuee_id);
                 if (!empty($active->rescuers_ids)):
                     $resccuer_id = json_decode($active->rescuers_ids);
@@ -334,11 +349,11 @@ class EloquentRescueOperationRepository {
                 endif;
                 $rescuers[$key]['emergency_details'] = $res2;
                 if (!empty($active->emergency_groups)):
-                    $emergency_groups = json_decode($active->emergency_ids);
-                    foreach ($emergency_groups as $key => $gp_user_id)
-                        $res2[] = $this->user->userGroupdetails;
+                    $emergency_groups = json_decode($active->emergency_groups);
+//                    foreach($emergency_groups as $key => $gp_user_id)
+//                        $res3[] =$this->groups->userGroupdetails($key);
                 endif;
-                $rescuers[$key]['emergency_groups'] = $res2;
+                $rescuers[$key]['emergency_groups'] = $res3;
                 $operation = Operation::where('active_rescuers_id', $active->id)->first();
                 if (!empty($operation)) {
                     $rescuers[$key]['tagged'] = User::find($operation->rescuer_id);
