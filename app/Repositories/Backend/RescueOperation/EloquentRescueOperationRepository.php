@@ -9,6 +9,7 @@ use App\Models\RescueOperation\Location;
 use App\Models\RescueOperation\Operation;
 use App\Models\Rescuer\RescuerType;
 use App\Models\UserGroups\Member;
+use App\Models\UserGroups\UserGroup;
 use App\Models\Access\EmergencyContact\EmergencyContact;
 use App\Repositories\Backend\UserGroups\UserGroupsRepositoryContract;
 use Illuminate\Http\Request;
@@ -71,7 +72,7 @@ class EloquentRescueOperationRepository {
             $obj->rescuers_ids = !empty($rescuers) ? json_encode($rescuers) : '';
             $obj->emergency_type = $result->emergency_type;
             $obj->emergency_ids = !empty($appids) ? json_encode($appids[1]) : '';
-            $obj->emergency_groups=!empty($groups) ? json_encode($groups[1]) : '';
+            $obj->emergency_groups = !empty($groups) ? json_encode($groups[1]) : '';
 
             $obj->save();
             $message['id'] = $obj->id;
@@ -332,6 +333,12 @@ class EloquentRescueOperationRepository {
                         $res2[] = User::find($resid);
                 endif;
                 $rescuers[$key]['emergency_details'] = $res2;
+                if (!empty($active->emergency_groups)):
+                    $emergency_groups = json_decode($active->emergency_ids);
+                    foreach ($emergency_groups as $key => $gp_user_id)
+                        $res2[] = $this->user->userGroupdetails;
+                endif;
+                $rescuers[$key]['emergency_groups'] = $res2;
                 $operation = Operation::where('active_rescuers_id', $active->id)->first();
                 if (!empty($operation)) {
                     $rescuers[$key]['tagged'] = User::find($operation->rescuer_id);

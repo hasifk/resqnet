@@ -41,8 +41,8 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     public function userGroupdetails($id) {
         return UserGroup::join('group_members', 'user_group.id', '=', 'group_members.group_id')
                         ->join('users', 'group_members.user_id', 'users.id')
-                        ->select('user_group.*', 'users.firstname', 'users.lastname', 'group_members.user_id')
-                        ->where('user_group.user_id', $id)->orderBy('user_group.id', 'desc')->get();
+                        ->select('user_group.*', 'users.firstname', 'users.lastname', 'group_members.user_id','group_members.role')
+                        ->where('user_group.id', $id)->orderBy('user_group.id', 'desc')->get();
     }
 
     public function joinUsers($request) {

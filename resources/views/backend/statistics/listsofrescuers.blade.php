@@ -99,6 +99,7 @@
                                     <th>Users</th>
                                     <th>List Of ResQuers<br>Availabel</th>
                                     <th>Emergency Contacts<br>Lists</th>
+                                    <th>Emergency Groups<br>Lists</th>
                                     <th>Tagged ResQuer</th>
                                     <th>ResQuer Response <br>(H:M:S) </th>
                                     <th>Finished <br>(H:M:S) </th>
@@ -146,6 +147,25 @@
                                                         //$resccuer_id = json_decode($list->rescuers_ids)
                                                         ?>
                                                         @foreach($list->emergency_details as $resid)
+                                                        <tr>
+                                                            <td>
+                                                                <a href="{{route('admin.access.user.shows',$resid->id)}}">{{ $resid->firstname.' '.$resid->lastname }}</a>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
+                                                        <?php
+                                                    else:
+                                                        echo "No Contacts";
+                                                    endif;
+                                                    ?>
+                                                </table>
+                                            </td>
+                                            <td>
+                                                <table> <?php
+                                                    if (!empty($list->emergency_groups)):
+                                                        //$resccuer_id = json_decode($list->rescuers_ids)
+                                                        ?>
+                                                        @foreach($list->emergency_groups as $resid)
                                                         <tr>
                                                             <td>
                                                                 <a href="{{route('admin.access.user.shows',$resid->id)}}">{{ $resid->firstname.' '.$resid->lastname }}</a>
@@ -218,7 +238,7 @@
             $("#state_id").trigger("chosen:updated");
             $("#area_id").trigger("chosen:updated");
             $.getJSON('/admin/getstates/' + $(this).val(), function (json) {
-                
+
                 $.each(json, function (key, value)
                 {
                     $('#state_id').append('<option value=' + value.id + '>' + value.name + '</option>');
@@ -227,17 +247,17 @@
             });
         });
 
-         $('#state_id').on('change', function () {
+        $('#state_id').on('change', function () {
             $('#area_id').html('<option value="">Please Select</option>');
             if ($(this).val() != '') {
-            $.getJSON('/admin/getareas/' + $(this).val(), function (json) {
-                
-                $.each(json, function (key, value)
-                {
-                    $('#area_id').append('<option value=' + value.id + '>' + value.name + '</option>');
+                $.getJSON('/admin/getareas/' + $(this).val(), function (json) {
+
+                    $.each(json, function (key, value)
+                    {
+                        $('#area_id').append('<option value=' + value.id + '>' + value.name + '</option>');
+                    });
+                    $("#area_id").trigger("chosen:updated"); //Updating Chosen Dynamically
                 });
-                $("#area_id").trigger("chosen:updated"); //Updating Chosen Dynamically
-            });
             } else
                 $("#area_id").trigger("chosen:updated"); //Updating Chosen Dynamically
         });
