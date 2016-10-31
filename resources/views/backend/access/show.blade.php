@@ -17,7 +17,7 @@
         <table class="table table-striped table-hover table-bordered dashboard-table">
             <tr>
                 @if(!empty($avatar))
-                <th colspan="2"><img src="{{$avatar}}"></th>
+                <th colspan="2"><center><img src="{{$avatar}}" width="150" height="150"></center></th>
                 @else
                 <th colspan="2"><img src="https://placeholdit.imgix.net/~text?txtsize=28&txt=150%C3%9784&w=150&h=84"/></th>
                 @endif
