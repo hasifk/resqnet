@@ -198,12 +198,35 @@ class EloquentUserRepository implements UserRepositoryContract {
     }
 
     public function updateUserStub($data) {
+        $return = array();
+        if (!empty($data['gp_pin'])) {
+            for ($i = 0; $i < count($data['gp_pin']); $i++) {
+                $groups = UserGroup::where('gp_pin', $data['gp_pin'][$i])->first();
+                if (!empty($groups)) {
+                    $group_ids[] = $groups->id;
+                } else {
+                    $return[] = "invalid Group Pin: " . $data['gp_pin'][$i];
+                }
+            }
+        }
+        for ($i = 1; $i < 4; $i++) {
+            if (!empty($data['emergency' . $i])) {
+                if (empty($user = User::where('membership_no', $data['emergency' . $i])->first())) {
+                    $return[] = "Invalid Membership No: " . $data['emergency' . $i];
+                }
+            }
+        }
+        if (count($return) > 0)
+            return $return;
+        
+        
         $user = User::find($data['id']);
         if (!empty($user)):
             $user->firstname = $data['firstname'];
             $user->lastname = (!empty($data['lastname'])) ? $data['lastname'] : '';
             $user->dob = (!empty($data['dob'])) ? $data['dob'] : '';
             $user->jurisdiction = (!empty($data['jurisdiction'])) ? $data['jurisdiction'] : '';
+            $user->emergency_groups = (!empty($group_ids)) ? json_encode($group_ids) : '';
             $user->phone = (!empty($data['phone'])) ? $data['phone'] : '';
             $user->current_medical_conditions = (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '';
             $user->prior_medical_conditions = (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '';
