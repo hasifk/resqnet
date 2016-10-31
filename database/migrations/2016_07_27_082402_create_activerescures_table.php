@@ -20,6 +20,7 @@ class CreateActiverescuresTable extends Migration
             $table->longText('rescuers_ids');
             $table->string('emergency_type');
             $table->longText('emergency_ids');
+            $table->longText('emergency_groups');
             $table->boolean('status')->default(true);
             $table->timestamps();
             $table->foreign('rescuee_id')
