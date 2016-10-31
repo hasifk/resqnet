@@ -84,11 +84,13 @@ class EloquentUserRepository implements UserRepositoryContract {
         $return = array();
         if (!empty($data['gp_pin'])) {
             for ($i = 0; $i < count($data['gp_pin']); $i++) {
-                $groups = UserGroup::where('gp_pin', $data['gp_pin'][$i])->first();
-                if (!empty($groups)) {
-                    $group_ids[] = $groups->id;
-                } else {
-                    $return[] = "invalid Group Pin: " . $data['gp_pin'][$i];
+                if (!empty($data['gp_pin'][$i])) {
+                    $groups = UserGroup::where('gp_pin', $data['gp_pin'][$i])->first();
+                    if (!empty($groups)) {
+                        $group_ids[] = $groups->id;
+                    } else {
+                        $return[] = "invalid Group Pin: " . $data['gp_pin'][$i];
+                    }
                 }
             }
         }
@@ -201,11 +203,13 @@ class EloquentUserRepository implements UserRepositoryContract {
         $return = array();
         if (!empty($data['gp_pin'])) {
             for ($i = 0; $i < count($data['gp_pin']); $i++) {
-                $groups = UserGroup::where('gp_pin', $data['gp_pin'][$i])->first();
-                if (!empty($groups)) {
-                    $group_ids[] = $groups->id;
-                } else {
-                    $return[] = "invalid Group Pin: " . $data['gp_pin'][$i];
+                if (!empty($data['gp_pin'][$i])) {
+                    $groups = UserGroup::where('gp_pin', $data['gp_pin'][$i])->first();
+                    if (!empty($groups)) {
+                        $group_ids[] = $groups->id;
+                    } else {
+                        $return[] = "invalid Group Pin: " . $data['gp_pin'][$i];
+                    }
                 }
             }
         }
@@ -218,8 +222,8 @@ class EloquentUserRepository implements UserRepositoryContract {
         }
         if (count($return) > 0)
             return $return;
-        
-        
+
+
         $user = User::find($data['id']);
         if (!empty($user)):
             $user->firstname = $data['firstname'];
