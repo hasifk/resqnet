@@ -24,7 +24,7 @@ interface UserGroupsRepositoryContract {
             
     public function totalMembers($id);
     
-    public function userGroupdetails($id);
+    public function userGroupdetails($id,$users);
 
     public function CreateUserGroups($request);
     

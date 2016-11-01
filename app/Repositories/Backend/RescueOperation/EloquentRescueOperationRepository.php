@@ -65,7 +65,7 @@ class EloquentRescueOperationRepository {
                                         $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
                                     else
                                         $groups[1][$gpid] = $user->id;
-                                } 
+                                }
                             } else {
                                 $user = User::find($value->user_id);
                                 $groups[0]['app_id'][] = $user->app_id;
@@ -350,8 +350,8 @@ class EloquentRescueOperationRepository {
                 $rescuers[$key]['emergency_details'] = $res2;
                 if (!empty($active->emergency_groups)):
                     $emergency_groups = json_decode($active->emergency_groups);
-//                    foreach($emergency_groups as $key => $gp_user_id)
-//                        $res3[] =$this->groups->userGroupdetails($key);
+                  foreach($emergency_groups as $k => $gp_user_id)
+                    $res3[] = $this->groups->userGroupdetails($k,$gp_user_id);
                 endif;
                 $rescuers[$key]['emergency_groups'] = $res3;
                 $operation = Operation::where('active_rescuers_id', $active->id)->first();

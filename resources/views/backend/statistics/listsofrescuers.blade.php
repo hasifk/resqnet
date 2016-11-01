@@ -163,14 +163,16 @@
                                             <td>
                                                 <table> <?php
                                                     if (!empty($list->emergency_groups)):
-                                                        //$resccuer_id = json_decode($list->rescuers_ids)
+                                                        //print_r($list->emergency_groups);
                                                         ?>
                                                         @foreach($list->emergency_groups as $resid)
+                                                         @foreach($resid as $value)
                                                         <tr>
                                                             <td>
-                                                                <a href="{{route('admin.access.user.shows',$resid->id)}}">{{ $resid->firstname.' '.$resid->lastname }}</a>
+                                                                <a href="{{route('user.groups.view',$value->id)}}">{{ $value->name }}</a>
                                                             </td>
                                                         </tr>
+                                                         @endforeach
                                                         @endforeach
                                                         <?php
                                                     else:

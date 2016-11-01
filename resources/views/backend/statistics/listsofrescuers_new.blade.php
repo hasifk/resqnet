@@ -34,8 +34,8 @@
                     </td>
                     <td>
                         <table> <?php
-        if (!empty($list->rescuers_details)):
-                    ?>
+                            if (!empty($list->rescuers_details)):
+                                ?>
                                 @foreach($list->rescuers_details as $resid)
                                 <tr>
                                     <td>
@@ -52,8 +52,8 @@
                     </td>
                     <td>
                         <table> <?php
-                    if (!empty($list->emergency_details)):
-                        //$resccuer_id = json_decode($list->rescuers_ids)
+                            if (!empty($list->emergency_details)):
+                                //$resccuer_id = json_decode($list->rescuers_ids)
                                 ?>
                                 @foreach($list->emergency_details as $resid)
                                 <tr>
