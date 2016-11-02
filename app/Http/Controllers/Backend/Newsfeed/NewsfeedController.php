@@ -45,7 +45,7 @@ class NewsfeedController extends Controller {
             foreach ($newsfeeds as $key=>$item) {
                 if ($newsfeeds[$key]['image_filename'] && $newsfeeds[$key]['image_extension'] && $newsfeeds[$key]['image_path']) {
 
-                    $newsfeeds[$key]['newsfeed_image_src']=url('/image/'.$newsfeeds[$key]['id'].'/'.$newsfeeds[$key]['image_filename'].'500x168.'.$newsfeeds[$key]['image_extension']);
+                    $newsfeeds[$key]['newsfeed_image_src']=url('/image/'.$newsfeeds[$key]['id'].'/'.$newsfeeds[$key]['image_filename'].'300x168.'.$newsfeeds[$key]['image_extension']);
                     $newsfeeds[$key]['newsfeed_90x90_src']=url('/image/'.$newsfeeds[$key]['id'].'/'.$newsfeeds[$key]['image_filename'].'90x90.'.$newsfeeds[$key]['image_extension']);
 
                 }
@@ -72,7 +72,7 @@ class NewsfeedController extends Controller {
             foreach ($newsfeeds as $key=>$item) {
                 if ($newsfeeds[$key]['image_filename'] && $newsfeeds[$key]['image_extension'] && $newsfeeds[$key]['image_path']) {
 
-                    $newsfeeds[$key]['newsfeed_image_src']=url('/image/'.$newsfeeds[$key]['id'].'/'.$newsfeeds[$key]['image_filename'].'500x168.'.$newsfeeds[$key]['image_extension']);
+                    $newsfeeds[$key]['newsfeed_image_src']=url('/image/'.$newsfeeds[$key]['id'].'/'.$newsfeeds[$key]['image_filename'].'300x168.'.$newsfeeds[$key]['image_extension']);
                 }
             }
             return response()->json(['newsfeeds' => $newsfeeds->toArray()]);
@@ -95,7 +95,7 @@ class NewsfeedController extends Controller {
              $time=$this->newsfeedRepository->timeCalculator($tot_sec);
             if ($newsfeed1->image_filename && $newsfeed1->image_extension && $newsfeed1->image_path) {
 
-                $newsfeed['newsfeed_image_src']=url('/image/'.$newsfeed1->id.'/'.$newsfeed1->image_filename.'500x168.'.$newsfeed1->image_extension);
+                $newsfeed['newsfeed_image_src']=url('/image/'.$newsfeed1->id.'/'.$newsfeed1->image_filename.'300x168.'.$newsfeed1->image_extension);
                
             }
              $newsfeed['username']=$user->firstname." ".$user->lastname;
@@ -123,7 +123,7 @@ class NewsfeedController extends Controller {
             $newsfeed= $newsfeed1->toArray();
             if ($newsfeed1->image_filename && $newsfeed1->image_extension && $newsfeed1->image_path) {
 
-                $newsfeed['newsfeed_image_src']=url('/image/'.$newsfeed1->id.'/'.$newsfeed1->image_filename.'500x168.'.$newsfeed1->image_extension);
+                $newsfeed['newsfeed_image_src']=url('/image/'.$newsfeed1->id.'/'.$newsfeed1->image_filename.'300x168.'.$newsfeed1->image_extension);
             }
             return response()->json(['newsfeed' => $newsfeed]);
         else:
