@@ -35,7 +35,7 @@ trait NewsfeedAttribute {
                 foreach (config('image.customized.newsfeed_image') as $image) {
                     $newsfeed_image = \Image::make($avatar);
                     $newsfeed_image->orientate();
-                    $newsfeed_image->resize($image['width'], $image['height'], function ($constraint) {
+                    $newsfeed_image->resize($image['width'],null, function ($constraint) {
                         $constraint->aspectRatio();
                         $constraint->upsize();
                     });
