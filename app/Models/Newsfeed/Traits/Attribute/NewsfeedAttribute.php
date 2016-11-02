@@ -34,8 +34,8 @@ trait NewsfeedAttribute {
 
                 foreach (config('image.customized.newsfeed_image') as $image) {
                     $newsfeed_image = \Image::make($avatar);
-                    $newsfeed_image->fit($image['width'], $image['height'])->save(storage_path('app/' . $filePath . $file_name . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension()));
                     $newsfeed_image->orientate();
+                    $newsfeed_image->fit($image['width'], $image['height'])->save(storage_path('app/' . $filePath . $file_name . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension()));
                     Storage::put($filePath . $file_name . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension(), file_get_contents(storage_path('app/' . $filePath . $file_name . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension())));
                     Storage::setVisibility($filePath . $file_name . $image['width'] . 'x' . $image['height'] . '.' . $avatar->getClientOriginalExtension(), 'public');
                 }
