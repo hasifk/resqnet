@@ -18,7 +18,7 @@ class EloquentPaymentRepository implements PaymentRepositoryContract {
         $obj->txn_id = $request->txn_id;
         $obj->ipn_track_id = $request->ipn_track_id;
         $obj->payment_status = $request->payment_status . " " . $request->payment_date;
-        $obj->subscription_ends_at = date('Y-m-d', strtotime($lastdate));
+        $obj->subscription_ends_at = date('Y-m-d', strtotime($date));
         // $obj->payment_date = $request->payment_date;
         $obj->save();
         //return $obj;
