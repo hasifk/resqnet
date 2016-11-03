@@ -125,6 +125,15 @@ class StatisticsController extends Controller {
         return view('backend.statistics.listsofrescuers', $view);
         
     }
+    public function listsOfRescuer($id) {
+        $view = [
+            'countries' => $this->user->countries(),
+            'rescuertype' => $this->user->rescuerTypeDetails(),
+            'list' => $this->rescueOperationRepository->listsOfRescuer($id)
+        ];
+        return view('backend.statistics.listsofrescuers_show', $view);
+        
+    }
     public function rescuersLists(Request $request)
     {
        $result = $this->statistics->getPanicSignalAmount($request);
