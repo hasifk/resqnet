@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend\UserGroups;
+namespace App\Http\Controllers\Backend\Payment;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Backend\Payment\PaymentRepositoryContract;

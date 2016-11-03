@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Backend\PayPal;
+namespace App\Repositories\Backend\Payment;
 
 use App\Http\Controllers\Controller;
 use App\Models\UserGroups\UserGroup;

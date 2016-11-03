@@ -3,8 +3,8 @@
 namespace App\Repositories\Backend\Payment;
 
 /**
- * Interface PayPalRepositoryContract
- * @package App\Repositories\Backend\PayPal
+ * Interface PaymentRepositoryContract
+ * @package App\Repositories\Backend\Payment
  */
 interface PaymentRepositoryContract {
 
