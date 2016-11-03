@@ -4,7 +4,7 @@ namespace App\Repositories\Backend\Payment;
 
 use App\Http\Controllers\Controller;
 use App\Models\UserGroups\UserGroup;
-use App\Models\Access\Payment;
+use App\Models\Access\Payment\Payment;
 use Carbon\Carbon;
 
 class EloquentPaymentRepository implements PaymentRepositoryContract {
