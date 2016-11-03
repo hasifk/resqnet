@@ -29,7 +29,7 @@ return array(
         ],
         [
             'height' =>168,
-            'width'  => 300,
+            'width'  =>300,
         ],
 
     ],
