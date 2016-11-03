@@ -22,6 +22,11 @@ class PaymentController extends Controller {
 
     public function paymentDetails(Request $request) {
         return response()->json(['operation' => $this->payment->paymentDetails($request)]);
+        if (!empty($this->payment->paymentDetails($request))):
+            return response()->json(['result' => $this->payment->paymentDetails($request)]);
+        else:
+            return response()->json(['result' =>'No payment details Yet']);
+        endif;
     }
 
 }
