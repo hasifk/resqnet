@@ -1,10 +1,10 @@
 @extends ('backend.layouts.master')
 
-@section ('title', "News Feeds Management")
+@section ('title', "Panic Details")
 
 @section('page-header')
 <h1>
-    News Feeds
+    Statistics
 </h1>
 @endsection
 

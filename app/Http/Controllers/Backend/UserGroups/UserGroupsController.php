@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Backend\UserGroups;
 use App\Http\Controllers\Controller;
 use App\Repositories\Backend\UserGroups\UserGroupsRepositoryContract;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 class UserGroupsController extends Controller {
 
@@ -31,8 +30,6 @@ class UserGroupsController extends Controller {
     }
 
     public function CreateUserGroups(Request $request) {
-
-        
 
         return response()->json(['operation' => $this->groups->CreateUserGroups($request)]);
     }
@@ -77,14 +74,4 @@ class UserGroupsController extends Controller {
               return response()->json(['responce' => $this->groups->addEmergencyGroups($request)]);
        
     }
-    public function payPal(Request $request) {
-        
-         Mail::send('frontend.auth.emails.paypal', ['token' => $request], function ($message) use ($request) {
-                    $message->to("hasif.silverbloom@gmail.com");
-                });
-        //mail("edwinmathew63@gmail.com","My subject",$request);
-        //return response()->json(['operation' => $view]);
-        
-    }
-
 }

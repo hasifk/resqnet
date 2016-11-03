@@ -221,7 +221,7 @@ class EloquentRescueOperationRepository {
     }
 
     public function ActiveRescuerPaginate() {
-        return ActiveRescuer::orderBy('id', 'desc')->paginate(10);
+        return ActiveRescuer::orderBy('id', 'desc')->paginate(20);
     }
 
     public function showLocation($userid) {
