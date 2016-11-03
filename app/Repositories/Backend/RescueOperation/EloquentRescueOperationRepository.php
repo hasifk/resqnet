@@ -375,26 +375,26 @@ class EloquentRescueOperationRepository {
         $rescuers = $this->ActiveRescuerPaginate();
         if (!empty($rescuers)) {
             foreach ($rescuers as $key => $active) {
-                $res1 = $res2 = $res3 = array();
                 $rescuers[$key]['rescuee_details'] = User::find($active->rescuee_id);
-                if (!empty($active->rescuers_ids)):
-                    $resccuer_id = json_decode($active->rescuers_ids);
-                    foreach ($resccuer_id as $resid)
-                        $res1[] = User::find($resid);
-                endif;
-                $rescuers[$key]['rescuers_details'] = $res1;
-                if (!empty($active->emergency_ids)):
-                    $emergency_id = json_decode($active->emergency_ids);
-                    foreach ($emergency_id as $resid)
-                        $res2[] = User::find($resid);
-                endif;
-                $rescuers[$key]['emergency_details'] = $res2;
-                if (!empty($active->emergency_groups)):
-                    $emergency_groups = json_decode($active->emergency_groups);
-                    foreach ($emergency_groups as $k => $gp_user_id)
-                        $res3[] = $this->groups->userGroupdetails($k, $gp_user_id);
-                endif;
-                $rescuers[$key]['emergency_groups'] = $res3;
+//               $res1 = $res2 = $res3 = array();
+//                if (!empty($active->rescuers_ids)):
+//                    $resccuer_id = json_decode($active->rescuers_ids);
+//                    foreach ($resccuer_id as $resid)
+//                        $res1[] = User::find($resid);
+//                endif;
+//                $rescuers[$key]['rescuers_details'] = $res1;
+//                if (!empty($active->emergency_ids)):
+//                    $emergency_id = json_decode($active->emergency_ids);
+//                    foreach ($emergency_id as $resid)
+//                        $res2[] = User::find($resid);
+//                endif;
+//                $rescuers[$key]['emergency_details'] = $res2;
+//                if (!empty($active->emergency_groups)):
+//                    $emergency_groups = json_decode($active->emergency_groups);
+//                    foreach ($emergency_groups as $k => $gp_user_id)
+//                        $res3[] = $this->groups->userGroupdetails($k, $gp_user_id);
+//                endif;
+//                $rescuers[$key]['emergency_groups'] = $res3;
                 $operation = Operation::where('active_rescuers_id', $active->id)->first();
                 if (!empty($operation)) {
                     $rescuers[$key]['tagged'] = User::find($operation->rescuer_id);

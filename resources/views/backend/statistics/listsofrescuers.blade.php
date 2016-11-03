@@ -121,65 +121,6 @@
                                             <td>
                                                 <a href="{{route('admin.access.user.shows',$list->rescuee_id)}}"> {{ $list->rescuee_details->firstname.' '.$list->rescuee_details->lastname }} </a>
                                             </td>
-<!--                                            <td>
-                                                <table> <?php
-                                                    if (!empty($list->rescuers_details)):
-                                                        //$resccuer_id = json_decode($list->rescuers_ids)
-                                                        ?>
-                                                        @foreach($list->rescuers_details as $resid)
-                                                        <tr>
-                                                            <td>
-                                                                <a href="{{route('admin.access.user.shows',$resid->id)}}">{{ $resid->firstname.' '.$resid->lastname }}</a>
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
-                                                        <?php
-                                                    else:
-                                                        echo "No Rescuers Found";
-                                                    endif;
-                                                    ?>
-                                                </table>
-                                            </td>
-                                            <td>
-                                                <table> <?php
-                                                    if (!empty($list->emergency_details)):
-                                                        //$resccuer_id = json_decode($list->rescuers_ids)
-                                                        ?>
-                                                        @foreach($list->emergency_details as $resid)
-                                                        <tr>
-                                                            <td>
-                                                                <a href="{{route('admin.access.user.shows',$resid->id)}}">{{ $resid->firstname.' '.$resid->lastname }}</a>
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
-                                                        <?php
-                                                    else:
-                                                        echo "No Contacts";
-                                                    endif;
-                                                    ?>
-                                                </table>
-                                            </td>
-                                            <td>
-                                                <table> <?php
-                                                    if (!empty($list->emergency_groups)):
-                                                        //print_r($list->emergency_groups);
-                                                        ?>
-                                                        @foreach($list->emergency_groups as $resid)
-                                                         @foreach($resid as $value)
-                                                        <tr>
-                                                            <td>
-                                                                <a href="{{route('user.groups.view',$value->id)}}">{{ $value->name }}</a>
-                                                            </td>
-                                                        </tr>
-                                                         @endforeach
-                                                        @endforeach
-                                                        <?php
-                                                    else:
-                                                        echo "No Emergecy Groups";
-                                                    endif;
-                                                    ?>
-                                                </table>
-                                            </td> -->
                                             <td>
                                                 <?php if (!empty($list->tagged)): ?>
                                                     <a href="{{route('admin.access.user.shows',$list->tagged->id)}}">
