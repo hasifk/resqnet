@@ -14,6 +14,6 @@ interface PaymentRepositoryContract {
      */
 
     public function paymentSave($request);
-    public function paymentDetails();
+    public function paymentDetails($request);
 
 }

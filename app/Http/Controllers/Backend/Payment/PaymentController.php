@@ -20,12 +20,8 @@ class PaymentController extends Controller {
         $paypal = $this->payment->paymentSave($request);
     }
 
-    public function paymentDetails() {
-//        $view = [
-//
-//            'payment' => $this->payment->paymentDetails()
-//        ];
-        return response()->json(['operation' => $this->payment->paymentDetails()]);
+    public function paymentDetails(Request $request) {
+        return response()->json(['operation' => $this->payment->paymentDetails($request)]);
     }
 
 }

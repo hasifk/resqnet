@@ -59,6 +59,7 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
         require (__DIR__ . '/Routes/Api/Newsfeed.php');
         require (__DIR__ . '/Routes/Api/RescueOperations.php');
         require (__DIR__ . '/Routes/Api/User_Groups.php');
+        require (__DIR__ . '/Routes/Api/Payment.php');
     });
     /*});*/
 });
