@@ -11,7 +11,7 @@ class PaymentController extends Controller {
 
     private $payment;
 
-    public function __construct(PaymentRepositoryContract $groups) {
+    public function __construct(PaymentRepositoryContract $payment) {
 
         $this->payment = $payment;
     }
