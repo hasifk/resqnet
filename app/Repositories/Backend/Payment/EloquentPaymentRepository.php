@@ -22,7 +22,7 @@ class EloquentPaymentRepository implements PaymentRepositoryContract {
         //return $obj;
     }
 
-    public function paymentDetails($request) {
+    public function paymentDetails() {
         return Payment::get();
     }
 
