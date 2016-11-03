@@ -121,6 +121,10 @@ class AccessServiceProvider extends ServiceProvider
             \App\Repositories\Backend\UserGroups\UserGroupsRepositoryContract::class,
             \App\Repositories\Backend\UserGroups\EloquentUserGroupsRepository::class
         );
+        $this->app->bind(
+            \App\Repositories\Backend\Payment\PaymentRepositoryContract::class,
+            \App\Repositories\Backend\Payment\EloquentPaymentRepository::class
+        );
 
     }
 

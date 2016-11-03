@@ -7,7 +7,7 @@ use App\Models\UserGroups\UserGroup;
 use App\Models\Access\Payment;
 use Carbon\Carbon;
 
-class PaymentRepository implements PaymentRepositoryContract {
+class EloquentPaymentRepository implements PaymentRepositoryContract {
 
     public function paymentSave($request) {
         $dt = Carbon::now();
