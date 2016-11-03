@@ -23,16 +23,21 @@ return array(
             'height' => 136,
             'width'  => 136,
         ],
-        [
-            'height' => 90,
-            'width'  => 90,
-        ],
+
         [
             'height' =>168,
             'width'  =>300,
         ],
 
     ],
+         'newsfeed_image_small' => [
+
+             [
+                 'height' => 90,
+                 'width'  => 90,
+             ],
+
+         ],
          'profile_avatar' => [
              [
                  'height' => 90,
