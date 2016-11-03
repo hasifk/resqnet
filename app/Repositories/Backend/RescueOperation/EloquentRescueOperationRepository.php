@@ -330,30 +330,71 @@ class EloquentRescueOperationRepository {
         return $lists;
     }
 
+    public function listsOfRescuer($id) {
+        $rescuers = $this->ActiveRescuer($id);
+        if (!empty($rescuers)) {
+            $res1 = $res2 = $res3 = array();
+            $rescuers['rescuee_details'] = User::find($rescuers->rescuee_id);
+            if (!empty($rescuers->rescuers_ids)):
+                $resccuer_id = json_decode($rescuers->rescuers_ids);
+                foreach ($resccuer_id as $resid)
+                    $res1[] = User::find($resid);
+            endif;
+            $rescuers['rescuers_details'] = $res1;
+            if (!empty($rescuers->emergency_ids)):
+                $emergency_id = json_decode($rescuers->emergency_ids);
+                foreach ($emergency_id as $resid)
+                    $res2[] = User::find($resid);
+            endif;
+            $rescuers['emergency_details'] = $res2;
+            if (!empty($rescuers->emergency_groups)):
+                $emergency_groups = json_decode($rescuers->emergency_groups);
+                foreach ($emergency_groups as $k => $gp_user_id)
+                    $gp_user_id = explode(",", $gp_user_id);
+                $res3[] = $this->groups->userGroupdetails($k, $gp_user_id);
+            endif;
+            $rescuers['emergency_groups'] = $res3;
+            $operation = Operation::where('active_rescuers_id', $rescuers->id)->first();
+            if (!empty($operation)) {
+                $rescuers['tagged'] = User::find($operation->rescuer_id);
+                $activetime = strtotime($rescuers->created_at);
+                $operationtime = strtotime($operation->created_at);
+                if (!empty($operation->finished_at)):
+                    $finishedtime = strtotime($operation->finished_at);
+                    $tot_sec = round(abs($finishedtime - $operationtime));
+                    $rescuers['rescuerresponse'] = $this->timeCalculator($tot_sec);
+                endif;
+                $tot_sec = round(abs($operationtime - $activetime));
+                $rescuers['panicresponse'] = $this->timeCalculator($tot_sec);
+            }
+        }
+        return $rescuers;
+    }
+
     public function listsOfRescuers() {
         $rescuers = $this->ActiveRescuerPaginate();
         if (!empty($rescuers)) {
             foreach ($rescuers as $key => $active) {
-                $res1 = $res2 = $res3 = array();
                 $rescuers[$key]['rescuee_details'] = User::find($active->rescuee_id);
-                if (!empty($active->rescuers_ids)):
-                    $resccuer_id = json_decode($active->rescuers_ids);
-                    foreach ($resccuer_id as $resid)
-                        $res1[] = User::find($resid);
-                endif;
-                $rescuers[$key]['rescuers_details'] = $res1;
-                if (!empty($active->emergency_ids)):
-                    $emergency_id = json_decode($active->emergency_ids);
-                    foreach ($emergency_id as $resid)
-                        $res2[] = User::find($resid);
-                endif;
-                $rescuers[$key]['emergency_details'] = $res2;
-                if (!empty($active->emergency_groups)):
-                    $emergency_groups = json_decode($active->emergency_groups);
-                  foreach($emergency_groups as $k => $gp_user_id)
-                    $res3[] = $this->groups->userGroupdetails($k,$gp_user_id);
-                endif;
-                $rescuers[$key]['emergency_groups'] = $res3;
+//               $res1 = $res2 = $res3 = array();
+//                if (!empty($active->rescuers_ids)):
+//                    $resccuer_id = json_decode($active->rescuers_ids);
+//                    foreach ($resccuer_id as $resid)
+//                        $res1[] = User::find($resid);
+//                endif;
+//                $rescuers[$key]['rescuers_details'] = $res1;
+//                if (!empty($active->emergency_ids)):
+//                    $emergency_id = json_decode($active->emergency_ids);
+//                    foreach ($emergency_id as $resid)
+//                        $res2[] = User::find($resid);
+//                endif;
+//                $rescuers[$key]['emergency_details'] = $res2;
+//                if (!empty($active->emergency_groups)):
+//                    $emergency_groups = json_decode($active->emergency_groups);
+//                    foreach ($emergency_groups as $k => $gp_user_id)
+//                        $res3[] = $this->groups->userGroupdetails($k, $gp_user_id);
+//                endif;
+//                $rescuers[$key]['emergency_groups'] = $res3;
                 $operation = Operation::where('active_rescuers_id', $active->id)->first();
                 if (!empty($operation)) {
                     $rescuers[$key]['tagged'] = User::find($operation->rescuer_id);
