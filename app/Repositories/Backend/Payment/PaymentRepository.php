@@ -19,7 +19,7 @@ class PaymentRepository implements PaymentRepositoryContract {
         $obj->subscription_ends_at = $dt->addYears(1);
         $obj->payment_date = $request->payment_date;
         $obj->save();
-        return $obj;
+        //return $obj;
     }
 
     public function paymentDetails($request) {
