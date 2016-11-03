@@ -8,4 +8,4 @@ $api->post('/addmembers', 'App\Http\Controllers\Backend\UserGroups\UserGroupsCon
 $api->post('/viewmembers', 'App\Http\Controllers\Backend\UserGroups\UserGroupsController@viewMembers')->name('user.groups.index'); 
 $api->post('/postnewsfeed', 'App\Http\Controllers\Backend\UserGroups\UserGroupsController@postNewsFeed')->name('user.groups.index'); 
 $api->post('/addemergencygroups', 'App\Http\Controllers\Backend\UserGroups\UserGroupsController@addEmergencyGroups')->name('user.groups.index'); 
-$api->post('/paymentdetails', 'App\Http\Controllers\Backend\Payment\PaymentController@paymentDetails')->name('user.groups.index');
+//$api->post('/paymentdetails', 'App\Http\Controllers\Backend\Payment\PaymentController@paymentDetails')->name('user.groups.index');
