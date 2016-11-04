@@ -18,8 +18,8 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         $this->operation = $operation;
     }
 
-    public function userGroups($request, $paginate) {
-        return UserGroup::where('user_id', $request->user_id)->orderBy('id', 'desc')->paginate($paginate);
+    public function userGroups($userid, $paginate) {
+        return UserGroup::where('user_id',$userid)->orderBy('id', 'desc')->paginate($paginate);
     }
 
     public function userGrouplists() {

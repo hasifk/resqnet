@@ -92,7 +92,7 @@ class UserController extends Controller
 
             $avatar=url('/avatar/'.$user->id.'/'.$user->avatar_filename.'.'.$user->avatar_extension);
         }
-        $lists = $this->groups->UserGroups($id);
+        $lists = $this->groups->UserGroups($id,20);
         if (count($lists) > 0):
             foreach ($lists as $key => $value) {
                 $lists[$key]['amount'] = $this->groups->totalMembers($value->id);
