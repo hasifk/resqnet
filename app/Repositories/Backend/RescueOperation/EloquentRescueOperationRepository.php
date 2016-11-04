@@ -354,18 +354,18 @@ class EloquentRescueOperationRepository {
                 $res3[] = $this->groups->userGroupdetails($k, $gp_user_id);
             endif;
             $rescuers['emergency_groups'] = $res3;
-            $operation = Operation::where('active_rescuers_id', $active->id)->first();
+            $operation = Operation::where('active_rescuers_id', $rescuers->id)->first();
             if (!empty($operation)) {
                 $rescuers['tagged'] = User::find($operation->rescuer_id);
-                $activetime = strtotime($active->created_at);
+                $activetime = strtotime($rescuers->created_at);
                 $operationtime = strtotime($operation->created_at);
                 if (!empty($operation->finished_at)):
                     $finishedtime = strtotime($operation->finished_at);
                     $tot_sec = round(abs($finishedtime - $operationtime));
-                    $rescuers['finished'] = $this->timeCalculator($tot_sec);
+                    $rescuers['rescuerresponse'] = $this->timeCalculator($tot_sec);
                 endif;
                 $tot_sec = round(abs($operationtime - $activetime));
-                $rescuers['rescuerresponse'] = $this->timeCalculator($tot_sec);
+                $rescuers['panicresponse'] = $this->timeCalculator($tot_sec);
             }
         }
         return $rescuers;
