@@ -11,7 +11,7 @@ use App\Models\Access\Payment\Traits\Attribute\PaymentAttribute;
  */
 class Payment extends Model {
 
-   // use PaymentAttribute;
+    use PaymentAttribute;
 
     /**
      * The attributes that are not mass assignable.

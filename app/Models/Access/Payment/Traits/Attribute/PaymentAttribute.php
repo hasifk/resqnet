@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models\Access\Payment\Traits\Attribute;
-
+use Carbon\Carbon;
 /**
  * Class RoleAttribute
  * @package App\Models\Access\Role\Traits\Attribute
