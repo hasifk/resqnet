@@ -8,7 +8,7 @@ namespace App\Models\Access\Payment\Traits\Attribute;
  */
 trait PaymentAttribute {
     
-    public function getSubscriptionEndsAtAttribute() {
+    public function getSubscriptionEndsAttribute() {
         
         return $this->attributes['subscription_ends_at']->format('m/d/Y');
     }
