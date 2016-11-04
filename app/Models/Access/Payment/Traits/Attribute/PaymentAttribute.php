@@ -7,11 +7,9 @@ namespace App\Models\Access\Payment\Traits\Attribute;
  * @package App\Models\Access\Role\Traits\Attribute
  */
 trait PaymentAttribute {
-    
+
     public function getSubscriptionEndsAtAttribute($value) {
-        
-        //return $this->attributes['subscription_ends_at']->format('m/d/Y');
         return Carbon::parse($value)->format('d/m/Y');
     }
-    
+
 }
