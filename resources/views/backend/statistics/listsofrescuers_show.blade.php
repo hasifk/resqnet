@@ -79,7 +79,7 @@
                                         </a>
                                     </li>
                                     <li id="collapse_{{$value->id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_{{$value->id}}">
-                                        <ul><li><a href="{{route('user.groups.view',$value->user_id)}}">{{ $value->firstname.' '.$value->lastname }}</a></li>
+                                        <ul><li><a href="{{route('admin.access.user.shows',$value->user_id)}}">{{ $value->firstname.' '.$value->lastname }}</a></li>
 
                                         </ul>
 
