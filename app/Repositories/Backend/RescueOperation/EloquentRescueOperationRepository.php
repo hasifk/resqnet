@@ -376,18 +376,18 @@ class EloquentRescueOperationRepository {
         if (!empty($rescuers)) {
             foreach ($rescuers as $key => $active) {
                 $rescuers[$key]['rescuee_details'] = User::find($active->rescuee_id);
-//               $res1 = $res2 = $res3 = array();
-//                if (!empty($active->rescuers_ids)):
-//                    $resccuer_id = json_decode($active->rescuers_ids);
-//                    foreach ($resccuer_id as $resid)
-//                        $res1[] = User::find($resid);
-//                endif;
-//                $rescuers[$key]['rescuers_details'] = $res1;
-//                if (!empty($active->emergency_ids)):
-//                    $emergency_id = json_decode($active->emergency_ids);
-//                    foreach ($emergency_id as $resid)
-//                        $res2[] = User::find($resid);
-//                endif;
+               $res1 = $res2 = $res3 = array();
+                if (!empty($active->rescuers_ids)):
+                    $resccuer_id = json_decode($active->rescuers_ids);
+                    foreach ($resccuer_id as $resid)
+                        $res1[] = User::find($resid);
+                endif;
+                $rescuers[$key]['rescuers_details'] = $res1;
+                if (!empty($active->emergency_ids)):
+                    $emergency_id = json_decode($active->emergency_ids);
+                    foreach ($emergency_id as $resid)
+                        $res2[] = User::find($resid);
+                endif;
 //                $rescuers[$key]['emergency_details'] = $res2;
 //                if (!empty($active->emergency_groups)):
 //                    $emergency_groups = json_decode($active->emergency_groups);
