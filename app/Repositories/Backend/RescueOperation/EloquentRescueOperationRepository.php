@@ -356,16 +356,16 @@ class EloquentRescueOperationRepository {
             $rescuers['emergency_groups'] = $res3;
             $operation = Operation::where('active_rescuers_id', $active->id)->first();
             if (!empty($operation)) {
-                $rescuers[$key]['tagged'] = User::find($operation->rescuer_id);
+                $rescuers['tagged'] = User::find($operation->rescuer_id);
                 $activetime = strtotime($active->created_at);
                 $operationtime = strtotime($operation->created_at);
                 if (!empty($operation->finished_at)):
                     $finishedtime = strtotime($operation->finished_at);
                     $tot_sec = round(abs($finishedtime - $operationtime));
-                    $rescuers[$key]['finished'] = $this->timeCalculator($tot_sec);
+                    $rescuers['finished'] = $this->timeCalculator($tot_sec);
                 endif;
                 $tot_sec = round(abs($operationtime - $activetime));
-                $rescuers[$key]['rescuerresponse'] = $this->timeCalculator($tot_sec);
+                $rescuers['rescuerresponse'] = $this->timeCalculator($tot_sec);
             }
         }
         return $rescuers;
