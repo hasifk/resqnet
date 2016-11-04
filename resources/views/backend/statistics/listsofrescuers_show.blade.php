@@ -72,9 +72,13 @@
                         @foreach($resid as $value)
                         <tr>
                             <td>
-                                <ul>
-                                    <li class="accordion"><a href="{{route('user.groups.view',$value->id)}}">{{ $value->name }}</a></li>
+                                <ul class="accordion" id="heading_{{$value->id}}">
                                     <li>
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$value->id}}" aria-expanded="false" aria-controls="collapse_{{$value->id}}">
+                                            <span class="text"> {{ $value->name }}</span>
+                                        </a>
+                                    </li>
+                                    <li id="collapse_{{$value->id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_{{$value->id}}">
                                         <ul><li><a href="{{route('user.groups.view',$value->user_id)}}">{{ $value->firstname.' '.$value->lastname }}</a></li>
 
                                         </ul>
