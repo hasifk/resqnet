@@ -6,7 +6,7 @@ namespace App\Models\Access\Payment\Traits\Attribute;
  * Class RoleAttribute
  * @package App\Models\Access\Role\Traits\Attribute
  */
-trait RoleAttribute {
+trait PaymentAttribute {
     
     public function setSubscriptionEndsAtAttribute() {
         
