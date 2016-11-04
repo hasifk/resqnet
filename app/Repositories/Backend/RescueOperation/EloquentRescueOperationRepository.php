@@ -399,7 +399,7 @@ class EloquentRescueOperationRepository {
         $rescuers = array();
 
         if (!empty($panicids)) {
-            $rescuers = $this->ActiveRescuers($panicids)->paginate(10);
+            $rescuers = $this->ActiveRescuers($panicids)->paginate(20);
             foreach ($rescuers as $key => $active) {
                 $rescuers[$key]['rescuee_details'] = User::find($active->rescuee_id);
                 $operation = Operation::where('active_rescuers_id', $active->id)->first();
