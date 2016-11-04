@@ -97,9 +97,6 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Users</th>
-<!--                                    <th>List Of ResQuers<br>Availabel</th>
-                                    <th>Emergency Contacts<br>Lists</th>
-                                    <th>Emergency Groups<br>Lists</th>-->
                                     <th>Tagged ResQuer</th>
                                     <th>ResQuer Response <br>(H:M:S) </th>
                                     <th>Finished <br>(H:M:S) </th>
