@@ -45,7 +45,7 @@ trait OperationAttribute {
      */
     public function getDeleteButtonAttribute() {
         if (access()->allow('delete-newsfeed'))
-            return '<a  class="notification_delete btn btn-xs btn-danger"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i></a>';
+            return '<a class="notification_delete btn btn-xs btn-danger" id="'.$this->id.'"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i></a>';
         return '';
     }
 
