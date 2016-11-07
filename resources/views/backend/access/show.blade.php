@@ -184,6 +184,12 @@
                     {{ $user->allergies }}
                 </td>
             </tr>
+            <tr>
+                <th>Device Type</th>
+                <td>
+                    {{ $user->device_type }}
+                </td>
+            </tr>
         </table>
 
 
