@@ -69,8 +69,10 @@ class EloquentUserRepository implements UserRepositoryContract {
      * @return mixed
      */
     public function getUsersPaginated($per_page, $status = 1, $order_by = 'id', $sort = 'asc') {
-        return User::where('status', $status)
-                        ->orderBy($order_by, $sort)
+//        return User::where('status', $status)
+//                        ->orderBy($order_by, $sort)
+//                        ->paginate($per_page);
+        return User::orderBy($order_by, $sort)
                         ->paginate($per_page);
     }
 
