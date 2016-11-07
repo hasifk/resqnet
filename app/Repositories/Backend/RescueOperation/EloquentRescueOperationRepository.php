@@ -107,11 +107,11 @@ class EloquentRescueOperationRepository {
                 $userdetails['result'] = "No Rescuers available";
             if (!empty($appids)) {
                 $message['to'] = "Emergency";
-               $userdetails= $this->notification($appids[0], $message);
+               $userdetails[]= $this->notification($appids[0], $message);
             }
             if (!empty($groups)) {
                 $message['to'] = "EmergencyGroup";
-               $userdetails= $this->notification($groups[0], $message);
+               $userdetails[]= $this->notification($groups[0], $message);
             }
         } else
             $userdetails['result'] = "Please enable Location services";
