@@ -182,7 +182,7 @@ class EloquentRescueOperationRepository {
 // Provide the Device Identifier (Ensure that the Identifier does not have spaces in it).
 // Replace this token with the token of the iOS device that is to receive the notification.
 //$tToken = 'b3d7a96d5bfc73f96d5bfc73f96d5bfc73f7a06c3b0101296d5bfc73f38311b4';
-                $tToken = array($app_id['app_id'][$key]);
+                $tToken = $app_id['app_id'][$key];
 //0a32cbcc8464ec05ac3389429813119b6febca1cd567939b2f54892cd1dcb134
 // The message that is to appear on the dialog.
                 $tAlert = $message['message'];
