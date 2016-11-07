@@ -46,7 +46,7 @@ class EloquentRescueOperationRepository {
                 }
             }
             $rescuee = User::find($userid);
-            $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . " Reqested an Emergency(" . $result->emergency_type . ")";
+            $message['message'] = "The User (".$rescuee->firstname." " .$rescuee->lastname.") Reqested Emergency Support(".$result->emergency_type .")";
             if (!empty($contacts = $this->emergencyContacts($userid)))
                 $appids = $this->membershipChecking($contacts, $rescuers);
 
