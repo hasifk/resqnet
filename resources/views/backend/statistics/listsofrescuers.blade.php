@@ -243,7 +243,7 @@
             }
         });
 
-        $('.operation_delete').on('click', function () {
+        $('.notification_delete').on('click', function () {
             if (confirm("Are you sure want to delete")) {
                 return true;
             }
@@ -278,7 +278,7 @@
             {
                 $.ajax({
                     type: "GET",
-                    url: '/admin/notificationdelete',
+                    url: '/admin/deletepanic',
                     data: "id=" + value,
                     cache: false,
                     success: function (data) {
