@@ -146,7 +146,7 @@
                             </tbody>
                         </table>
                         <div class="box-footer clearfix no-border">
-                            @if(count($notification)>0)
+                            @if(count($lists) > 0)
                             <button class="mnotification_delete btn btn-primary" >Delete</button>
                             @endif
 
