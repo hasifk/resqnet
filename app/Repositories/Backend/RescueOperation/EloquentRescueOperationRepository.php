@@ -221,7 +221,7 @@ class EloquentRescueOperationRepository {
                 $tResult = fwrite($tSocket, $tMsg, strlen($tMsg));
 
                 $tResult = fwrite($tSocket, $tMsg);
-                return $tResult;
+                print_r($tResult);
                 if ($tResult)
                     return 'Delivered Message to APNS' . PHP_EOL;
                 else
