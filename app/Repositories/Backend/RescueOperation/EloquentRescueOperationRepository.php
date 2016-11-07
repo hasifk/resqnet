@@ -100,18 +100,18 @@ class EloquentRescueOperationRepository {
             $message['id'] = $obj->id;
             if (!empty($rescuers)) {
                 $message['to'] = "Rescuer";
-                $userdetails[]=$this->notification($app_id, $message);
+                $userdetails[] = $this->notification($app_id, $message);
                 $userdetails['result'] = 'SUCCESS';
                 $userdetails['panicid'] = $obj->id;
             } else
                 $userdetails['result'] = "No Rescuers available";
             if (!empty($appids)) {
                 $message['to'] = "Emergency";
-               $userdetails[]= $this->notification($appids[0], $message);
+                $userdetails[] = $this->notification($appids[0], $message);
             }
             if (!empty($groups)) {
                 $message['to'] = "EmergencyGroup";
-               $userdetails[]= $this->notification($groups[0], $message);
+                $userdetails[] = $this->notification($groups[0], $message);
             }
         } else
             $userdetails['result'] = "Please enable Location services";
@@ -181,11 +181,8 @@ class EloquentRescueOperationRepository {
                 $tPassphrase = 'SilverBloom197';
 // Provide the Device Identifier (Ensure that the Identifier does not have spaces in it).
 // Replace this token with the token of the iOS device that is to receive the notification.
-                $app_id_qrqy = array();
-                $app_id_qrqy['0'] ='a18792a07ae2c4caf346332e4fbe5ba8071d5b6d66ef6cd3731f6c78ecdc258a';
-                $tToken =  $app_id_qrqy;
-
-               // $tToken = $app_id['app_id'][$key];
+                //$tToken ='a18792a07ae2c4caf346332e4fbe5ba8071d5b6d66ef6cd3731f6c78ecdc258a';
+                $tToken = $app_id['app_id'][$key];
 //0a32cbcc8464ec05ac3389429813119b6febca1cd567939b2f54892cd1dcb134
 // The message that is to appear on the dialog.
                 $tAlert = $message['message'];
@@ -225,8 +222,8 @@ class EloquentRescueOperationRepository {
 // Send the Notification to the Server.
                 $tResult = fwrite($tSocket, $tMsg, strlen($tMsg));
 
- $tResult = fwrite($tSocket, $tMsg);
- //return $tResult;
+                $tResult = fwrite($tSocket, $tMsg);
+                return $tResult;
                 if ($tResult)
                     return 'Delivered Message to APNS';
                 else
