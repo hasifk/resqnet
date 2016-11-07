@@ -223,7 +223,7 @@ class EloquentRescueOperationRepository {
                 $tResult = fwrite($tSocket, $tMsg, strlen($tMsg));
 
                 $tResult = fwrite($tSocket, $tMsg);
-            
+               // return $tResult;
 //                if ($tResult)
 //                    return 'Delivered Message to APNS';
 //                else
