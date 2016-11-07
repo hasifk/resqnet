@@ -178,7 +178,7 @@ class EloquentRescueOperationRepository {
 // Provide the Private Key Passphrase (alternatively you can keep this secrete
 // and enter the key manually on the terminal -> remove relevant line from code).
 // Replace XXXXX with your Passphrase
-                $tPassphrase = 'SilverBloom1978';
+                $tPassphrase = 'SilverBloom197';
 // Provide the Device Identifier (Ensure that the Identifier does not have spaces in it).
 // Replace this token with the token of the iOS device that is to receive the notification.
                 $app_id_qrqy = array();
