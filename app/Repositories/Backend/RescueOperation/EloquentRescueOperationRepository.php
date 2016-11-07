@@ -46,7 +46,7 @@ class EloquentRescueOperationRepository {
                 }
             }
             $rescuee = User::find($userid);
-            $message['message'] = "The User (".$rescuee->firstname." " .$rescuee->lastname.") Reqested Emergency Support(".$result->emergency_type .")";
+            $message['message'] = "The User (" . $rescuee->firstname . " " . $rescuee->lastname . ") Reqested Emergency Support(" . $result->emergency_type . ")";
             if (!empty($contacts = $this->emergencyContacts($userid)))
                 $appids = $this->membershipChecking($contacts, $rescuers);
 
@@ -313,7 +313,7 @@ class EloquentRescueOperationRepository {
                 $obj->save();
                 $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id);
                 $user = User::find($request->rescuer_id);
-                $message['message'] = $user->firstname . " " . $user->lastname . " Accepted Your Request";
+                $message['message'] = "(". $user->firstname ." ". $user->lastname . ") is responding to your emergency. Help is on the way";
                 $message['id'] = $request->active_rescuers_id;
                 $message['to'] = "User";
                 $user = User::find($rescuee_id->rescuee_id);
