@@ -100,18 +100,18 @@ class EloquentRescueOperationRepository {
             $message['id'] = $obj->id;
             if (!empty($rescuers)) {
                 $message['to'] = "Rescuer";
-                $userdetails[]=$this->notification($app_id, $message);
+                $userdetails[] = $this->notification($app_id, $message);
                 $userdetails['result'] = 'SUCCESS';
                 $userdetails['panicid'] = $obj->id;
             } else
                 $userdetails['result'] = "No Rescuers available";
             if (!empty($appids)) {
                 $message['to'] = "Emergency";
-               $userdetails[]= $this->notification($appids[0], $message);
+                $userdetails[] = $this->notification($appids[0], $message);
             }
             if (!empty($groups)) {
                 $message['to'] = "EmergencyGroup";
-               $userdetails[]= $this->notification($groups[0], $message);
+                $userdetails[] = $this->notification($groups[0], $message);
             }
         } else
             $userdetails['result'] = "Please enable Location services";
@@ -220,7 +220,8 @@ class EloquentRescueOperationRepository {
 // Send the Notification to the Server.
                 $tResult = fwrite($tSocket, $tMsg, strlen($tMsg));
 
- $tResult = fwrite($tSocket, $tMsg);
+                $tResult = fwrite($tSocket, $tMsg);
+                return $tResult;
                 if ($tResult)
                     return 'Delivered Message to APNS' . PHP_EOL;
                 else
