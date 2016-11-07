@@ -143,5 +143,8 @@ class StatisticsController extends Controller {
        return view('backend.statistics.listsofrescuers_new', $view);
         //return response()->json(['emergencycontacts' => $this->rescueOperationRepository->listsOfRescuers($result['lists'])]);
     }
+    public function deletePanic($id) {
+        
+    }
 
 }

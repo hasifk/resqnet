@@ -14,5 +14,7 @@ Route::group([
         Route::get('listsofrescuers', 'StatisticsController@listsOfRescuers')->name('admin.statistics.listsofrescuers');
         Route::get('listsofrescuer/{id}/show', 'StatisticsController@listsOfRescuer')->name('admin.statistics.listsofrescuer');
         Route::get('rescuerslists', 'StatisticsController@rescuersLists')->name('admin.statistics.rescuerslists');
+        Route::get('deletepanic/{id}', 'StatisticsController@deletePanic')->name('admin.statistics.deletepanic');
+        
        
 });
