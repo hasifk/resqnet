@@ -9,6 +9,7 @@ use App\Models\Rescuer\RescuerType;
 use App\Models\Newsfeed\Newsfeed;
 use App\Models\Access\Role\Role;
 use App\Models\RescueOperation\ActiveRescuer;
+use App\Models\RescueOperation\Operation;
 use App\Repositories\Backend\RescueOperation\EloquentRescueOperationRepository;
 use Auth;
 use Storage;
@@ -109,10 +110,10 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
 
         if (!empty($request->state_id) && !empty($request->area_id)) {
             $country = City::where('id', $request->area_id)->value('name');
-            $amount = Newsfeed::where('areaid', $request->area_id)->where('newsfeed_type',$request->rescur)->count();            
+            $amount = Newsfeed::where('areaid', $request->area_id)->where('newsfeed_type', $request->rescur)->count();
         } else if (!empty($request->country_id)) {
             $country = Country::where('id', $request->country_id)->value('name');
-                $amount = Newsfeed::where('countryid', $request->country_id)->where('newsfeed_type',$request->rescur)->count();
+            $amount = Newsfeed::where('countryid', $request->country_id)->where('newsfeed_type', $request->rescur)->count();
         }
         return [
             'country' => $country,
@@ -120,23 +121,23 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
         ];
     }
 
-   public function area($value) {
+    public function area($value) {
         return ActiveRescuer::join('users', 'activerescuers.rescuee_id', '=', 'users.id')->where('users.area_id', $value)
-                        ->select('activerescuers.rescuers_ids', 'activerescuers.id','activerescuers.role_id');
+                        ->select('activerescuers.rescuers_ids', 'activerescuers.id', 'activerescuers.role_id');
     }
 
     public function country($value) {
         return ActiveRescuer::join('users', 'activerescuers.rescuee_id', '=', 'users.id')->where('users.country_id', $value)
-                        ->select('activerescuers.rescuers_ids', 'activerescuers.id','activerescuers.role_id')->orderBy('activerescuers.id', 'desc');
+                        ->select('activerescuers.rescuers_ids', 'activerescuers.id', 'activerescuers.role_id')->orderBy('activerescuers.id', 'desc');
     }
 
     public function getPanicSignalAmount($request) {
 
-        $country = Country::where('id',$request->country_id)->value('name');
+        $country = Country::where('id', $request->country_id)->value('name');
         if ($request->category != "All") {
             if (!empty($request->date)):
                 if (!empty($request->state_id) && !empty($request->area_id)) {
-                    $area = City::where('id',$request->area_id)->value('name');
+                    $area = City::where('id', $request->area_id)->value('name');
                     $actives = $this->area($request->area_id)->where('activerescuers.emergency_type', $request->category)->where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
                 } else if (!empty($request->country_id)) {
                     $actives = $this->country($request->country_id)->where('activerescuers.emergency_type', $request->category)->where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
@@ -144,7 +145,7 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
                     $actives = ActiveRescuer::where('emergency_type', $request->category)->where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
             else:
                 if (!empty($request->state_id) && !empty($request->area_id)) {
-                    $area = City::where('id',$request->area_id)->value('name');
+                    $area = City::where('id', $request->area_id)->value('name');
                     $actives = $this->area($request->area_id)->where('activerescuers.emergency_type', $request->category)->get();
                 } else if (!empty($request->country_id)) {
                     $actives = $this->country($request->country_id)->where('activerescuers.emergency_type', $request->category)->get();
@@ -155,7 +156,7 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
         else {
             if (!empty($request->date)):
                 if (!empty($request->state_id) && !empty($request->area_id)) {
-                    $area = City::where('id',$request->area_id)->value('name');
+                    $area = City::where('id', $request->area_id)->value('name');
                     $actives = $this->area($request->area_id)->where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
                 } else if (!empty($request->country_id)) {
                     $actives = $this->country($request->country_id)->where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
@@ -163,7 +164,7 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
                     $actives = ActiveRescuer::where(\DB::raw("DATE(created_at) = '" . $request->date . "'"))->orderBy('activerescuers.id', 'desc')->get();
             else:
                 if (!empty($request->state_id) && !empty($request->area_id)) {
-                    $area = City::where('id',$request->area_id)->value('name');
+                    $area = City::where('id', $request->area_id)->value('name');
                     $actives = $this->area($request->area_id)->orderBy('activerescuers.id', 'desc')->get();
                 } else if (!empty($request->country_id)) {
                     $actives = $this->country($request->country_id)->get();
@@ -177,7 +178,7 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
         else
             $role = array(2, 3, 4);
         $f = 0;
-        $lists=array();
+        $lists = array();
         if (!empty($actives)) {
             foreach ($actives as $active) {
                 if (in_array($active->role_id, $role)) {
@@ -188,10 +189,28 @@ class EloquentStatisticsRepository implements StatisticsRepositoryContract {
         }
         return [
             'country' => $country,
-            'area' => !empty($area)?$area:'---',
+            'area' => !empty($area) ? $area : '---',
             'amount' => $f,
             'lists' => $lists
         ];
+    }
+
+    public function panicDelete($request) {
+        $ids = explode(",", $request->id);
+        foreach ($ids as $value):
+            if (!empty($operation = Operation::where('active_rescuers_id', $value)->first())) {
+                $operation->delete();
+            }
+            ActiveRescuer::where('id', $value)->delete();
+        endforeach;
+        if (count(ActiveRescuer::get()) == 0) {
+            Operation::truncate();
+        }
+        if (count(ActiveRescuer::get()) == 0) {
+            \DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            ActiveRescuer::truncate();
+            \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        }
     }
 
 }

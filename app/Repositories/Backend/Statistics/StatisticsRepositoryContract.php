@@ -25,4 +25,6 @@ interface StatisticsRepositoryContract {
     public function getAmountOfNewsfeeds();
 
     public function getNewsfeedAmount($request);
+    
+    public function panicDelete($request);
 }
