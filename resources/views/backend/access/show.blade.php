@@ -18,9 +18,9 @@
             <tr>
                 @if(!empty($avatar))
                 <th colspan="2"><center><img src="{{$avatar}}" width="150" height="150"></center></th>
-                @else
-                <th colspan="2"><img src="https://placeholdit.imgix.net/~text?txtsize=28&txt=150%C3%9784&w=150&h=84"/></th>
-                @endif
+            @else
+            <th colspan="2"><img src="https://placeholdit.imgix.net/~text?txtsize=28&txt=150%C3%9784&w=150&h=84"/></th>
+            @endif
 
             </tr>
             <tr>
@@ -184,10 +184,29 @@
                     {{ $user->allergies }}
                 </td>
             </tr>
+            
             <tr>
-                <th>Device Type</th>
+                <th>Device Infromation</th>
                 <td>
-                    {{ $user->device_type }}
+
+                    <table> <tr>
+
+                            <th>Device Type</th>
+                            <td>
+                                &nbsp;&nbsp;:&nbsp;&nbsp;  {{ $user->device_type }}
+                            </td>
+                        </tr>
+
+                        <tr>
+
+                            <th>Device ID</th>
+                            <td>
+                                &nbsp;&nbsp;:&nbsp;&nbsp;  {{ $user->app_id }}
+                            </td>
+                        </tr>
+
+                    </table>
+
                 </td>
             </tr>
         </table>
