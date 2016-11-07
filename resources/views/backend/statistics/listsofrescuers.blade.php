@@ -145,13 +145,11 @@
                                 ?>
                             </tbody>
                         </table>
-                        <div class="box-footer clearfix no-border">
+                        
+                        <div class="row col-xs-12 col-sm-12 col-md-12 btn-group ">
                             @if(count($lists) > 0)
                             <button class="mnotification_delete btn btn-primary" >Delete</button>
                             @endif
-
-                        </div>
-                        <div class="row col-xs-12 col-sm-12 col-md-12 btn-group ">
                             <center>
                                 <?php echo $lists->links(); ?>
                             </center>
