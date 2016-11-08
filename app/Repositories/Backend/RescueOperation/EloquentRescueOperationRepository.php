@@ -441,8 +441,7 @@ class EloquentRescueOperationRepository {
                 $res3[] = $this->groups->userGroupdetails($k, $gp_user_id);
             endif;
             $rescuers['emergency_groups'] = $res3;
-            $operation = Operation::where('active_rescuers_id', $rescuers->id)->first();
-            if (!empty($operation)) {
+            if (!empty($operation=Operation::where('active_rescuers_id', $rescuers->id)->first())) {
                 $rescuers['tagged'] = User::find($operation->rescuer_id);
                 $activetime = strtotime($rescuers->created_at);
                 $operationtime = strtotime($operation->created_at);
@@ -463,8 +462,7 @@ class EloquentRescueOperationRepository {
         if (!empty($rescuers)) {
             foreach ($rescuers as $key => $active) {
                 $rescuers[$key]['rescuee_details'] = User::find($active->rescuee_id);
-                $operation = Operation::where('active_rescuers_id', $active->id)->first();
-                if (!empty($operation)) {
+                if (!empty($operation=Operation::where('active_rescuers_id', $active->id)->first())) {
                     $rescuers[$key]['tagged'] = User::find($operation->rescuer_id);
                     $activetime = strtotime($active->created_at);
                     $operationtime = strtotime($operation->created_at);

@@ -41,6 +41,19 @@
                 </table>
             </td>
         </tr>
+        <tr>
+            <th>Tagged ResQuer</th>
+            <td>
+                <?php if (!empty($list->tagged)): ?>
+                    <a href="{{route('admin.access.user.shows',$list->tagged->id)}}">
+                        {{ $list->tagged->firstname.' '.$list->tagged->lastname }}</a>
+                    <?php
+                else:
+                    echo "No Rescuer Tagged";
+                endif;
+                ?> 
+            </td>
+        </tr>
 
         <tr>
             <th>Emergency Contacts</th>
@@ -96,21 +109,6 @@
                     ?>
                 </table></td>
         </tr>
-
-        <tr>
-            <th>Tagged ResQuer</th>
-            <td>
-                <?php if (!empty($list->tagged)): ?>
-                    <a href="{{route('admin.access.user.shows',$list->tagged->id)}}">
-                        {{ $list->tagged->firstname.' '.$list->tagged->lastname }}</a>
-                    <?php
-                else:
-                    echo "No Rescuer Tagged";
-                endif;
-                ?> 
-            </td>
-        </tr>
-
         <tr>
             <th>ResQuer Response (H:M:S) </th>
             <th> @if(!empty($list->rescuerresponse)){{ $list->rescuerresponse}} @else 00:00:00 @endif </th>
