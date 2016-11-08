@@ -115,7 +115,7 @@
         </tr>
         <tr>
             <th>Finished (H:M:S) </th>
-            <th> @if(!empty($list->finished)){{ $list->finished}} @else 00:00:00 @endif </th>
+            <th> {{ $list->finished}} </th>
         </tr>
         <tr>
             <th>Date</th>
