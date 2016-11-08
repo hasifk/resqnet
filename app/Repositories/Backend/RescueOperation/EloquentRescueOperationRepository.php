@@ -236,7 +236,7 @@ class EloquentRescueOperationRepository {
 // Send the Notification to the Server.
                 $tResult[] = fwrite($tSocket, $tMsg, strlen($tMsg));
 
-                $tResult[] = fwrite($tSocket, $tMsg);
+               // $tResult[] = fwrite($tSocket, $tMsg);
                 
                 if ($f == $ios) {
                     if (!empty($tResult))
