@@ -127,8 +127,8 @@ class EloquentRescueOperationRepository {
     public function notification($app_id, $message) {
         $f = 0;
         $u = 0;
-        $android=0;
-        $ios=0;
+        $android = 0;
+        $ios = 0;
         foreach ($app_id['device_type'] as $key => $device) {
             if ($device == 'Android') {
                 $android++;
@@ -180,6 +180,8 @@ class EloquentRescueOperationRepository {
                 curl_close($ch);
             } else {
                 $f++;
+                //$tToken ='a18792a07ae2c4caf346332e4fbe5ba8071d5b6d66ef6cd3731f6c78ecdc258a';
+                $tToken = $app_id['app_id'][$key];
                 if ($f == 1) {
 // Provide the Host Information.
                     $tHost = 'gateway.sandbox.push.apple.com';
@@ -194,8 +196,6 @@ class EloquentRescueOperationRepository {
                     $tPassphrase = 'SilverBloom1978';
 // Provide the Device Identifier (Ensure that the Identifier does not have spaces in it).
 // Replace this token with the token of the iOS device that is to receive the notification.
-//$tToken ='a18792a07ae2c4caf346332e4fbe5ba8071d5b6d66ef6cd3731f6c78ecdc258a';
-                    $tToken = $app_id['app_id'][$key];
 //0a32cbcc8464ec05ac3389429813119b6febca1cd567939b2f54892cd1dcb134
 // The message that is to appear on the dialog.
                     $tAlert = $message['message'];
@@ -237,13 +237,13 @@ class EloquentRescueOperationRepository {
                 $tResult[] = fwrite($tSocket, $tMsg, strlen($tMsg));
 
                 $tResult[] = fwrite($tSocket, $tMsg);
-                if($f==$ios){
-                if (!empty($tResult))
-                    return 'Delivered Message to APNS';
-                else
-                    return 'Could not Deliver Message to APNS';
+                if ($f == $ios) {
+                    if (!empty($tResult))
+                        return 'Delivered Message to APNS';
+                    else
+                        return 'Could not Deliver Message to APNS';
 //Close the Connection to the Server.
-                fclose($tSocket);
+                    fclose($tSocket);
                 }
             }
         }
