@@ -52,13 +52,15 @@ class EloquentRescueOperationRepository {
 
             if (!empty($rescuee->emergency_groups)) {
                 $group_ids = json_decode($rescuee->emergency_groups);
+                $gp = array();
                 foreach ($group_ids as $gpid) {
                     $group_user = Member::where('group_id', $gpid)->get();
                     foreach ($group_user as $value) {
                         if ($value->user_id == $userid)
                             continue;
-                        if (!in_array($value->user_id, $rescuers)) {
-                            if (!empty($appids)) {
+                        //  if (!in_array($value->user_id, $rescuers)) { 
+                        if (!empty($appids)) {
+                            if (!in_array($value->user_id, $gp)) {
                                 if (!in_array($value->user_id, $appids[1])) {
                                     $user = User::find($value->user_id);
                                     if (!empty($user->app_id) && !empty($user->device_type)) {
@@ -68,10 +70,12 @@ class EloquentRescueOperationRepository {
                                             $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
                                         else
                                             $groups[1][$gpid] = $user->id;
+                                        $gp[] = $user->id;
                                     }
                                 }
-                            } else {
-
+                            }
+                        } else {
+                            if (!in_array($value->user_id, $gp)) {
                                 $user = User::find($value->user_id);
                                 if (!empty($user->app_id) && !empty($user->device_type)) {
                                     $groups[0]['app_id'][] = $user->app_id;
@@ -80,9 +84,11 @@ class EloquentRescueOperationRepository {
                                         $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
                                     else
                                         $groups[1][$gpid] = $user->id;
+                                    $gp[] = $user->id;
                                 }
                             }
                         }
+                        //}
                     }
                 }
             }
@@ -139,8 +145,6 @@ class EloquentRescueOperationRepository {
 // API access key from Google API's Console
 // define('API_ACCESS_KEY', 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ');
         foreach ($app_id['device_type'] as $key => $device) {
-// $ar[]=array($app_id['app_id'][$key]);
-            $count = count($app_id['device_type']);
             if ($device == 'Android') {
 // prep the bundle
                 $msg = array
@@ -236,8 +240,8 @@ class EloquentRescueOperationRepository {
 // Send the Notification to the Server.
                 $tResult[] = fwrite($tSocket, $tMsg, strlen($tMsg));
 
-               // $tResult[] = fwrite($tSocket, $tMsg);
-                
+                // $tResult[] = fwrite($tSocket, $tMsg);
+
                 if ($f == $ios) {
                     if (!empty($tResult))
                         return 'Delivered Message to APNS';
@@ -246,7 +250,6 @@ class EloquentRescueOperationRepository {
 //Close the Connection to the Server.
                     fclose($tSocket);
                 }
-                
             }
         }
 //return $fields;
@@ -436,12 +439,15 @@ class EloquentRescueOperationRepository {
             $rescuers['emergency_details'] = $res2;
             if (!empty($rescuers->emergency_groups)):
                 $emergency_groups = json_decode($rescuers->emergency_groups);
-                foreach ($emergency_groups as $k => $gp_user_id)
+                foreach ($emergency_groups as $k => $gp_user_id){
                     $gp_user_id = explode(",", $gp_user_id);
                 $res3[] = $this->groups->userGroupdetails($k, $gp_user_id);
+                
+                }
             endif;
+            
             $rescuers['emergency_groups'] = $res3;
-            if (!empty($operation=Operation::where('active_rescuers_id', $rescuers->id)->first())) {
+            if (!empty($operation = Operation::where('active_rescuers_id', $rescuers->id)->first())) {
                 $rescuers['tagged'] = User::find($operation->rescuer_id);
                 $activetime = strtotime($rescuers->created_at);
                 $operationtime = strtotime($operation->created_at);
@@ -462,7 +468,7 @@ class EloquentRescueOperationRepository {
         if (!empty($rescuers)) {
             foreach ($rescuers as $key => $active) {
                 $rescuers[$key]['rescuee_details'] = User::find($active->rescuee_id);
-                if (!empty($operation=Operation::where('active_rescuers_id', $active->id)->first())) {
+                if (!empty($operation = Operation::where('active_rescuers_id', $active->id)->first())) {
                     $rescuers[$key]['tagged'] = User::find($operation->rescuer_id);
                     $activetime = strtotime($active->created_at);
                     $operationtime = strtotime($operation->created_at);
