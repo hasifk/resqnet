@@ -115,7 +115,7 @@
         </tr>
         <tr>
             <th>Finished (H:M:S) </th>
-            <th> {{ $list->finished}} </th>
+            <th> {{ $list->panicresponse}} </th>
         </tr>
         <tr>
             <th>Date</th>

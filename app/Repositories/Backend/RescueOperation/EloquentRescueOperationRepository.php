@@ -448,10 +448,10 @@ class EloquentRescueOperationRepository {
                 if (!empty($operation->finished_at)):
                     $finishedtime = strtotime($operation->finished_at);
                     $tot_sec = round(abs($finishedtime - $operationtime));
-                    $rescuers['rescuerresponse'] = $activetime;
+                    $rescuers['rescuerresponse'] = $this->timeCalculator($tot_sec);
                 endif;
                 $tot_sec = round(abs($operationtime - $activetime));
-                $rescuers['panicresponse'] = $operationtime;
+                $rescuers['panicresponse'] = $this->timeCalculator($tot_sec);
             }
         }
         return $rescuers;
