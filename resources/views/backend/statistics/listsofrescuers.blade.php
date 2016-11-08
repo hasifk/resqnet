@@ -243,12 +243,12 @@
             }
         });
 
-        $('.notification_delete').on('click', function () {
-            if (confirm("Are you sure want to delete")) {
-                return true;
-            }
-            return false;
-        });
+//        $('.notification_delete').on('click', function () {
+//            if (confirm("Are you sure want to delete")) {
+//                return true;
+//            }
+//            return false;
+//        });
         
         
         $(document).on("click", '.notification_delete,.mnotification_delete', function () {
