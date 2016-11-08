@@ -224,14 +224,14 @@ class EloquentRescueOperationRepository {
                 stream_set_blocking($tSocket, 0);
 //stream_set_blocking($tSocket, 0);
 // Send the Notification to the Server.
-                $tResult = fwrite($tSocket, $tMsg, strlen($tMsg));
+                $tResult[] = fwrite($tSocket, $tMsg, strlen($tMsg));
 
                // $tResult[] = fwrite($tSocket, $tMsg);
-                return $tResult;
-//                if ($tResult)
-//                    return 'Delivered Message to APNS';
-//                else
-//                    return 'Could not Deliver Message to APNS';
+               // return $tResult;
+               if (empty($tResult))
+                    return 'Delivered Message to APNS';
+                else
+                    return 'Could not Deliver Message to APNS';
 //Close the Connection to the Server.
                 fclose($tSocket);
             }
