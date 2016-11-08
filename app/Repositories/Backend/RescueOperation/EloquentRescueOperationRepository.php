@@ -170,6 +170,8 @@ class EloquentRescueOperationRepository {
                 curl_close($ch);
             } else {
                 $f++;
+                //$tToken ='a18792a07ae2c4caf346332e4fbe5ba8071d5b6d66ef6cd3731f6c78ecdc258a';
+                    $tToken = $app_id['app_id'][$key];
                 if ($f == 1) {
 // Provide the Host Information.
                     $tHost = 'gateway.sandbox.push.apple.com';
@@ -184,8 +186,7 @@ class EloquentRescueOperationRepository {
                     $tPassphrase = 'SilverBloom1978';
 // Provide the Device Identifier (Ensure that the Identifier does not have spaces in it).
 // Replace this token with the token of the iOS device that is to receive the notification.
-//$tToken ='a18792a07ae2c4caf346332e4fbe5ba8071d5b6d66ef6cd3731f6c78ecdc258a';
-                    $tToken = $app_id['app_id'][$key];
+
 //0a32cbcc8464ec05ac3389429813119b6febca1cd567939b2f54892cd1dcb134
 // The message that is to appear on the dialog.
                     $tAlert = $message['message'];
@@ -226,7 +227,7 @@ class EloquentRescueOperationRepository {
 // Send the Notification to the Server.
                 $tResult = fwrite($tSocket, $tMsg, strlen($tMsg));
 
-                $tResult = fwrite($tSocket, $tMsg);
+               // $tResult[] = fwrite($tSocket, $tMsg);
                 return $tResult;
 //                if ($tResult)
 //                    return 'Delivered Message to APNS';
