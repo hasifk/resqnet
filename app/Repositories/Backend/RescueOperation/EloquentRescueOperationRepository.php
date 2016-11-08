@@ -125,14 +125,15 @@ class EloquentRescueOperationRepository {
     }
 
     public function notification($app_id, $message) {
-        $f = 0;
+        $f = 0;$u=0;
 // API access key from Google API's Console
 // define('API_ACCESS_KEY', 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ');
         foreach ($app_id['device_type'] as $key => $device) {
 // $ar[]=array($app_id['app_id'][$key]);
+            $count=count($app_id['device_type']);
             if ($device == 'Android') {
 // prep the bundle
-
+$u++;
                 $msg = array
                     (
                     'message' => $message['message'],
@@ -169,8 +170,8 @@ class EloquentRescueOperationRepository {
 // Close connection
                 curl_close($ch);
             } else {
-//                $f++;
-//                if ($f == 1) {
+                $f++;
+                if ($f == 1) {
 // Provide the Host Information.
                     $tHost = 'gateway.sandbox.push.apple.com';
 //$tHost = 'gateway.push.apple.com';
@@ -216,7 +217,7 @@ class EloquentRescueOperationRepository {
 // Check if we were able to open a socket.
                     if (!$tSocket)
                         exit("APNS Connection Failed: $error $errstr" . PHP_EOL);
-                //}
+                }
 // Build the Binary Notification.
                 $tMsg = chr(0) . chr(0) . chr(32) . pack('H*', $tToken) . pack('n', strlen($tBody)) . $tBody;
 
@@ -227,14 +228,14 @@ class EloquentRescueOperationRepository {
                 $tResult[] = fwrite($tSocket, $tMsg, strlen($tMsg));
 
                 $tResult[] = fwrite($tSocket, $tMsg);
-                var_dump($tResult);
-               // return $tResult;
+               
                if (!empty($tResult))
                     return 'Delivered Message to APNS';
                 else
                     return 'Could not Deliver Message to APNS';
 //Close the Connection to the Server.
                 fclose($tSocket);
+                
             }
         }
 //return $fields;
