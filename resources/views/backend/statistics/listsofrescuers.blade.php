@@ -94,7 +94,8 @@
 
                         <table class="table table-striped table-bordered table-hover" id="list">
                             <thead>
-                                <tr><th><input type="checkbox" id="selectall"/></th>
+                                <tr>
+                                    <th><input type="checkbox" id="selectall"/></th>
                                     <th>No</th>
                                     <th>Users</th>
                                     <th>Tagged ResQuer</th>

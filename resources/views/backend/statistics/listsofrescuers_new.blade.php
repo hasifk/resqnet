@@ -7,6 +7,7 @@
 <table class="table table-striped table-bordered table-hover" id="list">
     <thead>
         <tr>
+            <th><input type="checkbox" id="selectall"/></th>
             <th>No</th>
             <th>Users</th>
             <th>Tagged ResQuer</th>
@@ -26,6 +27,7 @@
             foreach ($lists as $list):
                 ?>
                 <tr>
+                    <th><input type="checkbox" class="checkbox" name="check[]" value="{{$list->id}}" id="{{$list->id}}"/></th>
                     <th>{{$f++}}</th>
                     <td>
                         <a href="{{route('admin.access.user.shows',$list->rescuee_id)}}"> {{ $list->rescuee_details->firstname.' '.$list->rescuee_details->lastname }} </a>
@@ -57,6 +59,9 @@
     </tbody>
 </table>
 <div class="row col-xs-12 col-sm-12 col-md-12 btn-group ">
+    @if(count($lists) > 0)
+    <button class="mnotification_delete btn btn-primary" >Delete</button>
+    @endif
     <center>
         <?php echo $lists->links(); ?>
     </center>
