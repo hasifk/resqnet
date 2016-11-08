@@ -237,14 +237,17 @@ class EloquentRescueOperationRepository {
                 $tResult[] = fwrite($tSocket, $tMsg, strlen($tMsg));
 
                 $tResult[] = fwrite($tSocket, $tMsg);
+                
                 if ($f == $ios) {
                     if (!empty($tResult))
-                        return 'Delivered Message to APNS';
+                        return $f;
+                        //return 'Delivered Message to APNS';
                     else
                         return 'Could not Deliver Message to APNS';
 //Close the Connection to the Server.
                     fclose($tSocket);
                 }
+                
             }
         }
 //return $fields;
