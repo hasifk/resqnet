@@ -29,7 +29,7 @@ class UpdateOnlineStatusRequest extends FormRequest
     public function rules()
     {
         return [
-            'id'  => 'required',
+            'user_id'  => 'required',
             'online_status' => 'required',
         ];
     }

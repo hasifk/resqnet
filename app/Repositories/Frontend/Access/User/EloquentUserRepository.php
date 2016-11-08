@@ -488,7 +488,7 @@ class EloquentUserRepository implements UserRepositoryContract {
     }
 
     public function updateOnlineStatus($request) {
-        $obj = Location::where('user_id',$request->id)->first();
+        $obj = Location::where('user_id',$request->user_id)->first();
         $obj->status = $request->online_status;
         $user->save();
         return true;
