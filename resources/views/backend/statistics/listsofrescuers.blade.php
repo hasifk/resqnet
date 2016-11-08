@@ -114,7 +114,7 @@
                                     foreach ($lists as $list):
                                         ?>
                                         <tr>
-                                            <th><input type="checkbox" name="check[]" value="{{$list->id}}" id="{{$list->id}}"/></th>
+                                            <th><input type="checkbox" class="checkbox" name="check[]" value="{{$list->id}}" id="{{$list->id}}"/></th>
                                             <th>{{$f++}}</th>
                                             <td>
                                                 <a href="{{route('admin.access.user.shows',$list->rescuee_id)}}"> {{ $list->rescuee_details->firstname.' '.$list->rescuee_details->lastname }} </a>
