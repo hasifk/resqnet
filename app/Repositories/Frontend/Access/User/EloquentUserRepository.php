@@ -17,6 +17,7 @@ use App\Models\Access\User\SocialLogin;
 use App\Repositories\Backend\Access\Role\RoleRepositoryContract;
 use App\Models\UserGroups\UserGroup;
 use Auth;
+use App\Models\RescueOperation\Location;
 
 /**
  * Class EloquentUserRepository
@@ -487,8 +488,8 @@ class EloquentUserRepository implements UserRepositoryContract {
     }
 
     public function updateOnlineStatus($request) {
-        $user = $this->find($request->id);
-        $user->online_status = $request->online_status;
+        $obj = Location::where('user_id',$request->id)->first();
+        $obj->status = $request->online_status;
         $user->save();
         return true;
     }

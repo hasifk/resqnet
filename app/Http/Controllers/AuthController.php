@@ -7,9 +7,9 @@ namespace App\Http\Controllers;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
 use App\User;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use Crypt;
+use App\Models\RescueOperation\Location;
 
 class AuthController extends Controller
 {
@@ -36,10 +36,12 @@ class AuthController extends Controller
             $user = \Auth::user();
             $user->app_id=$request->app_id;
             $user->device_type=$request->device_type;
-            $user->online_status=1;
             $user->save();
             /*$token = \JWTAuth::fromUser($user);*/
             $token=Crypt::encrypt($user->id);
+            $obj=new Location;
+            $obj->user_id=$user->id;
+            $obj->status=1;
             return response()->json(['token' => $token,'user_id'=>$user->id,
                 'user_role'=>$user->role_name,'subscription_ends_at'=>$user->subscription_ends_at,
                 'membership_no'=>$user->membership_no]);
