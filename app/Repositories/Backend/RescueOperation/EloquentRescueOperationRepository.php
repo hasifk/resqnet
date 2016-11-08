@@ -170,7 +170,7 @@ class EloquentRescueOperationRepository {
                 curl_close($ch);
             } else {
                 $f++;
-                if (f == 1) {
+                if ($f == 1) {
 // Provide the Host Information.
                     $tHost = 'gateway.sandbox.push.apple.com';
 //$tHost = 'gateway.push.apple.com';
