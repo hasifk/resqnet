@@ -451,7 +451,7 @@ class EloquentRescueOperationRepository {
                     $rescuers['rescuerresponse'] = $this->timeCalculator($tot_sec);
                 endif;
                 $tot_sec = round(abs($operationtime - $activetime));
-                $rescuers['panicresponse'] = $this->timeCalculator($tot_sec);
+                $rescuers['panicresponse'] = $rescuers->created_at;
             }
         }
         return $rescuers;
