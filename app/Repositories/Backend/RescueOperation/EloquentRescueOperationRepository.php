@@ -240,8 +240,7 @@ class EloquentRescueOperationRepository {
                 
                 if ($f == $ios) {
                     if (!empty($tResult))
-                        return $f;
-                        //return 'Delivered Message to APNS';
+                        return 'Delivered Message to APNS';
                     else
                         return 'Could not Deliver Message to APNS';
 //Close the Connection to the Server.
