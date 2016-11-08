@@ -111,11 +111,11 @@
         </tr>
         <tr>
             <th>ResQuer Response (H:M:S) </th>
-            <th> {{ $list->rescuerresponse}}  </th>
+            <th> @if(!empty($list->rescuerresponse)){{ $list->rescuerresponse}} @else 00:00:00 @endif </th>
         </tr>
         <tr>
             <th>Finished (H:M:S) </th>
-            <th> {{ $list->panicresponse}} </th>
+           <th> @if(!empty($list->panicresponse)){{ $list->panicresponse}} @else 00:00:00 @endif </th>
         </tr>
         <tr>
             <th>Date</th>
