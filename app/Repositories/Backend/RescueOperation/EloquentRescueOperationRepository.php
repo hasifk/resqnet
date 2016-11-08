@@ -36,7 +36,7 @@ class EloquentRescueOperationRepository {
             foreach ($actives as $active) {
                 $user = User::find($active->user_id);
                 if ($user->role_id == $role) {
-                    if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 3) {
+                    if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 5) {
                         if (!empty($user->app_id) && !empty($user->device_type)):
                             $rescuers[] = $active->user_id;
                             $app_id['app_id'][] = $user->app_id;
@@ -100,18 +100,18 @@ class EloquentRescueOperationRepository {
             $message['id'] = $obj->id;
             if (!empty($rescuers)) {
                 $message['to'] = "Rescuer";
-                $userdetails[] =$this->notification($app_id, $message);
+                $userdetails[] = $this->notification($app_id, $message);
                 $userdetails['result'] = 'SUCCESS';
                 $userdetails['panicid'] = $obj->id;
             } else
                 $userdetails['result'] = "No Rescuers available";
             if (!empty($appids)) {
                 $message['to'] = "Emergency";
-               $userdetails[] = $this->notification($appids[0], $message);
+                $userdetails[] = $this->notification($appids[0], $message);
             }
             if (!empty($groups)) {
                 $message['to'] = "EmergencyGroup";
-               $userdetails[] = $this->notification($groups[0], $message);
+                $userdetails[] = $this->notification($groups[0], $message);
             }
         } else
             $userdetails['result'] = "Please enable Location services";
@@ -125,6 +125,7 @@ class EloquentRescueOperationRepository {
     }
 
     public function notification($app_id, $message) {
+        $f = 0;
 // API access key from Google API's Console
 // define('API_ACCESS_KEY', 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ');
         foreach ($app_id['device_type'] as $key => $device) {
@@ -168,51 +169,54 @@ class EloquentRescueOperationRepository {
 // Close connection
                 curl_close($ch);
             } else {
+                $f++;
+                if (f == 1) {
 // Provide the Host Information.
-                $tHost = 'gateway.sandbox.push.apple.com';
+                    $tHost = 'gateway.sandbox.push.apple.com';
 //$tHost = 'gateway.push.apple.com';
-                $tPort = 2195;
+                    $tPort = 2195;
 // Provide the Certificate and Key Data.
-                $tCert = base_path('public/') . 'pushcert.pem';
+                    $tCert = base_path('public/') . 'pushcert.pem';
 
 // Provide the Private Key Passphrase (alternatively you can keep this secrete
 // and enter the key manually on the terminal -> remove relevant line from code).
 // Replace XXXXX with your Passphrase
-                $tPassphrase = 'SilverBloom1978';
+                    $tPassphrase = 'SilverBloom1978';
 // Provide the Device Identifier (Ensure that the Identifier does not have spaces in it).
 // Replace this token with the token of the iOS device that is to receive the notification.
-                //$tToken ='a18792a07ae2c4caf346332e4fbe5ba8071d5b6d66ef6cd3731f6c78ecdc258a';
-                $tToken = $app_id['app_id'][$key];
+//$tToken ='a18792a07ae2c4caf346332e4fbe5ba8071d5b6d66ef6cd3731f6c78ecdc258a';
+                    $tToken = $app_id['app_id'][$key];
 //0a32cbcc8464ec05ac3389429813119b6febca1cd567939b2f54892cd1dcb134
 // The message that is to appear on the dialog.
-                $tAlert = $message['message'];
+                    $tAlert = $message['message'];
 // The Badge Number for the Application Icon (integer >=0).
-                $tBadge = 8;
+                    $tBadge = 8;
 // Audible Notification Option.
-                $tSound = 'default';
+                    $tSound = 'default';
 // The content that is returned by the LiveCode "pushNotificationReceived" message.
-                $tPayload = 'APNS Message Handled by LiveCode';
+                    $tPayload = 'APNS Message Handled by LiveCode';
 // Create the message content that is to be sent to the device.
-                $tBody['aps'] = array(
-                    'alert' => $tAlert,
-                    'badge' => $tBadge,
-                    'sound' => $tSound,
-                    'panicid' => $message['id'],
-                    'notification_type' => $message['to']
-                );
-                $tBody ['payload'] = $tPayload;
+                    $tBody['aps'] = array(
+                        'alert' => $tAlert,
+                        'badge' => $tBadge,
+                        'sound' => $tSound,
+                        'panicid' => $message['id'],
+                        'notification_type' => $message['to']
+                    );
+                    $tBody ['payload'] = $tPayload;
 // Encode the body to JSON.
-                $tBody = json_encode($tBody);
+                    $tBody = json_encode($tBody);
 // Create the Socket Stream.
-                $tContext = stream_context_create();
-                stream_context_set_option($tContext, 'ssl', 'local_cert', $tCert);
+                    $tContext = stream_context_create();
+                    stream_context_set_option($tContext, 'ssl', 'local_cert', $tCert);
 // Remove this line if you would like to enter the Private Key Passphrase manually.
-                stream_context_set_option($tContext, 'ssl', 'passphrase', $tPassphrase);
+                    stream_context_set_option($tContext, 'ssl', 'passphrase', $tPassphrase);
 // Open the Connection to the APNS Server.
-                $tSocket = stream_socket_client('ssl://' . $tHost . ':' . $tPort, $error, $errstr, 30, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $tContext);
+                    $tSocket = stream_socket_client('ssl://' . $tHost . ':' . $tPort, $error, $errstr, 30, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $tContext);
 // Check if we were able to open a socket.
-                if (!$tSocket)
-                    exit("APNS Connection Failed: $error $errstr" . PHP_EOL);
+                    if (!$tSocket)
+                        exit("APNS Connection Failed: $error $errstr" . PHP_EOL);
+                }
 // Build the Binary Notification.
                 $tMsg = chr(0) . chr(0) . chr(32) . pack('H*', $tToken) . pack('n', strlen($tBody)) . $tBody;
 
@@ -313,7 +317,7 @@ class EloquentRescueOperationRepository {
                 $obj->save();
                 $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id);
                 $user = User::find($request->rescuer_id);
-                $message['message'] = "(". $user->firstname ." ". $user->lastname . ") is responding to your emergency. Help is on the way";
+                $message['message'] = "(" . $user->firstname . " " . $user->lastname . ") is responding to your emergency. Help is on the way";
                 $message['id'] = $request->active_rescuers_id;
                 $message['to'] = "User";
                 $user = User::find($rescuee_id->rescuee_id);
