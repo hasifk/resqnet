@@ -42,7 +42,7 @@
                         endif;
                         ?> 
                     </td>
-                    <th> @if(!empty($list->rescuerresponse)){{ $list->rescuerresponse}} @else 00:00:00 @endif </th>
+                    <th> {{ $list->rescuerresponse}} </th>
                     <th> @if(!empty($list->finished)){{ $list->finished}} @else 00:00:00 @endif </th>
                     <th>{{$list->created_at}}</th>
                     <th>{!! $list->action_buttons !!}</th>
