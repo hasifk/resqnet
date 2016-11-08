@@ -125,15 +125,24 @@ class EloquentRescueOperationRepository {
     }
 
     public function notification($app_id, $message) {
-        $f = 0;$u=0;
+        $f = 0;
+        $u = 0;
+        $android=0;
+        $ios=0;
+        foreach ($app_id['device_type'] as $key => $device) {
+            if ($device == 'Android') {
+                $android++;
+            } else {
+                $ios++;
+            }
+        }
 // API access key from Google API's Console
 // define('API_ACCESS_KEY', 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ');
         foreach ($app_id['device_type'] as $key => $device) {
 // $ar[]=array($app_id['app_id'][$key]);
-            $count=count($app_id['device_type']);
+            $count = count($app_id['device_type']);
             if ($device == 'Android') {
 // prep the bundle
-$u++;
                 $msg = array
                     (
                     'message' => $message['message'],
@@ -228,14 +237,14 @@ $u++;
                 $tResult[] = fwrite($tSocket, $tMsg, strlen($tMsg));
 
                 $tResult[] = fwrite($tSocket, $tMsg);
-               
-               if (!empty($tResult))
+                if($f==$ios){
+                if (!empty($tResult))
                     return 'Delivered Message to APNS';
                 else
                     return 'Could not Deliver Message to APNS';
 //Close the Connection to the Server.
                 fclose($tSocket);
-                
+                }
             }
         }
 //return $fields;
