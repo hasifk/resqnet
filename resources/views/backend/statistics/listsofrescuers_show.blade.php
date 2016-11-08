@@ -111,7 +111,7 @@
         </tr>
         <tr>
             <th>ResQuer Response (H:M:S) </th>
-            <th> @if(!empty($list->rescuerresponse)){{ $list->rescuerresponse}} @else 00:00:00 @endif </th>
+            <th> {{ $list->rescuerresponse}}  </th>
         </tr>
         <tr>
             <th>Finished (H:M:S) </th>
