@@ -423,7 +423,7 @@ class EloquentRescueOperationRepository {
     public function listsOfRescuer($id) {
         $rescuers = $this->ActiveRescuer($id);
         if (!empty($rescuers)) {
-            $res1 = $res2 = $res3 = array();
+            $res1 = $res2 = $res3 = $res4 = array();
             $rescuers['rescuee_details'] = User::find($rescuers->rescuee_id);
             if (!empty($rescuers->rescuers_ids)):
                 $resccuer_id = json_decode($rescuers->rescuers_ids);
@@ -439,14 +439,16 @@ class EloquentRescueOperationRepository {
             $rescuers['emergency_details'] = $res2;
             if (!empty($rescuers->emergency_groups)):
                 $emergency_groups = json_decode($rescuers->emergency_groups);
-                foreach ($emergency_groups as $k => $gp_user_id){
+                foreach ($emergency_groups as $k => $gp_user_id) {
                     $gp_user_id = explode(",", $gp_user_id);
-                $res3[] = $this->groups->userGroupdetails($k, $gp_user_id);
-                
+//                    $res3[] = $k;
+//                    $res4[$k] = $this->groups->userGroupdetails($k, $gp_user_id);
+                    $res3 = $this->groups->userGroupdetails($k, $gp_user_id);
                 }
             endif;
-            
+
             $rescuers['emergency_groups'] = $res3;
+            //$rescuers['emergency_groups_details'] = $res4;
             if (!empty($operation = Operation::where('active_rescuers_id', $rescuers->id)->first())) {
                 $rescuers['tagged'] = User::find($operation->rescuer_id);
                 $activetime = strtotime($rescuers->created_at);
