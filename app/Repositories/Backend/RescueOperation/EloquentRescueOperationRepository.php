@@ -450,7 +450,7 @@ class EloquentRescueOperationRepository {
                     $gp_user_id = explode(",", $gp_user_id);
 //                    $res3[] = $k;
 //                    $res4[$k] = $this->groups->userGroupdetails($k, $gp_user_id);
-                    $res3 = $this->groups->userGroupdetails($k, $gp_user_id);
+                    $res3[] = $this->groups->userGroupdetails($k, $gp_user_id);
                 }
             endif;
 
