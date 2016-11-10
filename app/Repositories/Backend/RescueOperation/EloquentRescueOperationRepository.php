@@ -291,8 +291,7 @@ class EloquentRescueOperationRepository {
                         //->join('locations', 'activerescuers.rescuee_id', '=', 'locations.user_id')
                         ->select('activerescuers.id', 'activerescuers.emergency_type','activerescuers.rescuee_id','activerescuers.locations','users.firstname', 'users.lastname', 'users.phone', 'users.email', 'users.current_medical_conditions', 'users.prior_medical_conditions', 'users.allergies')
                         ->where('activerescuers.id', $active_rescuers_id)
-                        ->first();
-                        //->toArray();
+                        ->first()->toArray();
 
         return $details;
     }
