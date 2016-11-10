@@ -454,7 +454,7 @@ class EloquentRescueOperationRepository {
             endif;
 
             $rescuers['emergency_groups'] = $res3;
-            //$rescuers['emergency_groups_details'] = $res4;
+            //$rescuers['groups_details'] = $res4;
             if (!empty($operation = Operation::where('active_rescuers_id', $rescuers->id)->first())) {
                 $rescuers['tagged'] = User::find($operation->rescuer_id);
                 $activetime = strtotime($rescuers->created_at);

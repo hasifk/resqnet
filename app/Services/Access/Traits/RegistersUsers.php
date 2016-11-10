@@ -40,9 +40,9 @@ trait RegistersUsers
         if (config('access.users.confirm_email')) {
             $result=$this->user->create($request->all());
             if(is_numeric($result)):
-                return response()->json(['success_info' => '00','message' => $result]);
+                return response()->json(['success_info' => '00','user_id' => $result]);
             else:
-                return response()->json(['success_info' => '01','message' => $result]);
+                return response()->json(['success_info' => '01','user_id' => $result]);
                 endif;
           /*  $token = \JWTAuth::fromUser($user);
             return response()->json(['token' => $token, 'user' => $user->toArray()]);*/
