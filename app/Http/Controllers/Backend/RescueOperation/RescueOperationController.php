@@ -41,6 +41,14 @@ class RescueOperationController extends Controller {
 
     public function rescuerOperationDetails(RescuerDetails $request) {
         $details = $this->rescueOperationRepository->rescuerOperationDetails($request->active_rescuers_id);
+        foreach($locations as $key =>$value){
+            if($key==$details['rescuee_id']){
+                $details['address']=$value->addr;
+                $details['lat']=$value->lat;
+                $details['long']=$value->long;
+            }
+        }
+        unset($details['locations']);
         return response()->json(['operation' => $details]);
     }
 
