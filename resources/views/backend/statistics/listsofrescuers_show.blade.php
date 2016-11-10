@@ -82,25 +82,25 @@
                         //print_r($list->emergency_groups);
                         ?>
                         @foreach($list->emergency_groups as $resid)
-                        @foreach($resid as $value)
                         <tr>
                             <td>
-                                <ul class="accordion" id="heading_{{$value->id}}">
+                                <ul class="accordion" id="heading_{{$resid->id}}">
                                     <li>
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$value->id}}" aria-expanded="false" aria-controls="collapse_{{$value->id}}">
-                                            <span class="text"> {{ $value->name }}</span>
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$resid->id}}" aria-expanded="false" aria-controls="collapse_{{$resid->id}}">
+                                            <span class="text"> {{ $resid->name }}</span>
                                         </a>
                                     </li>
-                                    <li id="collapse_{{$value->id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_{{$value->id}}">
+                                    <li id="collapse_{{$resid->id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_{{$resid->id}}">
+                                        @foreach($list->group_details[$resid->id] as $value)
                                         <ul><li><a href="{{route('admin.access.user.shows',$value->user_id)}}">{{ $value->firstname.' '.$value->lastname }}</a></li>
 
                                         </ul>
-
+                                        @endforeach
                                     </li>
                                 </ul>
                             </td>
                         </tr>
-                        @endforeach
+
                         @endforeach
                         <?php
                     else:
@@ -115,7 +115,7 @@
         </tr>
         <tr>
             <th>Finished (H:M:S) </th>
-           <th> @if(!empty($list->finished)){{ $list->finished}} @else 00:00:00 @endif </th>
+            <th> @if(!empty($list->finished)){{ $list->finished}} @else 00:00:00 @endif </th>
         </tr>
         <tr>
             <th>Date</th>

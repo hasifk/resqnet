@@ -447,14 +447,13 @@ class EloquentRescueOperationRepository {
                 $emergency_groups = json_decode($rescuers->emergency_groups);
                 foreach ($emergency_groups as $k => $gp_user_id) {
                     $gp_user_id = explode(",", $gp_user_id);
-//                    $res3[] = $k;
-//                    $res4[$k] = $this->groups->userGroupdetails($k, $gp_user_id);
-                    $res3[] = $this->groups->userGroupdetails($k, $gp_user_id);
+                    $res3[] = $this->groups->userGroup($k);
+                    $res4[$k] = $this->groups->userGroupdetails($k, $gp_user_id);
                 }
             endif;
 
             $rescuers['emergency_groups'] = $res3;
-            //$rescuers['groups_details'] = $res4;
+            $rescuers['group_details'] = $res4;
             if (!empty($operation = Operation::where('active_rescuers_id', $rescuers->id)->first())) {
                 $rescuers['tagged'] = User::find($operation->rescuer_id);
                 $activetime = strtotime($rescuers->created_at);
