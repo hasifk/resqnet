@@ -32,18 +32,18 @@ class EloquentRescueOperationRepository {
         $userloc = $this->showLocation($userid); //app user id
         $actives = $this->activeUsers(); //getting all active users
         $rescuers = array();
-        $locations[$userid]['lat']=$userloc->lat;
-        $locations[$userid]['long']=$userloc->long;
-        $locations[$userid]['addr']=$userloc->address;
+        $locations[$userid]['lat'] = $userloc->lat;
+        $locations[$userid]['long'] = $userloc->long;
+        $locations[$userid]['addr'] = $userloc->address;
         if (!empty($userloc)) {
             foreach ($actives as $active) {
                 $user = User::find($active->user_id);
                 if ($user->role_id == $role) {
                     if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 5) {
                         if (!empty($user->app_id) && !empty($user->device_type)):
-                            $locations[$active->user_id]['lat']=$active->lat;
-                            $locations[$active->user_id]['long']=$active->long;
-                            $locations[$active->user_id]['addr']=$active->address;
+                            $locations[$active->user_id]['lat'] = $active->lat;
+                            $locations[$active->user_id]['long'] = $active->long;
+                            $locations[$active->user_id]['addr'] = $active->address;
                             $rescuers[] = $active->user_id;
                             $app_id['app_id'][] = $user->app_id;
                             $app_id['device_type'][] = $user->device_type;
@@ -107,7 +107,7 @@ class EloquentRescueOperationRepository {
             $obj->emergency_type = $result->emergency_type;
             $obj->emergency_ids = !empty($appids) ? json_encode($appids[1]) : '';
             $obj->emergency_groups = !empty($groups) ? json_encode($groups[1]) : '';
-            $obj->locations= json_encode($locations);
+            $obj->locations = json_encode($locations);
             $obj->save();
             $message['id'] = $obj->id;
             if (!empty($rescuers)) {
@@ -119,7 +119,7 @@ class EloquentRescueOperationRepository {
                 $userdetails['result'] = "No Rescuers available";
             if (!empty($appids)) {
                 $message['to'] = "Emergency";
-                 $this->notification($appids[0], $message);
+                $this->notification($appids[0], $message);
             }
             if (!empty($groups)) {
                 $message['to'] = "EmergencyGroup";
@@ -194,8 +194,8 @@ class EloquentRescueOperationRepository {
                 $tToken = $app_id['app_id'][$key];
                 if ($f == 1) {
 // Provide the Host Information.
-                    $tHost = 'gateway.sandbox.push.apple.com';
-//$tHost = 'gateway.push.apple.com';
+                    //  $tHost = 'gateway.sandbox.push.apple.com';
+                    $tHost = 'gateway.push.apple.com';
                     $tPort = 2195;
 // Provide the Certificate and Key Data.
                     $tCert = base_path('public/') . 'pushcert.pem';
@@ -289,7 +289,7 @@ class EloquentRescueOperationRepository {
     public function rescuerOperationDetails($active_rescuers_id) {
         $details = ActiveRescuer::join('users', 'activerescuers.rescuee_id', '=', 'users.id')
                         //->join('locations', 'activerescuers.rescuee_id', '=', 'locations.user_id')
-                        ->select('activerescuers.id', 'activerescuers.emergency_type','activerescuers.rescuee_id','activerescuers.locations','users.firstname', 'users.lastname', 'users.phone', 'users.email', 'users.current_medical_conditions', 'users.prior_medical_conditions', 'users.allergies')
+                        ->select('activerescuers.id', 'activerescuers.emergency_type', 'activerescuers.rescuee_id', 'activerescuers.locations', 'users.firstname', 'users.lastname', 'users.phone', 'users.email', 'users.current_medical_conditions', 'users.prior_medical_conditions', 'users.allergies')
                         ->where('activerescuers.id', $active_rescuers_id)
                         ->first()->toArray();
 
