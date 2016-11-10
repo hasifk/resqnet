@@ -71,7 +71,7 @@ class RescueOperationController extends Controller {
 
     public function notificationResponce(RescuerDetails $request) {
         $details = $this->rescueOperationRepository->rescuerOperationDetails($request->active_rescuers_id);
-        $locations=json_decode($details->locations);
+        $locations=json_decode($details['locations']);
 //        foreach($locations as $key =>$value){
 //            if($key==$details->rescuee_id){
 //                $details['address']=$value->addr;
