@@ -3,15 +3,14 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
-{
+class CreateUsersTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('membership_no');
@@ -38,10 +37,9 @@ class CreateUsersTable extends Migration
             $table->longText('prior_medical_conditions');
             $table->longText('allergies');
             $table->string('phone');
-            $table->string('subscription_id');
-            $table->string('subscription_info');
-            $table->string('subscription_plan');
-            $table->timestamp('subscription_ends_at');
+            $table->string('lat');
+            $table->string('long');
+            $table->text('address')->nullable();
             $table->string('confirmation_code');
             $table->boolean('confirmed')->default(config('access.users.confirm_email') ? false : true);
             $table->rememberToken();
@@ -56,8 +54,8 @@ class CreateUsersTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::drop('users');
     }
+
 }

@@ -37,16 +37,17 @@ class EloquentRescueOperationRepository {
         $locations[$userid]['addr'] = $userloc->address;
         if (!empty($userloc)) {
             foreach ($actives as $active) {
-                $user = User::find($active->user_id);
-                if ($user->role_id == $role) {
+                //$user = User::find($active->user_id);
+                if ($active->role_id == $role) {
+                   //$userdetails[]= $this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long);
                     if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 5) {
-                        if (!empty($user->app_id) && !empty($user->device_type)):
-                            $locations[$active->user_id]['lat'] = $active->lat;
-                            $locations[$active->user_id]['long'] = $active->long;
-                            $locations[$active->user_id]['addr'] = $active->address;
-                            $rescuers[] = $active->user_id;
-                            $app_id['app_id'][] = $user->app_id;
-                            $app_id['device_type'][] = $user->device_type;
+                        if (!empty($active->app_id) && !empty($active->device_type)):
+                            $locations[$active->id]['lat'] = $active->lat;
+                            $locations[$active->id]['long'] = $active->long;
+                            $locations[$active->id]['addr'] = $active->address;
+                            $rescuers[] = $active->id;
+                            $app_id['app_id'][] = $active->app_id;
+                            $app_id['device_type'][] = $active->device_type;
                         endif;
                     }
                 }
@@ -132,7 +133,7 @@ class EloquentRescueOperationRepository {
 
     public function rescueeOperationCancel($request) {
         $obj = ActiveRescuer::find($request->panicid);
-        $obj->status = 0;
+        $obj->online_status = 0;
         $obj->save();
     }
 
@@ -297,7 +298,7 @@ class EloquentRescueOperationRepository {
     }
 
     public function activeUsers() {
-        return Location::where('status', 1)->get();
+        return User::where('online_status',1)->get();
     }
 
     public function ActiveRescuer($id) {
@@ -321,7 +322,7 @@ class EloquentRescueOperationRepository {
     }
 
     public function showLocation($userid) {
-        return Location::where('user_id', $userid)->where('status', 1)->first();
+        return User::where('id', $userid)->where('online_status', 1)->first();
     }
 
     public function findOperation($activeid) {
@@ -330,7 +331,7 @@ class EloquentRescueOperationRepository {
 
     public function rescuersResponse($request) {
         $status = ActiveRescuer::where('id', $request->active_rescuers_id)->first();
-        if (!empty($status) && $status->status == 1) {
+        if (!empty($status) && $status->online_status == 1) {
             $operation = $this->findOperation($request->active_rescuers_id);
             if (empty($operation)):
                 $obj = new Operation;
@@ -387,20 +388,20 @@ class EloquentRescueOperationRepository {
     }
 
     public function findUser($userid) {
-        return Location::where('user_id', $userid)->first();
+        return User::find($userid);
     }
 
     public function rescuerLocationUpdates($request) {
-        $user = $this->findUser($request->user_id);
-        if (!empty($user))
-            $obj = $user;
-        else
-            $obj = new Location;
-        $obj->user_id = $request->user_id;
+        $obj = User::find($request->user_id);
+//        if (!empty($user))
+//            $obj = $user;
+//        else
+//            $obj = new Location;
+       // $obj->user_id = $request->user_id;
         $obj->lat = $request->lat;
         $obj->long = $request->long;
         $obj->address = $request->address;
-        $obj->status = 1;
+        $obj->online_status = 1;
         $obj->save();
         return $obj;
     }
