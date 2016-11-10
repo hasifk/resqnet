@@ -13,5 +13,4 @@ trait PaymentAttribute {
     public function getSubscriptionEndsAtAttribute($value) {
         return Carbon::parse($value)->format('d-m-Y');
     }
-
 }

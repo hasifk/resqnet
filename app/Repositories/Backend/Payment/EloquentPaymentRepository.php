@@ -11,7 +11,7 @@ class EloquentPaymentRepository implements PaymentRepositoryContract {
 
     public function paymentSave($request) {
         $dt = Carbon::now();
-        $dt->addYears(1);
+        //$dt->addYears(1);
         $obj = new Payment;
         $obj->user_id = $request->custom;
         $obj->txn_id = $request->txn_id;
