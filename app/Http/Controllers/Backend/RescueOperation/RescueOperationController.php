@@ -106,16 +106,17 @@ class RescueOperationController extends Controller {
             foreach ($details as $value) {
                 if (!empty($operation = $this->rescueOperationRepository->findOperation($value->id))) {
                     if ($operation->rescuer_id == $request->user_id) {
-                        $result = $this->rescueOperationRepository->rescuerOperationDetailsAll($operation->rescuer_id); // getting the latest panic details
-                        $locations = json_decode($result->locations);
-                        foreach ($locations as $key => $value) {
-                            if ($key == $operation->rescuer_id) {
-                                $result['address'] = $value->addr;
-                                $result['lat'] = $value->lat;
-                                $result['long'] = $value->long;
+                        $results = $this->rescueOperationRepository->rescuerOperationDetailsAll($operation->rescuer_id); // getting the latest panic details
+                        foreach ($results as $result) {
+                            $locations = json_decode($result->locations);
+                            foreach ($locations as $key => $value) {
+                                if ($key == $operation->rescuer_id) {
+                                    $result['address'] = $value->addr;
+                                    $result['lat'] = $value->lat;
+                                    $result['long'] = $value->long;
+                                }
                             }
                         }
-                        break;
                     } else
                         $result = "No Panic Signals Tagged";
                 } else
