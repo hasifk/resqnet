@@ -107,7 +107,7 @@ class RescueOperationController extends Controller {
                 if (!empty($operation = $this->rescueOperationRepository->findOperation($value->id))) {
                     if ($operation->rescuer_id == $request->user_id) {
                         $result = $this->rescueOperationRepository->rescuerOperationDetailsAll($operation->rescuer_id); // getting the latest panic details
-                        $locations = json_decode($result['locations']);
+                        $locations = json_decode($result->locations);
                         foreach ($locations as $key => $value) {
                             if ($key == $operation->rescuer_id) {
                                 $result['address'] = $value->addr;
