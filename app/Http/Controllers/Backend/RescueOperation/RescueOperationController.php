@@ -120,6 +120,7 @@ class RescueOperationController extends Controller {
                                     $results[$key]['long'] = $values->long;
                                 }
                             }
+                            unset($result->locations);
                         }
 //                    } else
 //                        $results = "No Panic Signals Tagged";
