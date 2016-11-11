@@ -286,7 +286,7 @@ class EloquentRescueOperationRepository {
         return $app_id;
     }
 
-//for getting all active users
+//for getting active users
     public function rescuerOperationDetails($active_rescuers_id) {
         $details = ActiveRescuer::join('users', 'activerescuers.rescuee_id', '=', 'users.id')
                         //->join('locations', 'activerescuers.rescuee_id', '=', 'locations.user_id')
@@ -296,7 +296,16 @@ class EloquentRescueOperationRepository {
 
         return $details;
     }
+//for getting all active users
+    public function rescuerOperationDetailsAll($rescuers_id) {
+        $details = ActiveRescuer::join('users', 'activerescuers.rescuee_id', '=', 'users.id')
+                        ->join('operations', 'activerescuers.id', '=', 'operations.active_rescuers_id')
+                        ->select('activerescuers.id', 'activerescuers.emergency_type', 'activerescuers.rescuee_id', 'activerescuers.locations', 'users.firstname', 'users.lastname', 'users.phone', 'users.email', 'users.current_medical_conditions', 'users.prior_medical_conditions', 'users.allergies')
+                        ->where('operations.rescuer_id', $rescuers_id)
+                        ->paginate(20)->toArray();
 
+        return $details;
+    }
     public function activeUsers() {
         return User::where('online_status',1)->get();
     }

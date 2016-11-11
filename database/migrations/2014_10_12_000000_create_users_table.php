@@ -38,7 +38,7 @@ class CreateUsersTable extends Migration {
             $table->longText('allergies');
             $table->string('phone');
             $table->string('lat');
-            $table->string('long');
+            $table->string('lng');
             $table->text('address')->nullable();
             $table->string('confirmation_code');
             $table->boolean('confirmed')->default(config('access.users.confirm_email') ? false : true);
