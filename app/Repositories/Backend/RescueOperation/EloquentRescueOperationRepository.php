@@ -35,100 +35,102 @@ class EloquentRescueOperationRepository {
         $locations[$userid]['lat'] = $userloc->lat;
         $locations[$userid]['long'] = $userloc->lng;
         $locations[$userid]['addr'] = $userloc->address;
-        if (!empty($userloc)) {
-            foreach ($actives as $active) {
-                //$user = User::find($active->user_id);
-                if ($active->role_id == $role) {
-                   //$userdetails[]= $this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
-                    if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 5) {
-                        if (!empty($active->app_id) && !empty($active->device_type)):
-                            $locations[$active->id]['lat'] = $active->lat;
-                            $locations[$active->id]['long'] = $active->lng;
-                            $locations[$active->id]['addr'] = $active->address;
-                            $rescuers[] = $active->id;
-                            $app_id['app_id'][] = $active->app_id;
-                            $app_id['device_type'][] = $active->device_type;
-                        endif;
-                    }
-                }
-            }
-            $rescuee = User::find($userid);
-            $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . " Reqested Emergency Support(" . $result->emergency_type . ")";
-            if (!empty($contacts = $this->emergencyContacts($userid)))
-                $appids = $this->membershipChecking($contacts, $rescuers);
-
-            if (!empty($rescuee->emergency_groups)) {
-                $group_ids = json_decode($rescuee->emergency_groups);
-                $gp = array();
-                foreach ($group_ids as $gpid) {
-                    $group_user = Member::where('group_id', $gpid)->get();
-                    foreach ($group_user as $value) {
-                        if ($value->user_id == $userid)
-                            continue;
-                        //  if (!in_array($value->user_id, $rescuers)) { 
-                        if (!empty($appids)) {
-                            if (!in_array($value->user_id, $gp)) {
-                                if (!in_array($value->user_id, $appids[1])) {
-                                    $user = User::find($value->user_id);
-                                    if (!empty($user->app_id) && !empty($user->device_type)) {
-                                        $groups[0]['app_id'][] = $user->app_id;
-                                        $groups[0]['device_type'][] = $user->device_type;
-                                        if (!empty($groups[1][$gpid]))
-                                            $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
-                                        else
-                                            $groups[1][$gpid] = $user->id;
-                                        $gp[] = $user->id;
-                                    }
-                                }
-                            }
-                        } else {
-                            if (!in_array($value->user_id, $gp)) {
-                                $user = User::find($value->user_id);
-                                if (!empty($user->app_id) && !empty($user->device_type)) {
-                                    $groups[0]['app_id'][] = $user->app_id;
-                                    $groups[0]['device_type'][] = $user->device_type;
-                                    if (!empty($groups[1][$gpid]))
-                                        $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
-                                    else
-                                        $groups[1][$gpid] = $user->id;
-                                    $gp[] = $user->id;
-                                }
-                            }
-                        }
-                        //}
-                    }
-                }
-            }
-
-            sort($rescuers);
-            $obj = new ActiveRescuer;
-            $obj->rescuee_id = $userid;
-            $obj->role_id = $role;
-            $obj->rescuers_ids = !empty($rescuers) ? json_encode($rescuers) : '';
-            $obj->emergency_type = $result->emergency_type;
-            $obj->emergency_ids = !empty($appids) ? json_encode($appids[1]) : '';
-            $obj->emergency_groups = !empty($groups) ? json_encode($groups[1]) : '';
-            $obj->locations = json_encode($locations);
-            $obj->save();
-            $message['id'] = $obj->id;
-            if (!empty($rescuers)) {
-                $message['to'] = "Rescuer";
-                $this->notification($app_id, $message);
-                $userdetails['result'] = 'SUCCESS';
-                $userdetails['panicid'] = $obj->id;
-            } else
-                $userdetails['result'] = "No Rescuers available";
-            if (!empty($appids)) {
-                $message['to'] = "Emergency";
-                $this->notification($appids[0], $message);
-            }
-            if (!empty($groups)) {
-                $message['to'] = "EmergencyGroup";
-                $this->notification($groups[0], $message);
-            }
-        } else
-            $userdetails['result'] = "Please enable Location services";
-        return $userdetails;
+        return $locations;
+//        if (!empty($userloc)) {
+//            foreach ($actives as $active) {
+//                //$user = User::find($active->user_id);
+//                if ($active->role_id == $role) {
+//                  // $userdetails[]= $this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
+//                   //return $userdetails;
+//                    if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 5) {
+//                        if (!empty($active->app_id) && !empty($active->device_type)):
+//                            $locations[$active->id]['lat'] = $active->lat;
+//                            $locations[$active->id]['long'] = $active->lng;
+//                            $locations[$active->id]['addr'] = $active->address;
+//                            $rescuers[] = $active->id;
+//                            $app_id['app_id'][] = $active->app_id;
+//                            $app_id['device_type'][] = $active->device_type;
+//                        endif;
+//                    }
+//                }
+//            }
+//            $rescuee = User::find($userid);
+//            $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . " Reqested Emergency Support(" . $result->emergency_type . ")";
+//            if (!empty($contacts = $this->emergencyContacts($userid)))
+//                $appids = $this->membershipChecking($contacts, $rescuers);
+//
+//            if (!empty($rescuee->emergency_groups)) {
+//                $group_ids = json_decode($rescuee->emergency_groups);
+//                $gp = array();
+//                foreach ($group_ids as $gpid) {
+//                    $group_user = Member::where('group_id', $gpid)->get();
+//                    foreach ($group_user as $value) {
+//                        if ($value->user_id == $userid)
+//                            continue;
+//                        //  if (!in_array($value->user_id, $rescuers)) { 
+//                        if (!empty($appids)) {
+//                            if (!in_array($value->user_id, $gp)) {
+//                                if (!in_array($value->user_id, $appids[1])) {
+//                                    $user = User::find($value->user_id);
+//                                    if (!empty($user->app_id) && !empty($user->device_type)) {
+//                                        $groups[0]['app_id'][] = $user->app_id;
+//                                        $groups[0]['device_type'][] = $user->device_type;
+//                                        if (!empty($groups[1][$gpid]))
+//                                            $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
+//                                        else
+//                                            $groups[1][$gpid] = $user->id;
+//                                        $gp[] = $user->id;
+//                                    }
+//                                }
+//                            }
+//                        } else {
+//                            if (!in_array($value->user_id, $gp)) {
+//                                $user = User::find($value->user_id);
+//                                if (!empty($user->app_id) && !empty($user->device_type)) {
+//                                    $groups[0]['app_id'][] = $user->app_id;
+//                                    $groups[0]['device_type'][] = $user->device_type;
+//                                    if (!empty($groups[1][$gpid]))
+//                                        $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
+//                                    else
+//                                        $groups[1][$gpid] = $user->id;
+//                                    $gp[] = $user->id;
+//                                }
+//                            }
+//                        }
+//                        //}
+//                    }
+//                }
+//            }
+//
+//            sort($rescuers);
+//            $obj = new ActiveRescuer;
+//            $obj->rescuee_id = $userid;
+//            $obj->role_id = $role;
+//            $obj->rescuers_ids = !empty($rescuers) ? json_encode($rescuers) : '';
+//            $obj->emergency_type = $result->emergency_type;
+//            $obj->emergency_ids = !empty($appids) ? json_encode($appids[1]) : '';
+//            $obj->emergency_groups = !empty($groups) ? json_encode($groups[1]) : '';
+//            $obj->locations = json_encode($locations);
+//            $obj->save();
+//            $message['id'] = $obj->id;
+//            if (!empty($rescuers)) {
+//                $message['to'] = "Rescuer";
+//                $this->notification($app_id, $message);
+//                $userdetails['result'] = 'SUCCESS';
+//                $userdetails['panicid'] = $obj->id;
+//            } else
+//                $userdetails['result'] = "No Rescuers available";
+//            if (!empty($appids)) {
+//                $message['to'] = "Emergency";
+//                $this->notification($appids[0], $message);
+//            }
+//            if (!empty($groups)) {
+//                $message['to'] = "EmergencyGroup";
+//                $this->notification($groups[0], $message);
+//            }
+//        } else
+//            $userdetails['result'] = "Please enable Location services";
+//        return $userdetails;
     }
 
     public function rescueeOperationCancel($request) {
