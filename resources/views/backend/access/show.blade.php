@@ -184,7 +184,7 @@
                     {{ $user->allergies }}
                 </td>
             </tr>
-            
+            <tr><th colspan="2"><center>Other Informations</center></th></tr>
             <tr>
                 <th>Device Infromation</th>
                 <td>
@@ -202,6 +202,30 @@
                             <th>Device ID</th>
                             <td>
                                 &nbsp;&nbsp;:&nbsp;&nbsp;  {{ $user->app_id }}
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </td>
+            </tr>
+            <tr>
+                <th>Current Location</th>
+                <td>
+
+                    <table> <tr>
+
+                            <th>Location(Lat,Long)</th>
+                            <td>
+                                &nbsp;&nbsp;:&nbsp;&nbsp;  {{ $user->lat.",".$user->long }}
+                            </td>
+                        </tr>
+
+                        <tr>
+
+                            <th>Address</th>
+                            <td>
+                                &nbsp;&nbsp;:&nbsp;&nbsp;  {{ $user->address }}
                             </td>
                         </tr>
 

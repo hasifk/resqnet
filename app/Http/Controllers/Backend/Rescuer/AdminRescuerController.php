@@ -46,6 +46,7 @@ class AdminRescuerController extends Controller {
         ];
         return view('backend.department.index', $view);
     }
+    
     public function editRescuerDept($id) {
         
         $view = [
