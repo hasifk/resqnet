@@ -233,6 +233,7 @@
 
                 </td>
             </tr>
+            <tr><th>Online Status</th><th>{{ $user->online_status==1?"Online":"Offline" }}</th></tr>
         </table>
 
 
