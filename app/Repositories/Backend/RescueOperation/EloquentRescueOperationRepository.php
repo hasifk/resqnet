@@ -33,17 +33,17 @@ class EloquentRescueOperationRepository {
         $actives = $this->activeUsers(); //getting all active users
         $rescuers = array();
         $locations[$userid]['lat'] = $userloc->lat;
-        $locations[$userid]['long'] = $userloc->long;
+        $locations[$userid]['long'] = $userloc->lng;
         $locations[$userid]['addr'] = $userloc->address;
         if (!empty($userloc)) {
             foreach ($actives as $active) {
                 //$user = User::find($active->user_id);
                 if ($active->role_id == $role) {
-                   //$userdetails[]= $this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long);
-                    if ($this->distanceCalculation($userloc->lat, $userloc->long, $active->lat, $active->long) <= 5) {
+                   //$userdetails[]= $this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
+                    if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 5) {
                         if (!empty($active->app_id) && !empty($active->device_type)):
                             $locations[$active->id]['lat'] = $active->lat;
-                            $locations[$active->id]['long'] = $active->long;
+                            $locations[$active->id]['long'] = $active->lng;
                             $locations[$active->id]['addr'] = $active->address;
                             $rescuers[] = $active->id;
                             $app_id['app_id'][] = $active->app_id;
@@ -399,7 +399,7 @@ class EloquentRescueOperationRepository {
 //            $obj = new Location;
        // $obj->user_id = $request->user_id;
         $obj->lat = $request->lat;
-        $obj->long = $request->long;
+        $obj->lng = $request->long;
         $obj->address = $request->address;
         $obj->online_status = 1;
         $obj->save();
