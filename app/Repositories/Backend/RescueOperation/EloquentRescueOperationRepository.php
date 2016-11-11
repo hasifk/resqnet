@@ -299,19 +299,11 @@ class EloquentRescueOperationRepository {
 
 //for getting all active users
     public function rescuerOperationDetailsAll($rescuers_id) {
-//        $details = ActiveRescuer::join('users', 'activerescuers.rescuee_id', '=', 'users.id')
-//                        ->join('operations', 'activerescuers.id', '=', 'operations.active_rescuers_id')
-//                        ->select('activerescuers.id', 'activerescuers.emergency_type', 'activerescuers.rescuee_id', 'activerescuers.locations', 'users.firstname', 'users.lastname', 'users.phone', 'users.email', 'users.current_medical_conditions', 'users.prior_medical_conditions', 'users.allergies')
-//                        ->where('operations.rescuer_id', $rescuers_id)
-//                        //->paginate(20);
-//                        ->get();
-//
-//        return $details;
-
         $details = Operation::join('users', 'operations.rescuer_id', '=', 'users.id')
                 ->join('activerescuers', 'operations.active_rescuers_id', '=', 'activerescuers.id')
                 ->select('activerescuers.id', 'activerescuers.emergency_type', 'activerescuers.rescuee_id', 'activerescuers.locations', 'users.firstname', 'users.lastname', 'users.phone', 'users.email', 'users.current_medical_conditions', 'users.prior_medical_conditions', 'users.allergies')
                 ->where('operations.rescuer_id', $rescuers_id->user_id)
+                ->orderBy('operations.id', 'desc')
                 ->get();
 
         return $details;
