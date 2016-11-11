@@ -32,28 +32,30 @@ class EloquentRescueOperationRepository {
         $userloc = $this->findUser($userid); //app user id
         $actives = $this->activeUsers(); //getting all active users
         $rescuers = array();
+        if (!empty($userloc) && !empty($userloc->lat) && !empty($userloc->lng)) {
         $locations[$userid]['lat'] = $userloc->lat;
         $locations[$userid]['long'] = $userloc->lng;
         $locations[$userid]['addr'] = $userloc->address;
-        if (!empty($userloc)) {
             foreach ($actives as $active) {
                 //$user = User::find($active->user_id);
                 if ($active->role_id == $role) {
-                    $userdetails[]=$userloc->lat.",".$userloc->lng.",".$active->lat.",".$active->lng;
-//                   $userdetails[]= $this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
-//                    if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 5) {
-//                        if (!empty($active->app_id) && !empty($active->device_type)):
-//                            $locations[$active->id]['lat'] = $active->lat;
-//                            $locations[$active->id]['long'] = $active->lng;
-//                            $locations[$active->id]['addr'] = $active->address;
-//                            $rescuers[] = $active->id;
-//                            $app_id['app_id'][] = $active->app_id;
-//                            $app_id['device_type'][] = $active->device_type;
-//                        endif;
-//                    }
+                    //$userdetails[] = $userloc->lat . "," . $userloc->lng . "," . $active->lat . "," . $active->lng;
+                    //$userdetails[]= $this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
+                    if (!empty($active->lat) && !empty($active->lng)) {
+                        if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 5) {
+                            if (!empty($active->app_id) && !empty($active->device_type)):
+                                $locations[$active->id]['lat'] = $active->lat;
+                                $locations[$active->id]['long'] = $active->lng;
+                                $locations[$active->id]['addr'] = $active->address;
+                                $rescuers[] = $active->id;
+                                $app_id['app_id'][] = $active->app_id;
+                                $app_id['device_type'][] = $active->device_type;
+                            endif;
+                        }
+                    }
                 }
             }
-            return $userdetails;
+            //return $userdetails;
             $rescuee = User::find($userid);
             $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . " Reqested Emergency Support(" . $result->emergency_type . ")";
             if (!empty($contacts = $this->emergencyContacts($userid)))
@@ -298,6 +300,7 @@ class EloquentRescueOperationRepository {
 
         return $details;
     }
+
 //for getting all active users
     public function rescuerOperationDetailsAll($rescuers_id) {
         $details = ActiveRescuer::join('users', 'activerescuers.rescuee_id', '=', 'users.id')
@@ -308,8 +311,9 @@ class EloquentRescueOperationRepository {
 
         return $details;
     }
+
     public function activeUsers() {
-        return User::where('online_status',1)->get();
+        return User::where('online_status', 1)->get();
     }
 
     public function ActiveRescuer($id) {
@@ -408,7 +412,7 @@ class EloquentRescueOperationRepository {
 //            $obj = $user;
 //        else
 //            $obj = new Location;
-       // $obj->user_id = $request->user_id;
+        // $obj->user_id = $request->user_id;
         $obj->lat = $request->lat;
         $obj->lng = $request->long;
         $obj->address = $request->address;
