@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Backend\RescueeOperation\RescueeOperation;
 use App\Http\Requests\Backend\RescueeOperation\NotificationLists;
 use App\Http\Requests\Backend\RescuerOperation\RescuerOperation;
+use App\Models\Access\User\User;
 
 class RescueOperationController extends Controller {
 
@@ -109,7 +110,9 @@ class RescueOperationController extends Controller {
                  //   if ($operation->rescuer_id == $request->user_id) {
                         $results = $this->rescueOperationRepository->rescuerOperationDetailsAll($request); // getting the latest panic details
                         foreach ($results as $key => $result) {
-                            
+                              $user=User::where('id',$result->rescuee_id)->select('firstname','lastname')->first();
+                              $results[$key]['firstname']=$user->firstname;
+                              $results[$key]['lastname']=$user->lastname;
                             $locations = json_decode($result->locations);
                             foreach ($locations as $keys => $values) {
 
