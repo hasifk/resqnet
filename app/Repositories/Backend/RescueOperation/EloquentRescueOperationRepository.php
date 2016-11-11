@@ -29,7 +29,7 @@ class EloquentRescueOperationRepository {
         $type = RescuerType::where('id', $result->type)->value('type');
         $role = Role::where('name', $type)->value('id');
         $userid = $result->user_id;
-        $userloc = $this->showLocation($userid); //app user id
+        $userloc = $this->findUser($userid); //app user id
         $actives = $this->activeUsers(); //getting all active users
         $rescuers = array();
         $locations[$userid]['lat'] = $userloc->lat;
