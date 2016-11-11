@@ -35,7 +35,6 @@ class EloquentRescueOperationRepository {
         $locations[$userid]['lat'] = $userloc->lat;
         $locations[$userid]['long'] = $userloc->lng;
         $locations[$userid]['addr'] = $userloc->address;
-        return $locations;
         if (!empty($userloc)) {
             foreach ($actives as $active) {
                 //$user = User::find($active->user_id);
