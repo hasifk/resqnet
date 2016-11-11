@@ -33,13 +33,11 @@ class EloquentRescueOperationRepository {
         $actives = $this->activeUsers(); //getting all active users
         $rescuers = array();
         if (!empty($userloc) && !empty($userloc->lat) && !empty($userloc->lng)) {
-        $locations[$userid]['lat'] = $userloc->lat;
-        $locations[$userid]['long'] = $userloc->lng;
-        $locations[$userid]['addr'] = $userloc->address;
+            $locations[$userid]['lat'] = $userloc->lat;
+            $locations[$userid]['long'] = $userloc->lng;
+            $locations[$userid]['addr'] = $userloc->address;
             foreach ($actives as $active) {
-                //$user = User::find($active->user_id);
                 if ($active->role_id == $role) {
-                    //$userdetails[] = $userloc->lat . "," . $userloc->lng . "," . $active->lat . "," . $active->lng;
                     //$userdetails[]= $this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
                     if (!empty($active->lat) && !empty($active->lng)) {
                         if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 5) {
@@ -55,12 +53,10 @@ class EloquentRescueOperationRepository {
                     }
                 }
             }
-            //return $userdetails;
             $rescuee = User::find($userid);
             $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . " Reqested Emergency Support(" . $result->emergency_type . ")";
             if (!empty($contacts = $this->emergencyContacts($userid)))
                 $appids = $this->membershipChecking($contacts, $rescuers);
-
             if (!empty($rescuee->emergency_groups)) {
                 $group_ids = json_decode($rescuee->emergency_groups);
                 $gp = array();
@@ -345,8 +341,8 @@ class EloquentRescueOperationRepository {
     }
 
     public function rescuersResponse($request) {
-        $status = ActiveRescuer::where('id', $request->active_rescuers_id)->first();
-        if (!empty($status) && $status->online_status == 1) {
+        $status = ActiveRescuer::find($request->active_rescuers_id);
+        if (!empty($status) && $status->status == 1) {
             $operation = $this->findOperation($request->active_rescuers_id);
             if (empty($operation)):
                 $obj = new Operation;
