@@ -217,7 +217,7 @@
 
                             <th>Location(Lat,Long)</th>
                             <td>
-                                &nbsp;&nbsp;:&nbsp;&nbsp;  {{ $user->lat.",".$user->long }}
+                                &nbsp;&nbsp;:&nbsp;&nbsp;  {{ $user->lat.",".$user->lng }}
                             </td>
                         </tr>
 
