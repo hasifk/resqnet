@@ -105,32 +105,24 @@ class RescueOperationController extends Controller {
     public function latestNotification(NotificationLists $request) {
         $res = array();
         if (count($details = $this->rescueOperationRepository->rescuerNotifications($request)) > 0):
-//            foreach ($details as $value) {
-               // if (!empty($operation = $this->rescueOperationRepository->findOperations($request))) {
-                 //   if ($operation->rescuer_id == $request->user_id) {
-                        $results = $this->rescueOperationRepository->rescuerOperationDetailsAll($request); // getting the latest panic details
-                        foreach ($results as $key => $result) {
-                              $user=User::where('id',$result->rescuee_id)->select('firstname','lastname')->first();
-                              $results[$key]['firstname']=$user->firstname;
-                              $results[$key]['lastname']=$user->lastname;
-                            $locations = json_decode($result->locations);
-                            foreach ($locations as $keys => $values) {
-
-                                if ($keys == $request->user_id) {
-
-                                    $results[$key]['address'] = $values->addr;
-                                    $results[$key]['lat'] = $values->lat;
-                                    $results[$key]['long'] = $values->long;
-                                }
+            foreach ($details as $key => $value) {
+                if (!empty($operation = $this->rescueOperationRepository->findOperation($value->id))) {
+                    if ($operation->rescuer_id == $request->user_id) {
+                        $locations = json_decode($value->locations);
+                        foreach ($locations as $keys => $values) {
+                            if ($keys == $request->user_id) {
+                                $details[$key]['address'] = $values->addr;
+                                $details[$key]['lat'] = $values->lat;
+                                $details[$key]['long'] = $values->long;
                             }
-                            unset($result->locations);
                         }
-//                    } else
+                        unset($value->locations);
+                        $results[] = $details[$key];
+                    }
+//                    else
 //                        $results = "No Panic Signals Tagged";
-              //  }
-//                else
-//                    $result = "No Panic Signals Tagged1";
-          //  }
+                }
+            }
             return response()->json(['result' => $results]);
         else:
             return response()->json(['result' => 'No Panic Signals']);
