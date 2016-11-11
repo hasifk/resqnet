@@ -39,19 +39,21 @@ class EloquentRescueOperationRepository {
             foreach ($actives as $active) {
                 //$user = User::find($active->user_id);
                 if ($active->role_id == $role) {
-                  // $userdetails[]= $this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
-                    if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 5) {
-                        if (!empty($active->app_id) && !empty($active->device_type)):
-                            $locations[$active->id]['lat'] = $active->lat;
-                            $locations[$active->id]['long'] = $active->lng;
-                            $locations[$active->id]['addr'] = $active->address;
-                            $rescuers[] = $active->id;
-                            $app_id['app_id'][] = $active->app_id;
-                            $app_id['device_type'][] = $active->device_type;
-                        endif;
-                    }
+                    $userdetails[]=$userloc->lat.",".$userloc->lng.",".$active->lat.",".$active->lng;
+//                   $userdetails[]= $this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
+//                    if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 5) {
+//                        if (!empty($active->app_id) && !empty($active->device_type)):
+//                            $locations[$active->id]['lat'] = $active->lat;
+//                            $locations[$active->id]['long'] = $active->lng;
+//                            $locations[$active->id]['addr'] = $active->address;
+//                            $rescuers[] = $active->id;
+//                            $app_id['app_id'][] = $active->app_id;
+//                            $app_id['device_type'][] = $active->device_type;
+//                        endif;
+//                    }
                 }
             }
+            return $userdetails;
             $rescuee = User::find($userid);
             $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . " Reqested Emergency Support(" . $result->emergency_type . ")";
             if (!empty($contacts = $this->emergencyContacts($userid)))
