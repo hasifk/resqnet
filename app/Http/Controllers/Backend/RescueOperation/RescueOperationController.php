@@ -102,27 +102,32 @@ class RescueOperationController extends Controller {
     }
 
     public function latestNotification(NotificationLists $request) {
+        $res = array();
         if (count($details = $this->rescueOperationRepository->rescuerNotifications($request)) > 0):
-            foreach ($details as $value) {
-                if (!empty($operation = $this->rescueOperationRepository->findOperation($value->id))) {
-                    if ($operation->rescuer_id == $request->user_id) {
-                        $results = $this->rescueOperationRepository->rescuerOperationDetailsAll($operation->rescuer_id); // getting the latest panic details
-                        foreach ($results as $result) {
+//            foreach ($details as $value) {
+               // if (!empty($operation = $this->rescueOperationRepository->findOperations($request))) {
+                 //   if ($operation->rescuer_id == $request->user_id) {
+                        $results = $this->rescueOperationRepository->rescuerOperationDetailsAll($request); // getting the latest panic details
+                        foreach ($results as $key => $result) {
+                            
                             $locations = json_decode($result->locations);
-                            foreach ($locations as $key => $value) {
-                                if ($key == $operation->rescuer_id) {
-                                    $result['address'] = $value->addr;
-                                    $result['lat'] = $value->lat;
-                                    $result['long'] = $value->long;
+                            foreach ($locations as $keys => $values) {
+
+                                if ($keys == $request->user_id) {
+
+                                    $results[$key]['address'] = $values->addr;
+                                    $results[$key]['lat'] = $values->lat;
+                                    $results[$key]['long'] = $values->long;
                                 }
                             }
                         }
-                    } else
-                        $result = "No Panic Signals Tagged";
-                } else
-                    $result = "No Panic Signals Tagged";
-            }
-            return response()->json(['result' => $result]);
+//                    } else
+//                        $results = "No Panic Signals Tagged";
+              //  }
+//                else
+//                    $result = "No Panic Signals Tagged1";
+          //  }
+            return response()->json(['result' => $results]);
         else:
             return response()->json(['result' => 'No Panic Signals']);
         endif;
