@@ -17,6 +17,7 @@
         @yield('before-styles-end')
         {!! Html::style(elixir('css/backend.css')) !!}
         @yield('after-styles-end')
+        @yield('before-scripts-start')
         
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

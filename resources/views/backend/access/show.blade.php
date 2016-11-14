@@ -4,7 +4,7 @@
 
 @section('page-header')
 <h1>
-    User Details {{ $user->title }}
+    User Details 
 </h1>
 @endsection
 

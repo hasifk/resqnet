@@ -131,41 +131,39 @@ class RescueOperationController extends Controller {
 
 
     public function latestNotification(NotificationLists $request) {
-                $res = array();
+        $res = array();
         if (count($details = $this->rescueOperationRepository->rescuerNotifications($request)) > 0):
 //            foreach ($details as $value) {
-               // if (!empty($operation = $this->rescueOperationRepository->findOperations($request))) {
-                 //   if ($operation->rescuer_id == $request->user_id) {
-                        $results = $this->rescueOperationRepository->rescuerOperationDetailsAll($request); // getting the latest panic details
-                        foreach ($results as $key => $result) {
-                                                          $user=User::where('id',$result->rescuee_id)->select('firstname','lastname')->first();
-                              $results[$key]['firstname']=$user->firstname;
-                              $results[$key]['lastname']=$user->lastname;
+            // if (!empty($operation = $this->rescueOperationRepository->findOperations($request))) {
+            //   if ($operation->rescuer_id == $request->user_id) {
+            $results = $this->rescueOperationRepository->rescuerOperationDetailsAll($request); // getting the latest panic details
+            foreach ($results as $key => $result) {
+                $user = User::where('id', $result->rescuee_id)->select('firstname', 'lastname')->first();
+                $results[$key]['firstname'] = $user->firstname;
+                $results[$key]['lastname'] = $user->lastname;
 
-                            $locations = json_decode($result->locations);
-                            foreach ($locations as $keys => $values) {
+                $locations = json_decode($result->locations);
+                foreach ($locations as $keys => $values) {
 
-                                if ($keys == $request->user_id) {
+                    if ($keys == $request->user_id) {
 
-                                    $results[$key]['address'] = $values->addr;
-                                    $results[$key]['lat'] = $values->lat;
-                                    $results[$key]['long'] = $values->long;
-                                }
-                                                            unset($result->locations);
-
-                            }
-                        }
+                        $results[$key]['address'] = $values->addr;
+                        $results[$key]['lat'] = $values->lat;
+                        $results[$key]['long'] = $values->long;
+                    }
+                    unset($result->locations);
+                }
+            }
 //                    } else
 //                        $results = "No Panic Signals Tagged";
-              //  }
+            //  }
 //                else
 //                    $result = "No Panic Signals Tagged1";
-          //  }
+            //  }
             return response()->json(['result' => $results]);
         else:
             return response()->json(['result' => 'No Panic Signals']);
         endif;
-
     }
 
     public function rescueeOperationCancel(Request $request) {

@@ -42,12 +42,14 @@ class EloquentRescueOperationRepository {
                     if (!empty($active->lat) && !empty($active->lng)) {
                         if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 5) {
                             if (!empty($active->app_id) && !empty($active->device_type)):
-                                $locations[$active->id]['lat'] = $active->lat;
-                                $locations[$active->id]['long'] = $active->lng;
-                                $locations[$active->id]['addr'] = $active->address;
-                                $rescuers[] = $active->id;
-                                $app_id['app_id'][] = $active->app_id;
-                                $app_id['device_type'][] = $active->device_type;
+                                if (!empty($app_id['app_id']) && !inArray($active->app_id, $app_id['app_id'])):
+                                    $locations[$active->id]['lat'] = $active->lat;
+                                    $locations[$active->id]['long'] = $active->lng;
+                                    $locations[$active->id]['addr'] = $active->address;
+                                    $rescuers[] = $active->id;
+                                    $app_id['app_id'][] = $active->app_id;
+                                    $app_id['device_type'][] = $active->device_type;
+                                endif;
                             endif;
                         }
                     }
@@ -71,6 +73,7 @@ class EloquentRescueOperationRepository {
                                 if (!in_array($value->user_id, $appids[1])) {
                                     $user = User::find($value->user_id);
                                     if (!empty($user->app_id) && !empty($user->device_type)) {
+                                        if (!empty($groups[0]['app_id']) && !inArray($user->app_id,$groups[0]['app_id'])){
                                         $groups[0]['app_id'][] = $user->app_id;
                                         $groups[0]['device_type'][] = $user->device_type;
                                         if (!empty($groups[1][$gpid]))
@@ -78,6 +81,7 @@ class EloquentRescueOperationRepository {
                                         else
                                             $groups[1][$gpid] = $user->id;
                                         $gp[] = $user->id;
+                                        }
                                     }
                                 }
                             }
@@ -85,6 +89,7 @@ class EloquentRescueOperationRepository {
                             if (!in_array($value->user_id, $gp)) {
                                 $user = User::find($value->user_id);
                                 if (!empty($user->app_id) && !empty($user->device_type)) {
+                                    if (!empty($groups[0]['app_id']) && !inArray($user->app_id,$groups[0]['app_id'])){
                                     $groups[0]['app_id'][] = $user->app_id;
                                     $groups[0]['device_type'][] = $user->device_type;
                                     if (!empty($groups[1][$gpid]))
@@ -92,6 +97,7 @@ class EloquentRescueOperationRepository {
                                     else
                                         $groups[1][$gpid] = $user->id;
                                     $gp[] = $user->id;
+                                    }
                                 }
                             }
                         }
@@ -130,6 +136,7 @@ class EloquentRescueOperationRepository {
             $userdetails['result'] = "Please enable Location services";
         return $userdetails;
     }
+
 
     public function rescueeOperationCancel($request) {
         $obj = ActiveRescuer::find($request->panicid);
@@ -275,9 +282,12 @@ class EloquentRescueOperationRepository {
                 if (!empty($user)) {
                     if (!in_array($user->id, $rescuers)) {
                         if (!empty($user->app_id) && !empty($user->device_type)):
-                            $app_id[0]['app_id'][] = $user->app_id;
-                            $app_id[0]['device_type'][] = $user->device_type;
-                            $app_id[1][] = $user->id;
+                            if (!empty($app_id[0]['app_id']) && !inArray($user->app_id, $app_id[0]['app_id'])):
+
+                                $app_id[0]['app_id'][] = $user->app_id;
+                                $app_id[0]['device_type'][] = $user->device_type;
+                                $app_id[1][] = $user->id;
+                            endif;
                         endif;
                     }
                 }
