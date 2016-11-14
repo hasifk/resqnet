@@ -32,17 +32,12 @@ class AuthController extends Controller {
     public function postLogin(Request $request) {
         if (\Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
             $user = \Auth::user();
-            if (!empty($users = User::get())) {
-                foreach ($users as $value) {
-                    if ($value->app_id == $request->app_id) {
-                        $userid == $value->id;
-                        break;
-                    }
-                }
-                $obj = User::find($userid);
-                $obj->app_id = "";
-                $obj->save;
+            if (!empty($users = User::where('app_id',$request->app_id)->get()))
+            {
+                $users->app_id="";
+                $users->save;
             }
+            
             $user->app_id = $request->app_id;
             $user->device_type = $request->device_type;
             $user->save();
