@@ -32,7 +32,7 @@ class AuthController extends Controller {
     public function postLogin(Request $request) {
         if (\Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
             
-             if (!empty($users = User::where('app_id',$request->app_id)->first()))
+             if (!empty($users = User::where('app_id',$request->app_id)->get()))
             {
                 $users->app_id="";
                 $users->save;
