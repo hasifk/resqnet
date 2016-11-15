@@ -44,7 +44,7 @@ class EloquentRescueOperationRepository {
                     if (!empty($active->lat) && !empty($active->lng)) {
                         if (!empty($payment = Payment::where('user_id', $active->id)->orderBy('id', 'desc')->first())) {
                             //Get today date or another date of you choice
-                            $today_date = Carbon::now();
+                            //$today_date = Carbon::now();
                             if (strtotime($payment->subscription_ends_at) >= strtotime(date('d-m-Y'))) {
 
                                 if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 40) {
@@ -68,6 +68,9 @@ class EloquentRescueOperationRepository {
                                 $rescuers[] = $active->id;
                                 $app_id['app_id'][] = $active->app_id;
                                 $app_id['device_type'][] = $active->device_type;
+                                
+                                $userdetails[]=$active->app_id;
+                                
                             endif;
                         }
                     }
@@ -92,6 +95,9 @@ class EloquentRescueOperationRepository {
                                         if (!empty($user->app_id) && !empty($user->device_type)) {
                                             $groups[0]['app_id'][] = $user->app_id;
                                             $groups[0]['device_type'][] = $user->device_type;
+                                            
+                                            $userdetails[]=$user->app_id;
+                                            
                                             if (!empty($groups[1][$gpid]))
                                                 $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
                                             else
@@ -106,6 +112,9 @@ class EloquentRescueOperationRepository {
                                     if (!empty($user->app_id) && !empty($user->device_type)) {
                                         $groups[0]['app_id'][] = $user->app_id;
                                         $groups[0]['device_type'][] = $user->device_type;
+                                        
+                                        $userdetails[]=$user->app_id;
+                                        
                                         if (!empty($groups[1][$gpid]))
                                             $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
                                         else
@@ -304,6 +313,9 @@ class EloquentRescueOperationRepository {
                             $app_id[0]['app_id'][] = $user->app_id;
                             $app_id[0]['device_type'][] = $user->device_type;
                             $app_id[1][] = $user->id;
+                            
+                            $userdetails[]=$user->app_id;
+                            
                         endif;
                     }
                 }
