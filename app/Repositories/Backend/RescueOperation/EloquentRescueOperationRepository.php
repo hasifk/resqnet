@@ -134,14 +134,14 @@ class EloquentRescueOperationRepository {
             $message['id'] = $obj->id;
             if (!empty($rescuers)) {
                 $message['to'] = "Rescuer";
-               $userdetails[]= $this->notification($app_id, $message);
+                $this->notification($app_id, $message);
                 $userdetails['result'] = 'SUCCESS';
                 $userdetails['panicid'] = $obj->id;
             } else
                 $userdetails['result'] = "No Rescuers available";
             if (!empty($appids)) {
                 $message['to'] = "Emergency";
-               $userdetails[]= $this->notification($appids[0], $message);
+                $this->notification($appids[0], $message);
             }
             if (!empty($groups)) {
                 if (!empty($userloc->lat))
@@ -150,7 +150,7 @@ class EloquentRescueOperationRepository {
                     $addr = "Location Not available, Please Use Map";
                 $message['message'] = $rescuee->firstname . " " . $rescuee->lastname . " Sent a " . $result->emergency_type . " Panic Signal <br> Location <br> " . $addr;
                 $message['to'] = "EmergencyGroup";
-               $userdetails[]= $this->notification($groups[0], $message);
+                $this->notification($groups[0], $message);
             }
         } else
             $userdetails['result'] = "Please enable Location services";
@@ -178,7 +178,7 @@ class EloquentRescueOperationRepository {
 // API access key from Google API's Console
 // define('API_ACCESS_KEY', 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ');
         foreach ($app_id['device_type'] as $key => $device) {
-            $appp[]=array($app_id['app_id'][$key]);
+            // $appp[]=array($app_id['app_id'][$key]);
             if ($device == 'Android') {
 // prep the bundle
                 $msg = array
@@ -286,7 +286,7 @@ class EloquentRescueOperationRepository {
                 }
             }
         }
-return $appp;
+//return $appp;
     }
 
     public function emergencyContacts($id) {
