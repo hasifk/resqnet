@@ -32,11 +32,14 @@ class AuthController extends Controller {
     public function postLogin(Request $request) {
         if (\Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
 
-            User::where('app_id', $request->app_id)->update(['app_id' => '']);
+            
             $user = \Auth::user();
             $user->app_id = $request->app_id;
             $user->device_type = $request->device_type;
             $user->save();
+            
+            User::where('app_id', $request->app_id)->where('id','!=',$user->id)->update(['app_id' => '']);
+            
             /* $token = \JWTAuth::fromUser($user); */
             $token = Crypt::encrypt($user->id);
             $obj = new Location;
