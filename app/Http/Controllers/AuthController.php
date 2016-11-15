@@ -7,7 +7,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Crypt;
-use App\Models\RescueOperation\Location;
+use App\Models\Access\Payment\Payment;
 
 class AuthController extends Controller {
 
@@ -32,21 +32,24 @@ class AuthController extends Controller {
     public function postLogin(Request $request) {
         if (\Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
 
-            
+
             $user = \Auth::user();
             $user->app_id = $request->app_id;
             $user->device_type = $request->device_type;
+            $obj->online_status = 1;
             $user->save();
-            
-            User::where('app_id', $request->app_id)->where('id','!=',$user->id)->update(['app_id' => '']);
-            
+
+            User::where('app_id', $request->app_id)->where('id', '!=', $user->id)->update(['app_id' => '']);
+
             /* $token = \JWTAuth::fromUser($user); */
             $token = Crypt::encrypt($user->id);
-            $obj = new Location;
-            $obj->user_id = $user->id;
-            $obj->status = 1;
+
+            if (!empty($payment = Payment::where('user_id', $request->id)->orderBy('id', 'desc')->first()))
+                $subscription = $payment->subscription_ends_at;
+
+
             return response()->json(['token' => $token, 'user_id' => $user->id,
-                        'user_role' => $user->role_name, 'subscription_ends_at' => $user->subscription_ends_at,
+                        'user_role' => $user->role_name, 'subscription_ends_at' => $subscription,
                         'membership_no' => $user->membership_no]);
         } else {
             return response()->json(['status' => 'Login Failed.invalid password or username']);
