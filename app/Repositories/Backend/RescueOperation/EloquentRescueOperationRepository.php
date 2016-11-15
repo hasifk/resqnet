@@ -143,6 +143,11 @@ class EloquentRescueOperationRepository {
                 $this->notification($appids[0], $message);
             }
             if (!empty($groups)) {
+                if(!empty($userloc->lat))
+                    $addr=$userloc->address;
+                else
+                $addr="Location Not available, Please Use Map";
+                $message['message'] = $rescuee->firstname . " " . $rescuee->lastname . " Sent a ".$result->emergency_type . " Panic Signal <br> Location <br> ".$addr;
                 $message['to'] = "EmergencyGroup";
                 $this->notification($groups[0], $message);
             }
