@@ -46,9 +46,9 @@ class EloquentRescueOperationRepository {
                             //Get today date or another date of you choice
                             $today_date = Carbon::now();
                             if (strtotime($payment->subscription_ends_at) >= strtotime(date('d-m-Y'))) {
-                                
+
                                 if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 40) {
-                                   // $userdetails[] = $this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
+                                    // $userdetails[] = $this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
                                     if (!empty($active->app_id) && !empty($active->device_type)):
                                         $locations[$active->id]['lat'] = $active->lat;
                                         $locations[$active->id]['long'] = $active->lng;
@@ -83,12 +83,25 @@ class EloquentRescueOperationRepository {
                 foreach ($group_ids as $gpid) {
                     $group_user = Member::where('group_id', $gpid)->get();
                     foreach ($group_user as $value) {
-                        if ($value->user_id == $userid)
-                            continue;
-                        //  if (!in_array($value->user_id, $rescuers)) { 
-                        if (!empty($appids)) {
-                            if (!in_array($value->user_id, $gp)) {
-                                if (!in_array($value->user_id, $appids[1])) {
+                        if ($value->user_id != $userid) {
+                            //  if (!in_array($value->user_id, $rescuers)) { 
+                            if (!empty($appids)) {
+                                if (!in_array($value->user_id, $gp)) {
+                                    if (!in_array($value->user_id, $appids[1])) {
+                                        $user = User::find($value->user_id);
+                                        if (!empty($user->app_id) && !empty($user->device_type)) {
+                                            $groups[0]['app_id'][] = $user->app_id;
+                                            $groups[0]['device_type'][] = $user->device_type;
+                                            if (!empty($groups[1][$gpid]))
+                                                $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
+                                            else
+                                                $groups[1][$gpid] = $user->id;
+                                            $gp[] = $user->id;
+                                        }
+                                    }
+                                }
+                            } else {
+                                if (!in_array($value->user_id, $gp)) {
                                     $user = User::find($value->user_id);
                                     if (!empty($user->app_id) && !empty($user->device_type)) {
                                         $groups[0]['app_id'][] = $user->app_id;
@@ -101,21 +114,9 @@ class EloquentRescueOperationRepository {
                                     }
                                 }
                             }
-                        } else {
-                            if (!in_array($value->user_id, $gp)) {
-                                $user = User::find($value->user_id);
-                                if (!empty($user->app_id) && !empty($user->device_type)) {
-                                    $groups[0]['app_id'][] = $user->app_id;
-                                    $groups[0]['device_type'][] = $user->device_type;
-                                    if (!empty($groups[1][$gpid]))
-                                        $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
-                                    else
-                                        $groups[1][$gpid] = $user->id;
-                                    $gp[] = $user->id;
-                                }
-                            }
+
+                            //  }
                         }
-                        //}
                     }
                 }
             }
@@ -143,11 +144,11 @@ class EloquentRescueOperationRepository {
                 $this->notification($appids[0], $message);
             }
             if (!empty($groups)) {
-                if(!empty($userloc->lat))
-                    $addr=$userloc->address;
+                if (!empty($userloc->lat))
+                    $addr = $userloc->address;
                 else
-                $addr="Location Not available, Please Use Map";
-                $message['message'] = $rescuee->firstname . " " . $rescuee->lastname . " Sent a ".$result->emergency_type . " Panic Signal <br> Location <br> ".$addr;
+                    $addr = "Location Not available, Please Use Map";
+                $message['message'] = $rescuee->firstname . " " . $rescuee->lastname . " Sent a " . $result->emergency_type . " Panic Signal <br> Location <br> " . $addr;
                 $message['to'] = "EmergencyGroup";
                 $this->notification($groups[0], $message);
             }
