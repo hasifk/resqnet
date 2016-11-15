@@ -68,9 +68,6 @@ class EloquentRescueOperationRepository {
                                 $rescuers[] = $active->id;
                                 $app_id['app_id'][] = $active->app_id;
                                 $app_id['device_type'][] = $active->device_type;
-                                
-                                $userdetails[]=$active->app_id;
-                                
                             endif;
                         }
                     }
@@ -95,9 +92,6 @@ class EloquentRescueOperationRepository {
                                         if (!empty($user->app_id) && !empty($user->device_type)) {
                                             $groups[0]['app_id'][] = $user->app_id;
                                             $groups[0]['device_type'][] = $user->device_type;
-                                            
-                                            $userdetails[]=$user->app_id;
-                                            
                                             if (!empty($groups[1][$gpid]))
                                                 $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
                                             else
@@ -112,9 +106,6 @@ class EloquentRescueOperationRepository {
                                     if (!empty($user->app_id) && !empty($user->device_type)) {
                                         $groups[0]['app_id'][] = $user->app_id;
                                         $groups[0]['device_type'][] = $user->device_type;
-                                        
-                                        $userdetails[]=$user->app_id;
-                                        
                                         if (!empty($groups[1][$gpid]))
                                             $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
                                         else
@@ -143,14 +134,14 @@ class EloquentRescueOperationRepository {
             $message['id'] = $obj->id;
             if (!empty($rescuers)) {
                 $message['to'] = "Rescuer";
-                $this->notification($app_id, $message);
+               $userdetails[]= $this->notification($app_id, $message);
                 $userdetails['result'] = 'SUCCESS';
                 $userdetails['panicid'] = $obj->id;
             } else
                 $userdetails['result'] = "No Rescuers available";
             if (!empty($appids)) {
                 $message['to'] = "Emergency";
-                $this->notification($appids[0], $message);
+               $userdetails[]= $this->notification($appids[0], $message);
             }
             if (!empty($groups)) {
                 if (!empty($userloc->lat))
@@ -159,7 +150,7 @@ class EloquentRescueOperationRepository {
                     $addr = "Location Not available, Please Use Map";
                 $message['message'] = $rescuee->firstname . " " . $rescuee->lastname . " Sent a " . $result->emergency_type . " Panic Signal <br> Location <br> " . $addr;
                 $message['to'] = "EmergencyGroup";
-                $this->notification($groups[0], $message);
+               $userdetails[]= $this->notification($groups[0], $message);
             }
         } else
             $userdetails['result'] = "Please enable Location services";
@@ -187,6 +178,7 @@ class EloquentRescueOperationRepository {
 // API access key from Google API's Console
 // define('API_ACCESS_KEY', 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ');
         foreach ($app_id['device_type'] as $key => $device) {
+            $appp[]=array($app_id['app_id'][$key]);
             if ($device == 'Android') {
 // prep the bundle
                 $msg = array
@@ -294,7 +286,7 @@ class EloquentRescueOperationRepository {
                 }
             }
         }
-//return $fields;
+return $appp;
     }
 
     public function emergencyContacts($id) {
@@ -313,9 +305,6 @@ class EloquentRescueOperationRepository {
                             $app_id[0]['app_id'][] = $user->app_id;
                             $app_id[0]['device_type'][] = $user->device_type;
                             $app_id[1][] = $user->id;
-                            
-                            $userdetails[]=$user->app_id;
-                            
                         endif;
                     }
                 }
