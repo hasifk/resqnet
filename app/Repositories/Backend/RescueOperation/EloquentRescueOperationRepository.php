@@ -13,8 +13,10 @@ use App\Models\UserGroups\UserGroup;
 use App\Models\Access\EmergencyContact\EmergencyContact;
 use App\Repositories\Backend\UserGroups\UserGroupsRepositoryContract;
 use Illuminate\Http\Request;
+use App\Models\Access\Payment\Payment;
 use Auth;
 use Storage;
+use Carbon\Carbon;
 
 class EloquentRescueOperationRepository {
 
@@ -32,15 +34,33 @@ class EloquentRescueOperationRepository {
         $userloc = $this->findUser($userid); //app user id
         $actives = $this->activeUsers(); //getting all active users
         $rescuers = array();
-        if (!empty($userloc) && !empty($userloc->lat) && !empty($userloc->lng) && !empty($userloc->address)) {
+        if (!empty($userloc) && !empty($userloc->lat) && !empty($userloc->lng)) {
             $locations[$userid]['lat'] = $userloc->lat;
             $locations[$userid]['long'] = $userloc->lng;
             $locations[$userid]['addr'] = $userloc->address;
             foreach ($actives as $active) {
                 if ($active->role_id == $role) {
-                    //$userdetails[]= $this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
+
                     if (!empty($active->lat) && !empty($active->lng)) {
-                        if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 5) {
+                        if (!empty($payment = Payment::where('user_id', $active->id)->orderBy('id', 'desc')->first())) {
+                            //Get today date or another date of you choice
+                            $today_date = Carbon::now();
+                            if (strtotime($payment->subscription_ends_at) >= strtotime(date('d-m-Y'))) {
+                                
+                                if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 40) {
+                                   // $userdetails[] = $this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
+                                    if (!empty($active->app_id) && !empty($active->device_type)):
+                                        $locations[$active->id]['lat'] = $active->lat;
+                                        $locations[$active->id]['long'] = $active->lng;
+                                        $locations[$active->id]['addr'] = $active->address;
+                                        $rescuers[] = $active->id;
+                                        $app_id['app_id'][] = $active->app_id;
+                                        $app_id['device_type'][] = $active->device_type;
+                                    endif;
+                                }
+                            }
+                        }
+                        else if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 5) {
                             if (!empty($active->app_id) && !empty($active->device_type)):
                                 $locations[$active->id]['lat'] = $active->lat;
                                 $locations[$active->id]['long'] = $active->lng;
