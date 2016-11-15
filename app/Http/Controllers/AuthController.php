@@ -43,9 +43,10 @@ class AuthController extends Controller {
 
             /* $token = \JWTAuth::fromUser($user); */
             $token = Crypt::encrypt($user->id);
-
+            $subscription = "";
             if (!empty($payment = Payment::where('user_id', $request->id)->orderBy('id', 'desc')->first()))
                 $subscription = $payment->subscription_ends_at;
+
 
 
             return response()->json(['token' => $token, 'user_id' => $user->id,
