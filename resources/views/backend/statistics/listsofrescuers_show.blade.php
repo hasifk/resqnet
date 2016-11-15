@@ -129,7 +129,7 @@
         <tr>
             <th></th>
             <th>
-                <a href="{{URL::previous()}}" class="btn btn-danger btn-xs">Back</a>
+                <a href="{{route('admin.statistics.listsofrescuers')}}" class="btn btn-danger btn-xs">Back</a>
             </th>
         </tr>
     </tbody>
