@@ -36,7 +36,7 @@ class AuthController extends Controller {
             $user = \Auth::user();
             $user->app_id = $request->app_id;
             $user->device_type = $request->device_type;
-            $obj->online_status = 1;
+            $user->online_status = 1;
             $user->save();
 
             User::where('app_id', $request->app_id)->where('id', '!=', $user->id)->update(['app_id' => '']);
@@ -44,11 +44,8 @@ class AuthController extends Controller {
             /* $token = \JWTAuth::fromUser($user); */
             $token = Crypt::encrypt($user->id);
             $subscription = "";
-            if (!empty($payment = Payment::where('user_id', $request->id)->orderBy('id', 'desc')->first()))
+            if (!empty($payment = Payment::where('user_id', $user->id)->orderBy('id', 'desc')->first()))
                 $subscription = $payment->subscription_ends_at;
-
-
-
             return response()->json(['token' => $token, 'user_id' => $user->id,
                         'user_role' => $user->role_name, 'subscription_ends_at' => $subscription,
                         'membership_no' => $user->membership_no]);
