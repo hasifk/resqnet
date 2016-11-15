@@ -61,8 +61,13 @@ class AuthController extends Controller {
                 return response()->json(['status' => 'You do not have access to do that']);
             endif;
             $token = Crypt::encrypt($user->id);
+            
+            $subscription = "";
+            if (!empty($payment = Payment::where('user_id', $user->id)->orderBy('id', 'desc')->first()))
+                $subscription = $payment->subscription_ends_at;
+            
             return response()->json(['token' => $token, 'user_id' => $user->id,
-                        'user_role' => $user->role_name, 'subscription_ends_at' => $user->subscription_ends_at,
+                        'user_role' => $user->role_name, 'subscription_ends_at' => $subscription,
                         'fb_id' => $user->fb_id, 'country_id' => $user->country_id, 'membership_no' => $user->membership_no]);
         else:
             return response()->json(['status' => 'Failed']);
