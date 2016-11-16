@@ -223,8 +223,8 @@ class EloquentRescueOperationRepository {
                 $tToken = $app_id['app_id'][$key];
                 if ($f == 1) {
 // Provide the Host Information.
-                   // $tHost = 'gateway.sandbox.push.apple.com';
-                    $tHost = 'gateway.push.apple.com';
+                    $tHost = 'gateway.sandbox.push.apple.com';
+                    //$tHost = 'gateway.push.apple.com';
                     $tPort = 2195;
 // Provide the Certificate and Key Data.
                     $tCert = base_path('public/') . 'pushcert.pem';
@@ -264,7 +264,7 @@ class EloquentRescueOperationRepository {
                    return $tSocket = stream_socket_client('ssl://' . $tHost . ':' . $tPort, $error, $errstr, 30, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $tContext);
 // Check if we were able to open a socket.
                     if (!$tSocket)
-                        exit("APNS Connection Failed: $error $errstr" . PHP_EOL);
+                        exit("APNS Connection Failed: $error $errstr");
                 }
 // Build the Binary Notification.
                 $tMsg = chr(0) . chr(0) . chr(32) . pack('H*', $tToken) . pack('n', strlen($tBody)) . $tBody;
