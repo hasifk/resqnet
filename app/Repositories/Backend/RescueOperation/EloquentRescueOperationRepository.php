@@ -245,7 +245,7 @@ class EloquentRescueOperationRepository {
 				// Remove this line if you would like to enter the Private Key Passphrase manually.
 				stream_context_set_option ($tContext, 'ssl', 'passphrase', $tPassphrase);
 				// Open the Connection to the APNS Server.
-				$tSocket = stream_socket_client ('ssl://'.$tHost.':'.$tPort, $error, $errstr, 30, STREAM_CLIENT_CONNECT|STREAM_CLIENT_PERSISTENT, $tContext);
+				return $tSocket = stream_socket_client ('ssl://'.$tHost.':'.$tPort, $error, $errstr, 30, STREAM_CLIENT_CONNECT|STREAM_CLIENT_PERSISTENT, $tContext);
 				//echo $error;
 				// Check if we were able to open a socket.
 				if ($tSocket){
