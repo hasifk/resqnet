@@ -223,8 +223,8 @@ class EloquentRescueOperationRepository {
                 $tToken = $app_id['app_id'][$key];
                 if ($f == 1) {
 // Provide the Host Information.
-                    $tHost = 'gateway.sandbox.push.apple.com';
-                    //$tHost = 'gateway.push.apple.com';
+                   // $tHost = 'gateway.sandbox.push.apple.com';
+                    $tHost = 'gateway.push.apple.com';
                     $tPort = 2195;
 // Provide the Certificate and Key Data.
                     $tCert = base_path('public/') . 'pushcert.pem';
