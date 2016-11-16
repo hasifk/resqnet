@@ -54,6 +54,7 @@ class EloquentRescueOperationRepository {
                                         $locations[$active->id]['long'] = $active->lng;
                                         $locations[$active->id]['addr'] = $active->address;
                                         $rescuers[] = $active->id;
+                                        //$distances[$active->id]=$this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
                                         $app_id['app_id'][] = $active->app_id;
                                         $app_id['device_type'][] = $active->device_type;
                                     endif;
@@ -66,6 +67,7 @@ class EloquentRescueOperationRepository {
                                 $locations[$active->id]['long'] = $active->lng;
                                 $locations[$active->id]['addr'] = $active->address;
                                 $rescuers[] = $active->id;
+                               // $distances[$active->id]=$this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
                                 $app_id['app_id'][] = $active->app_id;
                                 $app_id['device_type'][] = $active->device_type;
                             endif;
@@ -120,7 +122,6 @@ class EloquentRescueOperationRepository {
                     }
                 }
             }
-
             sort($rescuers);
             $obj = new ActiveRescuer;
             $obj->rescuee_id = $userid;
