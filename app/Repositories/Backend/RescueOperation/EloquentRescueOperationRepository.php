@@ -218,73 +218,132 @@ class EloquentRescueOperationRepository {
 // Close connection
                 curl_close($ch);
             } else {
-                $f++;
-                //$tToken ='a18792a07ae2c4caf346332e4fbe5ba8071d5b6d66ef6cd3731f6c78ecdc258a';
-                $tToken = $app_id['app_id'][$key];
-                if ($f == 1) {
-// Provide the Host Information.
-                    $tHost = 'gateway.sandbox.push.apple.com';
-                    //$tHost = 'gateway.push.apple.com';
-                    $tPort = 2195;
-// Provide the Certificate and Key Data.
-                    $tCert = base_path('public/') . 'pushcert.pem';
-
-// Provide the Private Key Passphrase (alternatively you can keep this secrete
-// and enter the key manually on the terminal -> remove relevant line from code).
-// Replace XXXXX with your Passphrase
-                    $tPassphrase = 'SilverBloom1978';
-// Provide the Device Identifier (Ensure that the Identifier does not have spaces in it).
-// Replace this token with the token of the iOS device that is to receive the notification.
-//0a32cbcc8464ec05ac3389429813119b6febca1cd567939b2f54892cd1dcb134
-// The message that is to appear on the dialog.
-                    $tAlert = $message['message'];
-// The Badge Number for the Application Icon (integer >=0).
-                    $tBadge = 8;
-// Audible Notification Option.
-                    $tSound = 'default';
-// The content that is returned by the LiveCode "pushNotificationReceived" message.
-                    $tPayload = 'APNS Message Handled by LiveCode';
-// Create the message content that is to be sent to the device.
-                    $tBody['aps'] = array(
-                        'alert' => $tAlert,
-                        'badge' => $tBadge,
-                        'sound' => $tSound,
-                        'panicid' => $message['id'],
-                        'notification_type' => $message['to']
-                    );
-                    $tBody ['payload'] = $tPayload;
-// Encode the body to JSON.
-                    $tBody = json_encode($tBody);
-// Create the Socket Stream.
-                    $tContext = stream_context_create();
-                    stream_context_set_option($tContext, 'ssl', 'local_cert', $tCert);
-// Remove this line if you would like to enter the Private Key Passphrase manually.
-                    stream_context_set_option($tContext, 'ssl', 'passphrase', $tPassphrase);
-// Open the Connection to the APNS Server.
-                    $tSocket = stream_socket_client('ssl://' . $tHost . ':' . $tPort, $error, $errstr, 30, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $tContext);
-// Check if we were able to open a socket.
-                    if (!$tSocket)
-                        exit("APNS Connection Failed: $error $errstr");
-                }
-// Build the Binary Notification.
-                $tMsg = chr(0) . chr(0) . chr(32) . pack('H*', $tToken) . pack('n', strlen($tBody)) . $tBody;
-
-// Ensure that blocking is disabled
-                stream_set_blocking($tSocket, 0);
-//stream_set_blocking($tSocket, 0);
-// Send the Notification to the Server.
-                return $tResult[] = fwrite($tSocket, $tMsg, strlen($tMsg));
-
-                // $tResult[] = fwrite($tSocket, $tMsg);
-
-                if ($f == $ios) {
-                    if (!empty($tResult))
-                        return 'Delivered Message to APNS';
-                    else
-                        return 'Could not Deliver Message to APNS';
-//Close the Connection to the Server.
-                    fclose($tSocket);
-                }
+                
+                $tHost = 'gateway.sandbox.push.apple.com';
+				$tPort = 2195;
+				$tCert = base_path('public/') . 'pushcert.pem';
+				
+				$tPassphrase = 'SilverBloom1978';
+				$tAlert = 'Match scheduled at ';
+				
+				$tBadge = 8;
+				
+				$tSound = 'default';
+				$tPayload = 'APNS Message Handled by LiveCode';
+				
+				$tBody['aps'] = array (
+				'alert' => $tAlert,
+				'badge' => $tBadge,
+				'sound' => $tSound,
+				);
+				$tBody ['payload'] = $tPayload;
+				// Encode the body to JSON.
+				$tBody = json_encode ($tBody);
+				// Create the Socket Stream.
+				$tContext = stream_context_create ();
+				stream_context_set_option ($tContext, 'ssl', 'local_cert', $tCert);
+				// Remove this line if you would like to enter the Private Key Passphrase manually.
+				stream_context_set_option ($tContext, 'ssl', 'passphrase', $tPassphrase);
+				// Open the Connection to the APNS Server.
+				$tSocket = stream_socket_client ('ssl://'.$tHost.':'.$tPort, $error, $errstr, 30, STREAM_CLIENT_CONNECT|STREAM_CLIENT_PERSISTENT, $tContext);
+				//echo $error;
+				// Check if we were able to open a socket.
+				if ($tSocket){
+				
+							
+				$tToken ='cb9df581cc9a24585a69e0749863e94aecac04ea450fed7ae85877bef853c514';
+			
+				// Build the Binary Notification.
+				$tMsg = chr (0) . chr (0) . chr (32) . pack ('H*', $tToken) . pack ('n', strlen ($tBody)) . $tBody;
+				// Send the Notification to the Server.
+				$tResult = fwrite ($tSocket, $tMsg, strlen ($tMsg));
+				echo  $tResult;
+				//if ($tResult)
+				
+				//echo 'Delivered Message to APNS' . PHP_EOL;
+				
+				//else
+				
+				//echo 'Could not Deliver Message to APNS' . PHP_EOL;
+				// Close the Connection to the Server.
+				
+				fclose ($tSocket);
+	}
+                
+                
+                
+                
+                
+                
+                
+                
+//                $f++;
+//                //$tToken ='a18792a07ae2c4caf346332e4fbe5ba8071d5b6d66ef6cd3731f6c78ecdc258a';
+//                $tToken = $app_id['app_id'][$key];
+//                if ($f == 1) {
+//// Provide the Host Information.
+//                    $tHost = 'gateway.sandbox.push.apple.com';
+//                    //$tHost = 'gateway.push.apple.com';
+//                    $tPort = 2195;
+//// Provide the Certificate and Key Data.
+//                    $tCert = base_path('public/') . 'pushcert.pem';
+//
+//// Provide the Private Key Passphrase (alternatively you can keep this secrete
+//// and enter the key manually on the terminal -> remove relevant line from code).
+//// Replace XXXXX with your Passphrase
+//                    $tPassphrase = 'SilverBloom1978';
+//// Provide the Device Identifier (Ensure that the Identifier does not have spaces in it).
+//// Replace this token with the token of the iOS device that is to receive the notification.
+////0a32cbcc8464ec05ac3389429813119b6febca1cd567939b2f54892cd1dcb134
+//// The message that is to appear on the dialog.
+//                    $tAlert = $message['message'];
+//// The Badge Number for the Application Icon (integer >=0).
+//                    $tBadge = 8;
+//// Audible Notification Option.
+//                    $tSound = 'default';
+//// The content that is returned by the LiveCode "pushNotificationReceived" message.
+//                    $tPayload = 'APNS Message Handled by LiveCode';
+//// Create the message content that is to be sent to the device.
+//                    $tBody['aps'] = array(
+//                        'alert' => $tAlert,
+//                        'badge' => $tBadge,
+//                        'sound' => $tSound,
+//                        'panicid' => $message['id'],
+//                        'notification_type' => $message['to']
+//                    );
+//                    $tBody ['payload'] = $tPayload;
+//// Encode the body to JSON.
+//                    $tBody = json_encode($tBody);
+//// Create the Socket Stream.
+//                    $tContext = stream_context_create();
+//                    stream_context_set_option($tContext, 'ssl', 'local_cert', $tCert);
+//// Remove this line if you would like to enter the Private Key Passphrase manually.
+//                    stream_context_set_option($tContext, 'ssl', 'passphrase', $tPassphrase);
+//// Open the Connection to the APNS Server.
+//                    $tSocket = stream_socket_client('ssl://' . $tHost . ':' . $tPort, $error, $errstr, 30, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $tContext);
+//// Check if we were able to open a socket.
+//                    if (!$tSocket)
+//                        exit("APNS Connection Failed: $error $errstr");
+//                }
+//// Build the Binary Notification.
+//                $tMsg = chr(0) . chr(0) . chr(32) . pack('H*', $tToken) . pack('n', strlen($tBody)) . $tBody;
+//
+//// Ensure that blocking is disabled
+//                stream_set_blocking($tSocket, 0);
+////stream_set_blocking($tSocket, 0);
+//// Send the Notification to the Server.
+//                return $tResult[] = fwrite($tSocket, $tMsg, strlen($tMsg));
+//
+//                // $tResult[] = fwrite($tSocket, $tMsg);
+//
+//                if ($f == $ios) {
+//                    if (!empty($tResult))
+//                        return 'Delivered Message to APNS';
+//                    else
+//                        return 'Could not Deliver Message to APNS';
+////Close the Connection to the Server.
+//                    fclose($tSocket);
+//                }
             }
         }
 //return $appp;
