@@ -28,5 +28,5 @@ class PaymentCredentialSeeder extends Seeder
         DB::table('payment_credentials')->insert($information);
 
 
-      }
+    }
 }
