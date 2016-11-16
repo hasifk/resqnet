@@ -222,7 +222,7 @@ class EloquentRescueOperationRepository {
                 $tHost = 'gateway.sandbox.push.apple.com';
 				$tPort = 2195;
 				$tCert = base_path('public/') . 'pushcert.pem';
-				return $tCert;
+				 $tCert;
 				$tPassphrase = 'SilverBloom1978';
 				$tAlert = 'Match scheduled at ';
 				
