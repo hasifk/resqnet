@@ -14,7 +14,7 @@ class CreatePaymentCredentialsTable extends Migration
     {
         Schema::create('payment_credentials', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('account_id')->unsigned();
+            $table->text('account_id');
             $table->string('payment_type')->nullable();
             $table->string('payment_amount')->nullable();
             $table->string('currency')->nullable();
