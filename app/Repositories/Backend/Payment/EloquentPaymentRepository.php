@@ -26,7 +26,7 @@ class EloquentPaymentRepository implements PaymentRepositoryContract {
     }
 
     public function payeeDetails() {
-        return PaymentCredential::get();
+        return PaymentCredential::first();
     }
 
 }
