@@ -37,9 +37,12 @@ class CreateUsersTable extends Migration {
             $table->longText('prior_medical_conditions');
             $table->longText('allergies');
             $table->string('phone');
+            $table->string('per_lat');
+            $table->string('per_lng');
+            $table->longText('per_address')->nullable();
             $table->string('lat');
             $table->string('lng');
-            $table->text('address')->nullable();
+            $table->longText('address')->nullable();
             $table->string('confirmation_code');
             $table->boolean('confirmed')->default(config('access.users.confirm_email') ? false : true);
             $table->rememberToken();
