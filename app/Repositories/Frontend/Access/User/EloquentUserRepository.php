@@ -107,7 +107,6 @@ class EloquentUserRepository implements UserRepositoryContract {
         $city=City::find($data['area_id']);
         $response = \Geo::geocode($city->name);
         return $response;
-        $latlong=json_decode($response);
         if ($provider) {
 
             $user = User::create([

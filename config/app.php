@@ -199,6 +199,7 @@ return [
         Barryvdh\Cors\ServiceProvider::class,
         Dingo\Api\Provider\LaravelServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        'Ixudra\Geo\GeoServiceProvider',
     ],
 
     /*
@@ -257,5 +258,6 @@ return [
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Str'      => 'Illuminate\Support\Str',
+        'Geo'          => 'Ixudra\Geo\Facades\Geo',
     ],
 ];
