@@ -104,9 +104,12 @@ class EloquentUserRepository implements UserRepositoryContract {
         }
         if (count($return) > 0)
             return $return;
-        $city=City::find($data['area_id']);
-        $response = \Geo::geocode($city->name);
-        return $response;
+        $country = Country::find($data['country_id']);
+        $state = State::find($data['state_id']);
+        $city = City::find($data['area_id']);
+        $addr = $country->name . "," . $state->name . "," . $city->name;
+        $response = \Geo::geocode($addr); //return lat long corresponding to address 
+       
         if ($provider) {
 
             $user = User::create([
@@ -128,10 +131,9 @@ class EloquentUserRepository implements UserRepositoryContract {
                         'prior_medical_conditions' => (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '',
                         'allergies' => (!empty($data['allergies'])) ? $data['allergies'] : '',
                         'phone' => (!empty($data['phone'])) ? $data['phone'] : '',
-//                        'subscription_id' => (!empty($data['subscription_id'])) ? $data['subscription_id'] : '',
-//                        'subscription_info' => (!empty($data['subscription_info'])) ? $data['subscription_info'] : '',
-//                        'subscription_plan' => (!empty($data['subscription_plan'])) ? $data['subscription_plan'] : '',
-//                        'subscription_ends_at' => (!empty($data['subscription_ends_at'])) ? $data['subscription_ends_at'] : '',
+                        'per_lat' => $response->lat,
+                        'per_lng' => $response->lng,
+                        'per_address' => $addr,
                         'confirmation_code' => md5(uniqid(mt_rand(), true)),
                         'confirmed' => 1,
             ]);
@@ -155,10 +157,9 @@ class EloquentUserRepository implements UserRepositoryContract {
                         'prior_medical_conditions' => (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '',
                         'allergies' => (!empty($data['allergies'])) ? $data['allergies'] : '',
                         'phone' => (!empty($data['phone'])) ? $data['phone'] : '',
-//                        'subscription_id' => (!empty($data['subscription_id'])) ? $data['subscription_id'] : '',
-//                        'subscription_info' => (!empty($data['subscription_info'])) ? $data['subscription_info'] : '',
-//                        'subscription_plan' => (!empty($data['subscription_plan'])) ? $data['subscription_plan'] : '',
-//                        'subscription_ends_at' => (!empty($data['subscription_ends_at'])) ? $data['subscription_ends_at'] : '',
+                        'per_lat' => $response->lat,
+                        'per_lng' => $response->lng,
+                        'per_address' => $addr,
                         'confirmation_code' => md5(uniqid(mt_rand(), true)),
                         'confirmed' => config('access.users.confirm_email') ? 0 : 1,
             ]);
