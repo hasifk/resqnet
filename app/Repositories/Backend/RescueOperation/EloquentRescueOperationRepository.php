@@ -235,7 +235,7 @@ class EloquentRescueOperationRepository {
 //echo $result;
 // Close connection
                 curl_close($ch);
-                $id[]=$app_id['app_id'][$key];
+                $id[]=$fields;
             } else {
 
                 $tHost = 'gateway.sandbox.push.apple.com';
