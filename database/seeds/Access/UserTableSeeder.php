@@ -7,10 +7,9 @@ use Illuminate\Support\Facades\DB;
 /**
  * Class UserTableSeeder
  */
-class UserTableSeeder extends Seeder
-{
-    public function run()
-    {
+class UserTableSeeder extends Seeder {
+
+    public function run() {
         if (env('DB_CONNECTION') == 'mysql') {
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         }
@@ -27,43 +26,52 @@ class UserTableSeeder extends Seeder
         //Add the master administrator, user id of 1
         $users = [
             [
-                'firstname'              => 'Admin Istrator',
-                'lastname'              => 'Admin',
-                'email'             => 'admin@admin.com',
-                'country_id'        =>'202',
-                'area_id'          =>'38061',
-                'dept_name'             => '',
-                'password'          => bcrypt('adminpassword'),
+                'firstname' => 'Admin Istrator',
+                'lastname' => 'Admin',
+                'email' => 'admin@admin.com',
+                'country_id' => '101',
+                'area_id' => '1930',
+                'dept_name' => '',
+                'per_lat' => '9.9312328',
+                'per_lng' => '76.2673041',
+                'per_address' => 'India,Kerala,Kochi',
+                'password' => bcrypt('adminpassword'),
                 'confirmation_code' => md5(uniqid(mt_rand(), true)),
-                'confirmed'         => true,
-                'created_at'        => Carbon::now(),
-                'updated_at'        => Carbon::now(),
+                'confirmed' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
-                'name'              => 'Police1',
-                'lastname'              => 'Rescuer',
-                'email'             => 'police@police.com',
-                'country_id'        =>'202',
-                'area_id'          =>'38064',
-                'dept_name'             => "Hospital",
-                'password'          => bcrypt('asdasd'),
+                'name' => 'Police1',
+                'lastname' => 'Rescuer',
+                'email' => 'police@police.com',
+                'country_id' => '101',
+                'area_id' => '1930',
+                'dept_name' => "Hospital",
+                'per_lat' => '9.9312328',
+                'per_lng' => '76.2673041',
+                'per_address' => 'India,Kerala,Kochi',
+                'password' => bcrypt('asdasd'),
                 'confirmation_code' => md5(uniqid(mt_rand(), true)),
-                'confirmed'         => true,
-                'created_at'        => Carbon::now(),
-                'updated_at'        => Carbon::now(),
+                'confirmed' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
-                'name'              => 'Default User',
-                'lastname'              => 'Default',
-                'email'             => 'user@user.com',
-                'country_id'        =>'202',
-                'area_id'          =>'38077',
-                'dept_name'             => '',
-                'password'          => bcrypt('asdasd'),
+                'name' => 'Default User',
+                'lastname' => 'Default',
+                'email' => 'user@user.com',
+                'country_id' => '101',
+                'area_id' => '1930',
+                'dept_name' => '',
+                'per_lat' => '9.9312328',
+                'per_lng' => '76.2673041',
+                'per_address' => 'India,Kerala,Kochi',
+                'password' => bcrypt('asdasd'),
                 'confirmation_code' => md5(uniqid(mt_rand(), true)),
-                'confirmed'         => true,
-                'created_at'        => Carbon::now(),
-                'updated_at'        => Carbon::now(),
+                'confirmed' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
         ];
 
@@ -73,4 +81,5 @@ class UserTableSeeder extends Seeder
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         }
     }
+
 }
