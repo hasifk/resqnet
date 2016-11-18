@@ -210,6 +210,30 @@
                 </td>
             </tr>
             <tr>
+                <th>Permenent Location</th>
+                <td>
+
+                    <table> <tr>
+
+                            <th>Location(Lat,Long)</th>
+                            <td>
+                                &nbsp;&nbsp;:&nbsp;&nbsp;  {{ $user->per_lat.",".$user->per_lng }}
+                            </td>
+                        </tr>
+
+                        <tr>
+
+                            <th>Address</th>
+                            <td>
+                                &nbsp;&nbsp;:&nbsp;&nbsp;  {{ $user->per_address }}
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </td>
+            </tr>
+            <tr>
                 <th>Current Location</th>
                 <td>
 
