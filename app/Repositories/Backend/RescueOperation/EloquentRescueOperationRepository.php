@@ -151,7 +151,8 @@ class EloquentRescueOperationRepository {
             $obj->locations = json_encode($locations);
             $obj->save();
             $message['id'] = $obj->id;
-            $userdetails[]=$rescuers;
+            $userdetails[]=$app_id;
+            return $app_id;
             if (!empty($rescuers)) {
                 $message['to'] = "Rescuer";
                $userdetails[]= $this->notification($app_id, $message);
