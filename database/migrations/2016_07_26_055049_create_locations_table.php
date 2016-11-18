@@ -18,7 +18,7 @@ class CreateLocationsTable extends Migration
             $table->string('lat');
             $table->string('long');
             $table->text('address')->nullable();
-            $table->boolean('status');
+            $table->boolean('online_status');
             $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')
