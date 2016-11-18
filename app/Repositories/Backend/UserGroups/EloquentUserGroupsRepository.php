@@ -56,14 +56,17 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                     $obj1->group_id = $groups->id;
                     $obj1->role = 0;
                     $obj1->save();
-                    return "Success";
+                    $return="Success";
                 }
-                return "Already Joined";
+                else
+                $return="Already Joined";
             }
-            return "Not a Valid Pin";
-        }
-        else
-            return "Only User Can Join To Group";
+            else 
+                $return="Not a Valid Pin";
+        } else
+            $return= "Only User can Join to the Group";
+        
+        return $return;
     }
 
     public function CreateUserGroups($request) {
@@ -95,9 +98,9 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                 $obj1->save();
                 $return = "Success";
             endif;
-            return $return;
         } else
-            return "Only User Can Create Group";
+            $return = "Only User Can Create Group";
+        return $return;
     }
 
     public function joinedGroupLists($userid) {
