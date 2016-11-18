@@ -53,8 +53,8 @@ class EloquentRescueOperationRepository {
                                         $locations[$active->id]['addr'] = $active->address;
                                         $rescuers[] = $active->id;
                                         //$distances[$active->id]=$this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
-                                        $app_id['app_id'][] = $active->app_id;
-                                        $app_id['device_type'][] = $active->device_type;
+                                        $app_id['app_id'][$active->id] = $active->app_id;
+                                        $app_id['device_type'][$active->id] = $active->device_type;
                                     endif;
                                 }
                             }
@@ -75,8 +75,8 @@ class EloquentRescueOperationRepository {
                                             if (!in_array($value->user_id, $appids[1])) {
                                                 $user = User::find($value->user_id);
                                                 if (!empty($user->app_id) && !empty($user->device_type)) {
-                                                    $groups[0]['app_id'][] = $user->app_id;
-                                                    $groups[0]['device_type'][] = $user->device_type;
+                                                    $groups[0]['app_id'][$value->user_id] = $user->app_id;
+                                                    $groups[0]['device_type'][$value->user_id] = $user->device_type;
                                                     if (!empty($groups[1][$gpid]))
                                                         $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
                                                     else
@@ -89,8 +89,8 @@ class EloquentRescueOperationRepository {
                                         if (!in_array($value->user_id, $gp)) {
                                             $user = User::find($value->user_id);
                                             if (!empty($user->app_id) && !empty($user->device_type)) {
-                                                $groups[0]['app_id'][] = $user->app_id;
-                                                $groups[0]['device_type'][] = $user->device_type;
+                                                $groups[0]['app_id'][$value->user_id] = $user->app_id;
+                                                $groups[0]['device_type'][$value->user_id] = $user->device_type;
                                                 if (!empty($groups[1][$gpid]))
                                                     $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
                                                 else
@@ -125,8 +125,8 @@ class EloquentRescueOperationRepository {
                                         $locations[$active->id]['addr'] = $active->address;
                                         $rescuers[] = $active->id;
                                         // $distances[$active->id]=$this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
-                                        $app_id['app_id'][] = $active->app_id;
-                                        $app_id['device_type'][] = $active->device_type;
+                                        $app_id['app_id'][$active->id] = $active->app_id;
+                                        $app_id['device_type'][$active->id] = $active->device_type;
                                     endif;
                                 }
                             }
@@ -151,7 +151,7 @@ class EloquentRescueOperationRepository {
             $obj->locations = json_encode($locations);
             $obj->save();
             $message['id'] = $obj->id;
-            $userdetails[]=$app_id['device_type'];
+            $userdetails[]=$app_id;
             return $userdetails;
             if (!empty($rescuers)) {
                 $message['to'] = "Rescuer";
