@@ -32,7 +32,6 @@ class EloquentRescueOperationRepository {
         $role = Role::where('name', $type)->value('id');
         $userid = $result->user_id;
         $userloc = $this->findUser($userid); //app user id
-        return $userloc;
         $actives = $this->activeUsers(); //getting all active users
         $rescuers = array();
         $f = 0;
