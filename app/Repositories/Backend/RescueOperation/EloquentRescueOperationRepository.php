@@ -41,13 +41,14 @@ class EloquentRescueOperationRepository {
         $f = 0;
 
         $country = Country::find($userloc->country_id);
-        $state = State::find($userloc->state_id);
+        
         $city = City::find($userloc->area_id);
+        $state = State::find($city->state_id);
         $addr = $country->name . "," . $state->name . "," . $city->name;
         $response = \Geo::geocode($addr); //return lat long corresponding to address 
         $userloc->per_lat = $response->lat;
         $userloc->per_lng = $response->lng;
-        $userloc->per_address = $response->per_address;
+        $userloc->per_address = $addr;
         $userloc->save();
 
         if (!empty($userloc) && !empty($userloc->lat) && !empty($userloc->lng)) {
