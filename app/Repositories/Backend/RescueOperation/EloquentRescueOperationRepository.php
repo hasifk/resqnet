@@ -62,8 +62,8 @@ class EloquentRescueOperationRepository {
                     }
                     if (!empty($contacts = $this->emergencyContacts($userid)))
                         $appids = $this->membershipChecking($contacts, $rescuers);
-                    if (!empty($rescuee->emergency_groups)) {
-                        $group_ids = json_decode($rescuee->emergency_groups);
+                    if (!empty($userloc->emergency_groups)) {
+                        $group_ids = json_decode($userloc->emergency_groups);
                         $gp = array();
                         foreach ($group_ids as $gpid) {
                             $group_user = Member::where('group_id', $gpid)->get();
@@ -106,6 +106,7 @@ class EloquentRescueOperationRepository {
                         }
                     }
                 }
+                
             }
             else if ((!empty($userloc->per_lat) && !empty($userloc->per_lng))) {
                 if ($this->distanceCalculation($userloc->lat, $userloc->lng, $userloc->per_lat, $userloc->per_lng) <= 30) {
@@ -137,8 +138,8 @@ class EloquentRescueOperationRepository {
         } else
             $userdetails['result'] = "Please Enable Location services";
         if ($f == 1) {
-            $rescuee = User::find($userid);
-            $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . " Requested Emergency Support(" . $result->emergency_type . ")";
+            //$rescuee = User::find($userid);
+            $message['message'] = "The User " . $userloc->firstname . " " . $userloc->lastname . " Requested Emergency Support(" . $result->emergency_type . ")";
             sort($rescuers);
             $obj = new ActiveRescuer;
             $obj->rescuee_id = $userid;
@@ -166,7 +167,7 @@ class EloquentRescueOperationRepository {
                     $addr = $userloc->address;
                 else
                     $addr = "Location Not available, Please Use Map";
-                $message['message'] = $rescuee->firstname . " " . $rescuee->lastname . " Sent a " . $result->emergency_type . " Panic Signal <br> Location <br> " . $addr;
+                $message['message'] = $userloc->firstname . " " . $userloc->lastname . " Sent a " . $result->emergency_type . " Panic Signal <br> Location <br> " . $addr;
                 $message['to'] = "EmergencyGroup";
                 $this->notification($groups[0], $message);
             }
