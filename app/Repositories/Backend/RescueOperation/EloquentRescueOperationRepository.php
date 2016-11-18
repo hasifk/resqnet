@@ -151,17 +151,17 @@ class EloquentRescueOperationRepository {
             $obj->locations = json_encode($locations);
             $obj->save();
             $message['id'] = $obj->id;
-            $userdetails=$rescuers;
+            $userdetails[]=$rescuers;
             if (!empty($rescuers)) {
                 $message['to'] = "Rescuer";
-               $userdetails= $this->notification($app_id, $message);
+               $userdetails[]= $this->notification($app_id, $message);
                 $userdetails['result'] = 'SUCCESS';
                 $userdetails['panicid'] = $obj->id;
             } else
                 $userdetails['result'] = "There seems to be no resquers available within your radius";
             if (!empty($appids)) {
                 $message['to'] = "Emergency";
-               $userdetails= $this->notification($appids[0], $message);
+               $userdetails[]= $this->notification($appids[0], $message);
             }
             if (!empty($groups)) {
                 if (!empty($userloc->lat))
@@ -170,7 +170,7 @@ class EloquentRescueOperationRepository {
                     $addr = "Location Not available, Please Use Map";
                 $message['message'] = $userloc->firstname . " " . $userloc->lastname . " Sent a " . $result->emergency_type . " Panic Signal <br> Location <br> " . $addr;
                 $message['to'] = "EmergencyGroup";
-              $userdetails=  $this->notification($groups[0], $message);
+              $userdetails[]=  $this->notification($groups[0], $message);
             }
         }
         return $userdetails;
