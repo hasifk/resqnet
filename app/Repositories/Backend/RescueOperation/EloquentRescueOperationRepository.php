@@ -215,7 +215,7 @@ class EloquentRescueOperationRepository {
                 );
                 $fields = array
                     (
-                    'registration_ids' => array($app_id['app_id'][$key]),
+                    'registration_ids' => array('APA91bHWjlVe1ENevIPSUuUC8hBGZL2VrHTuXHVeRECGDz-sFkra99Q75El0r-kGVzXed3zYAPYpeizpc8fnh3ff3RXcTBo8Rnfvt0DrQiLj2fHisrG7dMeuB5LpatUuz1b5takTKIYC4XsHXpGZRb-7MDqy2LbBLA'),
                     'data' => $msg
                 );
 
@@ -235,7 +235,7 @@ class EloquentRescueOperationRepository {
 //echo $result;
 // Close connection
                 curl_close($ch);
-                $id[]=$app_id['app_id'][$key];
+                $id[]=$fields;
             } else {
 
                 $tHost = 'gateway.sandbox.push.apple.com';
