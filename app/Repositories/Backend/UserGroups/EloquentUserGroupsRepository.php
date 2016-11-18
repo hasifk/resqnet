@@ -19,7 +19,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
     }
 
     public function userGroups($userid, $paginate) {
-        return UserGroup::where('user_id',$userid)->orderBy('id', 'desc')->paginate($paginate);
+        return UserGroup::where('user_id', $userid)->orderBy('id', 'desc')->paginate($paginate);
     }
 
     public function userGrouplists() {
@@ -38,56 +38,66 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
         return Member::where('group_id', $id)->count();
     }
 
-    public function userGroupdetails($id,$users) {
+    public function userGroupdetails($id, $users) {
         return Member::join('user_group', 'group_members.group_id', '=', 'user_group.id')
                         ->join('users', 'group_members.user_id', '=', 'users.id')
-                        ->select('user_group.*', 'users.firstname', 'users.lastname', 'group_members.user_id','group_members.role')
-                        ->where('user_group.id', $id)->whereIn('group_members.user_id',$users)->orderBy('user_group.id', 'desc')->get();
+                        ->select('user_group.*', 'users.firstname', 'users.lastname', 'group_members.user_id', 'group_members.role')
+                        ->where('user_group.id', $id)->whereIn('group_members.user_id', $users)->orderBy('user_group.id', 'desc')->get();
     }
 
     public function joinUsers($request) {
-        $groups = UserGroup::where('gp_pin', $request->gp_pin)->first();
-        if (!empty($groups)) {
-            if (empty($this->findMembersUser($request->user_id, $groups->id))) {
-                $obj1 = new Member;
-                $obj1->user_id = $request->user_id;
-                $obj1->group_id = $groups->id;
-                $obj1->role = 0;
-                $obj1->save();
-                return "Success";
+        $user = User::find($request->user_id);
+        if ($user->role_id == 5) {
+            $groups = UserGroup::where('gp_pin', $request->gp_pin)->first();
+            if (!empty($groups)) {
+                if (empty($this->findMembersUser($request->user_id, $groups->id))) {
+                    $obj1 = new Member;
+                    $obj1->user_id = $request->user_id;
+                    $obj1->group_id = $groups->id;
+                    $obj1->role = 0;
+                    $obj1->save();
+                    return "Success";
+                }
+                return "Already Joined";
             }
-            return "Already Joined";
+            return "Not a Valid Pin";
         }
-        return "Not a Valid Pin";
+        else
+            return "Only User Can Join To Group";
     }
 
     public function CreateUserGroups($request) {
         if ($request->has('id')):
             $obj = UserGroup::find($request->id);
+            $user = User::find($obj->user_id);
         else:
             $obj = new UserGroup;
             $obj->user_id = $request->user_id;
+            $user = User::find($request->user_id);
         endif;
-        if ($request->has('name'))
-            $obj->name = $request->name;
-        if ($request->has('gp_pin'))
-            $obj->gp_pin = $request->gp_pin;
-        if ($request->has('name') && $request->has('gp_pin'))
-            $obj->save();
+        if ($user->role_id == 5) {
+            if ($request->has('name'))
+                $obj->name = $request->name;
+            if ($request->has('gp_pin'))
+                $obj->gp_pin = $request->gp_pin;
+            if ($request->has('name') && $request->has('gp_pin'))
+                $obj->save();
 
-        $return = $obj->attachUserGroupImage($request->avatar);
+            $return = $obj->attachUserGroupImage($request->avatar);
 
-        if ($request->has('count')) { //count is variable, used just for checking and it same as that of "count($request->membership_no)" 
-            $return = $this->addMembers($request, $role = 1);
-        } else if (!$request->has('img')):
-            $obj1 = new Member;
-            $obj1->user_id = $request->user_id;
-            $obj1->group_id = $obj->id;
-            $obj1->role = 1;
-            $obj1->save();
-            $return = "Success";
-        endif;
-        return $return;
+            if ($request->has('count')) { //count is variable, used just for checking and it same as that of "count($request->membership_no)" 
+                $return = $this->addMembers($request, $role = 1);
+            } else if (!$request->has('img')):
+                $obj1 = new Member;
+                $obj1->user_id = $request->user_id;
+                $obj1->group_id = $obj->id;
+                $obj1->role = 1;
+                $obj1->save();
+                $return = "Success";
+            endif;
+            return $return;
+        } else
+            return "Only User Can Create Group";
     }
 
     public function joinedGroupLists($userid) {
@@ -175,19 +185,19 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
                             if (!empty($users->emergency_groups)) {
                                 $group_ids = json_decode($users->emergency_groups);
                                 if (in_array($groups->id, $group_ids))
-                                    $return[] = "Already Added : ".$request->gp_pin[$i];
+                                    $return[] = "Already Added : " . $request->gp_pin[$i];
                                 else {
                                     array_push($group_ids, $groups->id);
                                     $users->emergency_groups = json_encode($group_ids);
                                     $users->save();
-                                   //$return[] = "Success";
+                                    //$return[] = "Success";
                                     $f++;
                                 }
                             } else {
                                 $group_ids[] = $groups->id;
                                 $users->emergency_groups = json_encode($group_ids);
                                 $users->save();
-                               // $return[] = "Success";
+                                // $return[] = "Success";
                                 $f++;
                             }
                         } else
@@ -201,7 +211,7 @@ class EloquentUserGroupsRepository implements UserGroupsRepositoryContract {
             $return = "Error...gp_pin not found";
 
         if (count($request->gp_pin) == $f)
-           return 1;
+            return 1;
         else
             return $return;
     }
