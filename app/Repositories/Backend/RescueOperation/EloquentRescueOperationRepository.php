@@ -18,6 +18,10 @@ use Auth;
 use Storage;
 use Carbon\Carbon;
 
+use App\Models\Countries\City;
+use App\Models\Countries\Country;
+use App\Models\Countries\State;
+
 class EloquentRescueOperationRepository {
 
     private $groups;
@@ -34,21 +38,29 @@ class EloquentRescueOperationRepository {
         $userloc = $this->findUser($userid); //app user id
         $actives = $this->activeUsers(); //getting all active users
         $rescuers = array();
+        $f = 0;
+
+        $country = Country::find($userloc->country_id);
+        $state = State::find($userloc->state_id);
+        $city = City::find($userloc->area_id);
+        $addr = $country->name . "," . $state->name . "," . $city->name;
+        $response = \Geo::geocode($addr); //return lat long corresponding to address 
+        $userloc->per_lat = $response->lat;
+        $userloc->per_lng = $response->lng;
+        $userloc->per_address = $response->per_address;
+        $userloc->save();
+
         if (!empty($userloc) && !empty($userloc->lat) && !empty($userloc->lng)) {
-            $locations[$userid]['lat'] = $userloc->lat;
-            $locations[$userid]['long'] = $userloc->lng;
-            $locations[$userid]['addr'] = $userloc->address;
-            foreach ($actives as $active) {
-                if ($active->role_id == $role) {
-
-                    if (!empty($active->lat) && !empty($active->lng)) {
-                        if (!empty($payment = Payment::where('user_id', $active->id)->orderBy('id', 'desc')->first())) {
-                            //Get today date or another date of you choice
-                            //$today_date = Carbon::now();
-                            if (strtotime($payment->subscription_ends_at) >= strtotime(date('d-m-Y'))) {
-
-                                if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 40) {
-                                    // $userdetails[] = $this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
+            if (!empty($payment = Payment::where('user_id', $userid)->orderBy('id', 'desc')->first())) {
+                if (strtotime($payment->subscription_ends_at) >= strtotime(date('d-m-Y'))) {
+                    $f = 1;
+                    $locations[$userid]['lat'] = $userloc->lat;
+                    $locations[$userid]['long'] = $userloc->lng;
+                    $locations[$userid]['addr'] = $userloc->address;
+                    foreach ($actives as $active) {
+                        if ($active->role_id == $role) {
+                            if (!empty($active->lat) && !empty($active->lng)) {
+                                if ($active->country_id == $userloc->country_id) {
                                     if (!empty($active->app_id) && !empty($active->device_type)):
                                         $locations[$active->id]['lat'] = $active->lat;
                                         $locations[$active->id]['long'] = $active->lng;
@@ -61,67 +73,86 @@ class EloquentRescueOperationRepository {
                                 }
                             }
                         }
-                        else if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 5) {
-                            if (!empty($active->app_id) && !empty($active->device_type)):
-                                $locations[$active->id]['lat'] = $active->lat;
-                                $locations[$active->id]['long'] = $active->lng;
-                                $locations[$active->id]['addr'] = $active->address;
-                                $rescuers[] = $active->id;
-                               // $distances[$active->id]=$this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
-                                $app_id['app_id'][] = $active->app_id;
-                                $app_id['device_type'][] = $active->device_type;
-                            endif;
-                        }
                     }
-                }
-            }
-            $rescuee = User::find($userid);
-            $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . " Reqested Emergency Support(" . $result->emergency_type . ")";
-            if (!empty($contacts = $this->emergencyContacts($userid)))
-                $appids = $this->membershipChecking($contacts, $rescuers);
-            if (!empty($rescuee->emergency_groups)) {
-                $group_ids = json_decode($rescuee->emergency_groups);
-                $gp = array();
-                foreach ($group_ids as $gpid) {
-                    $group_user = Member::where('group_id', $gpid)->get();
-                    foreach ($group_user as $value) {
-                        if ($value->user_id != $userid) {
-                            //  if (!in_array($value->user_id, $rescuers)) { 
-                            if (!empty($appids)) {
-                                if (!in_array($value->user_id, $gp)) {
-                                    if (!in_array($value->user_id, $appids[1])) {
-                                        $user = User::find($value->user_id);
-                                        if (!empty($user->app_id) && !empty($user->device_type)) {
-                                            $groups[0]['app_id'][] = $user->app_id;
-                                            $groups[0]['device_type'][] = $user->device_type;
-                                            if (!empty($groups[1][$gpid]))
-                                                $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
-                                            else
-                                                $groups[1][$gpid] = $user->id;
-                                            $gp[] = $user->id;
+                    if (!empty($contacts = $this->emergencyContacts($userid)))
+                        $appids = $this->membershipChecking($contacts, $rescuers);
+                    if (!empty($rescuee->emergency_groups)) {
+                        $group_ids = json_decode($rescuee->emergency_groups);
+                        $gp = array();
+                        foreach ($group_ids as $gpid) {
+                            $group_user = Member::where('group_id', $gpid)->get();
+                            foreach ($group_user as $value) {
+                                if ($value->user_id != $userid) {
+                                    //  if (!in_array($value->user_id, $rescuers)) { 
+                                    if (!empty($appids)) {
+                                        if (!in_array($value->user_id, $gp)) {
+                                            if (!in_array($value->user_id, $appids[1])) {
+                                                $user = User::find($value->user_id);
+                                                if (!empty($user->app_id) && !empty($user->device_type)) {
+                                                    $groups[0]['app_id'][] = $user->app_id;
+                                                    $groups[0]['device_type'][] = $user->device_type;
+                                                    if (!empty($groups[1][$gpid]))
+                                                        $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
+                                                    else
+                                                        $groups[1][$gpid] = $user->id;
+                                                    $gp[] = $user->id;
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (!in_array($value->user_id, $gp)) {
+                                            $user = User::find($value->user_id);
+                                            if (!empty($user->app_id) && !empty($user->device_type)) {
+                                                $groups[0]['app_id'][] = $user->app_id;
+                                                $groups[0]['device_type'][] = $user->device_type;
+                                                if (!empty($groups[1][$gpid]))
+                                                    $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
+                                                else
+                                                    $groups[1][$gpid] = $user->id;
+                                                $gp[] = $user->id;
+                                            }
                                         }
                                     }
-                                }
-                            } else {
-                                if (!in_array($value->user_id, $gp)) {
-                                    $user = User::find($value->user_id);
-                                    if (!empty($user->app_id) && !empty($user->device_type)) {
-                                        $groups[0]['app_id'][] = $user->app_id;
-                                        $groups[0]['device_type'][] = $user->device_type;
-                                        if (!empty($groups[1][$gpid]))
-                                            $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
-                                        else
-                                            $groups[1][$gpid] = $user->id;
-                                        $gp[] = $user->id;
-                                    }
+
+                                    //  }
                                 }
                             }
-
-                            //  }
                         }
                     }
                 }
             }
+            else if ((!empty($userloc->per_lat) && !empty($userloc->per_lng))) {
+                if ($this->distanceCalculation($userloc->lat, $userloc->lng, $userloc->per_lat, $userloc->per_lng) <= 30) {
+                    $f = 1;
+                    $locations[$userid]['lat'] = $userloc->lat;
+                    $locations[$userid]['long'] = $userloc->lng;
+                    $locations[$userid]['addr'] = $userloc->address;
+                    foreach ($actives as $active) {
+                        if ($active->role_id == $role) {
+                            if (!empty($active->lat) && !empty($active->lng)) {
+                                // $userdetails[] = $this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
+                                if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 5) {
+                                    if (!empty($active->app_id) && !empty($active->device_type)):
+                                        $locations[$active->id]['lat'] = $active->lat;
+                                        $locations[$active->id]['long'] = $active->lng;
+                                        $locations[$active->id]['addr'] = $active->address;
+                                        $rescuers[] = $active->id;
+                                        // $distances[$active->id]=$this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
+                                        $app_id['app_id'][] = $active->app_id;
+                                        $app_id['device_type'][] = $active->device_type;
+                                    endif;
+                                }
+                            }
+                        }
+                    }
+                } else
+                    $userdetails['result'] = "Please";
+            }
+        } else
+            $userdetails['result'] = "Please Enable Location services";
+        if ($f == 1) {
+            $rescuee = User::find($userid);
+            $message['message'] = "The User " . $rescuee->firstname . " " . $rescuee->lastname . " Requested Emergency Support(" . $result->emergency_type . ")";
             sort($rescuers);
             $obj = new ActiveRescuer;
             $obj->rescuee_id = $userid;
@@ -135,14 +166,14 @@ class EloquentRescueOperationRepository {
             $message['id'] = $obj->id;
             if (!empty($rescuers)) {
                 $message['to'] = "Rescuer";
-               $userdetails[]= $this->notification($app_id, $message);
+                $this->notification($app_id, $message);
                 $userdetails['result'] = 'SUCCESS';
                 $userdetails['panicid'] = $obj->id;
             } else
-                $userdetails['result'] = "No Rescuers available";
+                $userdetails['result'] = "There seems to be no resquers available within your radius";
             if (!empty($appids)) {
                 $message['to'] = "Emergency";
-               $userdetails[]= $this->notification($appids[0], $message);
+                $this->notification($appids[0], $message);
             }
             if (!empty($groups)) {
                 if (!empty($userloc->lat))
@@ -151,10 +182,9 @@ class EloquentRescueOperationRepository {
                     $addr = "Location Not available, Please Use Map";
                 $message['message'] = $rescuee->firstname . " " . $rescuee->lastname . " Sent a " . $result->emergency_type . " Panic Signal <br> Location <br> " . $addr;
                 $message['to'] = "EmergencyGroup";
-               $userdetails[]= $this->notification($groups[0], $message);
+                $this->notification($groups[0], $message);
             }
-        } else
-            $userdetails['result'] = "Please enable Location services";
+        }
         return $userdetails;
     }
 
@@ -218,65 +248,62 @@ class EloquentRescueOperationRepository {
 // Close connection
                 curl_close($ch);
             } else {
-                
+
                 $tHost = 'gateway.sandbox.push.apple.com';
-				$tPort = 2195;
-				$tCert = base_path('public/') . 'pushcert.pem';
-				 $tCert;
-				$tPassphrase = 'SilverBloom1978';
-				$tAlert = 'Match scheduled at ';
-				
-				$tBadge = 8;
-				
-				$tSound = 'default';
-				$tPayload = 'APNS Message Handled by LiveCode';
-				
-				$tBody['aps'] = array (
-				'alert' => $tAlert,
-				'badge' => $tBadge,
-				'sound' => $tSound,
-				);
-				$tBody ['payload'] = $tPayload;
-				// Encode the body to JSON.
-				$tBody = json_encode ($tBody);
-				// Create the Socket Stream.
-				$tContext = stream_context_create ();
-				stream_context_set_option ($tContext, 'ssl', 'local_cert', $tCert);
-				// Remove this line if you would like to enter the Private Key Passphrase manually.
-				stream_context_set_option ($tContext, 'ssl', 'passphrase', $tPassphrase);
-				// Open the Connection to the APNS Server.
-				$tSocket = stream_socket_client ('ssl://'.$tHost.':'.$tPort, $error, $errstr, 30, STREAM_CLIENT_CONNECT|STREAM_CLIENT_PERSISTENT, $tContext);
-				//echo $error;
-				// Check if we were able to open a socket.
-				if ($tSocket){
-				
-							
-				$tToken ='73460516932472ba846903918104bc11cbe6993b9fd9413ab6987e161a9a19a4';
-			
-				// Build the Binary Notification.
-				$tMsg = chr (0) . chr (0) . chr (32) . pack ('H*', $tToken) . pack ('n', strlen ($tBody)) . $tBody;
-				// Send the Notification to the Server.
-				$tResult = fwrite ($tSocket, $tMsg, strlen ($tMsg));
-				$tResult;
-				//if ($tResult)
-				
-				//echo 'Delivered Message to APNS' . PHP_EOL;
-				
-				//else
-				
-				//echo 'Could not Deliver Message to APNS' . PHP_EOL;
-				// Close the Connection to the Server.
-				
-				fclose ($tSocket);
-	}
-                
-                
-                
-                
-                
-                
-                
-                
+                $tPort = 2195;
+                $tCert = base_path('public/') . 'pushcert.pem';
+                $tCert;
+                $tPassphrase = 'SilverBloom1978';
+                $tAlert = 'Match scheduled at ';
+
+                $tBadge = 8;
+
+                $tSound = 'default';
+                $tPayload = 'APNS Message Handled by LiveCode';
+
+                $tBody['aps'] = array(
+                    'alert' => $tAlert,
+                    'badge' => $tBadge,
+                    'sound' => $tSound,
+                );
+                $tBody ['payload'] = $tPayload;
+                // Encode the body to JSON.
+                $tBody = json_encode($tBody);
+                // Create the Socket Stream.
+                $tContext = stream_context_create();
+                stream_context_set_option($tContext, 'ssl', 'local_cert', $tCert);
+                // Remove this line if you would like to enter the Private Key Passphrase manually.
+                stream_context_set_option($tContext, 'ssl', 'passphrase', $tPassphrase);
+                // Open the Connection to the APNS Server.
+                $tSocket = stream_socket_client('ssl://' . $tHost . ':' . $tPort, $error, $errstr, 30, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $tContext);
+                //echo $error;
+                // Check if we were able to open a socket.
+                if ($tSocket) {
+
+
+                    $tToken = '73460516932472ba846903918104bc11cbe6993b9fd9413ab6987e161a9a19a4';
+
+                    // Build the Binary Notification.
+                    $tMsg = chr(0) . chr(0) . chr(32) . pack('H*', $tToken) . pack('n', strlen($tBody)) . $tBody;
+                    // Send the Notification to the Server.
+                    $tResult = fwrite($tSocket, $tMsg, strlen($tMsg));
+                    $tResult;
+                    //if ($tResult)
+                    //echo 'Delivered Message to APNS' . PHP_EOL;
+                    //else
+                    //echo 'Could not Deliver Message to APNS' . PHP_EOL;
+                    // Close the Connection to the Server.
+
+                    fclose($tSocket);
+                }
+
+
+
+
+
+
+
+
 //                $f++;
 //                //$tToken ='a18792a07ae2c4caf346332e4fbe5ba8071d5b6d66ef6cd3731f6c78ecdc258a';
 //                $tToken = $app_id['app_id'][$key];

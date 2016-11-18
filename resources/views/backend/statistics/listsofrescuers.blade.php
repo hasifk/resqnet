@@ -146,7 +146,7 @@
                                 ?>
                             </tbody>
                         </table>
-                        
+
                         <div class="row col-xs-12 col-sm-12 col-md-12 btn-group ">
                             @if(count($lists) > 0)
                             <button class="mnotification_delete btn btn-primary" >Delete</button>
@@ -250,74 +250,74 @@
 //            }
 //            return false;
 //        });
-        
-        
+
+
         $(document).on("click", '.notification_delete,.mnotification_delete', function () {
-        var cursel = this;
-        var value = new Array();
-        var j = 0;
-        if (cursel.className.split(' ')[0] == 'notification_delete')
-        {
-            var ids = cursel.id;
-            $(".checkbox").each(function () {
-                if ($(this).is(":checked"))
-                {
-                    $(this).removeAttr("checked");
-
-                }
-            });
-            $("#selectall").removeAttr("checked");
-            $("#" + ids).prop("checked", true);
-        }
-
-        if ($(".checkbox:checked").length > 0)
-        {
-            $(".checkbox:checked").each(function () {
-                value[j++] = $(this).val();
-            });
-            if (confirm("Are sure want to delete"))
+            var cursel = this;
+            var value = new Array();
+            var j = 0;
+            if (cursel.className.split(' ')[0] == 'notification_delete')
             {
-                $.ajax({
-                    type: "GET",
-                    url: '/admin/deletepanic',
-                    data: "id=" + value,
-                    cache: false,
-                    success: function (data) {
-                        location.reload();
-                    },
-                    error: function (xhr, status, error) {
-                        alert(error);
+                var ids = cursel.id;
+                $(".checkbox").each(function () {
+                    if ($(this).is(":checked"))
+                    {
+                        $(this).removeAttr("checked");
+
                     }
                 });
+                $("#selectall").removeAttr("checked");
+                $("#" + ids).prop("checked", true);
             }
-        } else
-            alert("Please select atleast one")
-    });
-    $(document).on("click", '#selectall', function () {
-        if (this.checked) { // check select status
-            $('.checkbox').each(function () { //loop through each checkbox
-                this.checked = true;  //select all checkboxes with class "checkbox1"               
-            });
-        } else {
-            $('.checkbox').each(function () { //loop through each checkbox
-                this.checked = false; //deselect all checkboxes with class "checkbox1"                       
-            });
-        }
-    });
-    $(document).on("change", '#selectall', function () {
-        $(".checkbox").prop('checked', $(this).prop("checked"));
-    });
 
-    $(document).on("click", '.checkbox', function () {
-        // alert($(".checkbox").length + "----" + $(".checkbox:checked").length);
-        if ($(".checkbox").length == $(".checkbox:checked").length) {
-            $("#selectall").prop("checked", true);
-        } else {
-            $("#selectall").removeAttr("checked");
-        }
-    });
-        
-        
+            if ($(".checkbox:checked").length > 0)
+            {
+                $(".checkbox:checked").each(function () {
+                    value[j++] = $(this).val();
+                });
+                if (confirm("Are sure want to delete"))
+                {
+                    $.ajax({
+                        type: "GET",
+                        url: '/admin/deletepanic',
+                        data: "id=" + value,
+                        cache: false,
+                        success: function (data) {
+                            location.reload();
+                        },
+                        error: function (xhr, status, error) {
+                            alert(error);
+                        }
+                    });
+                }
+            } else
+                alert("Please select atleast one")
+        });
+        $(document).on("click", '#selectall', function () {
+            if (this.checked) { // check select status
+                $('.checkbox').each(function () { //loop through each checkbox
+                    this.checked = true;  //select all checkboxes with class "checkbox1"               
+                });
+            } else {
+                $('.checkbox').each(function () { //loop through each checkbox
+                    this.checked = false; //deselect all checkboxes with class "checkbox1"                       
+                });
+            }
+        });
+        $(document).on("change", '#selectall', function () {
+            $(".checkbox").prop('checked', $(this).prop("checked"));
+        });
+
+        $(document).on("click", '.checkbox', function () {
+            // alert($(".checkbox").length + "----" + $(".checkbox:checked").length);
+            if ($(".checkbox").length == $(".checkbox:checked").length) {
+                $("#selectall").prop("checked", true);
+            } else {
+                $("#selectall").removeAttr("checked");
+            }
+        });
+
+
     });
     $(document).ready(function () {
 
