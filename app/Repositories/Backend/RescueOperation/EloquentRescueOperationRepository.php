@@ -132,7 +132,7 @@ class EloquentRescueOperationRepository {
                         }
                     }
                 } else
-                    $userdetails['result'] = "Please";
+                    $userdetails['result'] = "Please Upgrade to Paid Version";
             }
         } else
             $userdetails['result'] = "Please Enable Location services";
