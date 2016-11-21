@@ -75,7 +75,7 @@ class RescueOperationController extends Controller {
         if (count($details = $this->rescueOperationRepository->rescuerNotifications($request))>0):
             return response()->json(['lists' => $details]);
         else:
-            return response()->json(['status' => 'No Panic Signals']);
+            return response()->json(['lists' => '']);
         endif;
     }
 
