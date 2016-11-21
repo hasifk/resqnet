@@ -408,7 +408,7 @@ return $id;
                 ->select('activerescuers.id', 'activerescuers.emergency_type', 'activerescuers.rescuee_id', 'activerescuers.locations', 'users.firstname', 'users.lastname', 'users.phone', 'users.email', 'users.current_medical_conditions', 'users.prior_medical_conditions', 'users.allergies')
                 ->where('operations.rescuer_id', $rescuers_id->user_id)
                 ->orderBy('operations.id', 'desc')
-                ->get();
+                ->paginate(20);
 
         return $details;
     }

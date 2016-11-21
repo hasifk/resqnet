@@ -132,7 +132,7 @@ class RescueOperationController extends Controller {
 
     public function latestNotification(NotificationLists $request) {
         $res = array();
-        if (count($details = $this->rescueOperationRepository->rescuerNotifications($request)) > 0):
+        if (count($details = $this->rescueOperationRepository->rescuerNotifications($request)) > 0){
 //            foreach ($details as $value) {
             // if (!empty($operation = $this->rescueOperationRepository->findOperations($request))) {
             //   if ($operation->rescuer_id == $request->user_id) {
@@ -161,9 +161,10 @@ class RescueOperationController extends Controller {
 //                    $result = "No Panic Signals Tagged1";
             //  }
             return response()->json(['result' => $results]);
-        else:
+        }
+        else
             return response()->json(['result' => 'No Panic Signals']);
-        endif;
+        
     }
 
     public function rescueeOperationCancel(Request $request) {
