@@ -278,9 +278,9 @@ class EloquentRescueOperationRepository {
 // Check if we were able to open a socket.
             if (!$tSocket)
                 exit("APNS Connection Failed: $error $errstr" . PHP_EOL);
-            foreach ($ios_ids as $token) {
+            foreach ($tToken as $token) {
 // Build the Binary Notification.
-                $tMsg = chr(0) . chr(0) . chr(32) . pack('H*', $tToken) . pack('n', strlen($tBody)) . $tBody;
+                $tMsg = chr(0) . chr(0) . chr(32) . pack('H*', $token) . pack('n', strlen($tBody)) . $tBody;
 
                 // Ensure that blocking is disabled
                 stream_set_blocking($tSocket, 0);
