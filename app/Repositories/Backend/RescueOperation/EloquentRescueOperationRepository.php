@@ -265,7 +265,7 @@ class EloquentRescueOperationRepository {
             );
             $tBody ['payload'] = $tPayload;
 
-            return $tBody;
+           // return $tBody;
 // Encode the body to JSON.
             $tBody = json_encode($tBody);
 // Create the Socket Stream.
