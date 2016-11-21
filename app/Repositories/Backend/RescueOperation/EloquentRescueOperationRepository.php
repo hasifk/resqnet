@@ -264,7 +264,7 @@ class EloquentRescueOperationRepository {
                 'notification_type' => $message['to']
             );
             $tBody ['payload'] = $tPayload;
-            
+
             return $tBody;
 // Encode the body to JSON.
             $tBody = json_encode($tBody);
@@ -278,15 +278,16 @@ class EloquentRescueOperationRepository {
 // Check if we were able to open a socket.
             if (!$tSocket)
                 exit("APNS Connection Failed: $error $errstr" . PHP_EOL);
+            foreach ($ios_ids as $token) {
 // Build the Binary Notification.
-            $tMsg = chr(0) . chr(0) . chr(32) . pack('H*', $tToken) . pack('n', strlen($tBody)) . $tBody;
+                $tMsg = chr(0) . chr(0) . chr(32) . pack('H*', $tToken) . pack('n', strlen($tBody)) . $tBody;
 
-            // Ensure that blocking is disabled
-            stream_set_blocking($tSocket, 0);
-            //stream_set_blocking($tSocket, 0);
+                // Ensure that blocking is disabled
+                stream_set_blocking($tSocket, 0);
+                //stream_set_blocking($tSocket, 0);
 // Send the Notification to the Server.
-            $tResult = fwrite($tSocket, $tMsg, strlen($tMsg));
-
+                $tResult = fwrite($tSocket, $tMsg, strlen($tMsg));
+            }
             // $tResult = fwrite($tSocket, $tMsg);
 //            if ($tResult)
 //                return 'Delivered Message to APNS' . PHP_EOL;
