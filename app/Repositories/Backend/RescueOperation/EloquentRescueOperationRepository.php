@@ -195,7 +195,6 @@ class EloquentRescueOperationRepository {
         if (!empty($android_ids) && count($android_ids) > 0) {
             // API access key from Google API's Console
             define('API_ACCESS_KEY', 'AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ');
-
             // prep the bundle
             $msg = array
                 (
@@ -229,7 +228,6 @@ class EloquentRescueOperationRepository {
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
             $result = curl_exec($ch);
-//echo $result;
 // Close connection
             curl_close($ch);
         } else if (!empty($ios_ids) && count($ios_ids) > 0) {
@@ -266,6 +264,8 @@ class EloquentRescueOperationRepository {
                 'notification_type' => $message['to']
             );
             $tBody ['payload'] = $tPayload;
+            
+            return $tBody;
 // Encode the body to JSON.
             $tBody = json_encode($tBody);
 // Create the Socket Stream.
