@@ -534,7 +534,7 @@ return $id;
                 }
             }
         }
-        $lists = $this->ActiveRescuers($ids)->get();
+        $lists = $this->ActiveRescuers($ids)->paginate(20);
         foreach ($lists as $key => $list) {
             $user = User::find($list->rescuee_id);
             $lists[$key]['name'] = $user->firstname . ' ' . $user->lastname;
