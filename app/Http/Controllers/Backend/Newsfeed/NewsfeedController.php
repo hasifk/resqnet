@@ -11,6 +11,7 @@ use App\Models\Newsfeed\Newsfeed;
 use Carbon\Carbon;
 use App\Repositories\Backend\Newsfeed\NewsFeedRepositoryContract;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
+use App\Models\Access\User\User;
 
 
 
@@ -43,14 +44,14 @@ class NewsfeedController extends Controller {
         $newsfeeds = $this->newsfeedRepository->getNewsFeeds($request->user_id);
         if (count($newsfeeds)>0):
             foreach ($newsfeeds as $key=>$item) {
-//                if ($newsfeeds[$key]['image_filename'] && $newsfeeds[$key]['image_extension'] && $newsfeeds[$key]['image_path']) {
-//
-//                    $newsfeeds[$key]['newsfeed_image_src']=url('/image/'.$newsfeeds[$key]['id'].'/'.$newsfeeds[$key]['image_filename'].'300x168.'.$newsfeeds[$key]['image_extension']);
-//                    $newsfeeds[$key]['newsfeed_90x90_src']=url('/image/'.$newsfeeds[$key]['id'].'/'.$newsfeeds[$key]['image_filename'].'90x90.'.$newsfeeds[$key]['image_extension']);
-//
-//                }
+                if ($newsfeeds[$key]['image_filename'] && $newsfeeds[$key]['image_extension'] && $newsfeeds[$key]['image_path']) {
 
-                $user=$this->user->find($newsfeeds[$key]['user_id']);
+                    $newsfeeds[$key]['newsfeed_image_src']=url('/image/'.$newsfeeds[$key]['id'].'/'.$newsfeeds[$key]['image_filename'].'300x168.'.$newsfeeds[$key]['image_extension']);
+                    $newsfeeds[$key]['newsfeed_90x90_src']=url('/image/'.$newsfeeds[$key]['id'].'/'.$newsfeeds[$key]['image_filename'].'90x90.'.$newsfeeds[$key]['image_extension']);
+
+                }
+
+                $user=User::find($newsfeeds[$key]['user_id']);
                 $newsfeeds[$key]['rescuer_name']=$user->firstname." ".$user->lastname;
                 $operationtime = strtotime($newsfeeds[$key]['created_at']);
                 $mytime = Carbon::now();
@@ -87,7 +88,7 @@ class NewsfeedController extends Controller {
 
             if($newsfeed1 = $this->newsfeedRepository->find($request->id)):
             $newsfeed= $newsfeed1->toArray();
-            $user=$this->user->find($newsfeed1->user_id);
+            $user=User::find($newsfeed1->user_id);
              $operationtime = strtotime($newsfeed1->created_at);
              $mytime = Carbon::now();
              $finishedtime=strtotime($mytime->toDateTimeString());
