@@ -40,7 +40,7 @@ class NewsfeedController extends Controller {
      */
     
     public function showNewsfeeds(ShowNewsfeedRequest $request) {
-        $newsfeeds = $this->newsfeedRepository->getNewsFeeds($request->user_id);
+       return $newsfeeds = $this->newsfeedRepository->getNewsFeeds($request->user_id);
         if (count($newsfeeds)>0):
             foreach ($newsfeeds as $key=>$item) {
                 if ($newsfeeds[$key]['image_filename'] && $newsfeeds[$key]['image_extension'] && $newsfeeds[$key]['image_path']) {
