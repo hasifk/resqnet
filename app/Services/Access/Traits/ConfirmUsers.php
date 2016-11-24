@@ -19,7 +19,8 @@ trait ConfirmUsers
     {
         $this->user->confirmAccount($token);
        /* return redirect()->route('auth.login')->withFlashSuccess(trans('exceptions.frontend.auth.confirmation.success'));*/
-        return redirect("https://play.google.com/store?hl=en");
+       // return redirect("https://play.google.com/store?hl=en");
+        return view('frontend.app_popup');
     }
 
     /**
