@@ -61,8 +61,9 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
             } else {
                 return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
                                 ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
-                                ->orWhere('newsfeeds.areaid', '=', $user->area_id)
-                                ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
+                        
+//                                ->orWhere('newsfeeds.areaid', '=', $user->area_id)
+//                                ->whereIn('newsfeeds.newsfeed_type', ['User', 'All'])
                                 ->select('newsfeeds.*')->orderBy('newsfeeds.id', 'desc')->paginate(20);
             }
         }
