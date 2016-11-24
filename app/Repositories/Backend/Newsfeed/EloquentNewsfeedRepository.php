@@ -40,11 +40,13 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                 $newsfeeds = Newsfeed::where('newsfeed_type', "User Group")->get();
                 foreach ($newsfeeds as $newsfeed) {
                     $group_ids = json_decode($newsfeed->group_id);
+                    if(!empty($group_ids)):
                     foreach ($group_ids as $id) {
                         if (!empty($this->groups->findMembersUser($user_id, $id))) {
                             $newsfeed_ids[] = $newsfeed->id;
                         }
                     }
+                    endif;
                 }
                 if (count($newsfeed_ids) > 0) {
                     return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
