@@ -41,7 +41,7 @@ class NewsfeedController extends Controller {
      */
     
     public function showNewsfeeds(ShowNewsfeedRequest $request) {
-       return  $newsfeeds = $this->newsfeedRepository->getNewsFeeds($request->user_id);
+        $newsfeeds = $this->newsfeedRepository->getNewsFeeds($request->user_id);
         if (count($newsfeeds)>0):
             foreach ($newsfeeds as $key=>$item) {
                 if ($newsfeeds[$key]['image_filename'] && $newsfeeds[$key]['image_extension'] && $newsfeeds[$key]['image_path']) {
@@ -52,13 +52,15 @@ class NewsfeedController extends Controller {
                 }
 
                 $user=User::find($newsfeeds[$key]['user_id']);
-//                $newsfeeds[$key]['rescuer_name']=$user->firstname." ".$user->lastname;
-//                $operationtime = strtotime($newsfeeds[$key]['created_at']);
-//                $mytime = Carbon::now();
-//                $finishedtime=strtotime($mytime->toDateTimeString());
-//                $tot_sec = round(abs($finishedtime - $operationtime));
-//                $time=$this->newsfeedRepository->timeCalculator($tot_sec);
-//                $newsfeeds[$key]['time']=$time;
+                if($empty($user)){
+                $newsfeeds[$key]['rescuer_name']=$user->firstname." ".$user->lastname;
+                $operationtime = strtotime($newsfeeds[$key]['created_at']);
+                $mytime = Carbon::now();
+                $finishedtime=strtotime($mytime->toDateTimeString());
+                $tot_sec = round(abs($finishedtime - $operationtime));
+                $time=$this->newsfeedRepository->timeCalculator($tot_sec);
+                $newsfeeds[$key]['time']=$time;
+                }
             }
             return response()->json(['newsfeeds' => $newsfeeds->toArray()]);
         else:
