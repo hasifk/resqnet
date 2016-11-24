@@ -407,7 +407,8 @@ class EloquentUserRepository implements UserRepositoryContract {
         $user = $this->findByToken($token);
 
         if ($user->confirmed == 1) {
-            throw new GeneralException(trans('exceptions.frontend.auth.confirmation.already_confirmed'));
+         //   throw new GeneralException(trans('exceptions.frontend.auth.confirmation.already_confirmed'));
+            return view('frontend.app_popup');
         }
 
         if ($user->confirmation_code == $token) {
