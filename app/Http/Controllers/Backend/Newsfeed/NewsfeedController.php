@@ -52,7 +52,7 @@ class NewsfeedController extends Controller {
                 }
 
                 $user=User::find($newsfeeds[$key]['user_id']);
-                if($empty($user)){
+                if(!empty($user)){
                 $newsfeeds[$key]['rescuer_name']=$user->firstname." ".$user->lastname;
                 $operationtime = strtotime($newsfeeds[$key]['created_at']);
                 $mytime = Carbon::now();
