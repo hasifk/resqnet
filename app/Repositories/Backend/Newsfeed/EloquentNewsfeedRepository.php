@@ -57,7 +57,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                                     ->select('newsfeeds.*')->orderBy('newsfeeds.id', 'desc')->paginate(20);
                 } else {
                     //return $newsfeed_ids=array();
-                    return false;
+                    //return false;
                 }
             } else {
                 return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
