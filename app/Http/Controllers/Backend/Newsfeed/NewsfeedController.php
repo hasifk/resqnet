@@ -41,7 +41,7 @@ class NewsfeedController extends Controller {
      */
     
     public function showNewsfeeds(ShowNewsfeedRequest $request) {
-        $newsfeeds = $this->newsfeedRepository->getNewsFeeds($request->user_id);
+       return  $newsfeeds = $this->newsfeedRepository->getNewsFeeds($request->user_id);
         if (count($newsfeeds)>0):
             foreach ($newsfeeds as $key=>$item) {
                 if ($newsfeeds[$key]['image_filename'] && $newsfeeds[$key]['image_extension'] && $newsfeeds[$key]['image_path']) {
@@ -52,7 +52,7 @@ class NewsfeedController extends Controller {
                 }
 
                 $user=User::find($newsfeeds[$key]['user_id']);
-                $newsfeeds[$key]['rescuer_name']=$user->firstname." ".$user->lastname;
+//                $newsfeeds[$key]['rescuer_name']=$user->firstname." ".$user->lastname;
 //                $operationtime = strtotime($newsfeeds[$key]['created_at']);
 //                $mytime = Carbon::now();
 //                $finishedtime=strtotime($mytime->toDateTimeString());
