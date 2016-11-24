@@ -27,7 +27,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
 
     public function getNewsFeeds($user_id) {
         $user = User::find($user_id);
-
+        $newsfeed_ids='';
         if (access()->hasRolesApp(['Police', 'Fire', 'Paramedic'], $user_id)) {
             return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
                             ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
