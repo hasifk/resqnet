@@ -40,15 +40,15 @@ class NewsfeedController extends Controller {
      */
     
     public function showNewsfeeds(ShowNewsfeedRequest $request) {
-       return $newsfeeds = $this->newsfeedRepository->getNewsFeeds($request->user_id);
+        $newsfeeds = $this->newsfeedRepository->getNewsFeeds($request->user_id);
         if (count($newsfeeds)>0):
             foreach ($newsfeeds as $key=>$item) {
-                if ($newsfeeds[$key]['image_filename'] && $newsfeeds[$key]['image_extension'] && $newsfeeds[$key]['image_path']) {
-
-                    $newsfeeds[$key]['newsfeed_image_src']=url('/image/'.$newsfeeds[$key]['id'].'/'.$newsfeeds[$key]['image_filename'].'300x168.'.$newsfeeds[$key]['image_extension']);
-                    $newsfeeds[$key]['newsfeed_90x90_src']=url('/image/'.$newsfeeds[$key]['id'].'/'.$newsfeeds[$key]['image_filename'].'90x90.'.$newsfeeds[$key]['image_extension']);
-
-                }
+//                if ($newsfeeds[$key]['image_filename'] && $newsfeeds[$key]['image_extension'] && $newsfeeds[$key]['image_path']) {
+//
+//                    $newsfeeds[$key]['newsfeed_image_src']=url('/image/'.$newsfeeds[$key]['id'].'/'.$newsfeeds[$key]['image_filename'].'300x168.'.$newsfeeds[$key]['image_extension']);
+//                    $newsfeeds[$key]['newsfeed_90x90_src']=url('/image/'.$newsfeeds[$key]['id'].'/'.$newsfeeds[$key]['image_filename'].'90x90.'.$newsfeeds[$key]['image_extension']);
+//
+//                }
 
                 $user=$this->user->find($newsfeeds[$key]['user_id']);
                 $newsfeeds[$key]['rescuer_name']=$user->firstname." ".$user->lastname;
