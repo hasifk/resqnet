@@ -11,6 +11,7 @@ use App\Models\Newsfeed\Newsfeed;
 use Carbon\Carbon;
 use App\Repositories\Backend\Newsfeed\NewsFeedRepositoryContract;
 use App\Repositories\Frontend\Access\User\UserRepositoryContract;
+use App\Repositories\Backend\Access\User\UserRepositoryContract;
 use App\Models\Access\User\User;
 
 
@@ -50,8 +51,8 @@ class NewsfeedController extends Controller {
                     $newsfeeds[$key]['newsfeed_90x90_src']=url('/image/'.$newsfeeds[$key]['id'].'/'.$newsfeeds[$key]['image_filename'].'90x90.'.$newsfeeds[$key]['image_extension']);
 
                 }
-
-                $user=User::find($newsfeeds[$key]['user_id']);
+                $user=$this->users->findOrThrowException($newsfeeds[$key]['user_id'], true);
+               // $user=User::find($newsfeeds[$key]['user_id']);
                 if(!empty($user)){
                 $newsfeeds[$key]['rescuer_name']=$user->firstname." ".$user->lastname;
                 $operationtime = strtotime($newsfeeds[$key]['created_at']);
@@ -60,6 +61,7 @@ class NewsfeedController extends Controller {
                 $tot_sec = round(abs($finishedtime - $operationtime));
                 $time=$this->newsfeedRepository->timeCalculator($tot_sec);
                 $newsfeeds[$key]['time']=$time;
+                
                 }
             }
             return response()->json(['newsfeeds' => $newsfeeds->toArray()]);
