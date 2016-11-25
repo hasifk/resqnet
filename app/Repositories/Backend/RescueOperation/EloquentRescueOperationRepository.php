@@ -29,158 +29,164 @@ class EloquentRescueOperationRepository {
 
     public function findActiveRescuers($result) {
         $type = RescuerType::where('id', $result->type)->value('type');
-        $role = Role::where('name', $type)->value('id');
-        $userid = $result->user_id;
-        $userloc = $this->findUser($userid); //app user id
-        $actives = $this->activeUsers(); //getting all active users
-        $rescuers = array();
-        $f = 0;
-        if (!empty($userloc) && !empty($userloc->lat) && !empty($userloc->lng)) {
-            if (!empty($payment = Payment::where('user_id', $userid)->orderBy('id', 'desc')->first())) {
-                if (strtotime($payment->subscription_ends_at) >= strtotime(date('d-m-Y'))) {
-                    $f = 1;
+        if (!empty($type)) {
+            $role = Role::where('name', $type)->value('id');
+            if (!empty($role)) {
+                $userid = $result->user_id;
+                $userloc = $this->findUser($userid); //app user id
+                $actives = $this->activeUsers(); //getting all active users
+                $rescuers = array();
+                $f = 0;
+                if (!empty($userloc) && !empty($userloc->lat) && !empty($userloc->lng)) {
+                    if (!empty($payment = Payment::where('user_id', $userid)->orderBy('id', 'desc')->first())) {
+                        if (strtotime($payment->subscription_ends_at) >= strtotime(date('d-m-Y'))) {
+                            $f = 1;
 //                    $locations[$userid]['lat'] = $userloc->lat;
 //                    $locations[$userid]['long'] = $userloc->lng;
 //                    $locations[$userid]['addr'] = $userloc->address;
-                    $locations[$userid]['lat'] = $result->lat;
-                    $locations[$userid]['long'] = $result->lng;
-                    $locations[$userid]['addr'] = $result->address;
-                    foreach ($actives as $active) {
-                        if ($active->role_id == $role) {
-                            if (!empty($active->lat) && !empty($active->lng)) {
-                                if ($active->country_id == $userloc->country_id) {
-                                    if (!empty($active->app_id) && !empty($active->device_type)):
-                                        $locations[$active->id]['lat'] = $active->lat;
-                                        $locations[$active->id]['long'] = $active->lng;
-                                        $locations[$active->id]['addr'] = $active->address;
-                                        $rescuers[] = $active->id;
-                                        //$distances[$active->id]=$this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
-                                        $app_id['app_id'][$active->id] = $active->app_id;
-                                        $app_id['device_type'][$active->id] = $active->device_type;
-                                    endif;
+                            $locations[$userid]['lat'] = $result->lat;
+                            $locations[$userid]['long'] = $result->lng;
+                            $locations[$userid]['addr'] = $result->address;
+                            foreach ($actives as $active) {
+                                if ($active->role_id == $role) {
+                                    if (!empty($active->lat) && !empty($active->lng)) {
+                                        if ($active->country_id == $userloc->country_id) {
+                                            if (!empty($active->app_id) && !empty($active->device_type)):
+                                                $locations[$active->id]['lat'] = $active->lat;
+                                                $locations[$active->id]['long'] = $active->lng;
+                                                $locations[$active->id]['addr'] = $active->address;
+                                                $rescuers[] = $active->id;
+                                                //$distances[$active->id]=$this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
+                                                $app_id['app_id'][$active->id] = $active->app_id;
+                                                $app_id['device_type'][$active->id] = $active->device_type;
+                                            endif;
+                                        }
+                                    }
                                 }
                             }
-                        }
-                    }
-                    if (!empty($contacts = $this->emergencyContacts($userid)))
-                        $appids = $this->membershipChecking($contacts, $rescuers);
-                    if (!empty($userloc->emergency_groups)) {
-                        $group_ids = json_decode($userloc->emergency_groups);
-                        $gp = array();
-                        foreach ($group_ids as $gpid) {
-                            $group_user = Member::where('group_id', $gpid)->get();
-                            if (!empty($group_user)) {
-                                foreach ($group_user as $value) {
-                                    if ($value->user_id != $userid) {
-                                        //  if (!in_array($value->user_id, $rescuers)) { 
-                                        if (!empty($appids)) {
-                                            if (!in_array($value->user_id, $gp)) {
-                                                if (!in_array($value->user_id, $appids[1])) {
-                                                    $user = User::find($value->user_id);
-                                                    if (!empty($user)) {
-                                                        if (!empty($user->app_id) && !empty($user->device_type)) {
-                                                            $groups[0]['app_id'][$value->user_id] = $user->app_id;
-                                                            $groups[0]['device_type'][$value->user_id] = $user->device_type;
-                                                            if (!empty($groups[1][$gpid]))
-                                                                $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
-                                                            else
-                                                                $groups[1][$gpid] = $user->id;
-                                                            $gp[] = $user->id;
+                            if (!empty($contacts = $this->emergencyContacts($userid)))
+                                $appids = $this->membershipChecking($contacts, $rescuers);
+                            if (!empty($userloc->emergency_groups)) {
+                                $group_ids = json_decode($userloc->emergency_groups);
+                                $gp = array();
+                                foreach ($group_ids as $gpid) {
+                                    $group_user = Member::where('group_id', $gpid)->get();
+                                    if (!empty($group_user)) {
+                                        foreach ($group_user as $value) {
+                                            if ($value->user_id != $userid) {
+                                                //  if (!in_array($value->user_id, $rescuers)) { 
+                                                if (!empty($appids)) {
+                                                    if (!in_array($value->user_id, $gp)) {
+                                                        if (!in_array($value->user_id, $appids[1])) {
+                                                            $user = User::find($value->user_id);
+                                                            if (!empty($user)) {
+                                                                if (!empty($user->app_id) && !empty($user->device_type)) {
+                                                                    $groups[0]['app_id'][$value->user_id] = $user->app_id;
+                                                                    $groups[0]['device_type'][$value->user_id] = $user->device_type;
+                                                                    if (!empty($groups[1][$gpid]))
+                                                                        $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
+                                                                    else
+                                                                        $groups[1][$gpid] = $user->id;
+                                                                    $gp[] = $user->id;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                } else {
+                                                    if (!in_array($value->user_id, $gp)) {
+                                                        $user = User::find($value->user_id);
+                                                        if (!empty($user)) {
+                                                            if (!empty($user->app_id) && !empty($user->device_type)) {
+                                                                $groups[0]['app_id'][$value->user_id] = $user->app_id;
+                                                                $groups[0]['device_type'][$value->user_id] = $user->device_type;
+                                                                if (!empty($groups[1][$gpid]))
+                                                                    $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
+                                                                else
+                                                                    $groups[1][$gpid] = $user->id;
+                                                                $gp[] = $user->id;
+                                                            }
                                                         }
                                                     }
                                                 }
-                                            }
-                                        } else {
-                                            if (!in_array($value->user_id, $gp)) {
-                                                $user = User::find($value->user_id);
-                                                if (!empty($user)) {
-                                                    if (!empty($user->app_id) && !empty($user->device_type)) {
-                                                        $groups[0]['app_id'][$value->user_id] = $user->app_id;
-                                                        $groups[0]['device_type'][$value->user_id] = $user->device_type;
-                                                        if (!empty($groups[1][$gpid]))
-                                                            $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
-                                                        else
-                                                            $groups[1][$gpid] = $user->id;
-                                                        $gp[] = $user->id;
-                                                    }
-                                                }
+
+                                                //  }
                                             }
                                         }
-
-                                        //  }
                                     }
                                 }
                             }
                         }
                     }
-                }
-            }
-            else if ((!empty($userloc->per_lat) && !empty($userloc->per_lng))) {
-                if ($this->distanceCalculation($userloc->lat, $userloc->lng, $userloc->per_lat, $userloc->per_lng) <= 30) {
-                    $f = 1;
-                    $locations[$userid]['lat'] = $userloc->lat;
-                    $locations[$userid]['long'] = $userloc->lng;
-                    $locations[$userid]['addr'] = $userloc->address;
-                    foreach ($actives as $active) {
-                        if ($active->role_id == $role) {
-                            if (!empty($active->lat) && !empty($active->lng)) {
-                                // $userdetails[] = $this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
-                                if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 5) {
-                                    if (!empty($active->app_id) && !empty($active->device_type)):
-                                        $locations[$active->id]['lat'] = $active->lat;
-                                        $locations[$active->id]['long'] = $active->lng;
-                                        $locations[$active->id]['addr'] = $active->address;
-                                        $rescuers[] = $active->id;
-                                        // $distances[$active->id]=$this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
-                                        $app_id['app_id'][$active->id] = $active->app_id;
-                                        $app_id['device_type'][$active->id] = $active->device_type;
-                                    endif;
+                    else if ((!empty($userloc->per_lat) && !empty($userloc->per_lng))) {
+                        if ($this->distanceCalculation($userloc->lat, $userloc->lng, $userloc->per_lat, $userloc->per_lng) <= 30) {
+                            $f = 1;
+                            $locations[$userid]['lat'] = $userloc->lat;
+                            $locations[$userid]['long'] = $userloc->lng;
+                            $locations[$userid]['addr'] = $userloc->address;
+                            foreach ($actives as $active) {
+                                if ($active->role_id == $role) {
+                                    if (!empty($active->lat) && !empty($active->lng)) {
+                                        // $userdetails[] = $this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
+                                        if ($this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng) <= 5) {
+                                            if (!empty($active->app_id) && !empty($active->device_type)):
+                                                $locations[$active->id]['lat'] = $active->lat;
+                                                $locations[$active->id]['long'] = $active->lng;
+                                                $locations[$active->id]['addr'] = $active->address;
+                                                $rescuers[] = $active->id;
+                                                // $distances[$active->id]=$this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
+                                                $app_id['app_id'][$active->id] = $active->app_id;
+                                                $app_id['device_type'][$active->id] = $active->device_type;
+                                            endif;
+                                        }
+                                    }
                                 }
                             }
-                        }
+                        } else
+                            $userdetails['result'] = "Please Upgrade to Paid Version";
                     }
                 } else
-                    $userdetails['result'] = "Please Upgrade to Paid Version";
+                    $userdetails['result'] = "Please Enable Location services";
+                if ($f == 1) {
+                    //$rescuee = User::find($userid);
+                    $message['message'] = "The User " . $userloc->firstname . " " . $userloc->lastname . " Requested Emergency Support(" . $result->emergency_type . ")";
+                    sort($rescuers);
+                    $obj = new ActiveRescuer;
+                    $obj->rescuee_id = $userid;
+                    $obj->role_id = $role;
+                    $obj->rescuers_ids = !empty($rescuers) ? json_encode($rescuers) : '';
+                    $obj->emergency_type = $result->emergency_type;
+                    $obj->emergency_ids = !empty($appids) ? json_encode($appids[1]) : '';
+                    $obj->emergency_groups = !empty($groups) ? json_encode($groups[1]) : '';
+                    $obj->locations = json_encode($locations);
+                    $obj->save();
+                    $message['id'] = $obj->id;
+                    // $userdetails[]=$app_id;
+                    //return $userdetails;
+                    if (!empty($rescuers)) {
+                        $message['to'] = "Rescuer";
+                        $userdetails[] = $this->notification($app_id, $message);
+                        $userdetails['result'] = 'SUCCESS';
+                        $userdetails['panicid'] = $obj->id;
+                    } else
+                        $userdetails['result'] = "There seems to be no resquers available within your radius";
+                    if (!empty($appids)) {
+                        $message['to'] = "Emergency";
+                        $userdetails[] = $this->notification($appids[0], $message);
+                    }
+                    if (!empty($groups)) {
+                        if (!empty($userloc->lat))
+                            $addr = $userloc->address;
+                        else
+                            $addr = "Location Not available, Please Use Map";
+                        $message['message'] = $userloc->firstname . " " . $userloc->lastname . " Sent a " . $result->emergency_type . " Panic Signal <br> Location <br> " . $addr;
+                        $message['to'] = "EmergencyGroup";
+                        $userdetails[] = $this->notification($groups[0], $message);
+                    }
+                }
             }
-        } else
-            $userdetails['result'] = "Please Enable Location services";
-        if ($f == 1) {
-            //$rescuee = User::find($userid);
-            $message['message'] = "The User " . $userloc->firstname . " " . $userloc->lastname . " Requested Emergency Support(" . $result->emergency_type . ")";
-            sort($rescuers);
-            $obj = new ActiveRescuer;
-            $obj->rescuee_id = $userid;
-            $obj->role_id = $role;
-            $obj->rescuers_ids = !empty($rescuers) ? json_encode($rescuers) : '';
-            $obj->emergency_type = $result->emergency_type;
-            $obj->emergency_ids = !empty($appids) ? json_encode($appids[1]) : '';
-            $obj->emergency_groups = !empty($groups) ? json_encode($groups[1]) : '';
-            $obj->locations = json_encode($locations);
-            $obj->save();
-            $message['id'] = $obj->id;
-            // $userdetails[]=$app_id;
-            //return $userdetails;
-            if (!empty($rescuers)) {
-                $message['to'] = "Rescuer";
-                $userdetails[] = $this->notification($app_id, $message);
-                $userdetails['result'] = 'SUCCESS';
-                $userdetails['panicid'] = $obj->id;
-            } else
-                $userdetails['result'] = "There seems to be no resquers available within your radius";
-            if (!empty($appids)) {
-                $message['to'] = "Emergency";
-                $userdetails[] = $this->notification($appids[0], $message);
-            }
-            if (!empty($groups)) {
-                if (!empty($userloc->lat))
-                    $addr = $userloc->address;
-                else
-                    $addr = "Location Not available, Please Use Map";
-                $message['message'] = $userloc->firstname . " " . $userloc->lastname . " Sent a " . $result->emergency_type . " Panic Signal <br> Location <br> " . $addr;
-                $message['to'] = "EmergencyGroup";
-                $userdetails[] = $this->notification($groups[0], $message);
-            }
+            else $userdetails="Opps Error..Not valid Role";
         }
+        else $userdetails="Opps Error..Not valid Type";
         return $userdetails;
     }
 
