@@ -20,13 +20,13 @@ class NewsfeedController extends Controller {
 
   
     private $newsfeedRepository;
-    private $user;
+    private $users;
  
 
-    public function __construct(NewsFeedRepositoryContract $newsfeedRepository,UserRepositoryContract $user) {
+    public function __construct(NewsFeedRepositoryContract $newsfeedRepository,UserRepositoryContract $users) {
 
         $this->newsfeedRepository = $newsfeedRepository;
-        $this->user = $user;
+        $this->users = $users;
         
     }
 
