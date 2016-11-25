@@ -197,7 +197,7 @@ class EloquentRescueOperationRepository {
 
         if (!empty($android_ids) && count($android_ids) > 0) {
             // API access key from Google API's Console
-            define('API_ACCESS_KEY', 'AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ');
+            if (!defined('API_ACCESS_KEY')) define('API_ACCESS_KEY','AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ');
             // prep the bundle
             $msg = array
                 (
