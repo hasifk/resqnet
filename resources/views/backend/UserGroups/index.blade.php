@@ -56,6 +56,7 @@
                                     <th>Group Image</th>
                                     <th>Total Members</th>
                                     <th>Created Date</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -76,12 +77,13 @@
                                             <td>
                                                <img src="{{ $groups->gp_image_src }}" width="25" height="25">
                                             </td>
-                                            <td>
+                                            <th>
                                                 {{$groups->amount}}
-                                            </td>
+                                            </th>
                                             <td>
                                                 <a href="{{route('admin.access.user.shows',$groups->id)}}"> {{ $groups->created_at }} </a>
                                             </td>
+                                            <th>{!! $groups->action_buttons !!}</th>
                                         </tr>
                                         <?php
                                     endforeach;

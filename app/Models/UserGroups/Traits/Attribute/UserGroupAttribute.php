@@ -63,7 +63,7 @@ trait UserGroupAttribute {
      */
     public function getShowButtonAttribute() {
         if (access()->allow('show-users'))
-        return '<a href="' . route('admin.newsfeed.newsfeedshow', $this->id) . '" class="btn btn-xs btn-success"><i class="fa fa-arrow-circle-right" data-toggle="tooltip" data-placement="top" title="View More"></i></a> ';
+        return '<a href="' . route('user.groups.view',$this->id) . '" class="btn btn-xs btn-success"><i class="fa fa-arrow-circle-right" data-toggle="tooltip" data-placement="top" title="View More"></i></a> ';
         return '';
     }
 
@@ -73,7 +73,7 @@ trait UserGroupAttribute {
     
     public function getDeleteButtonAttribute() {
         if (access()->allow('delete-newsfeed'))
-            return '<a href="' . route('admin.newsfeed.deletenewsfeed', $this->id) . '" class="newsfeed_delete btn btn-xs btn-danger"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i></a>';
+           // return '<a href="' . route('admin.newsfeed.deletenewsfeed', $this->id) . '" class="newsfeed_delete btn btn-xs btn-danger"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i></a>';
         return '';
     }
 

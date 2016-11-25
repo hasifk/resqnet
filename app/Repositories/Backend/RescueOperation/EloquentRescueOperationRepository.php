@@ -35,7 +35,6 @@ class EloquentRescueOperationRepository {
         $actives = $this->activeUsers(); //getting all active users
         $rescuers = array();
         $f = 0;
-
         if (!empty($userloc) && !empty($userloc->lat) && !empty($userloc->lng)) {
             if (!empty($payment = Payment::where('user_id', $userid)->orderBy('id', 'desc')->first())) {
                 if (strtotime($payment->subscription_ends_at) >= strtotime(date('d-m-Y'))) {
@@ -43,7 +42,7 @@ class EloquentRescueOperationRepository {
 //                    $locations[$userid]['lat'] = $userloc->lat;
 //                    $locations[$userid]['long'] = $userloc->lng;
 //                    $locations[$userid]['addr'] = $userloc->address;
-                     $locations[$userid]['lat'] = $result->lat;
+                    $locations[$userid]['lat'] = $result->lat;
                     $locations[$userid]['long'] = $result->lng;
                     $locations[$userid]['addr'] = $result->address;
                     foreach ($actives as $active) {
@@ -70,40 +69,46 @@ class EloquentRescueOperationRepository {
                         $gp = array();
                         foreach ($group_ids as $gpid) {
                             $group_user = Member::where('group_id', $gpid)->get();
-                            foreach ($group_user as $value) {
-                                if ($value->user_id != $userid) {
-                                    //  if (!in_array($value->user_id, $rescuers)) { 
-                                    if (!empty($appids)) {
-                                        if (!in_array($value->user_id, $gp)) {
-                                            if (!in_array($value->user_id, $appids[1])) {
+                            if (!empty($group_user)) {
+                                foreach ($group_user as $value) {
+                                    if ($value->user_id != $userid) {
+                                        //  if (!in_array($value->user_id, $rescuers)) { 
+                                        if (!empty($appids)) {
+                                            if (!in_array($value->user_id, $gp)) {
+                                                if (!in_array($value->user_id, $appids[1])) {
+                                                    $user = User::find($value->user_id);
+                                                    if (!empty($user)) {
+                                                        if (!empty($user->app_id) && !empty($user->device_type)) {
+                                                            $groups[0]['app_id'][$value->user_id] = $user->app_id;
+                                                            $groups[0]['device_type'][$value->user_id] = $user->device_type;
+                                                            if (!empty($groups[1][$gpid]))
+                                                                $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
+                                                            else
+                                                                $groups[1][$gpid] = $user->id;
+                                                            $gp[] = $user->id;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            if (!in_array($value->user_id, $gp)) {
                                                 $user = User::find($value->user_id);
-                                                if (!empty($user->app_id) && !empty($user->device_type)) {
-                                                    $groups[0]['app_id'][$value->user_id] = $user->app_id;
-                                                    $groups[0]['device_type'][$value->user_id] = $user->device_type;
-                                                    if (!empty($groups[1][$gpid]))
-                                                        $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
-                                                    else
-                                                        $groups[1][$gpid] = $user->id;
-                                                    $gp[] = $user->id;
+                                                if (!empty($user)) {
+                                                    if (!empty($user->app_id) && !empty($user->device_type)) {
+                                                        $groups[0]['app_id'][$value->user_id] = $user->app_id;
+                                                        $groups[0]['device_type'][$value->user_id] = $user->device_type;
+                                                        if (!empty($groups[1][$gpid]))
+                                                            $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
+                                                        else
+                                                            $groups[1][$gpid] = $user->id;
+                                                        $gp[] = $user->id;
+                                                    }
                                                 }
                                             }
                                         }
-                                    } else {
-                                        if (!in_array($value->user_id, $gp)) {
-                                            $user = User::find($value->user_id);
-                                            if (!empty($user->app_id) && !empty($user->device_type)) {
-                                                $groups[0]['app_id'][$value->user_id] = $user->app_id;
-                                                $groups[0]['device_type'][$value->user_id] = $user->device_type;
-                                                if (!empty($groups[1][$gpid]))
-                                                    $groups[1][$gpid] = $groups[1][$gpid] . ',' . $user->id;
-                                                else
-                                                    $groups[1][$gpid] = $user->id;
-                                                $gp[] = $user->id;
-                                            }
-                                        }
-                                    }
 
-                                    //  }
+                                        //  }
+                                    }
                                 }
                             }
                         }
@@ -197,7 +202,8 @@ class EloquentRescueOperationRepository {
 
         if (!empty($android_ids) && count($android_ids) > 0) {
             // API access key from Google API's Console
-            if (!defined('API_ACCESS_KEY')) define('API_ACCESS_KEY','AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ');
+            if (!defined('API_ACCESS_KEY'))
+                define('API_ACCESS_KEY', 'AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ');
             // prep the bundle
             $msg = array
                 (
@@ -268,7 +274,7 @@ class EloquentRescueOperationRepository {
             );
             $tBody ['payload'] = $tPayload;
 
-           // return $tBody;
+            // return $tBody;
 // Encode the body to JSON.
             $tBody = json_encode($tBody);
 // Create the Socket Stream.

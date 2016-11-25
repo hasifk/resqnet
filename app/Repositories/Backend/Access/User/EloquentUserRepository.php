@@ -54,7 +54,7 @@ class EloquentUserRepository implements UserRepositoryContract {
             $user = User::withTrashed()->find($id);
         }
 
-        if (!is_null($user)) {
+        if (!is_null($user)) {  
             return $user;
         }
 
