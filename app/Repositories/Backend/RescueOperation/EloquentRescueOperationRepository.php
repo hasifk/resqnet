@@ -40,12 +40,12 @@ class EloquentRescueOperationRepository {
             if (!empty($payment = Payment::where('user_id', $userid)->orderBy('id', 'desc')->first())) {
                 if (strtotime($payment->subscription_ends_at) >= strtotime(date('d-m-Y'))) {
                     $f = 1;
-                    $locations[$userid]['lat'] = $userloc->lat;
-                    $locations[$userid]['long'] = $userloc->lng;
-                    $locations[$userid]['addr'] = $userloc->address;
-//                     $locations[$userid]['lat'] = $result->lat;
-//                    $locations[$userid]['long'] = $result->lng;
-//                    $locations[$userid]['addr'] = $result->address;
+//                    $locations[$userid]['lat'] = $userloc->lat;
+//                    $locations[$userid]['long'] = $userloc->lng;
+//                    $locations[$userid]['addr'] = $userloc->address;
+                     $locations[$userid]['lat'] = $result->lat;
+                    $locations[$userid]['long'] = $result->lng;
+                    $locations[$userid]['addr'] = $result->address;
                     foreach ($actives as $active) {
                         if ($active->role_id == $role) {
                             if (!empty($active->lat) && !empty($active->lng)) {
