@@ -34,6 +34,7 @@ class EloquentRescueOperationRepository {
             if (!empty($role)) {
                 $userid = $result->user_id;
                 $userloc = $this->findUser($userid); //app user id
+                if (!empty($userloc)) {
                 $actives = $this->activeUsers(); //getting all active users
                 $rescuers = array();
                 $f = 0;
@@ -183,6 +184,8 @@ class EloquentRescueOperationRepository {
                         $userdetails[] = $this->notification($groups[0], $message);
                     }
                 }
+                }
+                else $userdetails="Opps Error..Not valid User";
             }
             else $userdetails="Opps Error..Not valid Role";
         }
