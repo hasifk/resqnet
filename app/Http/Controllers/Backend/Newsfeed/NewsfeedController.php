@@ -10,7 +10,7 @@ use App\Http\Requests\Backend\Newsfeed\UpdateNewsfeedRequest;
 use App\Models\Newsfeed\Newsfeed;
 use Carbon\Carbon;
 use App\Repositories\Backend\Newsfeed\NewsFeedRepositoryContract;
-use App\Repositories\Frontend\Access\User\UserRepositoryContract;
+//use App\Repositories\Frontend\Access\User\UserRepositoryContract;
 use App\Repositories\Backend\Access\User\UserRepositoryContract;
 use App\Models\Access\User\User;
 
