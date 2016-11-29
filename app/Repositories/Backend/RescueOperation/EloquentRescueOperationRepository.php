@@ -411,7 +411,7 @@ class EloquentRescueOperationRepository {
                 $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id);
                 $user = User::find($request->rescuer_id);
                 $message['message'] = $user->firstname . " " . $user->lastname . " is responding to your emergency. Help is on the way";
-                $message['id'] = $request->active_rescuers_id;
+                $message['id'] = $obj->id;
                 $message['to'] = "User";
                 $user = User::find($rescuee_id->rescuee_id);
                 $app_id['app_id'][] = $user->app_id;
@@ -601,8 +601,10 @@ class EloquentRescueOperationRepository {
 
     public function operationFinishing($request) {
         $operation = Operation::find($request->operation_id);
+        if(!empty($operation)):
         $operation->finished_at = date("Y-m-d h:i:s");
         $operation->save();
+        endif;
     }
 
 }
