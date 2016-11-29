@@ -597,7 +597,7 @@ class EloquentRescueOperationRepository {
         return "$hours:$minutes:$seconds";
     }
     public function operationFinishing($request) {
-       $operation= Operation::find($request->opration_id);
+       $operation= Operation::find($request->operation_id);
        $operation->finished_at=date("Y-m-d h:i:s");
        $operation->save();
     
