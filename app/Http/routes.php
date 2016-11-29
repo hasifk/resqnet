@@ -53,7 +53,7 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
     require (__DIR__ . '/Routes/Api/Reg_Login.php');
     require (__DIR__ . '/Routes/Api/Access.php');
    $api->post('/paypal', 'App\Http\Controllers\Backend\Payment\PaymentController@paymentSave')->name('user.groups.index');
-    $api->post('/payeedetails', 'App\Http\Controllers\Backend\Payment\PaymentController@payeeDetails')->name('user.groups.index');
+   $api->post('/payeedetails', 'App\Http\Controllers\Backend\Payment\PaymentController@payeeDetails')->name('user.groups.index');
    /* $api->group(['middleware' => ['jwt.auth']], function ($api) {*/
     $api->group(['middleware' => ['appdcr']], function ($api) {
         require (__DIR__ . '/Routes/Api/Profile.php');

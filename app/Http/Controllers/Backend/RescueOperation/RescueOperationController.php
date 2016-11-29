@@ -171,5 +171,9 @@ class RescueOperationController extends Controller {
         $this->rescueOperationRepository->rescueeOperationCancel($request);
         return response()->json(['result' => 'success']);
     }
+    public function operationFininshing(Request $request) {
+        $this->rescueOperationRepository->operationFininshing($request);
+        return response()->json(['result' => 'success']);
+    }
 
 }

@@ -8,3 +8,4 @@ $api->post('/rescuernotifications', 'App\Http\Controllers\Backend\RescueOperatio
 $api->post('/notificationresponce', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@notificationResponce')->name('rescuer.operation.index');
 $api->post('/latestnotification', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@latestNotification')->name('rescuer.operation.index');
 $api->post('/rescueeoperationcancel', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@rescueeOperationCancel')->name('rescuer.operation.index');
+$api->post('/operationfininshing', 'App\Http\Controllers\Backend\RescueOperation\RescueOperationController@operationFininshing')->name('rescuer.operation.index');
