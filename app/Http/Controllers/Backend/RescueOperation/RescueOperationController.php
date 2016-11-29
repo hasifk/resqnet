@@ -56,7 +56,14 @@ class RescueOperationController extends Controller {
 
     public function rescuerOperationResponse(RescuerOperation $request) {
 //save the resquer details once they accepted rescuee requests
-        return response()->json(['rescue_operation' => $this->rescueOperationRepository->rescuersResponse($request)]);
+        $result = $this->rescueOperationRepository->rescuersResponse($request);
+
+        if (is_numeric($result))
+            $flag = 1;
+        else
+            $flag = 0;
+
+        return response()->json(['rescue_operation' => $result, 'result' => $flag]);
     }
 
     public function rescueeForm() {
@@ -72,7 +79,7 @@ class RescueOperationController extends Controller {
     }
 
     public function rescuerNotifications(NotificationLists $request) {
-        if (count($details = $this->rescueOperationRepository->rescuerNotifications($request))>0):
+        if (count($details = $this->rescueOperationRepository->rescuerNotifications($request)) > 0):
             return response()->json(['lists' => $details]);
         else:
             return response()->json(['lists' => '']);
@@ -132,7 +139,7 @@ class RescueOperationController extends Controller {
 
     public function latestNotification(NotificationLists $request) {
         $res = array();
-        if (count($details = $this->rescueOperationRepository->rescuerNotifications($request)) > 0){
+        if (count($details = $this->rescueOperationRepository->rescuerNotifications($request)) > 0) {
 //            foreach ($details as $value) {
             // if (!empty($operation = $this->rescueOperationRepository->findOperations($request))) {
             //   if ($operation->rescuer_id == $request->user_id) {
@@ -161,16 +168,15 @@ class RescueOperationController extends Controller {
 //                    $result = "No Panic Signals Tagged1";
             //  }
             return response()->json(['result' => $results]);
-        }
-        else
+        } else
             return response()->json(['result' => 'No Panic Signals']);
-        
     }
 
     public function rescueeOperationCancel(Request $request) {
         $this->rescueOperationRepository->rescueeOperationCancel($request);
         return response()->json(['result' => 'success']);
     }
+
     public function operationFinishing(Request $request) {
         $this->rescueOperationRepository->operationFinishing($request);
         return response()->json(['result' => 'success']);
