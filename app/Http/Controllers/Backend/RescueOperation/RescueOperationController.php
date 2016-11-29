@@ -59,9 +59,9 @@ class RescueOperationController extends Controller {
         $result = $this->rescueOperationRepository->rescuersResponse($request);
 
         if (is_numeric($result))
-            $flag = 1;
-        else
             $flag = 0;
+        else
+            $flag = 1;
 
         return response()->json(['rescue_operation' => $result, 'result' => $flag]);
     }
