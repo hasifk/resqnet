@@ -612,7 +612,7 @@ class EloquentRescueOperationRepository {
             $app_id['app_id'][] = $user->app_id;
             $app_id['device_type'][] = $user->device_type;
             $this->notification($app_id, $message);
-            return $request->operation_id;
+            //return $request->operation_id;
         endif;
     }
 
