@@ -601,9 +601,18 @@ class EloquentRescueOperationRepository {
 
     public function operationFinishing($request) {
         $operation = Operation::find($request->operation_id);
-        if(!empty($operation)):
-        $operation->finished_at = date("Y-m-d h:i:s");
-        $operation->save();
+        if (!empty($operation)):
+            $operation->finished_at = date("Y-m-d h:i:s");
+            $operation->save();
+
+            $user = User::find($request->user_id);
+            $message['message'] = "Tagged ResQuer is reached";
+            $message['id'] = $request->operation_id;
+            $message['to'] = "User";
+            $app_id['app_id'][] = $user->app_id;
+            $app_id['device_type'][] = $user->device_type;
+            $this->notification($app_id, $message);
+            return $request->operation_id;
         endif;
     }
 
