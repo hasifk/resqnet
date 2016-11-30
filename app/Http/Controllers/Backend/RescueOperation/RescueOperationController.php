@@ -58,7 +58,7 @@ class RescueOperationController extends Controller {
 //save the resquer details once they accepted rescuee requests
         $result = $this->rescueOperationRepository->rescuersResponse($request);
 
-        if (is_numeric($result))
+        if (is_array($result))
             $flag = 0;
         else
             $flag = 1;
