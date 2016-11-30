@@ -559,8 +559,8 @@ class EloquentRescueOperationRepository {
                         }
                     }
                 }
-                else
-                    unset($rescuers[$key]);
+               // else
+                    //unset($rescuers[$key]);
             }
         }
         return $rescuers;
