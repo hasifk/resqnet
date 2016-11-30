@@ -417,7 +417,7 @@ class EloquentRescueOperationRepository {
                 $app_id['app_id'][] = $user->app_id;
                 $app_id['device_type'][] = $user->device_type;
                 $this->notification($app_id, $message);
-                return array('operation' => $obj->id,'user_id'=>$user->id);
+                return array($obj->id,$user->id);
             else:
                 // $user = User::find($request->rescuer_id);
 //                $message['message'] = "Another Rescuer Accepted this request";
@@ -615,11 +615,10 @@ class EloquentRescueOperationRepository {
         $operation = Operation::find($request->operation_id);
 
         if (!empty($operation)) {
-
             $operation->finished_at = date("Y-m-d h:i:s");
             $operation->save();
 
-            $user = User::find($request->user_id);
+            $user = User::find($request->panic_user_id);
             $message['message'] = "Tagged ResQuer is reached";
             $message['id'] = $request->operation_id;
             $message['to'] = "Rescuer";
