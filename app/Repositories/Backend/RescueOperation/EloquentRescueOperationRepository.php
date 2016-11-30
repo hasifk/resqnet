@@ -12,19 +12,23 @@ use App\Models\UserGroups\Member;
 use App\Models\UserGroups\UserGroup;
 use App\Models\Access\EmergencyContact\EmergencyContact;
 use App\Repositories\Backend\UserGroups\UserGroupsRepositoryContract;
+use App\Repositories\Backend\Access\User\UserRepositoryContract;
 use Illuminate\Http\Request;
 use App\Models\Access\Payment\Payment;
 use Auth;
 use Storage;
 use Carbon\Carbon;
 
+
 class EloquentRescueOperationRepository {
 
-    private $groups;
-
-    public function __construct(UserGroupsRepositoryContract $groups) {
+    private $groups,$users;
+     
+    
+    public function __construct(UserGroupsRepositoryContract $groups,UserRepositoryContract $users) {
 
         $this->groups = $groups;
+        $this->users = $users;
     }
 
     public function findActiveRescuers($result) {
@@ -542,19 +546,25 @@ class EloquentRescueOperationRepository {
         $rescuers = $this->ActiveRescuerPaginate();
         if (!empty($rescuers)) {
             foreach ($rescuers as $key => $active) {
-                $rescuers[$key]['rescuee_details'] = User::find($active->rescuee_id);
-                if (!empty($operation = Operation::where('active_rescuers_id', $active->id)->first())) {
-                    $rescuers[$key]['tagged'] = User::find($operation->rescuer_id);
-                    $activetime = strtotime($active->created_at);
-                    $operationtime = strtotime($operation->created_at);
-                    if (!empty($operation->finished_at)):
-                        $finishedtime = strtotime($operation->finished_at);
-                        $tot_sec = round(abs($finishedtime - $operationtime));
-                        $rescuers[$key]['finished'] = $this->timeCalculator($tot_sec);
-                    endif;
-                    $tot_sec = round(abs($operationtime - $activetime));
-                    $rescuers[$key]['rescuerresponse'] = $this->timeCalculator($tot_sec);
+                if (!empty($user_res = $this->users->findOrThrowException($active->rescuee_id))) {
+                    $rescuers[$key]['rescuee_details'] = $user_res;
+                    if (!empty($operation = Operation::where('active_rescuers_id', $active->id)->first())) {
+                        if (!empty($user_tagg = User::find($operation->rescuer_id))) {
+                            $rescuers[$key]['tagged'] = $user_tagg;
+                            $activetime = strtotime($active->created_at);
+                            $operationtime = strtotime($operation->created_at);
+                            if (!empty($operation->finished_at)):
+                                $finishedtime = strtotime($operation->finished_at);
+                                $tot_sec = round(abs($finishedtime - $operationtime));
+                                $rescuers[$key]['finished'] = $this->timeCalculator($tot_sec);
+                            endif;
+                            $tot_sec = round(abs($operationtime - $activetime));
+                            $rescuers[$key]['rescuerresponse'] = $this->timeCalculator($tot_sec);
+                        }
+                    }
                 }
+                else
+                    unset($rescuers[$key]);
             }
         }
         return $rescuers;
@@ -601,20 +611,24 @@ class EloquentRescueOperationRepository {
 
     public function operationFinishing($request) {
         $operation = Operation::find($request->operation_id);
-        return $request->operation_id;
-        if (!empty($operation)):
+
+        if (!empty($operation)) {
+
             $operation->finished_at = date("Y-m-d h:i:s");
             $operation->save();
 
             $user = User::find($request->user_id);
             $message['message'] = "Tagged ResQuer is reached";
             $message['id'] = $request->operation_id;
-            $message['to'] = "User";
+            $message['to'] = "Rescuer";
             $app_id['app_id'][] = $user->app_id;
             $app_id['device_type'][] = $user->device_type;
             $this->notification($app_id, $message);
             return $request->operation_id;
-        endif;
+
+                } else
+            return 0;
+
     }
 
 }
