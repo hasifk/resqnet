@@ -12,19 +12,23 @@ use App\Models\UserGroups\Member;
 use App\Models\UserGroups\UserGroup;
 use App\Models\Access\EmergencyContact\EmergencyContact;
 use App\Repositories\Backend\UserGroups\UserGroupsRepositoryContract;
+use App\Repositories\Backend\Access\User\UserRepositoryContract;
 use Illuminate\Http\Request;
 use App\Models\Access\Payment\Payment;
 use Auth;
 use Storage;
 use Carbon\Carbon;
 
+
 class EloquentRescueOperationRepository {
 
-    private $groups;
-
-    public function __construct(UserGroupsRepositoryContract $groups) {
+    private $groups,$users;
+     
+    
+    public function __construct(UserGroupsRepositoryContract $groups,UserRepositoryContract $users) {
 
         $this->groups = $groups;
+        $this->users = $users;
     }
 
     public function findActiveRescuers($result) {
@@ -542,7 +546,7 @@ class EloquentRescueOperationRepository {
         $rescuers = $this->ActiveRescuerPaginate();
         if (!empty($rescuers)) {
             foreach ($rescuers as $key => $active) {
-                if (!empty($user_res = User::find($active->rescuee_id))) {
+                if (!empty($user_res = $this->users->findOrThrowException($active->rescuee_id))) {
                     $rescuers[$key]['rescuee_details'] = $user_res;
                     if (!empty($operation = Operation::where('active_rescuers_id', $active->id)->first())) {
                         if (!empty($user_tagg = User::find($operation->rescuer_id))) {
@@ -559,7 +563,7 @@ class EloquentRescueOperationRepository {
                         }
                     }
                 }
-               else
+                else
                     unset($rescuers[$key]);
             }
         }
