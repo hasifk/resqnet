@@ -608,7 +608,7 @@ class EloquentRescueOperationRepository {
             $user = User::find($request->user_id);
             $message['message'] = "Tagged ResQuer is reached";
             $message['id'] = $request->operation_id;
-            $message['to'] = "User";
+            $message['to'] = "Rescuer";
             $app_id['app_id'][] = $user->app_id;
             $app_id['device_type'][] = $user->device_type;
             $this->notification($app_id, $message);
