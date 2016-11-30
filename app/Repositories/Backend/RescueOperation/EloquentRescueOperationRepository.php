@@ -542,19 +542,25 @@ class EloquentRescueOperationRepository {
         $rescuers = $this->ActiveRescuerPaginate();
         if (!empty($rescuers)) {
             foreach ($rescuers as $key => $active) {
-                $rescuers[$key]['rescuee_details'] = User::find($active->rescuee_id);
-                if (!empty($operation = Operation::where('active_rescuers_id', $active->id)->first())) {
-                    $rescuers[$key]['tagged'] = User::find($operation->rescuer_id);
-                    $activetime = strtotime($active->created_at);
-                    $operationtime = strtotime($operation->created_at);
-                    if (!empty($operation->finished_at)):
-                        $finishedtime = strtotime($operation->finished_at);
-                        $tot_sec = round(abs($finishedtime - $operationtime));
-                        $rescuers[$key]['finished'] = $this->timeCalculator($tot_sec);
-                    endif;
-                    $tot_sec = round(abs($operationtime - $activetime));
-                    $rescuers[$key]['rescuerresponse'] = $this->timeCalculator($tot_sec);
+                if (!empty($user_res = User::find($active->rescuee_id))) {
+                    $rescuers[$key]['rescuee_details'] = $user_res;
+                    if (!empty($operation = Operation::where('active_rescuers_id', $active->id)->first())) {
+                        if (!empty($user_tagg = User::find($operation->rescuer_id))) {
+                            $rescuers[$key]['tagged'] = $user_tagg;
+                            $activetime = strtotime($active->created_at);
+                            $operationtime = strtotime($operation->created_at);
+                            if (!empty($operation->finished_at)):
+                                $finishedtime = strtotime($operation->finished_at);
+                                $tot_sec = round(abs($finishedtime - $operationtime));
+                                $rescuers[$key]['finished'] = $this->timeCalculator($tot_sec);
+                            endif;
+                            $tot_sec = round(abs($operationtime - $activetime));
+                            $rescuers[$key]['rescuerresponse'] = $this->timeCalculator($tot_sec);
+                        }
+                    }
                 }
+                else
+                    unset($rescuers[$key]);
             }
         }
         return $rescuers;
@@ -601,7 +607,7 @@ class EloquentRescueOperationRepository {
 
     public function operationFinishing($request) {
         $operation = Operation::find($request->operation_id);
-        if (!empty($operation)){
+        if (!empty($operation)) {
             $operation->finished_at = date("Y-m-d h:i:s");
             $operation->save();
 
@@ -613,10 +619,8 @@ class EloquentRescueOperationRepository {
             $app_id['device_type'][] = $user->device_type;
             $this->notification($app_id, $message);
             return $request->operation_id;
-        }
-         else 
+        } else
             return 0;
-        
     }
 
 }
