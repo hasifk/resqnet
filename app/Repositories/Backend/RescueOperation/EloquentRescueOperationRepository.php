@@ -601,7 +601,7 @@ class EloquentRescueOperationRepository {
 
     public function operationFinishing($request) {
         $operation = Operation::find($request->operation_id);
-        if (!empty($operation)):
+        if (!empty($operation)){
             $operation->finished_at = date("Y-m-d h:i:s");
             $operation->save();
 
@@ -612,8 +612,11 @@ class EloquentRescueOperationRepository {
             $app_id['app_id'][] = $user->app_id;
             $app_id['device_type'][] = $user->device_type;
             $this->notification($app_id, $message);
-            //return $request->operation_id;
-        endif;
+            return $request->operation_id;
+        }
+         else 
+            return 0;
+        
     }
 
 }
