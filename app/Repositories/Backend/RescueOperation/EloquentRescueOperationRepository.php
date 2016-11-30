@@ -542,11 +542,10 @@ class EloquentRescueOperationRepository {
         $rescuers = $this->ActiveRescuerPaginate();
         if (!empty($rescuers)) {
             foreach ($rescuers as $key => $active) {
-//                if (!empty($user_res = $this->users->findOrThrowException($active->rescuee_id))) {
                 if (!empty($user_res = User::withTrashed()->find($active->rescuee_id))) {
                     $rescuers[$key]['rescuee_details'] = $user_res;
                     if (!empty($operation = Operation::where('active_rescuers_id', $active->id)->first())) {
-                        if (!empty($user_tagg = User::find($operation->rescuer_id))) {
+                        if (!empty($user_tagg = User::withTrashed()->find($operation->rescuer_id))) {
                             $rescuers[$key]['tagged'] = $user_tagg;
                             $activetime = strtotime($active->created_at);
                             $operationtime = strtotime($operation->created_at);
