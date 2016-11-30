@@ -14,10 +14,11 @@
 
 @section('content')
 
-
+@if(!empty($list->rescuee_details))
 <table class="table table-striped table-bordered table-hover">
 
     <tbody>
+
         <tr>
             <th>User</th>
             <td><a href="{{route('admin.access.user.shows',$list->rescuee_id)}}"> {{ $list->rescuee_details->firstname.' '.$list->rescuee_details->lastname }} </a></td>
@@ -48,13 +49,18 @@
         <tr>
             <th>Tagged ResQuer</th>
             <td>
-                <?php if (!empty($list->tagged)): ?>
-                    <a href="{{route('admin.access.user.shows',$list->tagged->id)}}">
-                        {{ $list->tagged->firstname.' '.$list->tagged->lastname }}</a>
-                    <?php
-                else:
+                <?php
+                if (isset($list->tagged)) {
+                    if (!empty($list->tagged)):
+                        ?>
+                        <a href="{{route('admin.access.user.shows',$list->tagged->id)}}">
+                            {{ $list->tagged->firstname.' '.$list->tagged->lastname }}</a>
+                        <?php
+                    else:
+                        echo "<font color=red>ResQuer Deleted</font>";
+                    endif;
+                } else
                     echo "No Rescuer Tagged";
-                endif;
                 ?> 
             </td>
         </tr>
@@ -132,38 +138,44 @@
                 <a href="{{route('admin.statistics.listsofrescuers')}}" class="btn btn-danger btn-xs">Back</a>
             </th>
         </tr>
+
     </tbody>
 </table>
-<?php
- $locations = json_decode($list->locations);
-$loc="";
-foreach ($locations as $key => $value) {
- if ($key == $list->rescuee_id) 
-     $center=$value->lat.",".$value->long;
- else
-   $loc=$loc.'['."'$value->addr'".",".$value->lat.",".$value->long.']'.",";
-    
-}
- $loc=rtrim($loc, ",");
-?>
+
 <div class="row col-xs-12">
     <h1>Available ReaQuers Map</h1>
     <div id="map" style="height: 400px; width: 500px;">
 
     </div>
     <div class="clearfix"></div>
-    @endsection
-    @section('before-scripts-start')
-    <script src="http://maps.google.com/maps/api/js?sensor=false&key=AIzaSyDifWuYepsM5Hez8kcwz1xSSY7WvXUFrgY" 
-    type="text/javascript"></script>
-    
-    @endsection
+</div>
+@else 
+<?PHP echo "<font color=red>User Deleted</font>"; ?>
+@endif
 
-    @section('after-scripts-end')
-    <script type="text/javascript">
-        
+<?php
+$locations = json_decode($list->locations);
+$loc = "";
+foreach ($locations as $key => $value) {
+    if ($key == $list->rescuee_id)
+        $center = $value->lat . "," . $value->long;
+    else
+        $loc = $loc . '[' . "'$value->addr'" . "," . $value->lat . "," . $value->long . ']' . ",";
+}
+$loc = rtrim($loc, ",");
+?>
+
+@endsection
+@section('before-scripts-start')
+<script src="http://maps.google.com/maps/api/js?sensor=false&key=AIzaSyDifWuYepsM5Hez8kcwz1xSSY7WvXUFrgY" 
+type="text/javascript"></script>
+
+@endsection
+
+@section('after-scripts-end')
+<script type="text/javascript">
 var locations = [
-    <?php echo $loc ?>
+<?php echo $loc ?>
 ];
 // var locations = [
 //      ['Bondi Beach', -33.890542, 151.274856, 4],
@@ -173,43 +185,43 @@ var locations = [
 //      ['Maroubra Beach', -33.950198, 151.259302, 1]
 //    ];
 var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 10,
-    center: new google.maps.LatLng(<?php echo $center; ?>),
-    mapTypeId: google.maps.MapTypeId.ROADMAP,
+zoom: 10,
+center: new google.maps.LatLng(<?php echo $center; ?>),
+mapTypeId: google.maps.MapTypeId.ROADMAP,
 });
 
 var infowindow = new google.maps.InfoWindow();
 
 var marker, i;
 var marker = new google.maps.Marker({
-          position: map.getCenter(),
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 10
-          },
-          draggable: true,
-          map: map,
-          title: 'Venue Name'
-        });
+position: map.getCenter(),
+icon: {
+    path: google.maps.SymbolPath.CIRCLE,
+    scale: 10
+},
+draggable: true,
+map: map,
+title: 'Venue Name'
+});
 for (i = 0; i < locations.length; i++) {
-    marker = new google.maps.Marker({
-        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-        map: map,
-    });
+marker = new google.maps.Marker({
+    position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+    map: map,
+});
 
-    google.maps.event.addListener(marker, 'click', (function (marker, i) {
-        return function () {
-            infowindow.setContent(locations[i][0]);
-            infowindow.open(map, marker);
-        }
-    })(marker, i));
+google.maps.event.addListener(marker, 'click', (function (marker, i) {
+    return function () {
+        infowindow.setContent(locations[i][0]);
+        infowindow.open(map, marker);
+    }
+})(marker, i));
 }
-    </script>
-    @endsection
-    @section('before-styles-end')
-    <style>
-        #map {
-            height: 100%;
-        }
-    </style>
-    @endsection
+</script>
+@endsection
+@section('before-styles-end')
+<style>
+    #map {
+        height: 100%;
+    }
+</style>
+@endsection

@@ -114,20 +114,26 @@
                                         $f = 1;
                                     foreach ($lists as $list):
                                         ?>
+                                @if(!empty($list->rescuee_details))
                                         <tr>
                                             <th><input type="checkbox" class="checkbox" name="check[]" value="{{$list->id}}" id="{{$list->id}}"/></th>
                                             <th>{{$f++}}</th>
                                             <td>
-                                                <a href="{{route('admin.access.user.shows',$list->rescuee_id)}}"> {{ $list->rescuee_details->firstname.' '.$list->rescuee_details->lastname }} </a>
+                                                <a href="{{route('admin.access.user.shows',$list->rescuee_id)}}">  {{ $list->rescuee_details->firstname.' '.$list->rescuee_details->lastname }} </a>
+                                               
                                             </td>
                                             <td>
-                                                <?php if (!empty($list->tagged)): ?>
+                                                <?php if(isset($list->tagged)){
+                                                    if(!empty($list->tagged)): ?>
                                                     <a href="{{route('admin.access.user.shows',$list->tagged->id)}}">
                                                         {{ $list->tagged->firstname.' '.$list->tagged->lastname }}</a>
                                                     <?php
                                                 else:
-                                                    echo "No Rescuer Tagged";
+                                                    echo "<font color=red>ResQuer Deleted</font>";
                                                 endif;
+                                                }
+                                                else 
+                                                    echo "No Rescuer Tagged";
                                                 ?> 
                                             </td>
                                             <th> @if(!empty($list->rescuerresponse)){{ $list->rescuerresponse}} @else 00:00:00 @endif </th>
@@ -135,6 +141,7 @@
                                             <th>{{$list->created_at}}</th>
                                             <th>{!! $list->action_buttons !!}</th>
                                         </tr>
+                                        @endif
                                         <?php
                                     endforeach;
                                 }
