@@ -367,7 +367,7 @@ class EloquentRescueOperationRepository {
         return User::where('online_status', 1)->get();
     }
 
-    public function ActiveRescuer($id) {
+    public function activeRescuer($id) {
         return ActiveRescuer::find($id);
     }
 
@@ -408,7 +408,7 @@ class EloquentRescueOperationRepository {
                 $obj->active_rescuers_id = $request->active_rescuers_id;
                 $obj->rescuer_id = $request->rescuer_id;
                 $obj->save();
-                $rescuee_id = $this->ActiveRescuer($request->active_rescuers_id);
+                $rescuee_id = $this->activeRescuer($request->active_rescuers_id);
                 $user = User::find($request->rescuer_id);
                 $message['message'] = $user->firstname . " " . $user->lastname . " is responding to your emergency. Help is on the way";
                 $message['id'] = $obj->id;
@@ -495,7 +495,7 @@ class EloquentRescueOperationRepository {
     }
 
     public function listsOfRescuer($id) {
-        $rescuers = $this->ActiveRescuer($id);
+        $rescuers = $this->activeRescuer($id);
         if (!empty($rescuers)) {
             $res1 = $res2 = $res3 = $res4 = array();
             $rescuers['rescuee_details'] = User::find($rescuers->rescuee_id);
@@ -607,7 +607,9 @@ class EloquentRescueOperationRepository {
 
     public function operationFinishing($request) {
         $operation = Operation::find($request->operation_id);
+
         if (!empty($operation)) {
+
             $operation->finished_at = date("Y-m-d h:i:s");
             $operation->save();
 
@@ -619,8 +621,10 @@ class EloquentRescueOperationRepository {
             $app_id['device_type'][] = $user->device_type;
             $this->notification($app_id, $message);
             return $request->operation_id;
-        } else
+
+                } else
             return 0;
+
     }
 
 }
