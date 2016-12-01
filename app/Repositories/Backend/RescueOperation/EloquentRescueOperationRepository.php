@@ -417,7 +417,7 @@ class EloquentRescueOperationRepository {
                 $app_id['app_id'][] = $user->app_id;
                 $app_id['device_type'][] = $user->device_type;
                 $this->notification($app_id, $message);
-                return array($obj->id,$user->id);
+                return array($obj->id, $user->id);
             else:
                 // $user = User::find($request->rescuer_id);
 //                $message['message'] = "Another Rescuer Accepted this request";
@@ -617,15 +617,17 @@ class EloquentRescueOperationRepository {
         if (!empty($operation)) {
             $operation->finished_at = date("Y-m-d h:i:s");
             $operation->save();
-
-            $user = User::find($request->panic_user_id);
-            $message['message'] = "Tagged ResQuer is reached";
-            $message['id'] = $request->operation_id;
-            $message['to'] = "Rescuer";
-            $app_id['app_id'][] = $user->app_id;
-            $app_id['device_type'][] = $user->device_type;
-            $this->notification($app_id, $message);
-            return $request->operation_id;
+            $tagged_rescuer = User::withTrashed()->find($request->panic_user_id);
+            $user = User::withTrashed()->find($request->panic_user_id);
+            if (!empty($tagged_rescuer) && !empty($user)) {
+                $message['message'] = "ResCuer " . $tagged_rescuer->firstname . " " . $tagged_rescuer->lastname . "is near by you";
+                $message['id'] = $request->operation_id;
+                $message['to'] = "User";
+                $app_id['app_id'][] = $user->app_id;
+                $app_id['device_type'][] = $user->device_type;
+                $this->notification($app_id, $message);
+                return $request->operation_id;
+            }
         } else
             return 0;
     }
