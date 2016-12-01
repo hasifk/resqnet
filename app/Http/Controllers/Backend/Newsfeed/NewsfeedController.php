@@ -109,8 +109,6 @@ class NewsfeedController extends Controller {
          else:
         return response()->json(['newsfeeds' => 'No NewsFeed found']);
         endif;
-
-
     }
 
     public function createNewsfeed(CreateNewsfeedRequest $request) {
@@ -168,6 +166,10 @@ class NewsfeedController extends Controller {
         }
         return $img;
 
+    }
+    public function newsfeedNotifications() {
+        $this->newsfeedRepository->newsfeedNotifications();
+        
     }
 
 }

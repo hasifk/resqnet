@@ -27,7 +27,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
 
     public function getNewsFeeds($user_id) {
         $user = User::find($user_id);
-        $newsfeed_ids='';
+        $newsfeed_ids = '';
         if (access()->hasRolesApp(['Police', 'Fire', 'Paramedic'], $user_id)) {
             return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
                             ->whereIn('newsfeeds.newsfeed_type', ['Rescuer', 'All'])
@@ -40,12 +40,12 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                 $newsfeeds = Newsfeed::where('newsfeed_type', "User Group")->get();
                 foreach ($newsfeeds as $newsfeed) {
                     $group_ids = json_decode($newsfeed->group_id);
-                    if(!empty($group_ids)):
-                    foreach ($group_ids as $id) {
-                        if (!empty($this->groups->findMembersUser($user_id, $id))) {
-                            $newsfeed_ids[] = $newsfeed->id;
+                    if (!empty($group_ids)):
+                        foreach ($group_ids as $id) {
+                            if (!empty($this->groups->findMembersUser($user_id, $id))) {
+                                $newsfeed_ids[] = $newsfeed->id;
+                            }
                         }
-                    }
                     endif;
                 }
                 if (count($newsfeed_ids) > 0) {
@@ -58,7 +58,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                                     })
                                     ->select('newsfeeds.*')->orderBy('newsfeeds.id', 'desc')->paginate(20);
                 } else {
-                    return $newsfeed_ids=array();
+                    return $newsfeed_ids = array();
                 }
             } else {
                 return Newsfeed::where('newsfeeds.countryid', '=', $user->country_id)
@@ -147,6 +147,38 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
         } else
             $time = $minutes . " Min Ago";
         return $time;
+    }
+
+    public function newsfeedNotifications() {
+        if (!empty($newsfeed = Newsfeed::where('status', 0)->first())) {
+            if (!empty($newsfeed->areaid)) {
+                if (!empty($users = User::where('area_id', $newsfeed->areaid)->where('id','!=',$newsfeed->user_id)->get())) {
+                    foreach ($users as $user) {
+                        if (($newsfeed->newsfeed_type != 'All') && ($user->role_name == $newsfeed->newsfeed_type)) {
+                            $newsfeeds_users[] = $user->id;
+                        }
+                        else if(($newsfeed->newsfeed_type == 'All'))
+                        {
+                            $newsfeeds_users[] = $user->id;
+                        }
+                    }
+                }
+            } else if (!empty($newsfeed->countryid)) {
+                if (!empty($users = User::where('country_id', $newsfeed->countryid)->where('id','!=',$newsfeed->user_id)->get())) {
+                    foreach ($users as $user) {
+                        if (($newsfeed->newsfeed_type != 'All') && ($user->role_name == $newsfeed->newsfeed_type)) {
+                            $newsfeeds_users[] = $user->id;
+                        }
+                        else if(($newsfeed->newsfeed_type == 'All'))
+                        {
+                            $newsfeeds_users[] = $user->id;
+                        }
+                    }
+                }
+            }
+        }
+        return $newsfeeds_users;
+        
     }
 
 }
