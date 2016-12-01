@@ -620,7 +620,7 @@ class EloquentRescueOperationRepository {
             $tagged_rescuer = User::withTrashed()->find($request->panic_user_id);
             $user = User::withTrashed()->find($request->panic_user_id);
             if (!empty($tagged_rescuer) && !empty($user)) {
-                $message['message'] = "ResCuer " . $tagged_rescuer->firstname . " " . $tagged_rescuer->lastname . "is near by you";
+                $message['message'] = "ResQuer " . $tagged_rescuer->firstname . " " . $tagged_rescuer->lastname ." is near by you";
                 $message['id'] = $request->operation_id;
                 $message['to'] = "User";
                 $app_id['app_id'][] = $user->app_id;
