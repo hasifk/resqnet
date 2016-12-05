@@ -24,7 +24,7 @@ class PaymentController extends Controller {
     public function paymentDetails(Request $request) {
         $user_status = '';
         $email_confirmed = '';
-        if (!empty($user = User::withTrashed()->where('id', $request->user_id)->first())) {
+        if (!empty($user = User::where('id', $request->user_id)->first())) {
             $user_status = $user->status;
             $email_confirmed = $user->confirmed;
         }
@@ -33,7 +33,7 @@ class PaymentController extends Controller {
             $result['email_confirmed'] = $email_confirmed;
             return response()->json(['result' => $result]);
         } else
-            return response()->json(['result' => 'No payment details Yet']);
+            return response()->json(['result' => 'No payment details Yet','user_status'=>$user_status,'email_confirmed'=>$email_confirmed]);
     }
 
     public function payeeDetails() {
