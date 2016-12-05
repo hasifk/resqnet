@@ -413,6 +413,7 @@ class EloquentUserRepository implements UserRepositoryContract {
 
         if ($user->confirmation_code == $token) {
             $user->confirmed = 1;
+            $user->status = 1;
             return $user->save();
         }
 
