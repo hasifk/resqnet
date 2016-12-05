@@ -33,7 +33,12 @@ class PaymentController extends Controller {
             $result['email_confirmed'] = $email_confirmed;
             return response()->json(['result' => $result]);
         } else
-            return response()->json(['result' => 'No payment details Yet','user_status'=>$user_status,'email_confirmed'=>$email_confirmed]);
+        {
+            $result['status']='No payment details Yet';
+            $result['user_status'] = $user_status;
+            $result['email_confirmed'] = $email_confirmed;
+            return response()->json(['result' => $result);
+        }
     }
 
     public function payeeDetails() {
