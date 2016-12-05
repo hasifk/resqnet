@@ -150,6 +150,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
     }
 
     public function newsfeedNotifications() {
+        $newsfeeds_users=array();
         if (!empty($newsfeed = Newsfeed::where('status', 0)->first())) {
             if (!empty($newsfeed->areaid)) {
                 if (!empty($users = User::where('area_id', $newsfeed->areaid)->where('id','!=',$newsfeed->user_id)->get())) {
