@@ -22,11 +22,14 @@ class PaymentController extends Controller {
     }
 
     public function paymentDetails(Request $request) {
-        if (!empty($result = $this->payment->paymentDetails($request))){
-          if (!empty($user=User::withTrashed()->where('id',$request->user_id)->first())){
-              $result['user_status']=$user->status;
-              $result['email_confirmed']=$user->confirmed;
+        $res['user_status']='';
+        $res['email_confirmed']='';
+         if (!empty($user=User::withTrashed()->where('id',$request->user_id)->first())){
+              $res['user_status']=$user->status;
+              $res['email_confirmed']=$user->confirmed;
           }
+        if (!empty($result = $this->payment->paymentDetails($request))){
+            $result[]=$res;
             return response()->json(['result' => $result]);
         }
         else
