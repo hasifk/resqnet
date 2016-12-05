@@ -125,7 +125,6 @@
                         echo "---"
                         ?>
                 </td>
-
             </tr>
             <?php if (!empty($usergroups)) { ?>
                 <tr>
