@@ -285,7 +285,7 @@ class EloquentUserRepository implements UserRepositoryContract {
             $user->device_type = $request->device_type;
             $user->firstname = (!empty($request->firstname)) ? $request->firstname : '';
             $user->status = 0;
-            $user->subscription_ends_at = (!empty($request->subscription_ends_at)) ? $request->subscription_ends_at : '';
+            //$user->subscription_ends_at = (!empty($request->subscription_ends_at)) ? $request->subscription_ends_at : '';
             $user->confirmation_code = md5(uniqid(mt_rand(), true));
             $user->confirmed = config('access.users.confirm_email') ? 0 : 1;
             $user->save();
