@@ -25,6 +25,7 @@ class PaymentController extends Controller {
         if (!empty($result = $this->payment->paymentDetails($request))){
           if (!empty($user=User::withTrashed()->where('id',$request->user_id)->first())){
               $result['user_status']=$user->status;
+              $result['email_confirmed']=$user->confirmed;
           }
             return response()->json(['result' => $result]);
         }
