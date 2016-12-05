@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Backend\Payment\PaymentRepositoryContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Access\User\User;
 
 class PaymentController extends Controller {
 
@@ -21,11 +22,16 @@ class PaymentController extends Controller {
     }
 
     public function paymentDetails(Request $request) {
-        if (!empty($result = $this->payment->paymentDetails($request))):
+        if (!empty($result = $this->payment->paymentDetails($request))){
+          if (!empty($user=User::withTrashed()->where('id',$request->user_id)->first())){
+              $result['user_status']=$user->status;
+              $result['email_confirmed']=$user->confirmed;
+          }
             return response()->json(['result' => $result]);
-        else:
+        }
+        else
             return response()->json(['result' => 'No payment details Yet']);
-        endif;
+        
     }
 
     public function payeeDetails() {
