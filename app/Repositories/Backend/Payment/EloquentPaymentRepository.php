@@ -12,7 +12,11 @@ class EloquentPaymentRepository implements PaymentRepositoryContract {
 
     public function paymentSave($request) {
         $check_payment=Payment::where('txn_id',$request->txn_id)->first();
-        if(empty($check_payment)):
+        if(!empty($check_payment)):
+            $check_payment->ipn_track_id = $request->ipn_track_id;
+            $check_payment->payment_status = $request->payment_status;
+            $check_payment->save();
+        else:
         $dt = Carbon::now();
         $obj = new Payment;
         $obj->user_id = $request->custom;
@@ -21,11 +25,7 @@ class EloquentPaymentRepository implements PaymentRepositoryContract {
         $obj->payment_status = $request->payment_status;
         $obj->subscription_ends_at = $dt->addYears(1);
         $obj->save();
-        else:
-            $check_payment->ipn_track_id = $request->ipn_track_id;
-            $check_payment->payment_status = $request->payment_status;
-            $check_payment->save();
-            endif;
+        endif;
 
     }
 
