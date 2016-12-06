@@ -30,6 +30,13 @@ class AuthController extends Controller {
     }
 
     public function postLogin(Request $request) {
+          $user_check=User::where('email', $request->email)->first();
+         if($user_check->confirmed==0 && $user_check->status==0) {
+             return response()->json(['email_confirmed' => '0','user_status' => 0]);
+            }
+             elseif($user_check->status==0) {
+                 return response()->json(['user_status' => 0]);
+             }
         if (\Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
 
 
@@ -55,6 +62,11 @@ class AuthController extends Controller {
     }
 
     public function fbLogin(Requests\Frontend\Auth\FBloginRequest $request) {
+        $user_check=User::where('email', $request->email)->first();
+
+        if($user_check->status==0) {
+            return response()->json(['user_status' => 0]);
+        }
         $user = $this->user->fbLogin($request);
         if (!empty($user)):
             if ($user == 'access_denied'):

@@ -20,6 +20,7 @@ class CreateNewsfeedsTable extends Migration {
             $table->integer('areaid')->unsigned();
             $table->string('news_title');
             $table->longText('news');
+            $table->boolean('status')->default(false);
             $table->string('image_filename');
             $table->string('image_extension');
             $table->string('image_path');

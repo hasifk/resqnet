@@ -184,6 +184,33 @@
                 </td>
             </tr>
             <tr><th colspan="2"><center>Other Informations</center></th></tr>
+        @if(!empty($payments))
+        
+        <tr>
+                <th>Payment Details</th>
+                <td>
+
+                    <table> <tr>
+
+                            <th>Status</th>
+                            <td>
+                                &nbsp;&nbsp;:&nbsp;&nbsp;  {{ $payments->payment_status }}
+                            </td>
+                        </tr>
+
+                        <tr>
+
+                            <th>Subscription ends at</th>
+                            <td>
+                                &nbsp;&nbsp;:&nbsp;&nbsp;  {{ $payments->subscription_ends_at }}
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </td>
+            </tr>
+        @endif
             <tr>
                 <th>Device Infromation</th>
                 <td>
@@ -256,7 +283,9 @@
 
                 </td>
             </tr>
+            @if($user->role_id!=5 && $user->role_id!=1)
             <tr><th>Online Status</th><th>{{ $user->online_status==1?"Online":"Offline" }}</th></tr>
+            @endif
         </table>
     </div>
     <div class="box box-success">
