@@ -211,7 +211,7 @@
 
                 </td>
                 @endif
-                <td>Not payment Details yet</td>
+                <th>No payment Details yet</th>
             </tr>
             
             @endif
