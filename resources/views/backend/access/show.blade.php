@@ -40,7 +40,13 @@
             <tr>
                 <th>Rescuer Type</th>
                 <td>
-                    {{ $user->rescuer_type }}
+                    @if ($user->roles()->count() > 0)
+                                        @foreach ($user->roles as $role)
+                                            {!! $role->name !!}<br/>
+                                        @endforeach
+                                    @else
+                                        {{ trans('labels.general.none') }}
+                                    @endif
                 </td>
             </tr>
             <tr>
@@ -210,8 +216,10 @@
                     </table>
 
                 </td>
-                @endif
+                @else
                 <th>No payment Details yet</th>
+                @endif
+                
             </tr>
             
             @endif
