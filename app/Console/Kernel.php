@@ -17,7 +17,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        'App\Console\Commands\MigrateClear',
+      //  'App\Console\Commands\MigrateClear',
+        'App\Console\Commands\NewsfeedNotifs',
         // Commands\Inspire::class,
     ];
 
@@ -29,7 +30,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+         $schedule->command('newsfeed_notifs')->everyMinute();
 
         /**
          * Laravel Backup Commands
