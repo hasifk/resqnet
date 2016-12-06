@@ -184,9 +184,9 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
             }
             $newsfeed_id=$newsfeed->id;
             $news_creator1=User::find($newsfeed->user_id);
-            //$news_creator=$news_creator1->firstname.' '.$news_creator1->lastname;
-            $message['message'] = $news_creator1->firstname . " " . $news_creator1->lastname . " Created a Newsfeed " . $newsfeed_id  ;
-            $message['to'] = "Users";
+            $message['message'] = $news_creator1->firstname . " " . $news_creator1->lastname . " Created a Newsfeed " ;
+            $message['to'] = "Newsfeed";
+            $message['newsfeed_id'] = $newsfeed_id ;
             $newsfeed->status=1;
             $newsfeed->save();
             $this->notification($newsfeeds_users, $message);
@@ -221,7 +221,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                 'sound' => 1,
                 'largeIcon' => 'large_icon',
                 'smallIcon' => 'small_icon',
-               /* 'panicid' => $message['id'],*/
+                'newsfeed_id' => $message['newsfeed_id'],
                 'notification_type' => $message['to']
             );
             $fields = array
@@ -275,7 +275,7 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                 'alert' => $tAlert,
                 'badge' => $tBadge,
                 'sound' => $tSound,
-                'panicid' => $message['id'],
+                'newsfeed_id' => $message['newsfeed_id'],
                 'notification_type' => $message['to']
             );
             $tBody ['payload'] = $tPayload;
