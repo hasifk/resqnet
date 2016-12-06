@@ -24,6 +24,9 @@ class EloquentPaymentRepository implements PaymentRepositoryContract {
     public function paymentDetails($request) {
         return Payment::where('user_id', $request->user_id)->orderBy('id', 'desc')->first();
     }
+    public function paymentChecking($id) {
+        return Payment::where('user_id',$id)->orderBy('id', 'desc')->first();
+    }
 
     public function payeeDetails() {
         return PaymentCredential::first();
