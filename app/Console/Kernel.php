@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-      //  'App\Console\Commands\MigrateClear',
+       'App\Console\Commands\MigrateClear',
         'App\Console\Commands\NewsfeedNotifs',
         // Commands\Inspire::class,
     ];
