@@ -184,10 +184,11 @@
                 </td>
             </tr>
             <tr><th colspan="2"><center>Other Informations</center></th></tr>
-        @if(!empty($payments))
-        
-        <tr>
+            @if($user->role_id==5)
+            
+            <tr>
                 <th>Payment Details</th>
+                @if(!empty($payments))
                 <td>
 
                     <table> <tr>
@@ -209,8 +210,11 @@
                     </table>
 
                 </td>
+                @endif
+                <td>Not payment Details yet</td>
             </tr>
-        @endif
+            
+            @endif
             <tr>
                 <th>Device Infromation</th>
                 <td>
