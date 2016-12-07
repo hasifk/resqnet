@@ -211,10 +211,10 @@ class EloquentRescueOperationRepository {
 
         if (!empty($android_ids) && count($android_ids) > 0) {
             // API access key from Google API's Console
-            if (!defined('API_ACCESS_KEY'))
-                define('API_ACCESS_KEY', 'AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ');
-                //define('API_ACCESS_KEY', 'AIzaSyCsmu1rZj36nqtzh_RfjUHYGvGxkRmW50o');
-                
+            if (!defined('API_ACCESS_KEY')){
+                //define('API_ACCESS_KEY', 'AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ');
+                define('API_ACCESS_KEY', 'AIzaSyCsmu1rZj36nqtzh_RfjUHYGvGxkRmW50o');
+            }
             // prep the bundle
             $msg = array
                 (
