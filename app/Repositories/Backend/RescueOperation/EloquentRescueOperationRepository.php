@@ -247,7 +247,7 @@ class EloquentRescueOperationRepository {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-            $result = curl_exec($ch);
+           return $result = curl_exec($ch);
 // Close connection
             curl_close($ch);
         } else if (!empty($ios_ids) && count($ios_ids) > 0) {
@@ -306,7 +306,7 @@ class EloquentRescueOperationRepository {
                 stream_set_blocking($tSocket, 0);
                 //stream_set_blocking($tSocket, 0);
 // Send the Notification to the Server.
-              return  $tResult = fwrite($tSocket, $tMsg, strlen($tMsg));
+                $tResult = fwrite($tSocket, $tMsg, strlen($tMsg));
             }
             // $tResult = fwrite($tSocket, $tMsg);
 //            if ($tResult)
