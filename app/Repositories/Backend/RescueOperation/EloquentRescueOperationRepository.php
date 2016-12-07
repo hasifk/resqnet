@@ -165,14 +165,14 @@ class EloquentRescueOperationRepository {
                         //return $userdetails;
                         if (!empty($rescuers)) {
                             $message['to'] = "Rescuer";
-                            $this->notification($app_id, $message);
+                            $userdetails[]=$this->notification($app_id, $message);
                             $userdetails['result'] = 'SUCCESS';
                             $userdetails['panicid'] = $obj->id;
                         } else
                             $userdetails['result'] = "There seems to be no resquers available within your radius";
                         if (!empty($appids)) {
                             $message['to'] = "Emergency";
-                            $this->notification($appids[0], $message);
+                           $userdetails[]= $this->notification($appids[0], $message);
                         }
                         if (!empty($groups)) {
                             if (!empty($userloc->lat))
@@ -181,7 +181,7 @@ class EloquentRescueOperationRepository {
                                 $addr = "Location Not available, Please Use Map";
                             $message['message'] = $userloc->firstname . " " . $userloc->lastname . " Sent a " . $result->emergency_type . " Panic Signal <br> Location <br> " . $addr;
                             $message['to'] = "EmergencyGroup";
-                            $this->notification($groups[0], $message);
+                            $userdetails[]=$this->notification($groups[0], $message);
                         }
                     }
                 } else
@@ -306,7 +306,7 @@ class EloquentRescueOperationRepository {
                 stream_set_blocking($tSocket, 0);
                 //stream_set_blocking($tSocket, 0);
 // Send the Notification to the Server.
-                $tResult = fwrite($tSocket, $tMsg, strlen($tMsg));
+              return  $tResult = fwrite($tSocket, $tMsg, strlen($tMsg));
             }
             // $tResult = fwrite($tSocket, $tMsg);
 //            if ($tResult)
