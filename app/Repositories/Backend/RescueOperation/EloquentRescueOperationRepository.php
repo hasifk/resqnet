@@ -247,7 +247,9 @@ class EloquentRescueOperationRepository {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-           return $result = curl_exec($ch);
+            $result = curl_exec($ch);
+            $code = curl_getinfo ($ch, CURLINFO_HTTP_CODE);
+            return $code;
 // Close connection
             curl_close($ch);
         } else if (!empty($ios_ids) && count($ios_ids) > 0) {
