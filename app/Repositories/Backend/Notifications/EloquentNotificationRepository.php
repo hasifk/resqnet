@@ -71,9 +71,11 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
 
     public function notification($app_id, $message) {
         // API access key from Google API's Console
-        // define('API_ACCESS_KEY', 'AIzaSyAk7I1q81uAHbXgxkVKcMr46bRpAtxC7wQ');
+            if (!defined('API_ACCESS_KEY')){
+                //define('API_ACCESS_KEY', 'AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ');
+                define('API_ACCESS_KEY', 'AIzaSyBm-1yxRTgj2RWbYfrJqSU2E8iFwmFa8SA');
+            }
         foreach ($app_id['device_type'] as $key => $device) {
-            // $ar[]=array($app_id['app_id'][$key]);
             if ($device == 'Android') {
                 // prev the bundle
 
@@ -97,7 +99,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                 );
                 $headers = array
                     (
-                    'Authorization: key=AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ',
+                    'Authorization: key=' . API_ACCESS_KEY,
                     'Content-Type: application/json'
                 );
                 $ch = curl_init();
