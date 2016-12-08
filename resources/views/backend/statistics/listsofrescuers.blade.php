@@ -59,7 +59,6 @@
                         </div>
                     </div>
                     <div class="col-xs-12 m-t-20">
-
                         <div class="col-xs-12 col-sm-3 col-md-3 btn-group">
                             <label for="office_life" class="control-label">Category</label>
                             <select name="category" id="category" class="form-control">

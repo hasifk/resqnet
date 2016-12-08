@@ -14,6 +14,7 @@
                 <!-- TO DO List -->
                 <div class="box box-primary">
                     <div class="col-xs-12 m-t-20">
+
                     </div>
                     <div class="col-xs-12 m-t-20">
 
@@ -38,6 +39,7 @@
 
 
                     </div><!-- /.box -->
+                    
                 </div>
                 <div class="col-md-12 m-t-25">
                     <div id="lists">
@@ -75,7 +77,7 @@
 
                                             </td>
                                             <td>
-                                               <img src="{{ $groups->gp_image_src }}" width="25" height="25">
+                                                <img src="{{ $groups->gp_image_src }}" width="25" height="25">
                                             </td>
                                             <th>
                                                 {{$groups->amount}}

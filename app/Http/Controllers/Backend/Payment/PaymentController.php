@@ -32,13 +32,21 @@ class PaymentController extends Controller {
             $result['user_status'] = $user_status;
             $result['email_confirmed'] = $email_confirmed;
             return response()->json(['result' => $result]);
-        } else
-        {
-            $res['status']='No payment details Yet';
+        } else {
+            $res['status'] = 'No payment details Yet';
             $res['user_status'] = $user_status;
             $res['email_confirmed'] = $email_confirmed;
             return response()->json(['result' => $res]);
         }
+    }
+
+    public function paidUserDetails() {
+//        $view = [
+//            'operations' => $this->payment->paidUserDetails(),
+//        ];
+//        return view('backend.operations.index', $view);
+        
+        return response()->json(['result' => $this->payment->paidUserDetails()]);
     }
 
     public function payeeDetails() {
