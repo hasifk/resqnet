@@ -151,51 +151,46 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
     }
 
     public function newsfeedNotifications() {
-        $newsfeeds_users=array();
+        $newsfeeds_users = array();
         if (!empty($newsfeed = Newsfeed::where('status', 0)->first())) {
             if (!empty($newsfeed->areaid)) {
-                if (!empty($users = User::where('area_id', $newsfeed->areaid)->where('id','!=',$newsfeed->user_id)->get())) {
+                if (!empty($users = User::where('area_id', $newsfeed->areaid)->where('id', '!=', $newsfeed->user_id)->get())) {
                     foreach ($users as $user) {
                         if (($newsfeed->newsfeed_type != 'All') && ($user->role_name == $newsfeed->newsfeed_type)) {
                             $newsfeeds_users[] = $user->id;
-                        }
-                        else if(($newsfeed->newsfeed_type == 'All'))
-                        {
-                            $newsfeeds_users['id'][$user->id]= $user->id;
+                        } else if (($newsfeed->newsfeed_type == 'All')) {
+                            $newsfeeds_users['id'][$user->id] = $user->id;
                             $newsfeeds_users['app_id'][$user->id] = $user->app_id;
                             $newsfeeds_users['device_type'][$user->id] = $user->device_type;
                         }
                     }
                 }
             } else if (!empty($newsfeed->countryid)) {
-                if (!empty($users = User::where('country_id', $newsfeed->countryid)->where('id','!=',$newsfeed->user_id)->get())) {
+                if (!empty($users = User::where('country_id', $newsfeed->countryid)->where('id', '!=', $newsfeed->user_id)->get())) {
                     foreach ($users as $user) {
                         if (($newsfeed->newsfeed_type != 'All') && ($user->role_name == $newsfeed->newsfeed_type)) {
                             $newsfeeds_users[] = $user->id;
-                        }
-                        else if(($newsfeed->newsfeed_type == 'All'))
-                        {
+                        } else if (($newsfeed->newsfeed_type == 'All')) {
                             $newsfeeds_users['id'][$user->id] = $user->id;
-                            $newsfeeds_users['app_id'][$user->id]= $user->app_id;
+                            $newsfeeds_users['app_id'][$user->id] = $user->app_id;
                             $newsfeeds_users['device_type'][$user->id] = $user->device_type;
                         }
                     }
                 }
             }
-            $newsfeed_id=$newsfeed->id;
-            $news_creator1=User::find($newsfeed->user_id);
-            $message['message'] = $news_creator1->firstname . " " . $news_creator1->lastname . " Created a Newsfeed " ;
+            $newsfeed_id = $newsfeed->id;
+            $news_creator1 = User::find($newsfeed->user_id);
+            $message['message'] = $news_creator1->firstname . " " . $news_creator1->lastname . " Created a Newsfeed ";
             $message['to'] = "Newsfeed";
-            $message['newsfeed_id'] = $newsfeed_id ;
-            $newsfeed->status=1;
+            $message['newsfeed_id'] = $newsfeed_id;
+            $newsfeed->status = 1;
             $newsfeed->save();
             $this->notification($newsfeeds_users, $message);
         }
-          
     }
 
+    /*     * **************************************************************************************************************** */
 
-    /*******************************************************************************************************************/
     public function notification($app_id, $message) {
 
         foreach ($app_id['device_type'] as $key => $device) {
@@ -208,13 +203,13 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
 
         if (!empty($android_ids) && count($android_ids) > 0) {
             // API access key from Google API's Console
-            if (!defined('API_ACCESS_KEY')){
-                define('API_ACCESS_KEY', 'AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ');
+            if (!defined('API_ACCESS_KEY')) {
+                //define('API_ACCESS_KEY', 'AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ');
                 define('API_ACCESS_KEY', 'AIzaSyBm-1yxRTgj2RWbYfrJqSU2E8iFwmFa8SA');
             }
             // prep the bundle
             $msg = array
-            (
+                (
                 'message' => $message['message'],
                 'title' => "Notification",
                 'subtitle' => 'This is a subtitle. subtitle',
@@ -227,13 +222,13 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
                 'notification_type' => $message['to']
             );
             $fields = array
-            (
+                (
                 'registration_ids' => $android_ids,
                 'data' => $msg
             );
 
             $headers = array
-            (
+                (
                 'Authorization: key=' . API_ACCESS_KEY,
                 'Content-Type: application/json'
             );
@@ -314,5 +309,6 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
             fclose($tSocket);
         }
     }
-    /*******************************************************************************************************************/
+
+    /*     * **************************************************************************************************************** */
 }
