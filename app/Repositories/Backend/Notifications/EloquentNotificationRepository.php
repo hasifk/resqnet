@@ -64,7 +64,8 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
             $obj->area_id = (!empty($request->area_id)) ? $request->area_id : '';
             $obj->notification = $request->notification;
             $obj->save();
-            $message = $request->notification;
+            $message['message'] = $request->notification;
+            $message['to']='DefaultUser';
             $this->notification($app_id, $message);
         }
     }
@@ -81,7 +82,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
 
                 $msg = array
                     (
-                    'message' => $message,
+                    'message' => $message['message'],
                     'title' => "Notification",
                     'subtitle' => 'This is a subtitle. subtitle',
                     'tickerText' => 'Ticker text here...Ticker text here...Ticker text here',
@@ -90,7 +91,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                     'largeIcon' => 'large_icon',
                     'smallIcon' => 'small_icon',
 //                    'panicid' => $message['id'],
-//                    'notification_type' => $message['to']
+                    'notification_type' => $message['to']
                 );
                 $fields = array
                     (
@@ -132,7 +133,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                 $tToken = $app_id['app_id'][$key];
 //0a32cbcc8464ec05ac3389429813119b6febca1cd567939b2f54892cd1dcb134
 // The message that is to appear on the dialog.
-                $tAlert = $message;
+                $tAlert = $message['message'];
 // The Badge Number for the Application Icon (integer >=0).
                 $tBadge = 8;
 // Audible Notification Option.
@@ -145,7 +146,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                     'badge' => $tBadge,
                     'sound' => $tSound,
 //                    'panicid' => $message['id'],
-//                    'notification_type' => $message['to']
+                    'notification_type' => $message['to']
                 );
                 $tBody ['payload'] = $tPayload;
 // Encode the body to JSON.
