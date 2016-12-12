@@ -49,9 +49,9 @@
             <li class="{{ Active::pattern('admin/usergroup/*') }}">
                 <a href="{{route('user.groups.viewgroups')}}"><span>User Groups</span></a>
             </li>
-<!--            <li class="{{ Active::pattern('admin/department/*') }}">
-                <a href=""><span>Payment Details</span></a>
-            </li>-->
+           <li class="{{ Active::pattern('admin/department/*') }}">
+                <a href="{{route('user.payment.index')}}"><span>Payment Details</span></a>
+            </li>
             <li class="{{ Active::pattern('admin/notifications/*') }}">
                 <a href="{{route('backend.admin.notifications')}}"><span>Notifications</span></a>
             <li class="{{ Active::pattern('admin/statistics/*') }} treeview">
