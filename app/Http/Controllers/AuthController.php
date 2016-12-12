@@ -31,12 +31,14 @@ class AuthController extends Controller {
 
     public function postLogin(Request $request) {
           $user_check=User::where('email', $request->email)->first();
+        if(isset($user_check)):
          if($user_check->confirmed==0 && $user_check->status==0) {
              return response()->json(['email_confirmed' => '0','user_status' => 0]);
             }
              elseif($user_check->status==0) {
                  return response()->json(['user_status' => 0]);
              }
+             endif;
         if (\Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
 
 
