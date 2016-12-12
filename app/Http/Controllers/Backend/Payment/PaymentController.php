@@ -42,10 +42,7 @@ class PaymentController extends Controller {
 
     public function paidUserDetails() {
        $paidusers= $this->payment->paidUserDetails();
-//       foreach($operations as $key => $value)
-//       {
-//           $paidusers[$value->id]=$value->user_id;
-//       }
+
 //        $view = [
 //            'operations' => $this->payment->paidUserDetails(),
 //        ];
