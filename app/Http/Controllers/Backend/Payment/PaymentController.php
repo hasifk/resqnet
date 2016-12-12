@@ -51,7 +51,7 @@ class PaymentController extends Controller {
 //        ];
 //        return view('backend.operations.index', $view);
         
-        return response()->json(['result' => $operations]);
+        return response()->json(['result' => $paidusers]);
     }
 
     public function payeeDetails() {
