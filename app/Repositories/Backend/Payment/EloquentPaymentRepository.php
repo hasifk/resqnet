@@ -41,11 +41,8 @@ class EloquentPaymentRepository implements PaymentRepositoryContract {
     }
 
     public function paidUserDetails() {
-        return Payment::
-                groupBy('user_id')
-                ->orderBy('id', 'desc')
-                 //->having('account_id', '>', 100)
-                ->get();
+        return Payment::orderBy('id', 'desc')
+                 ->get();
         
     }
 

@@ -526,7 +526,6 @@ class EloquentRescueOperationRepository {
                         $res4[$k] = $this->groups->userGroupdetails($k, $gp_user_id);
                     }
                 endif;
-
                 $rescuers['emergency_groups'] = $res3;
                 $rescuers['group_details'] = $res4;
                 if (!empty($operation = Operation::where('active_rescuers_id', $rescuers->id)->first())) {
