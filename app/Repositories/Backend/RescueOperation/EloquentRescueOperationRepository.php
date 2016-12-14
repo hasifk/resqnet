@@ -130,12 +130,13 @@ class EloquentRescueOperationRepository {
                                     if ($active->role_id == $role) {
                                         if (!empty($active->lat) && !empty($active->lng)) {
                                             // $userdetails[] = $this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
-                                            if ($this->distanceCalculation($result->lat, $result->lng, $active->lat, $active->lng) <= 5) {
+
                                                 if (!empty($active->app_id) && !empty($active->device_type)):
                                                     $locations[$active->id]['lat'] = $active->lat;
                                                     $locations[$active->id]['long'] = $active->lng;
                                                     $locations[$active->id]['addr'] = $active->address;
                                                     $rescuers[] = $active->id;
+                                                    if ($this->distanceCalculation($result->lat, $result->lng, $active->lat, $active->lng) <= 5) {
                                                     // $distances[$active->id]=$this->distanceCalculation($userloc->lat, $userloc->lng, $active->lat, $active->lng);
                                                     $app_id['app_id'][$active->id] = $active->app_id;
                                                     $app_id['device_type'][$active->id] = $active->device_type;
