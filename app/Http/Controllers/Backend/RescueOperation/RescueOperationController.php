@@ -56,14 +56,16 @@ class RescueOperationController extends Controller {
 
     public function rescuerOperationResponse(RescuerOperation $request) {
 //save the resquer details once they accepted rescuee requests
-        $result = $this->rescueOperationRepository->rescuersResponse($request);
+        if($result = $this->rescueOperationRepository->rescuersResponse($request)):
+            return response()->json(['response' => $result]);
+            endif;
 
-        if (is_array($result))
+       /* if (is_array($result))
             $flag = 0;
         else
-            $flag = 1;
+            $flag = 1;*/
 
-        return response()->json(['rescue_operation' => $result[0],'panic_user_id' => $result[1],'result' => $flag]);
+      /*  return response()->json(['rescue_operation' => $result[0],'panic_user_id' => $result[1],'result' => $flag]);*/
     }
 
     public function rescueeForm() {
