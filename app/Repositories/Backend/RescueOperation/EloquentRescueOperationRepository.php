@@ -437,7 +437,7 @@ class EloquentRescueOperationRepository {
                 return "Another Rescuer Accepted this request";
             endif;
         }
-        else if (empty($status)) {
+       if (empty($status)) {
             return 'Error';
         } else {
 //            $user = User::find($request->rescuer_id);
