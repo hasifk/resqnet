@@ -408,38 +408,42 @@ class EloquentRescueOperationRepository {
 
     public function rescuersResponse($request) {
         $status = ActiveRescuer::find($request->active_rescuers_id);
-        if (!empty($status) && $status->status == 1) {
-            $operation = $this->findOperation($request->active_rescuers_id);
-            if (empty($operation)):
-                $obj = new Operation;
-                $obj->active_rescuers_id = $request->active_rescuers_id;
-                $obj->rescuer_id = $request->rescuer_id;
-                $obj->save();
-                $rescuee_id = $this->activeRescuer($request->active_rescuers_id);
-                $user = User::find($request->rescuer_id);
-                $message['message'] = $user->firstname . " " . $user->lastname . " is responding to your emergency. Help is on the way";
-                $message['id'] = $request->active_rescuers_id;
-                $message['to'] = "User";
-                $user = User::find($rescuee_id->rescuee_id);
-                $app_id['app_id'][] = $user->app_id;
-                $app_id['device_type'][] = $user->device_type;
-                $this->notification($app_id, $message);
-                return array($obj->id, $user->id);
-            else:
-                // $user = User::find($request->rescuer_id);
+        if (!empty($status)) {
+            if ($status->status == 1) {
+                $operation = $this->findOperation($request->active_rescuers_id);
+                if (empty($operation)) {
+                    $obj = new Operation;
+                    $obj->active_rescuers_id = $request->active_rescuers_id;
+                    $obj->rescuer_id = $request->rescuer_id;
+                    $obj->save();
+                    $rescuee_id = $this->activeRescuer($request->active_rescuers_id);
+                    $user = User::find($request->rescuer_id);
+                    $message['message'] = $user->firstname . " " . $user->lastname . " is responding to your emergency. Help is on the way";
+                    $message['id'] = $request->active_rescuers_id;
+                    $message['to'] = "User";
+                    $user = User::find($rescuee_id->rescuee_id);
+                    $app_id['app_id'][] = $user->app_id;
+                    $app_id['device_type'][] = $user->device_type;
+                    $this->notification($app_id, $message);
+                    $result['rescue_operation']=$obj->id;
+                    $result['rescue_operation']=$obj->id;
+                    $result['panic_user_id']=$user->id;
+                    $result['result']=0;
+                    return $result;
+                   // return array($obj->id,$user->id );
+                } else {
+                    // $user = User::find($request->rescuer_id);
 //                $message['message'] = "Another Rescuer Accepted this request";
 //                $message['id'] = $request->active_rescuers_id;
 //                $message['to'] = "Rescuer";
 //                $app_id['app_id'][] = $user->app_id;
 //                $app_id['device_type'][] = $user->device_type;
 //                $this->notification($app_id, $message);
-                //return $request->active_rescuers_id;
-                return "Another Rescuer Accepted this request";
-            endif;
-        }
-       if (empty($status)) {
-            return 'Error';
-        } else {
+                    //return $request->active_rescuers_id;
+                    return "Another Rescuer Accepted this request";
+                }
+            }
+            else {
 //            $user = User::find($request->rescuer_id);
 //            $message['message'] = "This Request has been Cancelled by the User";
 //            $message['id'] = $request->active_rescuers_id;
@@ -447,8 +451,12 @@ class EloquentRescueOperationRepository {
 //            $app_id['app_id'][] = $user->app_id;
 //            $app_id['device_type'][] = $user->device_type;
 //            $this->notification($app_id, $message);
-            //return $request->active_rescuers_id;
-            return "This Request has been Cancelled by the User";
+                //return $request->active_rescuers_id;
+                return "This Request has been Cancelled by the User";
+            }
+        }
+       else {
+         return 'Error';
         }
     }
 
