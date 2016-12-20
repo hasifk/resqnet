@@ -57,7 +57,9 @@ class RescueOperationController extends Controller {
     public function rescuerOperationResponse(RescuerOperation $request) {
 //save the resquer details once they accepted rescuee requests
         if($result = $this->rescueOperationRepository->rescuersResponse($request)):
-            return response()->json(['response' => $result]);
+            return response()->json(['rescue_operation' => $result]);
+          else:
+              return response()->json(['rescue_operation' => 'unable to process']);
             endif;
 
        /* if (is_array($result))
