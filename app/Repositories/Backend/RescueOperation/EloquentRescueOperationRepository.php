@@ -426,7 +426,6 @@ class EloquentRescueOperationRepository {
                     $app_id['device_type'][] = $user->device_type;
                     $this->notification($app_id, $message);
                     $result['rescue_operation']=$obj->id;
-                    $result['rescue_operation']=$obj->id;
                     $result['panic_user_id']=$user->id;
                     $result['result']=0;
                     return $result;
