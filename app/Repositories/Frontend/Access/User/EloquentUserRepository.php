@@ -125,7 +125,7 @@ class EloquentUserRepository implements UserRepositoryContract {
                         'dept_name' => (!empty($data['dept_name'])) ? $data['dept_name'] : '',
                         'email' => $data['email'],
                         'password' => null,
-                        'status' => 0,
+                        'status' => 1,
                         'emergency_groups' => (!empty($group_ids)) ? json_encode($group_ids) : '',
                         'current_medical_conditions' => (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '',
                         'prior_medical_conditions' => (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '',
@@ -151,7 +151,7 @@ class EloquentUserRepository implements UserRepositoryContract {
                         'dept_name' => (!empty($data['dept_name'])) ? $data['dept_name'] : '',
                         'email' => $data['email'],
                         'password' => bcrypt($data['password']),
-                        'status' => 0,
+                        'status' => 1,
                         'emergency_groups' => (!empty($group_ids)) ? json_encode($group_ids) : '',
                         'current_medical_conditions' => (!empty($data['current_medical_conditions'])) ? $data['current_medical_conditions'] : '',
                         'prior_medical_conditions' => (!empty($data['prior_medical_conditions'])) ? $data['prior_medical_conditions'] : '',
@@ -161,7 +161,7 @@ class EloquentUserRepository implements UserRepositoryContract {
                         'per_lng' => $response->lng,
                         'per_address' => $addr,
                         'confirmation_code' => md5(uniqid(mt_rand(), true)),
-                        'confirmed' => config('access.users.confirm_email') ? 0 : 1,
+                        'confirmed' => 1,
             ]);
         }
 
@@ -275,6 +275,7 @@ class EloquentUserRepository implements UserRepositoryContract {
             $user->fb_id = $request->fb_id;
             $user->app_id = $request->app_id;
             $user->device_type = $request->device_type;
+            $user->confirmed = 1;
             $user->save();
             return $user;
         else:
@@ -284,10 +285,10 @@ class EloquentUserRepository implements UserRepositoryContract {
             $user->app_id = $request->app_id;
             $user->device_type = $request->device_type;
             $user->firstname = (!empty($request->firstname)) ? $request->firstname : '';
-            $user->status = 0;
+            $user->status = 1;
             //$user->subscription_ends_at = (!empty($request->subscription_ends_at)) ? $request->subscription_ends_at : '';
             $user->confirmation_code = md5(uniqid(mt_rand(), true));
-            $user->confirmed = config('access.users.confirm_email') ? 0 : 1;
+            $user->confirmed = 1;
             $user->save();
             $user->membership_no = $user->id . str_random(5);
             $user->save();
