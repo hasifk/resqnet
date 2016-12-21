@@ -431,26 +431,12 @@ class EloquentRescueOperationRepository {
                     return $result;
                    // return array($obj->id,$user->id );
                 } else {
-                    // $user = User::find($request->rescuer_id);
-//                $message['message'] = "Another Rescuer Accepted this request";
-//                $message['id'] = $request->active_rescuers_id;
-//                $message['to'] = "Rescuer";
-//                $app_id['app_id'][] = $user->app_id;
-//                $app_id['device_type'][] = $user->device_type;
-//                $this->notification($app_id, $message);
-                    //return $request->active_rescuers_id;
+
                     return "Another Rescuer Accepted this request";
                 }
             }
             else {
-//            $user = User::find($request->rescuer_id);
-//            $message['message'] = "This Request has been Cancelled by the User";
-//            $message['id'] = $request->active_rescuers_id;
-//            $message['to'] = "Rescuer";
-//            $app_id['app_id'][] = $user->app_id;
-//            $app_id['device_type'][] = $user->device_type;
-//            $this->notification($app_id, $message);
-                //return $request->active_rescuers_id;
+
                 return "This Request has been Cancelled by the User";
             }
         }

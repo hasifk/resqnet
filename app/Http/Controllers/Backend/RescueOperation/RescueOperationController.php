@@ -67,12 +67,7 @@ class RescueOperationController extends Controller {
               return response()->json(['rescue_operation' => 'unable to process']);
             endif;
 
-       /* if (is_array($result))
-            $flag = 0;
-        else
-            $flag = 1;*/
 
-      /*  return response()->json(['rescue_operation' => $result[0],'panic_user_id' => $result[1],'result' => $flag]);*/
     }
 
     public function rescueeForm() {
