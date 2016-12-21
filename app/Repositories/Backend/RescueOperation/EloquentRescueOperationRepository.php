@@ -630,7 +630,7 @@ class EloquentRescueOperationRepository {
         if (!empty($operation)) {
             $operation->finished_at = date("Y-m-d h:i:s");
             $operation->save();
-            $tagged_rescuer = User::withTrashed()->find($request->panic_user_id);
+            $tagged_rescuer = User::withTrashed()->find($operation->rescuer_id);
             $user = User::withTrashed()->find($request->panic_user_id);
             if (!empty($tagged_rescuer) && !empty($user)) {
                 $message['message'] = "ResQuer " . $tagged_rescuer->firstname . " " . $tagged_rescuer->lastname ." is near by you";
