@@ -429,7 +429,6 @@ class EloquentRescueOperationRepository {
                     $result['panic_user_id']=$user->id;
                     $result['result']=0;
                     return $result;
-                   // return array($obj->id,$user->id );
                 } else {
 
                     return "Another Rescuer Accepted this request";
