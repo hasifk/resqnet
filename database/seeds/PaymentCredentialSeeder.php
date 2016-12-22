@@ -16,7 +16,7 @@ class PaymentCredentialSeeder extends Seeder
 
         $information = [
             [
-                'account_id'          => 'ASAFkAE-k8FSWQnMrbhkAw6tBDO4S-4qt7AyaZZxFyY7vJGPQmKwdKYY0yzBRf5ajJp6U1qoFQeQ3B8W',
+                'account_id'          => 'AQFqPsspTOSfx-4Nx6R6aiyN4APBWBCafOChvI1kNkfZToPKuHZKc7NUsTk3SH25PFLeCeblT3K_sYNw',
                 'payment_type'          => 'Paypal',
                 'payment_amount'          => '2.99',
                 'currency'          => 'USD',
