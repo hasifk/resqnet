@@ -16,6 +16,7 @@ class CreatePaymentsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('txn_id')->nullable();
+            $table->string('payment_type')->nullable();
             $table->timestamp('subscription_ends_at')->nullable()->default(null);
             $table->string('ipn_track_id')->nullable();
             $table->string('payment_status')->nullable();
