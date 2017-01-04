@@ -21,6 +21,16 @@ class PaymentController extends Controller {
         $paypal = $this->payment->paymentSave($request);
     }
 
+    public function inAppSave(Request $request) {
+        $inApp = $this->payment->inAppSave($request);
+        if($inApp):
+            return response()->json(['status' => 'success']);
+        else:
+            return response()->json(['status' => 'failed']);
+        endif;
+
+    }
+
     public function paymentDetails(Request $request) {
         $user_status = '';
         $email_confirmed = '';

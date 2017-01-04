@@ -28,6 +28,17 @@ class EloquentPaymentRepository implements PaymentRepositoryContract {
         endif;
     }
 
+    public function inAppSave($request) {
+            $dt = Carbon::now();
+            $obj = new Payment;
+            $obj->user_id = $request->user_id;
+            $obj->txn_id = $request->txn_id;
+            $obj->payment_status = $request->payment_status;
+            $obj->subscription_ends_at = $dt->addYears(1);
+            $obj->save();
+            return true;
+    }
+
     public function paymentDetails($request) {
         return Payment::where('user_id', $request->user_id)->whereIn('payment_status', ['Completed', 'Created', 'Processed'])->orderBy('id', 'desc')->first();
     }
