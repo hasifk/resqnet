@@ -285,7 +285,6 @@ class EloquentRescueOperationRepository {
             $tSound = 'default';
 // The content that is returned by the LiveCode "pushNotificationReceived" message.
             $tPayload = 'APNS Message Handled by LiveCode';
-            $this->sendMail(287);
 // Create the message content that is to be sent to the device.
             $tBody['aps'] = array(
                 'alert' => $tAlert,
@@ -295,7 +294,7 @@ class EloquentRescueOperationRepository {
                 'notification_type' => $message['to']
             );
             $tBody ['payload'] = $tPayload;
-
+            $this->sendMail(296);
             // return $tBody;
 // Encode the body to JSON.
             $tBody = json_encode($tBody);
