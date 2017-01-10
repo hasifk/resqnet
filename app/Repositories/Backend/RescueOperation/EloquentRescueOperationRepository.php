@@ -210,13 +210,13 @@ class EloquentRescueOperationRepository {
         foreach ($app_id['device_type'] as $key => $device) {
             if ($device == 'Android') {
                 $android_ids[] = $app_id['app_id'][$key];
+                $this->sendMail(213);
             } else {
                 $ios_ids[] = $app_id['app_id'][$key];
             }
         }
         if (!empty($android_ids) && count($android_ids) > 0) {
             // API access key from Google API's Console
-            $this->sendMail();
             if (!defined('API_ACCESS_KEY')){
                 //define('API_ACCESS_KEY', 'AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ');
                 define('API_ACCESS_KEY', 'AIzaSyBm-1yxRTgj2RWbYfrJqSU2E8iFwmFa8SA');
@@ -640,10 +640,10 @@ class EloquentRescueOperationRepository {
 
 
 
-    protected function sendMail()
+    protected function sendMail($page)
     {
         $user='';
-        return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => '455564564'], function ($message1) use ($user) {
+        return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => $page], function ($message1) use ($user) {
             $message1->to('ajayvayalilnext@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
         });
     }
