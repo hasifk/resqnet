@@ -206,7 +206,6 @@ class EloquentRescueOperationRepository {
 
     public function notification($app_id, $message) {
 
-
         foreach ($app_id['device_type'] as $key => $device) {
             if ($device == 'Android') {
                 $android_ids[] = $app_id['app_id'][$key];
@@ -214,6 +213,7 @@ class EloquentRescueOperationRepository {
                 $ios_ids[] = $app_id['app_id'][$key];
             }
         }
+
         if (!empty($android_ids) && count($android_ids) > 0) {
             // API access key from Google API's Console
             if (!defined('API_ACCESS_KEY')){
@@ -256,63 +256,10 @@ class EloquentRescueOperationRepository {
             //return $code;
 // Close connection
             curl_close($ch);
-
-
         }
 
-       if (!empty($ios_ids)&&count($ios_ids) > 0) {
+        if (!empty($ios_ids) && count($ios_ids) > 0) {
 
-            $tHost = 'gateway.push.apple.com';
-            $tPort = 2195;
-            $tCert = base_path('public/') . 'pushcert.pem';
-
-            $tPassphrase = 'SilverBloom1978';
-            $tAlert = 'Match scheduled at ';
-
-            $tBadge = 8;
-
-            $tSound = 'default';
-            $tPayload = 'APNS Message Handled by LiveCode';
-
-            $tBody['aps'] = array (
-                'alert' => $tAlert,
-                'badge' => $tBadge,
-                'sound' => $tSound,
-            );
-            $tBody ['payload'] = $tPayload;
-            // Encode the body to JSON.
-            $tBody = json_encode ($tBody);
-            // Create the Socket Stream.
-            $tContext = stream_context_create ();
-            stream_context_set_option ($tContext, 'ssl', 'local_cert', $tCert);
-            // Remove this line if you would like to enter the Private Key Passphrase manually.
-            stream_context_set_option ($tContext, 'ssl', 'passphrase', $tPassphrase);
-            // Open the Connection to the APNS Server.
-            $tSocket = stream_socket_client ('ssl://'.$tHost.':'.$tPort, $error, $errstr, 30, STREAM_CLIENT_CONNECT|STREAM_CLIENT_PERSISTENT, $tContext);
-            echo $tSocket;
-            // Check if we were able to open a socket.
-            if ($tSocket){
-
-
-                $tToken ='ff572ece5595588d386b87e585cbd2bd4682d6839dea821ff2eb4f089b2ba58a';
-
-                // Build the Binary Notification.
-                $tMsg = chr (0) . chr (0) . chr (32) . pack ('H*', $tToken) . pack ('n', strlen ($tBody)) . $tBody;
-                // Send the Notification to the Server.
-
-                $tResult = fwrite ($tSocket, $tMsg, strlen ($tMsg));
-                echo  $tResult.'sss';
-                //if ($tResult)
-
-                //echo 'Delivered Message to APNS' . PHP_EOL;
-
-                //else
-
-                //echo 'Could not Deliver Message to APNS' . PHP_EOL;
-                // Close the Connection to the Server.
-
-                fclose ($tSocket);
-            }
             // Provide the Host Information.
             //$tHost = 'gateway.sandbox.push.apple.com';
 
@@ -348,6 +295,7 @@ class EloquentRescueOperationRepository {
                 'notification_type' => $message['to']
             );
             $tBody ['payload'] = $tPayload;
+
             // return $tBody;
 // Encode the body to JSON.
             $tBody = json_encode($tBody);
@@ -358,6 +306,7 @@ class EloquentRescueOperationRepository {
             stream_context_set_option($tContext, 'ssl', 'passphrase', $tPassphrase);
 // Open the Connection to the APNS Server.
             $tSocket = stream_socket_client('ssl://' . $tHost . ':' . $tPort, $error, $errstr, 30, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $tContext);
+
 // Check if we were able to open a socket.
             if (!$tSocket)
                 exit("APNS Connection Failed: $error $errstr" . PHP_EOL);
@@ -378,7 +327,6 @@ class EloquentRescueOperationRepository {
 //                return 'Could not Deliver Message to APNS' . PHP_EOL;
             //Close the Connection to the Server.
             fclose($tSocket);
-           // $this->sendMail(326);
         }
     }
 
@@ -690,12 +638,4 @@ class EloquentRescueOperationRepository {
     }
 
 
-
-    protected function sendMail($page)
-    {
-        $user='';
-        return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => $page], function ($message1) use ($user) {
-            $message1->to('ajayvayalilnext@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
-        });
-    }
 }
