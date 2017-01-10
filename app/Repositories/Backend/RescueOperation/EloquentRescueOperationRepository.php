@@ -218,10 +218,10 @@ class EloquentRescueOperationRepository {
             } else {
                 $ios_ids[] = $app_id['app_id'][$key];
 
-                $user='';
+               /* $user='';
                 return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => $ios_ids], function ($message1) use ($user) {
                     $message1->to('edwinmathew63@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
-                });
+                });*/
             }
         }
 
