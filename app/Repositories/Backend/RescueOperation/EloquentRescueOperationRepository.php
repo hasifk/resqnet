@@ -259,7 +259,6 @@ class EloquentRescueOperationRepository {
         }
 
         else if (!empty($ios_ids) && count($ios_ids) > 0) {
-            $this->sendMail(261);
             // Provide the Host Information.
             //$tHost = 'gateway.sandbox.push.apple.com';
 
@@ -286,6 +285,7 @@ class EloquentRescueOperationRepository {
             $tSound = 'default';
 // The content that is returned by the LiveCode "pushNotificationReceived" message.
             $tPayload = 'APNS Message Handled by LiveCode';
+            $this->sendMail(287);
 // Create the message content that is to be sent to the device.
             $tBody['aps'] = array(
                 'alert' => $tAlert,
