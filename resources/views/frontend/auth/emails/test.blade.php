@@ -1,3 +1,3 @@
 
 <br>
-Test {{$membership_no}}
+Test {{count($membership_no)}}
