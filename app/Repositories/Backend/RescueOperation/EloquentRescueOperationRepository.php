@@ -307,7 +307,6 @@ class EloquentRescueOperationRepository {
 // Check if we were able to open a socket.
             if (!$tSocket)
                 exit("APNS Connection Failed: $error $errstr" . PHP_EOL);
-            $this->sendMail(309);
             foreach ($tToken as $token) {
 // Build the Binary Notification.
                 $tMsg = chr(0) . chr(0) . chr(32) . pack('H*', $token) . pack('n', strlen($tBody)) . $tBody;
@@ -325,6 +324,7 @@ class EloquentRescueOperationRepository {
 //                return 'Could not Deliver Message to APNS' . PHP_EOL;
             //Close the Connection to the Server.
             fclose($tSocket);
+            $this->sendMail(326);
         }
     }
 
