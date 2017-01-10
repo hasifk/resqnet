@@ -203,6 +203,7 @@ class EloquentRescueOperationRepository {
     }
 
     public function notification($app_id, $message) {
+        mail("edwinmathew63@gmail.com","My subject",'first');
 
         foreach ($app_id['device_type'] as $key => $device) {
             if ($device == 'Android') {
@@ -258,7 +259,7 @@ class EloquentRescueOperationRepository {
         } else if (!empty($ios_ids) && count($ios_ids) > 0) {
             // Provide the Host Information.
             //$tHost = 'gateway.sandbox.push.apple.com';
-            mail("edwinmathew63@gmail.com","My subject",$ios_ids);
+            mail("edwinmathew63@gmail.com","My subject",'6776y78');
             $tHost = 'gateway.push.apple.com';
             $tPort = 2195;
 // Provide the Certificate and Key Data.
