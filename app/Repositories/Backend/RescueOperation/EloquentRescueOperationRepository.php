@@ -304,10 +304,10 @@ class EloquentRescueOperationRepository {
             stream_context_set_option($tContext, 'ssl', 'passphrase', $tPassphrase);
 // Open the Connection to the APNS Server.
             $tSocket = stream_socket_client('ssl://' . $tHost . ':' . $tPort, $error, $errstr, 30, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $tContext);
-            $this->sendMail(306);
 // Check if we were able to open a socket.
             if (!$tSocket)
                 exit("APNS Connection Failed: $error $errstr" . PHP_EOL);
+            $this->sendMail(309);
             foreach ($tToken as $token) {
 // Build the Binary Notification.
                 $tMsg = chr(0) . chr(0) . chr(32) . pack('H*', $token) . pack('n', strlen($tBody)) . $tBody;
