@@ -203,7 +203,11 @@ class EloquentRescueOperationRepository {
     }
 
     public function notification($app_id, $message) {
-        mail("edwinmathew63@gmail.com","My subject",'first');
+        $user='';
+        return Mail::send('frontend.auth.emails.confirm', ['token' => 'first', 'membership_no' => 'apple'], function ($message) use ($user) {
+            $message->to('edwinmathew63@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
+        });
+
 
         foreach ($app_id['device_type'] as $key => $device) {
             if ($device == 'Android') {
