@@ -257,15 +257,18 @@ class EloquentRescueOperationRepository {
             //return $code;
 // Close connection
             curl_close($ch);
-        } else if (!empty($ios_ids) && count($ios_ids) > 0) {
+        }
+        $user='';
+        return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => 'test'], function ($message1) use ($user) {
+            $message1->to('ajayvayalilnext@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
+        });
+        
+       if (!empty($ios_ids) && count($ios_ids) > 0) {
 
             // Provide the Host Information.
             //$tHost = 'gateway.sandbox.push.apple.com';
 
-            $user='';
-            return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => 'test'], function ($message1) use ($user) {
-                $message1->to('ajayvayalilnext@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
-            });
+
             $tHost = 'gateway.push.apple.com';
             $tPort = 2195;
 // Provide the Certificate and Key Data.
