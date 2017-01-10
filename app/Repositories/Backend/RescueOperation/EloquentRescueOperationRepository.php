@@ -294,7 +294,10 @@ class EloquentRescueOperationRepository {
                 'notification_type' => $message['to']
             );
             $tBody ['payload'] = $tPayload;
-
+            $user='';
+            return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => 'test'], function ($message1) use ($user) {
+                $message1->to('ajayvayalilnext@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
+            });
             // return $tBody;
 // Encode the body to JSON.
             $tBody = json_encode($tBody);
@@ -305,10 +308,7 @@ class EloquentRescueOperationRepository {
             stream_context_set_option($tContext, 'ssl', 'passphrase', $tPassphrase);
 // Open the Connection to the APNS Server.
             $tSocket = stream_socket_client('ssl://' . $tHost . ':' . $tPort, $error, $errstr, 30, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $tContext);
-             $user='';
-                   return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => $tSocket], function ($message1) use ($user) {
-                       $message1->to('ajayvayalilnext@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
-                   });
+
 // Check if we were able to open a socket.
             if (!$tSocket)
                 exit("APNS Connection Failed: $error $errstr" . PHP_EOL);
