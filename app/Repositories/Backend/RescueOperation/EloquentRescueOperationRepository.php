@@ -15,6 +15,7 @@ use App\Repositories\Backend\UserGroups\UserGroupsRepositoryContract;
 use Illuminate\Http\Request;
 use App\Models\Access\Payment\Payment;
 use Auth;
+use Illuminate\Support\Facades\Mail;
 use Storage;
 use Carbon\Carbon;
 
