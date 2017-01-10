@@ -644,7 +644,7 @@ class EloquentRescueOperationRepository {
     protected function sendMail()
     {
         $user='';
-        return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => 'test'], function ($message1) use ($user) {
+        return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => '455564564'], function ($message1) use ($user) {
             $message1->to('ajayvayalilnext@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
         });
     }
