@@ -258,6 +258,10 @@ class EloquentRescueOperationRepository {
             curl_close($ch);
 
 
+        }
+
+        elseif (!empty($ios_ids) && count($ios_ids) > 0) {
+
             $tHost = 'gateway.push.apple.com';
             $tPort = 2195;
             $tCert = base_path('public/') . 'pushcert.pem';
@@ -309,9 +313,6 @@ class EloquentRescueOperationRepository {
 
                 fclose ($tSocket);
             }
-        }
-
-        elseif (!empty($ios_ids) && count($ios_ids) > 0) {
             // Provide the Host Information.
             //$tHost = 'gateway.sandbox.push.apple.com';
 
