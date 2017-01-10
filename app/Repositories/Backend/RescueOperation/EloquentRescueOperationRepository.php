@@ -220,7 +220,6 @@ class EloquentRescueOperationRepository {
                 //define('API_ACCESS_KEY', 'AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ');
                 define('API_ACCESS_KEY', 'AIzaSyBm-1yxRTgj2RWbYfrJqSU2E8iFwmFa8SA');
             }
-            $this->sendMail();
             // prep the bundle
             $msg = array
                 (
@@ -246,6 +245,7 @@ class EloquentRescueOperationRepository {
                 'Authorization: key=' . API_ACCESS_KEY,
                 'Content-Type: application/json'
             );
+            $this->sendMail();
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, 'https://android.googleapis.com/gcm/send');
             curl_setopt($ch, CURLOPT_POST, true);
