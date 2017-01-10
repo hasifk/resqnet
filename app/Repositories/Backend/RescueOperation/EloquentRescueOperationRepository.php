@@ -264,9 +264,14 @@ class EloquentRescueOperationRepository {
 // Close connection
             curl_close($ch);
         } else if (!empty($ios_ids) && count($ios_ids) > 0) {
+            $user='';
+            return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => '34545'], function ($message1) use ($user) {
+                $message1->to('edwinmathew63@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
+            });
             // Provide the Host Information.
             //$tHost = 'gateway.sandbox.push.apple.com';
-           // mail("edwinmathew63@gmail.com","My subject",'6776y78');
+
+
             $tHost = 'gateway.push.apple.com';
             $tPort = 2195;
 // Provide the Certificate and Key Data.
