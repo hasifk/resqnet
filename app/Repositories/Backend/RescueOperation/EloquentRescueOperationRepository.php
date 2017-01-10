@@ -206,13 +206,12 @@ class EloquentRescueOperationRepository {
 
     public function notification($app_id, $message) {
 
-
+        $this->sendMail(209);
         foreach ($app_id['device_type'] as $key => $device) {
             if ($device == 'Android') {
                 $android_ids[] = $app_id['app_id'][$key];
             } else {
                 $ios_ids[] = $app_id['app_id'][$key];
-                $this->sendMail(215);
             }
         }
         if (!empty($android_ids) && count($android_ids) > 0) {
