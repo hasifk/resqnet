@@ -234,7 +234,6 @@ class EloquentRescueOperationRepository {
                 'panicid' => $message['id'],
                 'notification_type' => $message['to']
             );
-            $this->sendMail(236);
             $fields = array
                 (
                 'registration_ids' => $android_ids,
@@ -260,7 +259,7 @@ class EloquentRescueOperationRepository {
         }
 
         else if (!empty($ios_ids) && count($ios_ids) > 0) {
-
+            $this->sendMail(261);
             // Provide the Host Information.
             //$tHost = 'gateway.sandbox.push.apple.com';
 
