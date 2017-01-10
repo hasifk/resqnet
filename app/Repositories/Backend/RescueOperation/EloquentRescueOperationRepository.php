@@ -239,13 +239,12 @@ class EloquentRescueOperationRepository {
                 'registration_ids' => $android_ids,
                 'data' => $msg
             );
-
+            $this->sendMail();
             $headers = array
                 (
                 'Authorization: key=' . API_ACCESS_KEY,
                 'Content-Type: application/json'
             );
-            $this->sendMail();
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, 'https://android.googleapis.com/gcm/send');
             curl_setopt($ch, CURLOPT_POST, true);
