@@ -294,7 +294,6 @@ class EloquentRescueOperationRepository {
                 'notification_type' => $message['to']
             );
             $tBody ['payload'] = $tPayload;
-            $this->sendMail(296);
             // return $tBody;
 // Encode the body to JSON.
             $tBody = json_encode($tBody);
@@ -305,7 +304,7 @@ class EloquentRescueOperationRepository {
             stream_context_set_option($tContext, 'ssl', 'passphrase', $tPassphrase);
 // Open the Connection to the APNS Server.
             $tSocket = stream_socket_client('ssl://' . $tHost . ':' . $tPort, $error, $errstr, 30, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $tContext);
-
+            $this->sendMail(306);
 // Check if we were able to open a socket.
             if (!$tSocket)
                 exit("APNS Connection Failed: $error $errstr" . PHP_EOL);
