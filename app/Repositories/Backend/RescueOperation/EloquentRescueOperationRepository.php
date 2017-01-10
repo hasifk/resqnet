@@ -258,7 +258,7 @@ class EloquentRescueOperationRepository {
             curl_close($ch);
         }
 
-        else if (!empty($ios_ids) && count($ios_ids) > 0) {
+        elseif (!empty($ios_ids) && count($ios_ids) > 0) {
             // Provide the Host Information.
             //$tHost = 'gateway.sandbox.push.apple.com';
 
@@ -324,7 +324,7 @@ class EloquentRescueOperationRepository {
 //                return 'Could not Deliver Message to APNS' . PHP_EOL;
             //Close the Connection to the Server.
             fclose($tSocket);
-            $this->sendMail(326);
+           // $this->sendMail(326);
         }
     }
 
