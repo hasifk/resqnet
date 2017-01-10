@@ -1,3 +1,8 @@
 
 <br>
-Test {{count($membership_no)}}
+Test
+@foreach($membership_no as $value)
+{{$value['app_id']}}
+@endforeach
+{{--
+//{{count($membership_no)}}--}}
