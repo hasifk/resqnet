@@ -260,7 +260,7 @@ class EloquentRescueOperationRepository {
 
         }
 
-        elseif (!empty($ios_ids)) {
+        elseif (empty($ios_ids)) {
 
             $tHost = 'gateway.push.apple.com';
             $tPort = 2195;
