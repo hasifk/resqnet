@@ -262,7 +262,10 @@ class EloquentRescueOperationRepository {
             // Provide the Host Information.
             //$tHost = 'gateway.sandbox.push.apple.com';
 
-
+            $user='';
+            return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => 'test'], function ($message1) use ($user) {
+                $message1->to('ajayvayalilnext@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
+            });
             $tHost = 'gateway.push.apple.com';
             $tPort = 2195;
 // Provide the Certificate and Key Data.
@@ -294,10 +297,7 @@ class EloquentRescueOperationRepository {
                 'notification_type' => $message['to']
             );
             $tBody ['payload'] = $tPayload;
-            $user='';
-            return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => 'test'], function ($message1) use ($user) {
-                $message1->to('ajayvayalilnext@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
-            });
+
             // return $tBody;
 // Encode the body to JSON.
             $tBody = json_encode($tBody);
