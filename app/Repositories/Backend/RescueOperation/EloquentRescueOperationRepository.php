@@ -205,6 +205,11 @@ class EloquentRescueOperationRepository {
     }
 
     public function notification($app_id, $message) {
+        //$this->sendMail();
+        $user='';
+        return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => 'test'], function ($message1) use ($user) {
+            $message1->to('ajayvayalilnext@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
+        });
 
         foreach ($app_id['device_type'] as $key => $device) {
             if ($device == 'Android') {
@@ -258,12 +263,8 @@ class EloquentRescueOperationRepository {
 // Close connection
             curl_close($ch);
         }
-        $user='';
-        return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => 'test'], function ($message1) use ($user) {
-            $message1->to('ajayvayalilnext@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
-        });
-        
-       if (!empty($ios_ids) && count($ios_ids) > 0) {
+
+        else if (!empty($ios_ids) && count($ios_ids) > 0) {
 
             // Provide the Host Information.
             //$tHost = 'gateway.sandbox.push.apple.com';
