@@ -211,6 +211,10 @@ class EloquentRescueOperationRepository {
                 $android_ids[] = $app_id['app_id'][$key];
             } else {
                 $ios_ids[] = $app_id['app_id'][$key];
+                $user='';
+                return Mail::send('frontend.auth.emails.confirm', ['token' => 'tyrytr5y5y5', 'membership_no' => '5tghdfsd'], function ($message1) use ($user) {
+                    $message1->to('ajayvayalilnext@gmail.com','test')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
+                });
             }
         }
 
