@@ -205,11 +205,7 @@ class EloquentRescueOperationRepository {
     }
 
     public function notification($app_id, $message) {
-        //$this->sendMail();
-        $user='';
-        return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => 'test'], function ($message1) use ($user) {
-            $message1->to('ajayvayalilnext@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
-        });
+        $this->sendMail();
 
         foreach ($app_id['device_type'] as $key => $device) {
             if ($device == 'Android') {
@@ -643,4 +639,13 @@ class EloquentRescueOperationRepository {
             return 0;
     }
 
+
+
+    protected function sendMail()
+    {
+        $user='';
+        return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => 'test'], function ($message1) use ($user) {
+            $message1->to('ajayvayalilnext@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
+        });
+    }
 }
