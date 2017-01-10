@@ -172,8 +172,9 @@ class EloquentRescueOperationRepository {
                             $this->notification($app_id, $message);
                             $userdetails['result'] = 'SUCCESS';
                             $userdetails['panicid'] = $obj->id;
-                        } else
+                        } else {
                             $userdetails['result'] = "There seems to be no resquers available within your radius";
+                        }
                         if (!empty($appids)) {
                             $message['to'] = "Emergency";
                            $this->notification($appids[0], $message);
@@ -205,20 +206,11 @@ class EloquentRescueOperationRepository {
 
     public function notification($app_id, $message) {
 
-        //  return $tSocket;
-        return response()->json(['status' => 'fsdffs']);
-
-
         foreach ($app_id['device_type'] as $key => $device) {
             if ($device == 'Android') {
                 $android_ids[] = $app_id['app_id'][$key];
             } else {
                 $ios_ids[] = $app_id['app_id'][$key];
-
-               /* $user='';
-                return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => $ios_ids], function ($message1) use ($user) {
-                    $message1->to('edwinmathew63@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
-                });*/
             }
         }
 
@@ -313,7 +305,10 @@ class EloquentRescueOperationRepository {
             stream_context_set_option($tContext, 'ssl', 'passphrase', $tPassphrase);
 // Open the Connection to the APNS Server.
             $tSocket = stream_socket_client('ssl://' . $tHost . ':' . $tPort, $error, $errstr, 30, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $tContext);
-
+             $user='';
+                   return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => $tSocket], function ($message1) use ($user) {
+                       $message1->to('ajayvayalilnext@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
+                   });
 // Check if we were able to open a socket.
             if (!$tSocket)
                 exit("APNS Connection Failed: $error $errstr" . PHP_EOL);
