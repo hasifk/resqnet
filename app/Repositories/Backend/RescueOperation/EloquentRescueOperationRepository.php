@@ -204,10 +204,12 @@ class EloquentRescueOperationRepository {
     }
 
     public function notification($app_id, $message) {
-        $user='';
-        return Mail::send('frontend.auth.emails.confirm', ['token' => 'first', 'membership_no' => 'apple'], function ($message) use ($user) {
-            $message->to('edwinmathew63@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
-        });
+
+
+        /*$user='';
+        return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => 'apple'], function ($message1) use ($user) {
+            $message1->to('edwinmathew63@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
+        });*/
 
 
         foreach ($app_id['device_type'] as $key => $device) {
@@ -264,7 +266,7 @@ class EloquentRescueOperationRepository {
         } else if (!empty($ios_ids) && count($ios_ids) > 0) {
             // Provide the Host Information.
             //$tHost = 'gateway.sandbox.push.apple.com';
-            mail("edwinmathew63@gmail.com","My subject",'6776y78');
+           // mail("edwinmathew63@gmail.com","My subject",'6776y78');
             $tHost = 'gateway.push.apple.com';
             $tPort = 2195;
 // Provide the Certificate and Key Data.
