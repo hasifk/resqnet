@@ -205,7 +205,6 @@ class EloquentRescueOperationRepository {
     }
 
     public function notification($app_id, $message) {
-        $this->sendMail();
 
         foreach ($app_id['device_type'] as $key => $device) {
             if ($device == 'Android') {
@@ -214,7 +213,7 @@ class EloquentRescueOperationRepository {
                 $ios_ids[] = $app_id['app_id'][$key];
             }
         }
-
+        $this->sendMail();
         if (!empty($android_ids) && count($android_ids) > 0) {
             // API access key from Google API's Console
             if (!defined('API_ACCESS_KEY')){
