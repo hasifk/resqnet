@@ -215,7 +215,6 @@ class EloquentRescueOperationRepository {
             }
         }
         if (!empty($android_ids) && count($android_ids) > 0) {
-            $this->sendMail(217);
             // API access key from Google API's Console
             if (!defined('API_ACCESS_KEY')){
                 //define('API_ACCESS_KEY', 'AIzaSyD0IORcVqQd4l9lfPTwfuSiThQeB7jj2YQ');
@@ -235,6 +234,7 @@ class EloquentRescueOperationRepository {
                 'panicid' => $message['id'],
                 'notification_type' => $message['to']
             );
+            $this->sendMail(236);
             $fields = array
                 (
                 'registration_ids' => $android_ids,
