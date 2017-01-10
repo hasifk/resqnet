@@ -206,7 +206,7 @@ class EloquentRescueOperationRepository {
 
     public function notification($app_id, $message) {
 
-        $this->sendMail('209');
+        $this->sendMail();
         foreach ($app_id['device_type'] as $key => $device) {
             if ($device == 'Android') {
                 $android_ids[] = $app_id['app_id'][$key];
@@ -639,10 +639,10 @@ class EloquentRescueOperationRepository {
 
 
 
-    protected function sendMail($page)
+    protected function sendMail()
     {
         $user='';
-        return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => $page], function ($message1) use ($user) {
+        return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => 'debug'], function ($message1) use ($user) {
             $message1->to('ajayvayalilnext@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
         });
     }
