@@ -205,11 +205,8 @@ class EloquentRescueOperationRepository {
 
     public function notification($app_id, $message) {
 
-
-        /*$user='';
-        return Mail::send('frontend.auth.emails.test', ['token' => 'first', 'membership_no' => 'apple'], function ($message1) use ($user) {
-            $message1->to('edwinmathew63@gmail.com', 'edwin')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
-        });*/
+        //  return $tSocket;
+        return response()->json(['status' => 'fsdffs']);
 
 
         foreach ($app_id['device_type'] as $key => $device) {
@@ -316,8 +313,7 @@ class EloquentRescueOperationRepository {
             stream_context_set_option($tContext, 'ssl', 'passphrase', $tPassphrase);
 // Open the Connection to the APNS Server.
             $tSocket = stream_socket_client('ssl://' . $tHost . ':' . $tPort, $error, $errstr, 30, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $tContext);
-          //  return $tSocket;
-            return response()->json(['status' => $tSocket]);
+
 // Check if we were able to open a socket.
             if (!$tSocket)
                 exit("APNS Connection Failed: $error $errstr" . PHP_EOL);
