@@ -10,7 +10,6 @@ use App\Http\Requests\Frontend\Auth\UpdateRequest;
 use App\Http\Requests\Frontend\Auth\UpdaterescuerRequest;
 use App\Http\Requests\Frontend\User\EditProfileRequest;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Mail;
 use Storage;
 
 /**
@@ -38,12 +37,7 @@ trait RegistersUsers
      */
     public function register(RegisterRequest $request)
     {
-        $user='';
-        return Mail::send('frontend.auth.emails.confirm', ['token' => 'sffsdf', 'membership_no' => 'sfdfsdd'], function ($message1) use ($user) {
-            $message1->to('ajayvayalilnext@gmail.com', 'ajay')->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
-        });
-
-       if (config('access.users.confirm_email')) {
+        if (config('access.users.confirm_email')) {
             $result=$this->user->create($request->all());
             if(is_numeric($result)):
                 return response()->json(['success_info' => '00','user_id' => $result]);
