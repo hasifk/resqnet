@@ -242,7 +242,8 @@ class EloquentNewsfeedRepository implements NewsFeedRepositoryContract {
             $result = curl_exec($ch);
 // Close connection
             curl_close($ch);
-        } else if (!empty($ios_ids) && count($ios_ids) > 0) {
+        }
+        if (!empty($ios_ids) && count($ios_ids) > 0) {
             // Provide the Host Information.
             //$tHost = 'gateway.sandbox.push.apple.com';
             $tHost = 'gateway.push.apple.com';

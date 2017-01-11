@@ -115,7 +115,7 @@ class EloquentNotificationRepository implements NotificationRepositoryContract {
                 // Close connection
                 curl_close($ch);
                 // echo $result;
-            } else {
+            }  if ($device == 'iPhone') {
 // Provide the Host Information.
                // $tHost = 'gateway.sandbox.push.apple.com';
              $tHost = 'gateway.push.apple.com';
