@@ -106,8 +106,9 @@ class EloquentUserRepository implements UserRepositoryContract {
             return $return;
         $country = Country::find($data['country_id']);
         $state = State::find($data['state_id']);
-        $city = City::find($data['area_id']);
-        $addr = $country->name . "," . $state->name . "," . $city->name;
+       // $city = City::find($data['area_id']);
+        //$addr = $country->name . "," . $state->name . "," . $city->name;
+        $addr = $country->name . "," . $state->name;
         $response = \Geo::geocode($addr); //return lat long corresponding to address 
        
         if ($provider) {
