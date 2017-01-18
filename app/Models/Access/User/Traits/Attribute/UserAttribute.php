@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models\Access\User\Traits\Attribute;
+use Carbon\Carbon;
 
 /**
  * Class UserAttribute
@@ -175,6 +176,22 @@ trait UserAttribute
         return '';
     }
 
+    public function getPaidButtonAttribute() {
+        if (access()->hasRolesApp(['User'],$this->id)):
+        $pay=\DB::table('payments')->where('user_id', $this->id)->whereIn('payment_status', ['Completed', 'Created', 'Processed'])->orderBy('id', 'desc')->first();
+        if(isset($pay)):
+            if($pay->subscription_ends_at >= Carbon::now()):
+
+        return '<a href="#" class="btn btn-xs btn-success"><i class="fa fa-dollar" data-toggle="tooltip" data-placement="top" title="Paid Account"></i></a> ';
+                endif;
+            endif;
+                   return '<a href="'.route('admin.upgrade.from.admin', $this->id).'" class="btn btn-xs btn-info"><i class="fa fa-dollar" data-toggle="tooltip" data-placement="top" title="Upgrade Account"></i></a> ';
+            else:
+                return '<a href="#" class="btn btn-xs btn-warning"><i class="fa fa-dollar" data-toggle="tooltip" data-placement="top" title="Non-User Account"></i></a> ';
+           endif;
+
+    }
+
     /**
      * @return string
      */
@@ -185,6 +202,7 @@ trait UserAttribute
         $this->getChangePasswordButtonAttribute() . ' ' .
         $this->getStatusButtonAttribute() .
         $this->getConfirmedButtonAttribute() .
+        $this->getPaidButtonAttribute().
         $this->getDeleteButtonAttribute();
     }
 

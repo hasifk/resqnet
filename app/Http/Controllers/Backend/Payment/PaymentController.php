@@ -69,4 +69,12 @@ class PaymentController extends Controller {
         endif;
     }
 
+    public function upgradeFromAdmin($id) {
+        if (!empty($result = $this->payment->upgradeFromAdmin($id))):
+            return redirect()->back()->withFlashSuccess('Account Upgraded Successfully');
+        else:
+            return redirect()->back()->withFlashSuccess('Unable to Upgrade Account');
+        endif;
+    }
+
 }

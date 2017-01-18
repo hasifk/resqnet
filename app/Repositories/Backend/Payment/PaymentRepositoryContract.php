@@ -18,6 +18,7 @@ interface PaymentRepositoryContract {
     public function paymentChecking($id);
     public function paymentDetails($request);
     public function paidUserDetails();
+    public function upgradeFromAdmin($id);
     
 
 }

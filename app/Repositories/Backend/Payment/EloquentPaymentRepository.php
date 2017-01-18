@@ -63,5 +63,17 @@ class EloquentPaymentRepository implements PaymentRepositoryContract {
                  ->get();
         
     }
+    public function upgradeFromAdmin($id)
+    {
+        $dt = Carbon::now();
+        $obj = new Payment;
+        $obj->user_id = $id;
+        $obj->txn_id = '#admin';
+        $obj->payment_type ='From Admin';
+        $obj->payment_status = 'Completed';
+        $obj->subscription_ends_at = $dt->addYears(1);
+        $obj->save();
+        return true;
+    }
 
 }
