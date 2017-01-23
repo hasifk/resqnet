@@ -174,6 +174,8 @@ class EloquentUserRepository implements UserRepositoryContract {
             $type = RescuerType::where('id', $data['rescuer_type_id'])->value('type');
             $role_id = \DB::table('roles')->where('name', $type)->value('id');
             $user->attachRoles(array($role_id));
+            $user->update([
+                'status'=> 0,'confirmed'=>0]);
         endif;
 
         $user->update([
@@ -194,9 +196,9 @@ class EloquentUserRepository implements UserRepositoryContract {
         $obj->save();
 
         /** Emergency end */
-        if (config('access.users.confirm_email') && $provider === false) {
+       /* if (config('access.users.confirm_email') && $provider === false) {
             $this->sendConfirmationEmail($user);
-        }
+        }*/
 
         /**
          * Return the user object

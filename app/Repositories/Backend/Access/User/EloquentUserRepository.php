@@ -235,7 +235,9 @@ class EloquentUserRepository implements UserRepositoryContract {
         }
 
         $user = $this->findOrThrowException($id);
+       // $user->status = $status;
         $user->status = $status;
+        $user->confirmed = 1;
 
         if ($user->save()) {
             return true;
