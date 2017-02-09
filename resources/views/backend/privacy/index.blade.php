@@ -16,20 +16,20 @@
 
         <!--  <link rel="stylesheet" href="css/style.css" media="all" type="text/css">-->
         <style>
-         body{
-  font-family: sans-serif;
-  width:80%;
-  margin:40px auto;
-  
- }
- h2{
-     font-family: serif;
-  
- }
- p{
-     line-height:25px;
-     text-align: justify;
- }
+            body{
+                font-family: sans-serif;
+                width:80%;
+                margin:40px auto;
+
+            }
+            h2{
+                font-family: serif;
+
+            }
+            p{
+                line-height:25px;
+                text-align: justify;
+            }
         </style>
 
     </head>
@@ -38,7 +38,7 @@
 
         <h2>Privacy Policy</h2>
         <p>
-            ResQnet Inc. (Pty) Ltd ("us", "we", or "our") operates the resQnet mobile application (the “Service”).  This page informs you of our policies regarding the collection, use and disclosure of Personal Information we receive from users of the Site.  We use your Personal Information only for providing support to you, from police, medical emergency personnel and firemen (the “ResQuers”) during emergencies and for improving the Service. By using the Service, you agree to the collection and use of information in accordance with this polic
+            Wemergency Inc. (Pty) Ltd ("us", "we", or "our") operates the Wemergency mobile application (the “Service”).  This page informs you of our policies regarding the collection, use and disclosure of Personal Information we receive from users of the Site.  We use your Personal Information only for providing support to you, from police, medical emergency personnel and firemen (the “ResQuers”) during emergencies and for improving the Service. By using the Service, you agree to the collection and use of information in accordance with this polic
         </p>   
         <h2>Information Collection And Use</h2>
         <p>
